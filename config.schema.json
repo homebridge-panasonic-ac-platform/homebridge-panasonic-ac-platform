@@ -1,0 +1,78 @@
+{
+  "pluginAlias": "Panasonic AC Platform",
+  "pluginType": "platform",
+  "singular": true,
+  "schema": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "title": "Plugin Name",
+        "description": "This name will be displayed in the Homebridge log.",
+        "type": "string",
+        "default": "Homebridge Panasonic AC Platform",
+        "placeholder": "Homebridge Panasonic AC Platform",
+        "required": true
+      },
+      "email": {
+        "title": "Email",
+        "description": "It is recommended to set up a separate account for Homebridge and share the devices from your main account.",
+        "type": "string",
+        "placeholder": "Email",
+        "required": true,
+        "format": "email"
+      },
+      "password": {
+        "title": "Password",
+        "type": "string",
+        "placeholder": "Password",
+        "required": true
+      },
+      "debugMode": {
+        "title": "Debug Mode",
+        "description": "When enabled, debug messages will be written to the log.",
+        "type": "boolean",
+        "default": false
+      },
+      "appVersion": {
+        "title": "Emulated Comfort Cloud app version",
+        "description": "Should ideally reflect the same version as on the app store(s), although older clients might remain supported for some time.",
+        "type": "string",
+        "default": "1.13.0",
+        "placeholder": "1.13.0",
+        "required": true
+      }
+    }
+  },
+  "layout": [
+    {
+      "type": "flex",
+      "flex-flow": "row wrap",
+      "items": [
+        "name"
+      ]
+    },
+    {
+      "type": "flex",
+      "flex-flow": "row wrap",
+      "items": [
+        {
+          "key": "email",
+          "type": "email"
+        },
+        {
+          "key": "password",
+          "type": "password"
+        }
+      ]
+    },
+    {
+      "type": "fieldset",
+      "title": "Advanced configuration",
+      "expandable": true,
+      "items": [
+        "debugMode",
+        "appVersion"
+      ]
+    }
+  ]
+}
