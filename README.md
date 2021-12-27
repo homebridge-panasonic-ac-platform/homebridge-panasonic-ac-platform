@@ -27,9 +27,7 @@ The plugin can be configured through the settings UI or the corresponding JSON c
 
 ```json
 {
-  ...
   "platforms": [
-    ...
     {
         "name": "Homebridge Panasonic AC Platform",
         "email": "mysecondaryemail@example.invalid",
@@ -39,7 +37,6 @@ The plugin can be configured through the settings UI or the corresponding JSON c
         "appVersion": "1.13.0"
     }
   ]
-  ...
 }
 ```
 
