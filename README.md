@@ -1,4 +1,8 @@
 # Homebridge Panasonic AC Platform
+
+[![verified-by-homebridge](https://badgen.net/badge/homebridge/verified/purple)](https://github.com/homebridge/homebridge/wiki/Verified-Plugins)
+[![Publish package to npm](https://github.com/embee8/homebridge-panasonic-ac-platform/actions/workflows/npm-publish.yml/badge.svg)](https://github.com/embee8/homebridge-panasonic-ac-platform/actions/workflows/npm-publish.yml)
+
 `homebridge-panasonic-ac-platform` is a [Homebridge](https://homebridge.io) dynamic platform plugin that provides HomeKit support for Panasonic air conditioning units.
 
 ## How it works
