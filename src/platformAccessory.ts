@@ -120,14 +120,19 @@ export default class PanasonicAirConditionerAccessory {
       // Current Temperature
       // Note: Only update the temperature when the heat pump is reporting a valid temperature.
       // Otherwise it will just incorrectly report zero to HomeKit.
-      if (deviceStatus.insideTemperature >= 126) {
-        // Temperature of 126 from the API = null/failure
-        this.platform.log.error('Temperature state is not available');
-      } else {
+      if (deviceStatus.insideTemperature < 126) {
         this.service.updateCharacteristic(
           this.platform.Characteristic.CurrentTemperature,
           deviceStatus.insideTemperature,
         );
+      } else if (deviceStatus.outTemperature < 126) {
+        this.service.updateCharacteristic(
+          this.platform.Characteristic.CurrentTemperature,
+          deviceStatus.outTemperature,
+        );
+      } else {
+        // Temperature of 126 from the API = null/failure
+        this.platform.log.error('Temperature state is not available', deviceStatus.insideTemperature, deviceStatus.outTemperature);
       }
 
       // Current Heater-Cooler State and Target Heater-Cooler State
