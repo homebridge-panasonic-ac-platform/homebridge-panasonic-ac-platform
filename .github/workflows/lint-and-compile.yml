@@ -1,10 +1,11 @@
-
 # This workflow will perform a clean install of Node dependencies, and lint and compile the source code.
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
 name: Lint and compile
 
-on: [push, pull_request]
+# https://docs.github.com/en/actions/learn-github-actions/events-that-trigger-workflows#pull_request
+# By default, the workflow only runs when a pull_request's activity type is opened, synchronize, or reopened.
+on: pull_request
 jobs:
   lint:
     runs-on: ubuntu-latest
