@@ -43,8 +43,8 @@
         "title": "Emulated Comfort Cloud app version",
         "description": "Should ideally reflect the same version as on the app store(s), although older clients might remain supported for some time.",
         "type": "string",
-        "default": "1.13.0",
-        "placeholder": "1.13.0",
+        "default": "1.14.0",
+        "placeholder": "1.14.0",
         "required": true
       }
     }
