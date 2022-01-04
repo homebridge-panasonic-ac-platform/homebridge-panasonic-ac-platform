@@ -27,6 +27,12 @@
         "placeholder": "Password",
         "required": true
       },
+      "exposeOutdoorUnit": {
+        "title": "Expose Outdoor Unit",
+        "description": "When enabled, the plugin will create a separate accessory for your outdoor unit which will display the (outdoor) temperature it measures. This can be used for monitoring and automation purposes.",
+        "type": "boolean",
+        "default": false
+      },
       "debugMode": {
         "title": "Debug Mode",
         "description": "When enabled, debug messages will be written to the log.",
@@ -63,6 +69,13 @@
           "key": "password",
           "type": "password"
         }
+      ]
+    },
+    {
+      "type": "flex",
+      "flex-flow": "row wrap",
+      "items": [
+        "exposeOutdoorUnit"
       ]
     },
     {

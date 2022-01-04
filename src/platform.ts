@@ -9,7 +9,8 @@ import {
   Service,
 } from 'homebridge';
 import ComfortCloudApi from './comfort-cloud';
-import PanasonicAirConditionerAccessory from './platformAccessory';
+import IndoorUnitAccessory from './accessories/indoor-unit';
+import OutdoorUnitAccessory from './accessories/outdoor-unit';
 import PanasonicPlatformLogger from './logger';
 import { PanasonicAccessoryContext, PanasonicPlatformConfig } from './types';
 import { PLATFORM_NAME, PLUGIN_NAME } from './settings';
@@ -28,6 +29,8 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
   public readonly comfortCloud: ComfortCloudApi;
   public readonly log: PanasonicPlatformLogger;
 
+  private readonly platformConfig: PanasonicPlatformConfig;
+
   /**
    * This constructor is where you should parse the user config
    * and discover/register accessories with Homebridge.
@@ -41,15 +44,14 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
     config: PlatformConfig,
     private readonly api: API,
   ) {
-    // Casting because we can't change type in the constructor
-    const platformConfig = config as PanasonicPlatformConfig;
+    this.platformConfig = config as PanasonicPlatformConfig;
 
     // Initialise logging utility
-    this.log = new PanasonicPlatformLogger(homebridgeLogger, platformConfig.debugMode);
+    this.log = new PanasonicPlatformLogger(homebridgeLogger, this.platformConfig.debugMode);
 
     // Create Comfort Cloud communication module
     this.comfortCloud = new ComfortCloudApi(
-      platformConfig,
+      this.platformConfig,
       this.log,
     );
 
@@ -62,19 +64,19 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
     this.api.on(APIEvent.DID_FINISH_LAUNCHING, () => {
       this.log.debug('Finished launching and restored cached accessories.');
 
-      if (!platformConfig.email) {
+      if (!this.platformConfig.email) {
         this.log.error('Email is not configured - aborting plugin start. ' +
           'Please set the field `email` in your config and restart Homebridge.');
         return;
       }
 
-      if (!platformConfig.password) {
+      if (!this.platformConfig.password) {
         this.log.error('Password is not configured - aborting plugin start. ' +
           'Please set the field `password` in your config and restart Homebridge.');
         return;
       }
 
-      if (!platformConfig.appVersion) {
+      if (!this.platformConfig.appVersion) {
         this.log.error('App version is not configured - aborting plugin start. ' +
           'Please set the field `appVersion` in your config and restart Homebridge.');
         return;
@@ -91,7 +93,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
         });
     });
 
-    this.log.debug(`Finished initialising platform: ${platformConfig.name}`);
+    this.log.debug(`Finished initialising platform: ${this.platformConfig.name}`);
   }
 
   /**
@@ -122,8 +124,40 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
 
     try {
       const comfortCloudDevices = await this.comfortCloud.getDevices();
+      let outdoorUnit: OutdoorUnitAccessory | undefined;
 
-      // Loop over the discovered devices and register each
+      // Create an accessory for the outdoor unit if enabled.
+      // The outdoor unit reports the outdoor temperature via its own sensor.
+      if (this.platformConfig.exposeOutdoorUnit && comfortCloudDevices.length > 0) {
+        // We'll use a dummy identifier because the Comfort Cloud API
+        // doesn't expose the outdoor unit as separate device,
+        const outdoorUnitUUID = this.api.hap.uuid.generate('Panasonic-AC-Outdoor-Unit');
+        const outdoorUnitName = 'Panasonic AC Outdoor Unit';
+
+        const existingAccessory = this.accessories.find(
+          accessory => accessory.UUID === outdoorUnitUUID);
+
+        if (existingAccessory !== undefined) {
+          // The accessory already exists
+          this.log.info(`Restoring accessory '${existingAccessory.displayName}' ` +
+            `(${existingAccessory.UUID}) from cache.`);
+
+          // Create the accessory handler for the restored accessory
+          outdoorUnit = new OutdoorUnitAccessory(this, existingAccessory);
+        } else {
+          this.log.info(`Adding accessory '${outdoorUnitName}' (${outdoorUnitUUID}).`);
+          // The accessory does not yet exist, so we need to create it
+          const accessory = new this.api.platformAccessory(outdoorUnitName, outdoorUnitUUID);
+
+          // Create the accessory handler for the newly create accessory
+          outdoorUnit = new OutdoorUnitAccessory(this, accessory);
+
+          // Link the accessory to your platform
+          this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
+        }
+      }
+
+      // Loop over the discovered (indoor) devices and register each
       // one if it has not been registered before.
       for (const device of comfortCloudDevices) {
 
@@ -147,7 +181,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
           this.api.updatePlatformAccessories([existingAccessory]);
 
           // Create the accessory handler for the restored accessory
-          new PanasonicAirConditionerAccessory(this, existingAccessory);
+          new IndoorUnitAccessory(this, existingAccessory, outdoorUnit);
         } else {
           this.log.info(`Adding accessory '${device.deviceName}' (${device.deviceGuid}).`);
           // The accessory does not yet exist, so we need to create it
@@ -160,7 +194,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
 
           // Create the accessory handler for the newly create accessory
           // this is imported from `platformAccessory.ts`
-          new PanasonicAirConditionerAccessory(this, accessory);
+          new IndoorUnitAccessory(this, accessory, outdoorUnit);
 
           // Link the accessory to your platform
           this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);

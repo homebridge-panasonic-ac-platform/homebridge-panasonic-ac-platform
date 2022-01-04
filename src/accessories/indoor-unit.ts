@@ -1,20 +1,21 @@
 import { Service, PlatformAccessory, CharacteristicValue } from 'homebridge';
-import PanasonicPlatform from './platform';
-import { DEVICE_STATUS_REFRESH_INTERVAL } from './settings';
-import { ComfortCloudDeviceUpdatePayload, PanasonicAccessoryContext } from './types';
+import PanasonicPlatform from '../platform';
+import OutdoorUnitAccessory from './outdoor-unit';
+import { DEVICE_STATUS_REFRESH_INTERVAL } from '../settings';
+import { ComfortCloudDeviceUpdatePayload, PanasonicAccessoryContext } from '../types';
 
 /**
- * Platform Accessory
- * An instance of this class is created for each accessory your platform registers.
+ * An instance of this class is created for each accessory the platform registers.
  * Each accessory may expose multiple services of different service types.
  */
-export default class PanasonicAirConditionerAccessory {
+export default class IndoorUnitAccessory {
   private service: Service;
   _refreshInterval: NodeJS.Timer | undefined;
 
   constructor(
     private readonly platform: PanasonicPlatform,
     private readonly accessory: PlatformAccessory<PanasonicAccessoryContext>,
+    private readonly connectedOutdoorUnit?: OutdoorUnitAccessory,
   ) {
     // Set accessory information
     this.accessory.getService(this.platform.Service.AccessoryInformation)!
@@ -128,6 +129,16 @@ export default class PanasonicAirConditionerAccessory {
           this.platform.Characteristic.CurrentTemperature,
           deviceStatus.insideTemperature,
         );
+      }
+
+      // Outdoor temperature
+      if (deviceStatus.outTemperature >= 126) {
+        this.platform.log.error('Outdoor temperature is not available');
+      } else {
+        if (this.connectedOutdoorUnit) {
+          // Update the value of the connected outdoor unit
+          this.connectedOutdoorUnit.setOutdoorTemperature(deviceStatus.outTemperature);
+        }
       }
 
       // Current Heater-Cooler State and Target Heater-Cooler State

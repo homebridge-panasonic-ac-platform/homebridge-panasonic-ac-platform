@@ -5,6 +5,7 @@ export interface PanasonicPlatformConfig extends PlatformConfig {
   password: string;
   debugMode: boolean;
   appVersion: string;
+  exposeOutdoorUnit: boolean;
 }
 
 export interface PanasonicAccessoryContext {
