@@ -20,7 +20,6 @@
   "scripts": {
     "clean": "rimraf ./dist",
     "lint": "eslint src/**.ts --max-warnings=0",
-    "test": "npm run lint",
     "build": "npm run clean && tsc",
     "build-watch": "npm run clean && tsc -w",
     "prepublishOnly": "npm run lint && npm run build",
