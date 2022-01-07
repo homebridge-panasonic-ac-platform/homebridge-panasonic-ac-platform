@@ -16,3 +16,5 @@ export const LOGIN_TOKEN_REFRESH_INTERVAL = 604800 * 1000;
 
 // 60 sec = 1 min
 export const DEVICE_STATUS_REFRESH_INTERVAL = 60 * 1000;
+
+// Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc mattis, lectus non ultricies ullamcorper, velit purus blandit diam, consequat ornare leo augue quis diam.
