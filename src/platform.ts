@@ -77,12 +77,6 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
         return;
       }
 
-      if (!this.platformConfig.appVersion) {
-        this.log.error('App version is not configured - aborting plugin start. ' +
-          'Please set the field `appVersion` in your config and restart Homebridge.');
-        return;
-      }
-
       this.log.info('Attempting to log into Comfort Cloud.');
       this.comfortCloud.login()
         .then(() => {

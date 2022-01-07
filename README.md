@@ -31,27 +31,36 @@ Configure the plugin through the settings UI or directly in the JSON editor:
         "password": "********",
         "exposeOutdoorUnit": true,
         "debugMode": false,
-        "appVersion": "1.14.0"
+        "appVersionOverride": "1.14.0"
     }
   ]
 }
 ```
 
-Description:
+Required:
 
-* `platform` (string): Tells Homebridge which platform this config belongs to. Leave as is.
+* `platform` (string):
+Tells Homebridge which platform this config belongs to. Leave as is.
 
-* `name` (string): Will be displayed in the Homebridge log.
+* `name` (string):
+Will be displayed in the Homebridge log.
 
-* `email` (string): The username of your Comfort Cloud account.
+* `email` (string):
+The username of your Comfort Cloud account.
 
-* `password` (string): The password of your account.
+* `password` (string):
+The password of your account.
 
-* `exposeOutdoorUnit (boolean)`: If `true`, the plugin will create a separate accessory for your outdoor unit which will display the (outdoor) temperature it measures. This can be used for monitoring and automation purposes.
+Optional:
 
-* `debugMode` (boolean): If `true`, the plugin will print debugging information to the Homebridge log.
+* `exposeOutdoorUnit` (boolean):
+If `true`, the plugin will create a separate accessory for your outdoor unit which will display the (outdoor) temperature it measures. This can be used for monitoring and automation purposes.
 
-* `appVersion` (string): This should match the latest app version on the App Store.
+* `debugMode` (boolean):
+If `true`, the plugin will print debugging information to the Homebridge log.
+
+* `appVersionOverride` (string): 
+The plugin will automatically use the last known working value when this setting is empty or undefined (default). This setting allows you to override the default value if needed. It should reflect the latest version on the App Store, although older clients might remain supported for some time.
 
 ## Troubleshooting
 
