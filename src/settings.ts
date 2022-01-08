@@ -5,6 +5,7 @@ export const PLUGIN_NAME = 'homebridge-panasonic-ac-platform';
 export const PLATFORM_NAME = 'Panasonic AC Platform';
 
 export const COMFORT_CLOUD_USER_AGENT = 'G-RAC';
+export const APP_VERSION = '1.14.0';
 
 // 360 sec = 6 min
 export const LOGIN_RETRY_DELAY = 360 * 1000;

@@ -1,6 +1,7 @@
 import PanasonicPlatformLogger from './logger';
 import axios, { AxiosError } from 'axios';
 import {
+  APP_VERSION,
   COMFORT_CLOUD_USER_AGENT,
   LOGIN_RETRY_DELAY,
   LOGIN_TOKEN_REFRESH_INTERVAL,
@@ -56,7 +57,7 @@ export default class ComfortCloudApi {
         'Content-Type': 'application/json',
         'User-Agent': COMFORT_CLOUD_USER_AGENT,
         'X-APP-TYPE': '0',
-        'X-APP-VERSION': this.config.appVersion,
+        'X-APP-VERSION': this.config.appVersionOverride || APP_VERSION,
       },
       data: {
         'loginId': this.config.email,
@@ -114,7 +115,7 @@ export default class ComfortCloudApi {
         'Content-Type': 'application/json',
         'User-Agent': COMFORT_CLOUD_USER_AGENT,
         'X-APP-TYPE': '0',
-        'X-APP-VERSION': this.config.appVersion,
+        'X-APP-VERSION': this.config.appVersionOverride || APP_VERSION,
         'X-User-Authorization': this.token,
       },
     })
@@ -162,7 +163,7 @@ export default class ComfortCloudApi {
         'Content-Type': 'application/json',
         'User-Agent': COMFORT_CLOUD_USER_AGENT,
         'X-APP-TYPE': '0',
-        'X-APP-VERSION': this.config.appVersion,
+        'X-APP-VERSION': this.config.appVersionOverride || APP_VERSION,
         'X-User-Authorization': this.token,
       },
     })
@@ -202,7 +203,7 @@ export default class ComfortCloudApi {
         'Content-Type': 'application/json',
         'User-Agent': COMFORT_CLOUD_USER_AGENT,
         'X-APP-TYPE': '0',
-        'X-APP-VERSION': this.config.appVersion,
+        'X-APP-VERSION': this.config.appVersionOverride || APP_VERSION,
         'X-User-Authorization': this.token,
       },
       data: {
