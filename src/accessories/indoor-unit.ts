@@ -21,9 +21,9 @@ export default class IndoorUnitAccessory {
     this.accessory.getService(this.platform.Service.AccessoryInformation)!
       .setCharacteristic(this.platform.Characteristic.Manufacturer, 'Panasonic')
       .setCharacteristic(this.platform.Characteristic.Model,
-        accessory.context.device.deviceModuleNumber)
+        accessory.context.device.deviceModuleNumber || 'Unknown')
       .setCharacteristic(this.platform.Characteristic.SerialNumber,
-        accessory.context.device.deviceGuid);
+        accessory.context.device.deviceGuid || 'Unknown');
 
     // Get the HeaterCooler service if it exists, otherwise create a new one
     this.service = this.accessory.getService(this.platform.Service.HeaterCooler)
@@ -37,7 +37,7 @@ export default class IndoorUnitAccessory {
     // This is what is displayed as the default name on the Home app
     this.service.setCharacteristic(
       this.platform.Characteristic.Name,
-      accessory.context.device.deviceName,
+      accessory.context.device.deviceName || 'Unnamed',
     );
 
     // Active (required)

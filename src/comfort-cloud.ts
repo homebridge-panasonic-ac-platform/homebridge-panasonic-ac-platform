@@ -155,6 +155,10 @@ export default class ComfortCloudApi {
         'Check your credentials and restart Homebridge.');
     }
 
+    if (!deviceGuid) {
+      return Promise.reject('Cannot get device status for undefined deviceGuid.');
+    }
+
     return axios.request<ComfortCloudDeviceStatusResponse>({
       method: 'get',
       url: `https://accsmart.panasonic.com/deviceStatus/now/${deviceGuid}`,
@@ -193,6 +197,10 @@ export default class ComfortCloudApi {
     if (!this.token) {
       return Promise.reject('No auth token available (login probably failed). ' +
         'Check your credentials and restart Homebridge.');
+    }
+
+    if (!deviceGuid) {
+      return Promise.reject('Cannot set device status for undefined deviceGuid.');
     }
 
     return axios.request({
