@@ -132,10 +132,11 @@ export default class IndoorUnitAccessory {
       }
 
       // Outdoor temperature
-      if (deviceStatus.outTemperature >= 126) {
-        this.platform.log.error('Outdoor temperature is not available');
-      } else {
-        if (this.connectedOutdoorUnit) {
+      // Only check and set if the user wants to display the outdoor unit as separate device.
+      if (this.connectedOutdoorUnit) {
+        if (deviceStatus.outTemperature >= 126) {
+          this.platform.log.error('Outdoor temperature is not available');
+        } else {
           // Update the value of the connected outdoor unit
           this.connectedOutdoorUnit.setOutdoorTemperature(deviceStatus.outTemperature);
         }
