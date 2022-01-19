@@ -257,7 +257,14 @@ export default class IndoorUnitAccessory {
       this.service.getCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature)
         .updateValue(setTemperature);
     } catch (error) {
-      this.platform.log.error(error);
+      this.platform.log.error('An error occurred while refreshing the device status. ' +
+        'Turn on debug mode for more information.');
+
+      // Only log if a Promise rejection reason was provided.
+      // Some errors are already logged at source.
+      if (error) {
+        this.platform.log.debug(error);
+      }
 
       /**
        * We should be able to pass an error object to the function to mark a service/accessory
@@ -383,7 +390,14 @@ export default class IndoorUnitAccessory {
     try {
       this.platform.comfortCloud.setDeviceStatus(guid, payload);
     } catch (error) {
-      this.platform.log.error(error);
+      this.platform.log.error('An error occurred while sending a device update. ' +
+        'Turn on debug mode for more information.');
+
+      // Only log if a Promise rejection reason was provided.
+      // Some errors are already logged at source.
+      if (error) {
+        this.platform.log.debug(error);
+      }
     }
   }
 }
