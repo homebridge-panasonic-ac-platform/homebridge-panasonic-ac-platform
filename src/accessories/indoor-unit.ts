@@ -17,15 +17,24 @@ export default class IndoorUnitAccessory {
     private readonly accessory: PlatformAccessory<PanasonicAccessoryContext>,
     private readonly connectedOutdoorUnit?: OutdoorUnitAccessory,
   ) {
-    // Set accessory information
-    this.accessory.getService(this.platform.Service.AccessoryInformation)!
-      .setCharacteristic(this.platform.Characteristic.Manufacturer, 'Panasonic')
-      .setCharacteristic(this.platform.Characteristic.Model,
-        accessory.context.device.deviceModuleNumber || 'Unknown')
-      .setCharacteristic(this.platform.Characteristic.SerialNumber,
-        accessory.context.device.deviceGuid || 'Unknown');
+    // Accessory Information
+    // https://developers.homebridge.io/#/service/AccessoryInformation
+    this.accessory.getService(this.platform.Service.AccessoryInformation)
+      ?.setCharacteristic(
+        this.platform.Characteristic.Manufacturer,
+        'Panasonic',
+      )
+      .setCharacteristic(
+        this.platform.Characteristic.Model,
+        accessory.context.device?.deviceModuleNumber || 'Unknown',
+      )
+      .setCharacteristic(
+        this.platform.Characteristic.SerialNumber,
+        accessory.context.device?.deviceGuid || 'Unknown',
+      );
 
-    // Get the HeaterCooler service if it exists, otherwise create a new one
+    // Heater Cooler
+    // https://developers.homebridge.io/#/service/HeaterCooler
     this.service = this.accessory.getService(this.platform.Service.HeaterCooler)
       || this.accessory.addService(this.platform.Service.HeaterCooler);
 
@@ -37,7 +46,7 @@ export default class IndoorUnitAccessory {
     // This is what is displayed as the default name on the Home app
     this.service.setCharacteristic(
       this.platform.Characteristic.Name,
-      accessory.context.device.deviceName || 'Unnamed',
+      accessory.context.device?.deviceName || 'Unnamed',
     );
 
     // Active (required)
