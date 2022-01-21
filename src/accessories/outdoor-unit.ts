@@ -14,7 +14,7 @@ export default class OutdoorUnitAccessory {
       ?.setCharacteristic(this.platform.Characteristic.Manufacturer, 'Panasonic')
       .setCharacteristic(this.platform.Characteristic.Model, 'Generic Outdoor Unit')
       .setCharacteristic(this.platform.Characteristic.SerialNumber,
-        'HB-PACP-DummyOutdoorSerialNumber');
+        'HB-PACP-OutdoorUnitDummySerialNumber');
 
     // Temperature Sensor
     // https://developers.homebridge.io/#/service/TemperatureSensor
