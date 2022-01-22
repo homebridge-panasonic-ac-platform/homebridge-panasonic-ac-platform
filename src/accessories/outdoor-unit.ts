@@ -8,10 +8,24 @@ export default class OutdoorUnitAccessory {
     private readonly platform: PanasonicPlatform,
     private readonly accessory: PlatformAccessory,
   ) {
-    this.accessory.getService(this.platform.Service.AccessoryInformation)!
-      .setCharacteristic(this.platform.Characteristic.Manufacturer, 'Panasonic')
-      .setCharacteristic(this.platform.Characteristic.Model, 'Generic Outdoor Unit');
+    // Accessory Information
+    // https://developers.homebridge.io/#/service/AccessoryInformation
+    this.accessory.getService(this.platform.Service.AccessoryInformation)
+      ?.setCharacteristic(
+        this.platform.Characteristic.Manufacturer,
+        'Panasonic',
+      )
+      .setCharacteristic(
+        this.platform.Characteristic.Model,
+        'Generic Outdoor Unit',
+      )
+      .setCharacteristic(
+        this.platform.Characteristic.SerialNumber,
+        'HB-PACP-OutdoorUnitDummySerialNumber',
+      );
 
+    // Temperature Sensor
+    // https://developers.homebridge.io/#/service/TemperatureSensor
     this.service = this.accessory.getService(this.platform.Service.TemperatureSensor)
       || this.accessory.addService(this.platform.Service.TemperatureSensor);
 
