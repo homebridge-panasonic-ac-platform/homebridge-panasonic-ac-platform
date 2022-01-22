@@ -21,9 +21,9 @@ export default class IndoorUnitAccessory {
     this.accessory.getService(this.platform.Service.AccessoryInformation)!
       .setCharacteristic(this.platform.Characteristic.Manufacturer, 'Panasonic')
       .setCharacteristic(this.platform.Characteristic.Model,
-        accessory.context.device.deviceModuleNumber)
+        accessory.context.device.deviceModuleNumber || 'Unknown')
       .setCharacteristic(this.platform.Characteristic.SerialNumber,
-        accessory.context.device.deviceGuid);
+        accessory.context.device.deviceGuid || 'Unknown');
 
     // Get the HeaterCooler service if it exists, otherwise create a new one
     this.service = this.accessory.getService(this.platform.Service.HeaterCooler)
@@ -37,7 +37,7 @@ export default class IndoorUnitAccessory {
     // This is what is displayed as the default name on the Home app
     this.service.setCharacteristic(
       this.platform.Characteristic.Name,
-      accessory.context.device.deviceName,
+      accessory.context.device.deviceName || 'Unnamed',
     );
 
     // Active (required)
@@ -132,10 +132,11 @@ export default class IndoorUnitAccessory {
       }
 
       // Outdoor temperature
-      if (deviceStatus.outTemperature >= 126) {
-        this.platform.log.error('Outdoor temperature is not available');
-      } else {
-        if (this.connectedOutdoorUnit) {
+      // Only check and set if the user wants to display the outdoor unit as separate device.
+      if (this.connectedOutdoorUnit) {
+        if (deviceStatus.outTemperature >= 126) {
+          this.platform.log.error('Outdoor temperature is not available');
+        } else {
           // Update the value of the connected outdoor unit
           this.connectedOutdoorUnit.setOutdoorTemperature(deviceStatus.outTemperature);
         }
@@ -256,7 +257,14 @@ export default class IndoorUnitAccessory {
       this.service.getCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature)
         .updateValue(setTemperature);
     } catch (error) {
-      this.platform.log.error(error);
+      this.platform.log.error('An error occurred while refreshing the device status. ' +
+        'Turn on debug mode for more information.');
+
+      // Only log if a Promise rejection reason was provided.
+      // Some errors are already logged at source.
+      if (error) {
+        this.platform.log.debug(error);
+      }
 
       /**
        * We should be able to pass an error object to the function to mark a service/accessory
@@ -382,7 +390,14 @@ export default class IndoorUnitAccessory {
     try {
       this.platform.comfortCloud.setDeviceStatus(guid, payload);
     } catch (error) {
-      this.platform.log.error(error);
+      this.platform.log.error('An error occurred while sending a device update. ' +
+        'Turn on debug mode for more information.');
+
+      // Only log if a Promise rejection reason was provided.
+      // Some errors are already logged at source.
+      if (error) {
+        this.platform.log.debug(error);
+      }
     }
   }
 }

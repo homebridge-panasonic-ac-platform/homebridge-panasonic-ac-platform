@@ -135,9 +135,9 @@ export default class ComfortCloudApi {
         return fetchedDevices;
       })
       .catch((error: AxiosError) => {
-        this.log.error('Comfort Cloud - getDevices(): Error');
+        this.log.debug('Comfort Cloud - getDevices(): Error');
         this.handleNetworkRequestError(error);
-        return Promise.reject(error.message);
+        return Promise.reject();
       });
   }
 
@@ -153,6 +153,10 @@ export default class ComfortCloudApi {
     if (!this.token) {
       return Promise.reject('No auth token available (login probably failed). ' +
         'Check your credentials and restart Homebridge.');
+    }
+
+    if (!deviceGuid) {
+      return Promise.reject('Cannot get device status for undefined deviceGuid.');
     }
 
     return axios.request<ComfortCloudDeviceStatusResponse>({
@@ -175,7 +179,7 @@ export default class ComfortCloudApi {
       .catch((error: AxiosError) => {
         this.log.debug(`Comfort Cloud - getDeviceStatus() for GUID '${deviceGuid}': Error`);
         this.handleNetworkRequestError(error);
-        return Promise.reject(error.message);
+        return Promise.reject();
       });
   }
 
@@ -193,6 +197,10 @@ export default class ComfortCloudApi {
     if (!this.token) {
       return Promise.reject('No auth token available (login probably failed). ' +
         'Check your credentials and restart Homebridge.');
+    }
+
+    if (!deviceGuid) {
+      return Promise.reject('Cannot set device status for undefined deviceGuid.');
     }
 
     return axios.request({
@@ -216,9 +224,9 @@ export default class ComfortCloudApi {
         this.log.debug(response.data);
       })
       .catch((error: AxiosError) => {
-        this.log.error('Comfort Cloud - setDeviceStatus(): Error');
+        this.log.debug('Comfort Cloud - setDeviceStatus(): Error');
         this.handleNetworkRequestError(error);
-        return Promise.reject('Device update unsuccessful');
+        return Promise.reject();
       });
   }
 
@@ -233,7 +241,7 @@ export default class ComfortCloudApi {
     if (error.response) {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx.
-      this.log.error(error.response);
+      this.log.debug(error.response);
       if (error.response.status === 401) {
         // Unauthorised, try to log in again
         this._loginRetryTimeouts.push(setTimeout(this.login.bind(this), LOGIN_RETRY_DELAY));
@@ -242,10 +250,10 @@ export default class ComfortCloudApi {
       // The request was made but no response was received.
       // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
       // http.ClientRequest in node.js
-      this.log.error(error.request);
+      this.log.debug(error.request);
     } else {
       // Something happened in setting up the request that triggered an error.
-      this.log.error(error.message);
+      this.log.debug(error.message);
     }
   }
 }
