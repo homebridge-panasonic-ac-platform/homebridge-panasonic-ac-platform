@@ -52,7 +52,7 @@
       },
       "minHeatingTemperature": {
         "title": "Minimum heating temperature (override)",
-        "description": "The plugin will set the heating temperature range to 16-30°C by default. Some Panasonic ACs have an additional heating mode for the range of 8-15°C, in addition to the default heating mode from 16-30°C. If you own such a model, you can use this setting to adjust the minimum value. Leave it empty or undefined to use the default value.",
+        "description": "The plugin will set the heating temperature range to 16-30°C by default. Some Panasonic ACs have an additional heating mode for the range of 8-15°C, in addition to the default heating mode. If you own such a model, you can use this setting to adjust the minimum value. Leave it empty or undefined to use the default value.",
         "type": "integer",
         "placeholder": "16"
       }
