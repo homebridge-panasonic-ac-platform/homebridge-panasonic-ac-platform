@@ -89,7 +89,7 @@ export default class IndoorUnitAccessory {
     this.service
       .getCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature)
       .setProps({
-        minValue: 16,
+        minValue: 10,
         maxValue: 30,
         minStep: 0.5,
       })
@@ -99,7 +99,7 @@ export default class IndoorUnitAccessory {
     this.service
       .getCharacteristic(this.platform.Characteristic.HeatingThresholdTemperature)
       .setProps({
-        minValue: 16,
+        minValue: 0,
         maxValue: 30,
         minStep: 0.5,
       })
