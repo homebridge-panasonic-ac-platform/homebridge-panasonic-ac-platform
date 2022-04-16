@@ -33,7 +33,9 @@ Configure the plugin through the settings UI or directly in the JSON editor:
         "password": "********",
         "exposeOutdoorUnit": true,
         "debugMode": false,
-        "appVersionOverride": "1.14.0"
+        "appVersionOverride": "1.14.0",
+        "suppressOutgoingUpdates": false,
+        "minHeatingTemperature": 16
     }
   ]
 }
@@ -61,8 +63,14 @@ If `true`, the plugin will create a separate accessory for your outdoor unit whi
 * `debugMode` (boolean):
 If `true`, the plugin will print debugging information to the Homebridge log.
 
-* `appVersionOverride` (string): 
+* `appVersionOverride` (string):
 The plugin will automatically use the last known working value when this setting is empty or undefined (default). This setting allows you to override the default value if needed. It should reflect the latest version on the App Store, although older clients might remain supported for some time.
+
+* `suppressOutgoingUpdates` (boolean):
+If `true`, changes in the Home app will not be sent to Comfort Cloud. Useful for testing your installation without constantly switching the state of your AC to minimise wear and tear.
+
+* `minHeatingTemperature` (integer):
+The default heating temperature range is 16-30°C. Some Panasonic ACs have an additional heating mode for the range of 8-15°C. If you own such a model, you can use this setting to adjust the minimum value. Leave it empty or undefined to use the default value.
 
 ## Troubleshooting
 

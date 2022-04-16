@@ -203,6 +203,11 @@ export default class ComfortCloudApi {
       return Promise.reject('Cannot set device status for undefined deviceGuid.');
     }
 
+    if (this.config.suppressOutgoingUpdates) {
+      this.log.debug('Suppressing outgoing device update.');
+      return;
+    }
+
     return axios.request({
       method: 'post',
       url: 'https://accsmart.panasonic.com/deviceStatus/control',

@@ -39,11 +39,22 @@
         "type": "boolean",
         "default": false
       },
+      "suppressOutgoingUpdates": {
+        "title": "Suppress outgoing device updates",
+        "description": "When enabled, changes in the Home app will not be sent to Comfort Cloud. Useful for testing your installation without constantly switching the state of your AC to minimise wear and tear.",
+        "type": "boolean"
+      },
       "appVersionOverride": {
         "title": "Emulated Comfort Cloud app version (override)",
         "description": "The plugin will automatically use the last known working value when this setting is empty or undefined (default). This setting allows you to override the default value if needed. It should reflect the latest version on the App Store, although older clients might remain supported for some time.",
         "type": "string",
         "placeholder": "1.14.0"
+      },
+      "minHeatingTemperature": {
+        "title": "Minimum heating temperature (override)",
+        "description": "The default heating temperature range is 16-30°C. Some Panasonic ACs have an additional heating mode for the range of 8-15°C. If you own such a model, you can use this setting to adjust the minimum value. Leave it empty or undefined to use the default value.",
+        "type": "integer",
+        "placeholder": "16"
       }
     }
   },
@@ -82,7 +93,9 @@
       "expandable": true,
       "items": [
         "debugMode",
-        "appVersionOverride"
+        "suppressOutgoingUpdates",
+        "appVersionOverride",
+        "minHeatingTemperature"
       ]
     }
   ]

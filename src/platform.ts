@@ -30,7 +30,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
   public readonly comfortCloud: ComfortCloudApi;
   public readonly log: PanasonicPlatformLogger;
 
-  private readonly platformConfig: PanasonicPlatformConfig;
+  public readonly platformConfig: PanasonicPlatformConfig;
 
   /**
    * This constructor is where you should parse the user config
