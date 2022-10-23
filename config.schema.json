@@ -48,7 +48,7 @@
         "title": "Emulated Comfort Cloud app version (override)",
         "description": "The plugin will automatically use the last known working value when this setting is empty or undefined (default). This setting allows you to override the default value if needed. It should reflect the latest version on the App Store, although older clients might remain supported for some time.",
         "type": "string",
-        "placeholder": "1.15.1"
+        "placeholder": "1.16.0"
       },
       "minHeatingTemperature": {
         "title": "Minimum heating temperature (override)",
