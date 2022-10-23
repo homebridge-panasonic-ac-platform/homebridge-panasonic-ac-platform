@@ -8,12 +8,15 @@ import {
   PlatformConfig,
   Service,
 } from 'homebridge';
+import axios from 'axios';
+import cheerio from 'cheerio';
 import ComfortCloudApi from './comfort-cloud';
 import IndoorUnitAccessory from './accessories/indoor-unit';
 import OutdoorUnitAccessory from './accessories/outdoor-unit';
 import PanasonicPlatformLogger from './logger';
 import { PanasonicAccessoryContext, PanasonicPlatformConfig } from './types';
-import { PLATFORM_NAME, PLUGIN_NAME } from './settings';
+import { LOGIN_RETRY_DELAY, PLATFORM_NAME, PLUGIN_NAME } from './settings';
+
 
 /**
  * Panasonic AC Platform Plugin for Homebridge
@@ -26,11 +29,12 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
   // Used to track restored cached accessories
   private readonly accessories: PlatformAccessory<PanasonicAccessoryContext>[] = [];
   private outdoorUnit: OutdoorUnitAccessory | undefined;
+  private _loginRetryTimeout: NodeJS.Timer | undefined;
 
   public readonly comfortCloud: ComfortCloudApi;
   public readonly log: PanasonicPlatformLogger;
 
-  public readonly platformConfig: PanasonicPlatformConfig;
+  public platformConfig: PanasonicPlatformConfig;
 
   /**
    * This constructor is where you should parse the user config
@@ -64,30 +68,65 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
      */
     this.api.on(APIEvent.DID_FINISH_LAUNCHING, () => {
       this.log.debug('Finished launching and restored cached accessories.');
-
-      if (!this.platformConfig.email) {
-        this.log.error('Email is not configured - aborting plugin start. ' +
-          'Please set the field `email` in your config and restart Homebridge.');
-        return;
-      }
-
-      if (!this.platformConfig.password) {
-        this.log.error('Password is not configured - aborting plugin start. ' +
-          'Please set the field `password` in your config and restart Homebridge.');
-        return;
-      }
-
-      this.log.info('Attempting to log into Comfort Cloud.');
-      this.comfortCloud.login()
-        .then(() => {
-          this.log.info('Successfully logged in.');
-          this.configureOutdoorUnit();
-          this.discoverDevices();
-        })
-        .catch(() => {
-          this.log.error('Login failed. Skipping device discovery.');
-        });
+      this.configurePlugin();
     });
+  }
+
+  async configurePlugin() {
+    await this.getAppVersion();
+    await this.loginAndDiscoverDevices();
+  }
+
+  async getAppVersion() {
+    this.log.info('Attempting to fetch latest Comfort Cloud version from the App Store.');
+    try {
+      const response = await axios.request({
+        method: 'get',
+        url: 'https://apps.apple.com/app/panasonic-comfort-cloud/id1348640525',
+      });
+      const $ = cheerio.load(response.data);
+      const paragraphs = $('p.whats-new__latest__version');
+      paragraphs.each((idx, p) => {
+        // One or more digit(s), followed by ., followed by one or more digit(s),
+        // followed by ., followed by one or more digit(s)
+        const matches = $(p).text().match(/\d+(.)\d+(.)\d+/);
+        if (Array.isArray(matches)) {
+          this.log.info(`The latest app version is ${matches[0]}.`);
+          this.platformConfig.latestAppVersion = matches[0];
+        } else {
+          this.log.error('Could not find latest app version. ' +
+            'Falling back to override or hard-coded value.');
+        }
+      });
+    } catch (error) {
+      this.log.debug('Could not fetch latest app version:');
+      this.log.debug(JSON.stringify(error, null, 2));
+    }
+  }
+
+  async loginAndDiscoverDevices() {
+    if (!this.platformConfig.email) {
+      this.log.error('Email is not configured - aborting plugin start. ' +
+        'Please set the field `email` in your config and restart Homebridge.');
+      return;
+    }
+
+    if (!this.platformConfig.password) {
+      this.log.error('Password is not configured - aborting plugin start. ' +
+        'Please set the field `password` in your config and restart Homebridge.');
+      return;
+    }
+
+    this.log.info('Attempting to log into Comfort Cloud.');
+    this.comfortCloud.login()
+      .then(() => {
+        this.log.info('Successfully logged in.');
+        this.configureOutdoorUnit();
+        this.discoverDevices();
+      })
+      .catch(() => {
+        this.log.error('Login failed. Skipping device discovery.');
+      });
 
     this.log.debug(`Finished initialising platform: ${this.platformConfig.name}`);
   }

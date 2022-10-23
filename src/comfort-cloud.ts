@@ -57,7 +57,8 @@ export default class ComfortCloudApi {
         'Content-Type': 'application/json',
         'User-Agent': COMFORT_CLOUD_USER_AGENT,
         'X-APP-TYPE': '0',
-        'X-APP-VERSION': this.config.appVersionOverride || APP_VERSION,
+        'X-APP-VERSION': this.config.appVersionOverride ||
+          this.config.latestAppVersion || APP_VERSION,
       },
       data: {
         'loginId': this.config.email,
@@ -115,7 +116,8 @@ export default class ComfortCloudApi {
         'Content-Type': 'application/json',
         'User-Agent': COMFORT_CLOUD_USER_AGENT,
         'X-APP-TYPE': '0',
-        'X-APP-VERSION': this.config.appVersionOverride || APP_VERSION,
+        'X-APP-VERSION': this.config.appVersionOverride ||
+          this.config.latestAppVersion || APP_VERSION,
         'X-User-Authorization': this.token,
       },
     })
@@ -167,7 +169,8 @@ export default class ComfortCloudApi {
         'Content-Type': 'application/json',
         'User-Agent': COMFORT_CLOUD_USER_AGENT,
         'X-APP-TYPE': '0',
-        'X-APP-VERSION': this.config.appVersionOverride || APP_VERSION,
+        'X-APP-VERSION': this.config.appVersionOverride ||
+          this.config.latestAppVersion || APP_VERSION,
         'X-User-Authorization': this.token,
       },
     })
@@ -216,7 +219,8 @@ export default class ComfortCloudApi {
         'Content-Type': 'application/json',
         'User-Agent': COMFORT_CLOUD_USER_AGENT,
         'X-APP-TYPE': '0',
-        'X-APP-VERSION': this.config.appVersionOverride || APP_VERSION,
+        'X-APP-VERSION': this.config.appVersionOverride ||
+          this.config.latestAppVersion || APP_VERSION,
         'X-User-Authorization': this.token,
       },
       data: {
