@@ -126,6 +126,19 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
       })
       .catch(() => {
         this.log.error('Login failed. Skipping device discovery.');
+        this.log.error(
+          'The Comfort Cloud server might be experiencing issues at the moment. ' +
+          `Homebridge will try to log in again in ${LOGIN_RETRY_DELAY / 1000} seconds. ` +
+          'If the issue persists, make sure you configured the correct email and password ' +
+          'and run the latest version of the plugin. ' +
+          'Restart Homebridge when you change your config. ' +
+          'If the error still persists, please report it at ' +
+          'https://github.com/embee8/homebridge-panasonic-ac-platform/issues.',
+        );
+
+        // Set an interval to retry this operation.
+        this._loginRetryTimeout = setInterval(this.loginAndDiscoverDevices.bind(this),
+          LOGIN_RETRY_DELAY);
       });
 
     this.log.debug(`Finished initialising platform: ${this.platformConfig.name}`);
