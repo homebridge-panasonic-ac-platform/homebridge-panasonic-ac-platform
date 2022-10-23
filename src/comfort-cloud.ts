@@ -57,7 +57,8 @@ export default class ComfortCloudApi {
         'Content-Type': 'application/json',
         'User-Agent': COMFORT_CLOUD_USER_AGENT,
         'X-APP-TYPE': '0',
-        'X-APP-VERSION': this.config.appVersionOverride || APP_VERSION,
+        'X-APP-VERSION': this.config.appVersionOverride ||
+          this.config.latestAppVersion || APP_VERSION,
       },
       data: {
         'loginId': this.config.email,
@@ -77,18 +78,7 @@ export default class ComfortCloudApi {
       .catch((error: AxiosError) => {
         this.log.debug('Comfort Cloud - login(): Error');
         this.log.debug(JSON.stringify(error, null, 2));
-        this.log.error(
-          'Login failed. The Comfort Cloud server might be experiencing issues at the moment. ' +
-          `Homebridge will try to log in again in ${LOGIN_RETRY_DELAY/1000} seconds. ` +
-          'If the issue persists, make sure you configured the correct email and password ' +
-          'and run the latest version of the plugin. ' +
-          'Restart Homebridge when you change your config, ' +
-          'as it will probably not have an effect on its own. ' +
-          'If the error still persists, please report to ' +
-          'https://github.com/embee8/homebridge-panasonic-ac-platform/issues.',
-        );
-        // Try to login again after some time. Might just be a transient server issue.
-        this._loginRetryTimeouts.push(setTimeout(this.login.bind(this), LOGIN_RETRY_DELAY));
+        throw error;
       });
   }
 
@@ -115,7 +105,8 @@ export default class ComfortCloudApi {
         'Content-Type': 'application/json',
         'User-Agent': COMFORT_CLOUD_USER_AGENT,
         'X-APP-TYPE': '0',
-        'X-APP-VERSION': this.config.appVersionOverride || APP_VERSION,
+        'X-APP-VERSION': this.config.appVersionOverride ||
+          this.config.latestAppVersion || APP_VERSION,
         'X-User-Authorization': this.token,
       },
     })
@@ -167,7 +158,8 @@ export default class ComfortCloudApi {
         'Content-Type': 'application/json',
         'User-Agent': COMFORT_CLOUD_USER_AGENT,
         'X-APP-TYPE': '0',
-        'X-APP-VERSION': this.config.appVersionOverride || APP_VERSION,
+        'X-APP-VERSION': this.config.appVersionOverride ||
+          this.config.latestAppVersion || APP_VERSION,
         'X-User-Authorization': this.token,
       },
     })
@@ -216,7 +208,8 @@ export default class ComfortCloudApi {
         'Content-Type': 'application/json',
         'User-Agent': COMFORT_CLOUD_USER_AGENT,
         'X-APP-TYPE': '0',
-        'X-APP-VERSION': this.config.appVersionOverride || APP_VERSION,
+        'X-APP-VERSION': this.config.appVersionOverride ||
+          this.config.latestAppVersion || APP_VERSION,
         'X-User-Authorization': this.token,
       },
       data: {

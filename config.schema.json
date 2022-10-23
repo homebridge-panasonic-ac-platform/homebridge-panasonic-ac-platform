@@ -46,7 +46,7 @@
       },
       "appVersionOverride": {
         "title": "Emulated Comfort Cloud app version (override)",
-        "description": "The plugin will automatically use the last known working value when this setting is empty or undefined (default). This setting allows you to override the default value if needed. It should reflect the latest version on the App Store, although older clients might remain supported for some time.",
+        "description": "The plugin will automatically fetch the latest version number from the App Store. If that fails, it will use the last known working value which is hard-coded. This setting allows you to override both of these if needed. It should normally reflect the latest version on the App Store.",
         "type": "string",
         "placeholder": "1.16.0"
       },

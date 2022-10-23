@@ -5,6 +5,7 @@ export interface PanasonicPlatformConfig extends PlatformConfig {
   password: string;
   debugMode: boolean;
   suppressOutgoingUpdates?: boolean;
+  latestAppVersion: string;
   appVersionOverride: string;
   exposeOutdoorUnit: boolean;
   minHeatingTemperature?: number;
