@@ -20,6 +20,10 @@ Recent improvements to Panasonic's token management should now allow you to simp
 
 In case you are still experiencing random logouts, refer to [this guide](https://github.com/embee8/homebridge-panasonic-ac-platform/blob/master/docs/dual-account-setup.md) for instructions on how to create a dual-account setup. It explains how devices can be shared with a dedicated account that can be used for Homebridge.
 
+In case of a "Login Fail" Error, you must first login in Your Comfort Cloud APP to accept the New "Privacy Notice" and after acceptation the plugin works again.
+
+It is a good practice to have this Plugin as a "Child Bridge" so this plugin can not block your other Plugins/Devices.
+
 ## Homebridge setup
 Configure the plugin through the settings UI or directly in the JSON editor:
 
