@@ -72,7 +72,7 @@ export default class ComfortCloudApi {
         this.token = response.data.uToken;
 
         // Set an interval to refresh the login token periodically.
-        this._loginRefreshInterval = setInterval(this.login.bind(this),
+        this._loginRefreshInterval = setTimeout(this.login.bind(this),
           LOGIN_TOKEN_REFRESH_INTERVAL);
       })
       .catch((error: AxiosError) => {
