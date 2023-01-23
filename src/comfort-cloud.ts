@@ -3,7 +3,6 @@ import axios, { AxiosError } from 'axios';
 import {
   APP_VERSION,
   COMFORT_CLOUD_USER_AGENT,
-  LOGIN_RETRY_DELAY,
   LOGIN_TOKEN_REFRESH_INTERVAL,
 } from './settings';
 import {
@@ -22,7 +21,6 @@ import {
 export default class ComfortCloudApi {
   private token: string;
   private _loginRefreshInterval: NodeJS.Timer | undefined;
-  private _loginRetryTimeouts: NodeJS.Timer[] = [];
 
   constructor(
     private readonly config: PanasonicPlatformConfig,
@@ -38,15 +36,6 @@ export default class ComfortCloudApi {
   async login() {
     this.log.debug('Comfort Cloud: login()');
 
-    /**
-     * A repeat-login might have been requested by several accessories
-     * at a similar time. The first timeout to be executed can clear
-     * all remaining ones, since it doesn't make sense to log in multiple
-     * times within a short amount of time.
-     */
-    for (const timeoutId of this._loginRetryTimeouts) {
-      clearTimeout(timeoutId);
-    }
     clearInterval(<NodeJS.Timer>this._loginRefreshInterval);
 
     return axios.request<ComfortCloudAuthResponse>({
@@ -239,19 +228,15 @@ export default class ComfortCloudApi {
     if (error.response) {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx.
-      this.log.debug(error.response);
-      if (error.response.status === 401) {
-        // Unauthorised, try to log in again
-        this._loginRetryTimeouts.push(setTimeout(this.login.bind(this), LOGIN_RETRY_DELAY));
-      }
+      this.log.error(error.response);
     } else if (error.request) {
       // The request was made but no response was received.
       // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
       // http.ClientRequest in node.js
-      this.log.debug(error.request);
+      this.log.error(error.request);
     } else {
       // Something happened in setting up the request that triggered an error.
-      this.log.debug(error.message);
+      this.log.error(error.message);
     }
   }
 }

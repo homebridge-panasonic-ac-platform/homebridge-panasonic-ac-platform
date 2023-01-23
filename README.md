@@ -33,7 +33,7 @@ Configure the plugin through the settings UI or directly in the JSON editor:
         "password": "********",
         "exposeOutdoorUnit": true,
         "debugMode": false,
-        "appVersionOverride": "1.16.0",
+        "appVersionOverride": "1.17.0",
         "suppressOutgoingUpdates": false,
         "minHeatingTemperature": 16
     }
@@ -74,7 +74,11 @@ The default heating temperature range is 16-30°C. Some Panasonic ACs have an ad
 
 ## Troubleshooting
 
-If you have any issues with this plugin, enable the debug mode in the settings (and restart the plugin). This will print additional information to the log. If this doesn't help you resolve the issue, feel free to create a [GitHub issue](https://github.com/embee8/homebridge-panasonic-ac-platform/issues) and attach the available debugging information.
+- If you have any issues with this plugin, enable the debug mode in the settings (and restart the plugin). This will print additional information to the log. If this doesn't help you resolve the issue, feel free to create a [GitHub issue](https://github.com/embee8/homebridge-panasonic-ac-platform/issues) and attach the available debugging information.
+
+- If you run into login errors despite using the correct login details, make sure you accepted the latest terms and conditions after logging into the Comfort Cloud app.
+
+- If the plugin affects the general responsiveness and reliability of your Homebridge setup, you can run it as an isolated [child bridge](https://github.com/homebridge/homebridge/wiki/Child-Bridges).
 
 ## Contributing
 
