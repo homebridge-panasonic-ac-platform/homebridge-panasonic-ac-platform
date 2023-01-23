@@ -15,7 +15,12 @@ import IndoorUnitAccessory from './accessories/indoor-unit';
 import OutdoorUnitAccessory from './accessories/outdoor-unit';
 import PanasonicPlatformLogger from './logger';
 import { PanasonicAccessoryContext, PanasonicPlatformConfig } from './types';
-import { LOGIN_RETRY_DELAY, PLATFORM_NAME, PLUGIN_NAME } from './settings';
+import {
+  LOGIN_RETRY_DELAY,
+  MAX_NO_OF_FAILED_LOGIN_ATTEMPTS,
+  PLATFORM_NAME,
+  PLUGIN_NAME,
+} from './settings';
 
 
 /**
@@ -29,7 +34,9 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
   // Used to track restored cached accessories
   private readonly accessories: PlatformAccessory<PanasonicAccessoryContext>[] = [];
   private outdoorUnit: OutdoorUnitAccessory | undefined;
+
   private _loginRetryTimeout: NodeJS.Timer | undefined;
+  private noOfFailedLoginAttempts = 0;
 
   public readonly comfortCloud: ComfortCloudApi;
   public readonly log: PanasonicPlatformLogger;
@@ -121,27 +128,35 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
     this.comfortCloud.login()
       .then(() => {
         this.log.info('Successfully logged in.');
+        this.noOfFailedLoginAttempts = 0;
         this.configureOutdoorUnit();
         this.discoverDevices();
       })
       .catch(() => {
         this.log.error('Login failed. Skipping device discovery.');
-        this.log.error(
-          'The Comfort Cloud server might be experiencing issues at the moment. ' +
-          `Homebridge will try to log in again in ${LOGIN_RETRY_DELAY / 1000} seconds. ` +
-          'If the issue persists, make sure you configured the correct email and password ' +
-          'and run the latest version of the plugin. ' +
-          'Restart Homebridge when you change your config. ' +
-          'If the error still persists, please report it at ' +
-          'https://github.com/embee8/homebridge-panasonic-ac-platform/issues.',
-        );
+        this.noOfFailedLoginAttempts++;
 
-        // Set an interval to retry this operation.
-        this._loginRetryTimeout = setInterval(this.loginAndDiscoverDevices.bind(this),
-          LOGIN_RETRY_DELAY);
+        if (this.noOfFailedLoginAttempts < MAX_NO_OF_FAILED_LOGIN_ATTEMPTS) {
+          this.log.error(
+            'The Comfort Cloud server might be experiencing issues at the moment. ' +
+            `The plugin will try to log in again in ${LOGIN_RETRY_DELAY / 1000} seconds. ` +
+            'If the issue persists, make sure you configured the correct email and password ' +
+            'and run the latest version of the plugin. ' +
+            'Restart Homebridge when you change your config.',
+          );
+
+          this._loginRetryTimeout = setTimeout(
+            this.loginAndDiscoverDevices.bind(this),
+            LOGIN_RETRY_DELAY,
+          );
+        } else {
+          this.log.error(
+            'Maximum number of failed login attempts reached ' +
+            `(${MAX_NO_OF_FAILED_LOGIN_ATTEMPTS}). ` +
+            'Check your login details and restart Homebridge to reset the plugin.',
+          );
+        }
       });
-
-    this.log.debug(`Finished initialising platform: ${this.platformConfig.name}`);
   }
 
   /**
