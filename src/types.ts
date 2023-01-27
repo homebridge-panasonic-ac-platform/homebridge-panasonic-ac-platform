@@ -101,6 +101,7 @@ export interface ComfortCloudDeviceStatus {
   outTemperature: number;
   operate: number;
   operationMode: number;
+  ecoMode: number;
   fanSpeed: number;
   airSwingLR: number;
   airSwingUD: number;
@@ -112,6 +113,7 @@ export interface ComfortCloudDeviceStatus {
 export interface ComfortCloudDeviceUpdatePayload {
   operate?: number;
   operationMode?: number;
+  ecoMode?: number;
   fanSpeed?: number;
   fanAutoMode?: number;
   airSwingLR?: number;
