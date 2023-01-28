@@ -380,10 +380,7 @@ export default class IndoorUnitAccessory {
   async setRotationSpeed(value: CharacteristicValue) {
     this.platform.log.debug(
       `Accessory: setRotationSpeed() for device '${this.accessory.displayName}'`);
-
-    let ecoMode: number | undefined;
-    let fanSpeed: number | undefined;
-
+    const parameters: ComfortCloudDeviceUpdatePayload = {};
     switch (value) {
       case 0:
         // HomeKit independently switches off the accessory
@@ -391,43 +388,35 @@ export default class IndoorUnitAccessory {
         // Nothing to handle here, but documenting for clarity.
         break;
       case 1:
-        ecoMode = ComfortCloudEcoMode.Quiet;
+        parameters.ecoMode = ComfortCloudEcoMode.Quiet;
         break;
       case 2:
-        ecoMode = ComfortCloudEcoMode.AutoOrManual;
-        fanSpeed = ComfortCloudFanSpeed.One;
+        parameters.ecoMode = ComfortCloudEcoMode.AutoOrManual;
+        parameters.fanSpeed = ComfortCloudFanSpeed.One;
         break;
       case 3:
-        ecoMode = ComfortCloudEcoMode.AutoOrManual;
-        fanSpeed = ComfortCloudFanSpeed.Two;
+        parameters.ecoMode = ComfortCloudEcoMode.AutoOrManual;
+        parameters.fanSpeed = ComfortCloudFanSpeed.Two;
         break;
       case 4:
-        ecoMode = ComfortCloudEcoMode.AutoOrManual;
-        fanSpeed = ComfortCloudFanSpeed.Three;
+        parameters.ecoMode = ComfortCloudEcoMode.AutoOrManual;
+        parameters.fanSpeed = ComfortCloudFanSpeed.Three;
         break;
       case 5:
-        ecoMode = ComfortCloudEcoMode.AutoOrManual;
-        fanSpeed = ComfortCloudFanSpeed.Four;
+        parameters.ecoMode = ComfortCloudEcoMode.AutoOrManual;
+        parameters.fanSpeed = ComfortCloudFanSpeed.Four;
         break;
       case 6:
-        ecoMode = ComfortCloudEcoMode.AutoOrManual;
-        fanSpeed = ComfortCloudFanSpeed.Five;
+        parameters.ecoMode = ComfortCloudEcoMode.AutoOrManual;
+        parameters.fanSpeed = ComfortCloudFanSpeed.Five;
         break;
       case 7:
-        ecoMode = ComfortCloudEcoMode.Powerful;
+        parameters.ecoMode = ComfortCloudEcoMode.Powerful;
         break;
       case 8:
-        ecoMode = ComfortCloudEcoMode.AutoOrManual;
-        fanSpeed = ComfortCloudFanSpeed.Auto;
+        parameters.ecoMode = ComfortCloudEcoMode.AutoOrManual;
+        parameters.fanSpeed = ComfortCloudFanSpeed.Auto;
         break;
-    }
-
-    const parameters: ComfortCloudDeviceUpdatePayload = {};
-    if (ecoMode !== undefined) {
-      parameters.ecoMode = ecoMode;
-    }
-    if (fanSpeed !== undefined) {
-      parameters.fanSpeed = fanSpeed;
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
