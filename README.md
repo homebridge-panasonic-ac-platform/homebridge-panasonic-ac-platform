@@ -72,9 +72,9 @@ If `true`, changes in the Home app will not be sent to Comfort Cloud. Useful for
 * `minHeatingTemperature` (integer):
 The default heating temperature range is 16-30°C. Some Panasonic ACs have an additional heating mode for the range of 8-15°C. If you own such a model, you can use this setting to adjust the minimum value. Leave it empty or undefined to use the default value.
 
-## Fan speed, Quiet mode, Powerful mode
+## Fan speed, Quiet Mode, Powerful Mode
 
-HomeKit offers no extra buttons for the Quiet and Powerful modes. Instead, all settings related to a unit's fan speed are controlled through the fan speed slider. The following mapping applies:
+The Home app offers no extra buttons for the Quiet and Powerful Modes. All settings related to a unit's fan speed are controlled through the fan speed slider. The following mapping applies:
 
 | Home app slider position  | Comfort Cloud setting |
 | ------------------------: | --------------------- |

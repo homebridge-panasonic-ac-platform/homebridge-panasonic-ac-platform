@@ -244,17 +244,20 @@ export default class IndoorUnitAccessory {
       }
 
       // Rotation Speed
-      let sliderValue = 0;
-
       /**
-       * 1) The fanSpeed value isn't always updated in Comfort Cloud,
-       * for example when switching from fan speed 4 (manual) to Quiet Mode,
-       * the fanSpeed in the payload will remain 4.
-       * Therefore, ecoMode takes precedence and we'll check it first.
+       * 1) The fanSpeed value in the Comfort Cloud payload doesn't always reflect
+       * the current operation mode. For example, when switching from
+       * fan speed 4 to Quiet Mode, the fanSpeed in the payload will remain 4.
+       * Based on tests, ecoMode seems to take precedence and we'll check it first.
        *
        * 2) HomeKit automatically moves the slider into the 0 position when
        * the device is switched off. We don't have to handle this case manually.
+       *
+       * 3) See README for the mapping of Comfort Cloud payload to slider position.
        */
+
+      // Default to AUTO mode
+      let sliderValue = 8;
 
       if (deviceStatus.ecoMode === ComfortCloudEcoMode.Quiet) {
         sliderValue = 1;
@@ -282,7 +285,6 @@ export default class IndoorUnitAccessory {
             break;
         }
       }
-
       this.service.getCharacteristic(this.platform.Characteristic.RotationSpeed)
         .updateValue(sliderValue);
 
@@ -382,6 +384,7 @@ export default class IndoorUnitAccessory {
       `Accessory: setRotationSpeed() for device '${this.accessory.displayName}'`);
     const parameters: ComfortCloudDeviceUpdatePayload = {};
     switch (value) {
+      // See README for the mapping of slider position to Comfort Cloud payload.
       case 0:
         // HomeKit independently switches off the accessory
         // in this case, which triggers setActive().
@@ -463,7 +466,7 @@ export default class IndoorUnitAccessory {
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
 
-  async sendDeviceUpdate(guid: string, payload: ComfortCloudDeviceUpdatePayload) {
+  async sendDeviceUpdate(guid: string, payload: ComfortCloudDeviceUpdatePayload = {}) {
     try {
       // Only send non-empty payloads to prevent a '500 Internal Server Error'
       if (Object.keys(payload).length > 0) {
