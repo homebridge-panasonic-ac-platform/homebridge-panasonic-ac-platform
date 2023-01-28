@@ -3,6 +3,7 @@ import PanasonicPlatform from '../platform';
 import OutdoorUnitAccessory from './outdoor-unit';
 import { DEVICE_STATUS_REFRESH_INTERVAL } from '../settings';
 import { ComfortCloudDeviceUpdatePayload, PanasonicAccessoryContext } from '../types';
+import { ComfortCloudEcoMode, ComfortCloudFanSpeed } from '../enums';
 
 /**
  * An instance of this class is created for each accessory the platform registers.
@@ -75,7 +76,7 @@ export default class IndoorUnitAccessory {
       .getCharacteristic(this.platform.Characteristic.RotationSpeed)
       .setProps({
         minValue: 0,
-        maxValue: 6,
+        maxValue: 8,
         minStep: 1,
       })
       .onSet(this.setRotationSpeed.bind(this));
@@ -242,13 +243,50 @@ export default class IndoorUnitAccessory {
           break;
       }
 
-      // Rotation Speed (optional)
-      if (deviceStatus.fanSpeed === 0) {
-        this.service.getCharacteristic(this.platform.Characteristic.RotationSpeed).updateValue(6);
-      } else {
-        this.service.getCharacteristic(this.platform.Characteristic.RotationSpeed)
-          .updateValue(deviceStatus.fanSpeed);
+      // Rotation Speed
+      /**
+       * 1) The fanSpeed value in the Comfort Cloud payload doesn't always reflect
+       * the current operation mode. For example, when switching from
+       * fan speed 4 to Quiet Mode, the fanSpeed in the payload will remain 4.
+       * Based on tests, ecoMode seems to take precedence and we'll check it first.
+       *
+       * 2) HomeKit automatically moves the slider into the 0 position when
+       * the device is switched off. We don't have to handle this case manually.
+       *
+       * 3) See README for the mapping of Comfort Cloud payload to slider position.
+       */
+
+      // Default to AUTO mode
+      let sliderValue = 8;
+
+      if (deviceStatus.ecoMode === ComfortCloudEcoMode.Quiet) {
+        sliderValue = 1;
+      } else if (deviceStatus.ecoMode === ComfortCloudEcoMode.Powerful) {
+        sliderValue = 7;
+      } else if (deviceStatus.ecoMode === ComfortCloudEcoMode.AutoOrManual) {
+        switch (deviceStatus.fanSpeed) {
+          case ComfortCloudFanSpeed.One:
+            sliderValue = 2;
+            break;
+          case ComfortCloudFanSpeed.Two:
+            sliderValue = 3;
+            break;
+          case ComfortCloudFanSpeed.Three:
+            sliderValue = 4;
+            break;
+          case ComfortCloudFanSpeed.Four:
+            sliderValue = 5;
+            break;
+          case ComfortCloudFanSpeed.Five:
+            sliderValue = 6;
+            break;
+          case ComfortCloudFanSpeed.Auto:
+            sliderValue = 8;
+            break;
+        }
       }
+      this.service.getCharacteristic(this.platform.Characteristic.RotationSpeed)
+        .updateValue(sliderValue);
 
       // Swing Mode (optional)
       if (deviceStatus.airSwingLR === 2 || deviceStatus.airSwingUD === 0) {
@@ -344,12 +382,45 @@ export default class IndoorUnitAccessory {
   async setRotationSpeed(value: CharacteristicValue) {
     this.platform.log.debug(
       `Accessory: setRotationSpeed() for device '${this.accessory.displayName}'`);
-    if (value === 6) {
-      value = 0;
+    const parameters: ComfortCloudDeviceUpdatePayload = {};
+    switch (value) {
+      // See README for the mapping of slider position to Comfort Cloud payload.
+      case 0:
+        // HomeKit independently switches off the accessory
+        // in this case, which triggers setActive().
+        // Nothing to handle here, but documenting for clarity.
+        break;
+      case 1:
+        parameters.ecoMode = ComfortCloudEcoMode.Quiet;
+        break;
+      case 2:
+        parameters.ecoMode = ComfortCloudEcoMode.AutoOrManual;
+        parameters.fanSpeed = ComfortCloudFanSpeed.One;
+        break;
+      case 3:
+        parameters.ecoMode = ComfortCloudEcoMode.AutoOrManual;
+        parameters.fanSpeed = ComfortCloudFanSpeed.Two;
+        break;
+      case 4:
+        parameters.ecoMode = ComfortCloudEcoMode.AutoOrManual;
+        parameters.fanSpeed = ComfortCloudFanSpeed.Three;
+        break;
+      case 5:
+        parameters.ecoMode = ComfortCloudEcoMode.AutoOrManual;
+        parameters.fanSpeed = ComfortCloudFanSpeed.Four;
+        break;
+      case 6:
+        parameters.ecoMode = ComfortCloudEcoMode.AutoOrManual;
+        parameters.fanSpeed = ComfortCloudFanSpeed.Five;
+        break;
+      case 7:
+        parameters.ecoMode = ComfortCloudEcoMode.Powerful;
+        break;
+      case 8:
+        parameters.ecoMode = ComfortCloudEcoMode.AutoOrManual;
+        parameters.fanSpeed = ComfortCloudFanSpeed.Auto;
+        break;
     }
-    const parameters: ComfortCloudDeviceUpdatePayload = {
-      fanSpeed: value as number,
-    };
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
 
@@ -395,9 +466,12 @@ export default class IndoorUnitAccessory {
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
 
-  async sendDeviceUpdate(guid: string, payload: ComfortCloudDeviceUpdatePayload) {
+  async sendDeviceUpdate(guid: string, payload: ComfortCloudDeviceUpdatePayload = {}) {
     try {
-      this.platform.comfortCloud.setDeviceStatus(guid, payload);
+      // Only send non-empty payloads to prevent a '500 Internal Server Error'
+      if (Object.keys(payload).length > 0) {
+        this.platform.comfortCloud.setDeviceStatus(guid, payload);
+      }
     } catch (error) {
       this.platform.log.error('An error occurred while sending a device update. ' +
         'Turn on debug mode for more information.');
