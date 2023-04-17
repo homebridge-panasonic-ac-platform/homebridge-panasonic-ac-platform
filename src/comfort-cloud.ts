@@ -46,8 +46,8 @@ export default class ComfortCloudApi {
         'Content-Type': 'application/json',
         'User-Agent': COMFORT_CLOUD_USER_AGENT,
         'X-APP-TYPE': '0',
-        'X-APP-VERSION': this.config.appVersionOverride ||
-          this.config.latestAppVersion || APP_VERSION,
+        'X-APP-VERSION': this.config.appVersionOverride
+          || this.config.latestAppVersion || APP_VERSION,
       },
       data: {
         'loginId': this.config.email,
@@ -82,8 +82,8 @@ export default class ComfortCloudApi {
     const fetchedDevices: ComfortCloudDevice[] = [];
 
     if (!this.token) {
-      return Promise.reject('No auth token available (login probably failed). ' +
-        'Check your credentials and restart Homebridge.');
+      return Promise.reject('No auth token available (login probably failed). '
+        + 'Check your credentials and restart Homebridge.');
     }
 
     return axios.request<ComfortCloudGroupResponse>({
@@ -94,8 +94,8 @@ export default class ComfortCloudApi {
         'Content-Type': 'application/json',
         'User-Agent': COMFORT_CLOUD_USER_AGENT,
         'X-APP-TYPE': '0',
-        'X-APP-VERSION': this.config.appVersionOverride ||
-          this.config.latestAppVersion || APP_VERSION,
+        'X-APP-VERSION': this.config.appVersionOverride
+          || this.config.latestAppVersion || APP_VERSION,
         'X-User-Authorization': this.token,
       },
     })
@@ -109,8 +109,8 @@ export default class ComfortCloudApi {
           });
         });
         if (fetchedDevices.length === 0) {
-          this.log.info('No devices found. ' +
-            'Check whether you have added at least one device to your Comfort Cloud account.');
+          this.log.info('No devices found. '
+            + 'Check whether you have added at least one device to your Comfort Cloud account.');
         }
         return fetchedDevices;
       })
@@ -131,8 +131,8 @@ export default class ComfortCloudApi {
     this.log.debug(`Comfort Cloud: getDeviceStatus() for device GUID '${deviceGuid}'`);
 
     if (!this.token) {
-      return Promise.reject('No auth token available (login probably failed). ' +
-        'Check your credentials and restart Homebridge.');
+      return Promise.reject('No auth token available (login probably failed). '
+        + 'Check your credentials and restart Homebridge.');
     }
 
     if (!deviceGuid) {
@@ -147,8 +147,8 @@ export default class ComfortCloudApi {
         'Content-Type': 'application/json',
         'User-Agent': COMFORT_CLOUD_USER_AGENT,
         'X-APP-TYPE': '0',
-        'X-APP-VERSION': this.config.appVersionOverride ||
-          this.config.latestAppVersion || APP_VERSION,
+        'X-APP-VERSION': this.config.appVersionOverride
+          || this.config.latestAppVersion || APP_VERSION,
         'X-User-Authorization': this.token,
       },
     })
@@ -176,8 +176,8 @@ export default class ComfortCloudApi {
     this.log.debug(JSON.stringify(parameters, null, 2));
 
     if (!this.token) {
-      return Promise.reject('No auth token available (login probably failed). ' +
-        'Check your credentials and restart Homebridge.');
+      return Promise.reject('No auth token available (login probably failed). '
+        + 'Check your credentials and restart Homebridge.');
     }
 
     if (!deviceGuid) {
@@ -197,8 +197,8 @@ export default class ComfortCloudApi {
         'Content-Type': 'application/json',
         'User-Agent': COMFORT_CLOUD_USER_AGENT,
         'X-APP-TYPE': '0',
-        'X-APP-VERSION': this.config.appVersionOverride ||
-          this.config.latestAppVersion || APP_VERSION,
+        'X-APP-VERSION': this.config.appVersionOverride
+          || this.config.latestAppVersion || APP_VERSION,
         'X-User-Authorization': this.token,
       },
       data: {
@@ -228,15 +228,15 @@ export default class ComfortCloudApi {
     if (error.response) {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx.
-      this.log.error(error.response);
+      this.log.debug(error.response);
     } else if (error.request) {
       // The request was made but no response was received.
       // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
       // http.ClientRequest in node.js
-      this.log.error(error.request);
+      this.log.debug(error.request);
     } else {
       // Something happened in setting up the request that triggered an error.
-      this.log.error(error.message);
+      this.log.debug(error.message);
     }
   }
 }

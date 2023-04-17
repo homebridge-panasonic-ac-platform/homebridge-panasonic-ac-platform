@@ -33,6 +33,46 @@
         "type": "boolean",
         "default": false
       },
+      "swingModeDirections" : {
+        "title": "Swing Directions",
+        "description": "The Home app only has one 'Oscillate' switch, but most Panasonic ACs have two swing directions. This setting controls which swing direction(s) will be activated when 'Oscillate' is switched on.",
+        "type": "string",
+        "default": "LEFT-RIGHT-UP-DOWN",
+        "oneOf": [
+          { "title": "Left-Right and Up-Down", "enum": ["LEFT-RIGHT-UP-DOWN"] },
+          { "title": "Left-Right only", "enum": ["LEFT-RIGHT"] },
+          { "title": "Up-Down only", "enum": ["UP-DOWN"] }
+        ],
+        "required": true
+      },
+      "swingModeDefaultPositionLeftRight" : {
+        "title": "Swing Mode Default Position (Left-Right)",
+        "description": "The desired position of the Left-Right flaps when 'Oscillate' is switched off.",
+        "type": "string",
+        "default": "CENTER",
+        "oneOf": [
+          { "title": "Left", "enum": ["LEFT"] },
+          { "title": "Center-Left", "enum": ["CENTER-LEFT"] },
+          { "title": "Center", "enum": ["CENTER"] },
+          { "title": "Center-Right", "enum": ["CENTER-RIGHT"] },
+          { "title": "Right", "enum": ["RIGHT"] }
+        ],
+        "required": true
+      },
+      "swingModeDefaultPositionUpDown" : {
+        "title": "Swing Mode Default Position (Up-Down)",
+        "description": "The desired position of the Up-Down flaps when 'Oscillate' is switched off.",
+        "type": "string",
+        "default": "CENTER",
+        "oneOf": [
+          { "title": "Up", "enum": ["UP"] },
+          { "title": "Center-Up", "enum": ["CENTER-UP"] },
+          { "title": "Center", "enum": ["CENTER"] },
+          { "title": "Center-Down", "enum": ["CENTER-DOWN"] },
+          { "title": "Down", "enum": ["DOWN"] }
+        ],
+        "required": true
+      },
       "debugMode": {
         "title": "Debug Mode",
         "description": "When enabled, debug messages will be written to the log.",
@@ -85,6 +125,27 @@
       "flex-flow": "row wrap",
       "items": [
         "exposeOutdoorUnit"
+      ]
+    },
+    {
+      "type": "flex",
+      "flex-flow": "row wrap",
+      "items": [
+        "swingModeDirections"
+      ]
+    },
+    {
+      "type": "flex",
+      "flex-flow": "row wrap",
+      "items": [
+        "swingModeDefaultPositionLeftRight"
+      ]
+    },
+    {
+      "type": "flex",
+      "flex-flow": "row wrap",
+      "items": [
+        "swingModeDefaultPositionUpDown"
       ]
     },
     {

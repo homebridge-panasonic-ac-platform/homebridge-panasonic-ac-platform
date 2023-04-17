@@ -1,4 +1,9 @@
 import { PlatformConfig } from 'homebridge';
+import {
+  SwingModeDirection,
+  SwingModePositionLeftRight,
+  SwingModePositionUpDown,
+} from './enums';
 
 export interface PanasonicPlatformConfig extends PlatformConfig {
   email: string;
@@ -9,6 +14,9 @@ export interface PanasonicPlatformConfig extends PlatformConfig {
   appVersionOverride: string;
   exposeOutdoorUnit: boolean;
   minHeatingTemperature?: number;
+  swingModeDirections?: SwingModeDirection;
+  swingModeDefaultPositionLeftRight?: SwingModePositionLeftRight;
+  swingModeDefaultPositionUpDown?: SwingModePositionUpDown;
 }
 
 export interface PanasonicAccessoryContext {
@@ -103,6 +111,7 @@ export interface ComfortCloudDeviceStatus {
   operationMode: number;
   ecoMode: number;
   fanSpeed: number;
+  fanAutoMode: number;
   airSwingLR: number;
   airSwingUD: number;
   temperatureUnit: string;

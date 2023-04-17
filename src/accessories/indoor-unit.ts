@@ -3,7 +3,16 @@ import PanasonicPlatform from '../platform';
 import OutdoorUnitAccessory from './outdoor-unit';
 import { DEVICE_STATUS_REFRESH_INTERVAL } from '../settings';
 import { ComfortCloudDeviceUpdatePayload, PanasonicAccessoryContext } from '../types';
-import { ComfortCloudEcoMode, ComfortCloudFanSpeed } from '../enums';
+import {
+  ComfortCloudAirSwingLR,
+  ComfortCloudAirSwingUD,
+  ComfortCloudEcoMode,
+  ComfortCloudFanAutoMode,
+  ComfortCloudFanSpeed,
+  SwingModeDirection,
+  SwingModePositionLeftRight,
+  SwingModePositionUpDown,
+} from '../enums';
 
 /**
  * An instance of this class is created for each accessory the platform registers.
@@ -288,8 +297,24 @@ export default class IndoorUnitAccessory {
       this.service.getCharacteristic(this.platform.Characteristic.RotationSpeed)
         .updateValue(sliderValue);
 
-      // Swing Mode (optional)
-      if (deviceStatus.airSwingLR === 2 || deviceStatus.airSwingUD === 0) {
+      // Swing Mode
+      if (
+        (
+          deviceStatus.fanAutoMode === ComfortCloudFanAutoMode.AirSwingAuto
+          && this.platform.platformConfig.swingModeDirections
+          === SwingModeDirection.LeftRightAndUpDown
+        )
+        || (
+          deviceStatus.fanAutoMode === ComfortCloudFanAutoMode.AirSwingLR
+          && this.platform.platformConfig.swingModeDirections
+          === SwingModeDirection.LeftRightOnly
+        )
+        || (
+          deviceStatus.fanAutoMode === ComfortCloudFanAutoMode.AirSwingUD
+          && this.platform.platformConfig.swingModeDirections
+          === SwingModeDirection.UpDownOnly
+        )
+      ) {
         this.service.getCharacteristic(this.platform.Characteristic.SwingMode)
           .updateValue(this.platform.Characteristic.SwingMode.SWING_ENABLED);
       } else {
@@ -304,8 +329,8 @@ export default class IndoorUnitAccessory {
       this.service.getCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature)
         .updateValue(setTemperature);
     } catch (error) {
-      this.platform.log.error('An error occurred while refreshing the device status. ' +
-        'Turn on debug mode for more information.');
+      this.platform.log.error('An error occurred while refreshing the device status. '
+        + 'Turn on debug mode for more information.');
 
       // Only log if a Promise rejection reason was provided.
       // Some errors are already logged at source.
@@ -427,12 +452,86 @@ export default class IndoorUnitAccessory {
   async setSwingMode(value: CharacteristicValue) {
     this.platform.log.debug(
       `Accessory: setSwingMode() for device '${this.accessory.displayName}'`);
-    const parameters: ComfortCloudDeviceUpdatePayload = {
-      fanAutoMode: value === this.platform.Characteristic.SwingMode.SWING_ENABLED ? 0 : 1,
-      airSwingLR: 2,
-      airSwingUD: 0,
-    };
+
+    const parameters: ComfortCloudDeviceUpdatePayload = {};
+
+    if (value === this.platform.Characteristic.SwingMode.SWING_ENABLED) {
+      // Activate swing mode
+      // and (if needed) reset one set of fins to their default position.
+      switch (this.platform.platformConfig.swingModeDirections) {
+        case SwingModeDirection.LeftRightAndUpDown:
+          parameters.fanAutoMode = ComfortCloudFanAutoMode.AirSwingAuto;
+          break;
+        case SwingModeDirection.LeftRightOnly:
+          parameters.fanAutoMode = ComfortCloudFanAutoMode.AirSwingLR;
+          parameters.airSwingUD = this.swingModeUpDownToComfortCloudPayloadValue(
+            this.platform.platformConfig.swingModeDefaultPositionUpDown);
+          break;
+        case SwingModeDirection.UpDownOnly:
+          parameters.fanAutoMode = ComfortCloudFanAutoMode.AirSwingUD;
+          parameters.airSwingLR = this.swingModeLeftRightToComfortCloudPayloadValue(
+            this.platform.platformConfig.swingModeDefaultPositionLeftRight);
+          break;
+        default:
+          parameters.fanAutoMode = ComfortCloudFanAutoMode.AirSwingAuto;
+          break;
+      }
+    } else if (value === this.platform.Characteristic.SwingMode.SWING_DISABLED) {
+      // Deactivate swing mode and reset fins to default positions.
+      parameters.fanAutoMode = ComfortCloudFanAutoMode.Disabled;
+      parameters.airSwingLR = this.swingModeLeftRightToComfortCloudPayloadValue(
+        this.platform.platformConfig.swingModeDefaultPositionLeftRight);
+      parameters.airSwingUD = this.swingModeUpDownToComfortCloudPayloadValue(
+        this.platform.platformConfig.swingModeDefaultPositionUpDown);
+    }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
+  }
+
+  /**
+   * Maps the internal left-right swing mode position enum to the corresponding
+   * Comfort Cloud value.
+   *
+   * @param position The internal value for the left-right position.
+   * @returns The corresponding Comfort Cloud value for the given position.
+   */
+  swingModeLeftRightToComfortCloudPayloadValue(position?: SwingModePositionLeftRight) {
+    switch (position) {
+      case SwingModePositionLeftRight.Left:
+        return ComfortCloudAirSwingLR.Left;
+      case SwingModePositionLeftRight.CenterLeft:
+        return ComfortCloudAirSwingLR.CenterLeft;
+      case SwingModePositionLeftRight.Center:
+        return ComfortCloudAirSwingLR.Center;
+      case SwingModePositionLeftRight.CenterRight:
+        return ComfortCloudAirSwingLR.CenterRight;
+      case SwingModePositionLeftRight.Right:
+        return ComfortCloudAirSwingLR.Right;
+      default:
+        return ComfortCloudAirSwingLR.Center;
+    }
+  }
+
+  /**
+   * Maps the internal up-down swing mode position enum to the corresponding Comfort Cloud value.
+   *
+   * @param position The internal value for the up-down position.
+   * @returns The corresponding Comfort Cloud value for the given position.
+   */
+  swingModeUpDownToComfortCloudPayloadValue(position?: SwingModePositionUpDown) {
+    switch (position) {
+      case SwingModePositionUpDown.Up:
+        return ComfortCloudAirSwingUD.Up;
+      case SwingModePositionUpDown.CenterUp:
+        return ComfortCloudAirSwingUD.CenterUp;
+      case SwingModePositionUpDown.Center:
+        return ComfortCloudAirSwingUD.Center;
+      case SwingModePositionUpDown.CenterDown:
+        return ComfortCloudAirSwingUD.CenterDown;
+      case SwingModePositionUpDown.Down:
+        return ComfortCloudAirSwingUD.Down;
+      default:
+        return ComfortCloudAirSwingUD.Center;
+    }
   }
 
   async setThresholdTemperature(value: CharacteristicValue) {
@@ -473,8 +572,8 @@ export default class IndoorUnitAccessory {
         this.platform.comfortCloud.setDeviceStatus(guid, payload);
       }
     } catch (error) {
-      this.platform.log.error('An error occurred while sending a device update. ' +
-        'Turn on debug mode for more information.');
+      this.platform.log.error('An error occurred while sending a device update. '
+        + 'Turn on debug mode for more information.');
 
       // Only log if a Promise rejection reason was provided.
       // Some errors are already logged at source.

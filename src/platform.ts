@@ -101,8 +101,8 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
           this.log.info(`The latest app version is ${matches[0]}.`);
           this.platformConfig.latestAppVersion = matches[0];
         } else {
-          this.log.error('Could not find latest app version. ' +
-            'Falling back to override or hard-coded value.');
+          this.log.error('Could not find latest app version. '
+            + 'Falling back to override or hard-coded value.');
         }
       });
     } catch (error) {
@@ -113,14 +113,14 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
 
   async loginAndDiscoverDevices() {
     if (!this.platformConfig.email) {
-      this.log.error('Email is not configured - aborting plugin start. ' +
-        'Please set the field `email` in your config and restart Homebridge.');
+      this.log.error('Email is not configured - aborting plugin start. '
+        + 'Please set the field `email` in your config and restart Homebridge.');
       return;
     }
 
     if (!this.platformConfig.password) {
-      this.log.error('Password is not configured - aborting plugin start. ' +
-        'Please set the field `password` in your config and restart Homebridge.');
+      this.log.error('Password is not configured - aborting plugin start. '
+        + 'Please set the field `password` in your config and restart Homebridge.');
       return;
     }
 
@@ -138,11 +138,11 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
 
         if (this.noOfFailedLoginAttempts < MAX_NO_OF_FAILED_LOGIN_ATTEMPTS) {
           this.log.error(
-            'The Comfort Cloud server might be experiencing issues at the moment. ' +
-            `The plugin will try to log in again in ${LOGIN_RETRY_DELAY / 1000} seconds. ` +
-            'If the issue persists, make sure you configured the correct email and password ' +
-            'and run the latest version of the plugin. ' +
-            'Restart Homebridge when you change your config.',
+            'The Comfort Cloud server might be experiencing issues at the moment. '
+            + `The plugin will try to log in again in ${LOGIN_RETRY_DELAY / 1000} seconds. `
+            + 'If the issue persists, make sure you configured the correct email and password '
+            + 'and run the latest version of the plugin. '
+            + 'Restart Homebridge when you change your config.',
           );
 
           this._loginRetryTimeout = setTimeout(
@@ -151,9 +151,9 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
           );
         } else {
           this.log.error(
-            'Maximum number of failed login attempts reached ' +
-            `(${MAX_NO_OF_FAILED_LOGIN_ATTEMPTS}). ` +
-            'Check your login details and restart Homebridge to reset the plugin.',
+            'Maximum number of failed login attempts reached '
+            + `(${MAX_NO_OF_FAILED_LOGIN_ATTEMPTS}). `
+            + 'Check your login details and restart Homebridge to reset the plugin.',
           );
         }
       });
@@ -197,8 +197,8 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
       if (this.platformConfig.exposeOutdoorUnit) {
         if (existingAccessory !== undefined) {
           // The accessory already exists, we only need to set up its handlers.
-          this.log.info(`Restoring accessory '${existingAccessory.displayName}' ` +
-            `(${existingAccessory.UUID}) from cache.`);
+          this.log.info(`Restoring accessory '${existingAccessory.displayName}' `
+            + `(${existingAccessory.UUID}) from cache.`);
           this.outdoorUnit = new OutdoorUnitAccessory(this, existingAccessory);
         } else {
           // The accessory does not yet exist, so we need to create it.
@@ -210,8 +210,8 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
       } else {
         if (existingAccessory !== undefined) {
           // This accessory is no longer needed.
-          this.log.info(`Removing accessory '${existingAccessory.displayName}' ` +
-            `(${existingAccessory.UUID}) `);
+          this.log.info(`Removing accessory '${existingAccessory.displayName}' `
+            + `(${existingAccessory.UUID}) `);
           this.api.unregisterPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [existingAccessory]);
         }
       }
@@ -248,8 +248,8 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
 
         if (existingAccessory !== undefined) {
           // The accessory already exists
-          this.log.info(`Restoring accessory '${existingAccessory.displayName}' ` +
-            `(${device.deviceGuid}) from cache.`);
+          this.log.info(`Restoring accessory '${existingAccessory.displayName}' `
+            + `(${device.deviceGuid}) from cache.`);
 
           // If you need to update the accessory.context then you should run
           // `api.updatePlatformAccessories`. eg.:
@@ -288,16 +288,16 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
 
           if (comfortCloudDevice === undefined) {
             // This cached devices does not exist on the Comfort Cloud account (anymore).
-            this.log.info(`Removing accessory '${cachedAccessory.displayName}' (${guid}) ` +
-              'because it does not exist on the Comfort Cloud account (anymore?).');
+            this.log.info(`Removing accessory '${cachedAccessory.displayName}' (${guid}) `
+              + 'because it does not exist on the Comfort Cloud account (anymore?).');
 
             this.api.unregisterPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [cachedAccessory]);
           }
         }
       }
     } catch (error) {
-      this.log.error('An error occurred during device discovery. ' +
-        'Turn on debug mode for more information.');
+      this.log.error('An error occurred during device discovery. '
+        + 'Turn on debug mode for more information.');
       this.log.debug(error);
     }
   }

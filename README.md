@@ -2,7 +2,6 @@
 
 [![verified-by-homebridge](https://badgen.net/badge/homebridge/verified/purple)](https://github.com/homebridge/homebridge/wiki/Verified-Plugins)
 [![GitHub version](https://img.shields.io/github/package-json/v/embee8/homebridge-panasonic-ac-platform?label=GitHub)](https://github.com/embee8/homebridge-panasonic-ac-platform)
-[![Publish package to npm](https://img.shields.io/github/workflow/status/embee8/homebridge-panasonic-ac-platform/Publish%20package%20to%20npm?label=Publish%20to%20npm)](https://github.com/embee8/homebridge-panasonic-ac-platform/actions/workflows/npm-publish.yml)
 [![npm version](https://img.shields.io/npm/v/homebridge-panasonic-ac-platform?color=%23cb3837&label=npm)](https://www.npmjs.com/package/homebridge-panasonic-ac-platform)
 
 `homebridge-panasonic-ac-platform` is a dynamic platform plugin for [Homebridge](https://homebridge.io) that provides HomeKit support for Panasonic single and multi-split air conditioning systems.
@@ -33,7 +32,7 @@ Configure the plugin through the settings UI or directly in the JSON editor:
         "password": "********",
         "exposeOutdoorUnit": true,
         "debugMode": false,
-        "appVersionOverride": "1.17.0",
+        "appVersionOverride": "1.18.0",
         "suppressOutgoingUpdates": false,
         "minHeatingTemperature": 16
     }
@@ -71,6 +70,16 @@ If `true`, changes in the Home app will not be sent to Comfort Cloud. Useful for
 
 * `minHeatingTemperature` (integer):
 The default heating temperature range is 16-30°C. Some Panasonic ACs have an additional heating mode for the range of 8-15°C. If you own such a model, you can use this setting to adjust the minimum value. Leave it empty or undefined to use the default value.
+
+## Swing modes
+
+The Home app only has one 'Oscillate' switch, but most Panasonic air conditioning units have two swing directions. To make the two compatible, you can use the following settings:
+
+* The setting `Swing Directions` (`swingModeDirections` in the JSON config) controls which swing direction(s) will be activated when 'Oscillate' is switched on.
+
+* The setting `Swing Mode Default Position (Left-Right)` (`swingModeDefaultPositionLeftRight` in the JSON config) controls the desired position of the Left-Right flaps when 'Oscillate' is switched off or the swing directions setting (see above) is "Up-Down only".
+
+* The setting `Swing Mode Default Position (Up-Down)` (`swingModeDefaultPositionUpDown` in the JSON config) controls the desired position of the Up-Down flaps when 'Oscillate' is switched off or the swing directions setting (see above) is "Left-Right only".
 
 ## Fan speed, Quiet Mode, Powerful Mode
 
