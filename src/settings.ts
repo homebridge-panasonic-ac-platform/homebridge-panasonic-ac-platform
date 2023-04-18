@@ -8,9 +8,8 @@ export const COMFORT_CLOUD_USER_AGENT = 'G-RAC';
 export const APP_VERSION = '1.17.0';
 
 // 360 sec = 6 min
-export const LOGIN_RETRY_DELAY = 360 * 1000;
-
-export const MAX_NO_OF_FAILED_LOGIN_ATTEMPTS = 5;
+export const LOGIN_RETRY_BASE_DELAY = 360;
+export const MAX_NO_OF_LOGIN_RETRIES = 10;
 
 // Used to renew the token periodically. Only a safety measure, since we are handling
 // network errors dynamically and re-issuing a login upon a 401 Unauthorized error.
