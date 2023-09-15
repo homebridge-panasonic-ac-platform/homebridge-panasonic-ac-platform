@@ -48,6 +48,9 @@ export default class ComfortCloudApi {
         'X-APP-TYPE': '0',
         'X-APP-VERSION': this.config.appVersionOverride
           || this.config.latestAppVersion || APP_VERSION,
+        'X-APP-NAME':'Comfort Cloud',
+        'X-CFC-API-KEY':'0',
+        'X-APP-TIMESTAMP':(new Date()).toISOString().replace(/-/g, "").replace("T", " ").slice(0, 17),
       },
       data: {
         'loginId': this.config.email,
@@ -97,6 +100,9 @@ export default class ComfortCloudApi {
         'X-APP-VERSION': this.config.appVersionOverride
           || this.config.latestAppVersion || APP_VERSION,
         'X-User-Authorization': this.token,
+        'X-APP-NAME':'Comfort Cloud',
+        'X-CFC-API-KEY':'0',
+        'X-APP-TIMESTAMP':(new Date()).toISOString().replace(/-/g, "").replace("T", " ").slice(0, 17),
       },
     })
       .then((response) => {
@@ -150,6 +156,9 @@ export default class ComfortCloudApi {
         'X-APP-VERSION': this.config.appVersionOverride
           || this.config.latestAppVersion || APP_VERSION,
         'X-User-Authorization': this.token,
+        'X-APP-NAME':'Comfort Cloud',
+        'X-CFC-API-KEY':'0',
+        'X-APP-TIMESTAMP':(new Date()).toISOString().replace(/-/g, "").replace("T", " ").slice(0, 17),
       },
     })
       .then((response) => {
@@ -200,6 +209,9 @@ export default class ComfortCloudApi {
         'X-APP-VERSION': this.config.appVersionOverride
           || this.config.latestAppVersion || APP_VERSION,
         'X-User-Authorization': this.token,
+        'X-APP-NAME':'Comfort Cloud',
+        'X-CFC-API-KEY':'0',
+        'X-APP-TIMESTAMP':(new Date()).toISOString().replace(/-/g, "").replace("T", " ").slice(0, 17),
       },
       data: {
         'deviceGuid': deviceGuid,
