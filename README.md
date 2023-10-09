@@ -32,7 +32,7 @@ Configure the plugin through the settings UI or directly in the JSON editor:
         "password": "********",
         "exposeOutdoorUnit": true,
         "debugMode": false,
-        "appVersionOverride": "1.18.0",
+        "appVersionOverride": "1.19.0",
         "suppressOutgoingUpdates": false,
         "minHeatingTemperature": 16
     }
