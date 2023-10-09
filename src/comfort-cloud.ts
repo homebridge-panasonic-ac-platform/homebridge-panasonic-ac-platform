@@ -41,14 +41,7 @@ export default class ComfortCloudApi {
     return axios.request<ComfortCloudAuthResponse>({
       method: 'post',
       url: 'https://accsmart.panasonic.com/auth/login',
-      headers: {
-        'Accept': 'application/json; charset=UTF-8',
-        'Content-Type': 'application/json',
-        'User-Agent': COMFORT_CLOUD_USER_AGENT,
-        'X-APP-TYPE': '0',
-        'X-APP-VERSION': this.config.appVersionOverride
-          || this.config.latestAppVersion || APP_VERSION,
-      },
+      headers: this.getBaseRequestHeaders(),
       data: {
         'loginId': this.config.email,
         'language': '0',
@@ -90,12 +83,7 @@ export default class ComfortCloudApi {
       method: 'get',
       url: 'https://accsmart.panasonic.com/device/group',
       headers: {
-        'Accept': 'application/json; charset=UTF-8',
-        'Content-Type': 'application/json',
-        'User-Agent': COMFORT_CLOUD_USER_AGENT,
-        'X-APP-TYPE': '0',
-        'X-APP-VERSION': this.config.appVersionOverride
-          || this.config.latestAppVersion || APP_VERSION,
+        ...this.getBaseRequestHeaders(),
         'X-User-Authorization': this.token,
       },
     })
@@ -143,12 +131,7 @@ export default class ComfortCloudApi {
       method: 'get',
       url: `https://accsmart.panasonic.com/deviceStatus/now/${deviceGuid}`,
       headers: {
-        'Accept': 'application/json; charset=UTF-8',
-        'Content-Type': 'application/json',
-        'User-Agent': COMFORT_CLOUD_USER_AGENT,
-        'X-APP-TYPE': '0',
-        'X-APP-VERSION': this.config.appVersionOverride
-          || this.config.latestAppVersion || APP_VERSION,
+        ...this.getBaseRequestHeaders(),
         'X-User-Authorization': this.token,
       },
     })
@@ -193,12 +176,7 @@ export default class ComfortCloudApi {
       method: 'post',
       url: 'https://accsmart.panasonic.com/deviceStatus/control',
       headers: {
-        'Accept': 'application/json; charset=UTF-8',
-        'Content-Type': 'application/json',
-        'User-Agent': COMFORT_CLOUD_USER_AGENT,
-        'X-APP-TYPE': '0',
-        'X-APP-VERSION': this.config.appVersionOverride
-          || this.config.latestAppVersion || APP_VERSION,
+        ...this.getBaseRequestHeaders(),
         'X-User-Authorization': this.token,
       },
       data: {
@@ -238,5 +216,23 @@ export default class ComfortCloudApi {
       // Something happened in setting up the request that triggered an error.
       this.log.debug(error.message);
     }
+  }
+
+  /**
+   * @returns An object containing all required HTTP headers for Comfort Cloud requests.
+   */
+  getBaseRequestHeaders() {
+    return {
+      'Accept': 'application/json; charset=UTF-8',
+      'Content-Type': 'application/json',
+      'User-Agent': COMFORT_CLOUD_USER_AGENT,
+      'X-APP-NAME': 'Comfort Cloud',
+      'X-APP-TIMESTAMP': (new Date()).toISOString().replace(/-/g, '')
+        .replace('T', ' ').slice(0, 17),
+      'X-APP-TYPE': '0',
+      'X-APP-VERSION': this.config.appVersionOverride
+        || this.config.latestAppVersion || APP_VERSION,
+      'X-CFC-API-KEY': '0',
+    };
   }
 }
