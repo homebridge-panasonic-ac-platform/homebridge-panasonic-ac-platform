@@ -16,8 +16,8 @@ import OutdoorUnitAccessory from './accessories/outdoor-unit';
 import PanasonicPlatformLogger from './logger';
 import { PanasonicAccessoryContext, PanasonicPlatformConfig } from './types';
 import {
-  LOGIN_RETRY_DELAY,
-  MAX_NO_OF_FAILED_LOGIN_ATTEMPTS,
+  LOGIN_RETRY_BASE_DELAY,
+  MAX_NO_OF_LOGIN_RETRIES,
   PLATFORM_NAME,
   PLUGIN_NAME,
 } from './settings';
@@ -136,10 +136,25 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
         this.log.error('Login failed. Skipping device discovery.');
         this.noOfFailedLoginAttempts++;
 
-        if (this.noOfFailedLoginAttempts < MAX_NO_OF_FAILED_LOGIN_ATTEMPTS) {
+        if (this.noOfFailedLoginAttempts <= MAX_NO_OF_LOGIN_RETRIES) {
+          /**
+           * | Login retry | Delay (in mins) | Total time lapsed
+           * | 1  | 6  | 6
+           * | 2  | 12 | 18
+           * | 3  | 18 | 36
+           * | 4  | 24 | 60
+           * | 5  | 30 | 90
+           * | 6  | 36 | 126
+           * | 7  | 42 | 168
+           * | 8  | 48 | 216
+           * | 9  | 54 | 270
+           * | 10 | 60 | 330 (= 5h 30mins)
+           */
+          const nextRetryDelay = LOGIN_RETRY_BASE_DELAY * this.noOfFailedLoginAttempts;
+
           this.log.error(
             'The Comfort Cloud server might be experiencing issues at the moment. '
-            + `The plugin will try to log in again in ${LOGIN_RETRY_DELAY / 1000} seconds. `
+            + `The plugin will try to log in again in ${nextRetryDelay / 60} minutes. `
             + 'If the issue persists, make sure you configured the correct email and password '
             + 'and run the latest version of the plugin. '
             + 'Restart Homebridge when you change your config.',
@@ -147,12 +162,12 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
 
           this._loginRetryTimeout = setTimeout(
             this.loginAndDiscoverDevices.bind(this),
-            LOGIN_RETRY_DELAY,
+            nextRetryDelay * 1000,
           );
         } else {
           this.log.error(
-            'Maximum number of failed login attempts reached '
-            + `(${MAX_NO_OF_FAILED_LOGIN_ATTEMPTS}). `
+            'Maximum number of login retries reached '
+            + `(${MAX_NO_OF_LOGIN_RETRIES}). `
             + 'Check your login details and restart Homebridge to reset the plugin.',
           );
         }
