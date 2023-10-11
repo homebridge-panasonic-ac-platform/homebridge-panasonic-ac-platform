@@ -105,7 +105,7 @@ export default class ComfortCloudApi {
       .catch((error: AxiosError) => {
         this.log.debug('Comfort Cloud - getDevices(): Error');
         this.handleNetworkRequestError(error);
-        return Promise.reject();
+        return Promise.reject('Comfort Cloud - getDevices(): Error');
       });
   }
 
@@ -143,7 +143,7 @@ export default class ComfortCloudApi {
       .catch((error: AxiosError) => {
         this.log.debug(`Comfort Cloud - getDeviceStatus() for GUID '${deviceGuid}': Error`);
         this.handleNetworkRequestError(error);
-        return Promise.reject();
+        return Promise.reject(`Comfort Cloud - getDeviceStatus() for GUID '${deviceGuid}': Error`);
       });
   }
 
@@ -191,7 +191,7 @@ export default class ComfortCloudApi {
       .catch((error: AxiosError) => {
         this.log.debug('Comfort Cloud - setDeviceStatus(): Error');
         this.handleNetworkRequestError(error);
-        return Promise.reject();
+        return Promise.reject('Comfort Cloud - setDeviceStatus(): Error');
       });
   }
 
