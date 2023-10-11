@@ -136,7 +136,6 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
         this.log.error('Login failed. Skipping device discovery.');
         this.noOfFailedLoginAttempts++;
 
-        if (this.noOfFailedLoginAttempts <= MAX_NO_OF_LOGIN_RETRIES) {
           /**
            * | Login retry | Delay (in mins) | Total time lapsed
            * | 1  | 6  | 6
@@ -150,27 +149,31 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
            * | 9  | 54 | 270
            * | 10 | 60 | 330 (= 5h 30mins)
            */
+        
+        if (this.noOfFailedLoginAttempts <= 10) {
           const nextRetryDelay = LOGIN_RETRY_BASE_DELAY * this.noOfFailedLoginAttempts;
-
-          this.log.error(
-            'The Comfort Cloud server might be experiencing issues at the moment. '
-            + `The plugin will try to log in again in ${nextRetryDelay / 60} minutes. `
-            + 'If the issue persists, make sure you configured the correct email and password '
-            + 'and run the latest version of the plugin. '
-            + 'Restart Homebridge when you change your config.',
-          );
-
-          this._loginRetryTimeout = setTimeout(
-            this.loginAndDiscoverDevices.bind(this),
-            nextRetryDelay * 1000,
-          );
-        } else {
-          this.log.error(
-            'Maximum number of login retries reached '
-            + `(${MAX_NO_OF_LOGIN_RETRIES}). `
-            + 'Check your login details and restart Homebridge to reset the plugin.',
-          );
         }
+        else {
+          const nextRetryDelay = 60;
+        }
+
+        this.log.error(
+          'The Comfort Cloud server might be experiencing issues at the moment. '
+          + `The plugin will try to log in again in ${nextRetryDelay / 60} minutes. `
+          + 'If the issue persists, make sure you configured the correct email and password '
+          + 'and run the latest version of the plugin. '
+          + 'Restart Homebridge when you change your config.',
+        );
+
+        if ((this.noOfFailedLoginAttempts == 1) || (this.noOfFailedLoginAttempts %5 == 0)) {
+          this.getAppVersion.bind(this);
+        }
+
+        this._loginRetryTimeout = setTimeout(
+          this.loginAndDiscoverDevices.bind(this),
+          nextRetryDelay * 1000,
+        );
+        
       });
   }
 
