@@ -138,17 +138,25 @@ export default class IndoorUnitAccessory {
       }
 
       // Current Temperature
-      // Note: Only update the temperature when the heat pump is reporting a valid temperature.
-      // Otherwise it will just incorrectly report zero to HomeKit.
-      if (deviceStatus.insideTemperature >= 126) {
-        // Temperature of 126 from the API = null/failure
-        this.platform.log.error('Temperature state is not available');
-      } else {
-        this.service.updateCharacteristic(
-          this.platform.Characteristic.CurrentTemperature,
-          deviceStatus.insideTemperature,
-        );
+      // If the temperature of the indoor unit is not available, the temperature of the outdoor unit will be used. 
+      // If both are not available, the default values will be used: 8°C for heating and 30°C for cooling.
+      // Temperature of 126 from the API = null/failure
+      
+      if (deviceStatus.insideTemperature < 126) {
+        this.service.updateCharacteristic(this.platform.Characteristic.CurrentTemperature, deviceStatus.insideTemperature);
       }
+      
+      else {
+        this.platform.log.info('Indoor temperature: is not available');
+        
+        if (deviceStatus.outTemperature < 126) {
+          this.service.updateCharacteristic(this.platform.Characteristic.CurrentTemperature, deviceStatus.outTemperature);
+        }
+        else {
+          this.platform.log.info('Outdoor temperature is not available - setting default temperature');		
+          this.service.updateCharacteristic(this.platform.Characteristic.CurrentTemperature, (deviceStatus.operationMode === 3) ? 30 : 8);			  
+        }
+      } 
 
       // Outdoor temperature
       // Only check and set if the user wants to display the outdoor unit as separate device.
