@@ -376,6 +376,7 @@ export default class IndoorUnitAccessory {
     };
     this.sendDeviceUpdate(
       this.accessory.context.device.deviceGuid, parameters);
+    this.platform.log.info(`${this.accessory.displayName}: ${value === 1 ? "On" : "Off"}`);
   }
 
   async setTargetHeaterCoolerState(value: CharacteristicValue) {
@@ -387,14 +388,17 @@ export default class IndoorUnitAccessory {
     switch (value) {
       case this.platform.Characteristic.TargetHeaterCoolerState.AUTO:
         parameters.operationMode = 0;
+        this.platform.log.info(`${this.accessory.displayName}: Mode Auto`);
         break;
 
       case this.platform.Characteristic.TargetHeaterCoolerState.COOL:
         parameters.operationMode = 2;
+        this.platform.log.info(`${this.accessory.displayName}: Mode Cool`);
         break;
 
       case this.platform.Characteristic.TargetHeaterCoolerState.HEAT:
         parameters.operationMode = 3;
+        this.platform.log.info(`${this.accessory.displayName}: Mode Heat`);
         break;
 
       default:
@@ -417,29 +421,36 @@ export default class IndoorUnitAccessory {
         break;
       case 1:
         parameters.ecoMode = ComfortCloudEcoMode.Quiet;
+        this.platform.log.info(`${this.accessory.displayName}: Quiet Mode`);
         break;
       case 2:
         parameters.ecoMode = ComfortCloudEcoMode.AutoOrManual;
         parameters.fanSpeed = ComfortCloudFanSpeed.One;
+        this.platform.log.info(`${this.accessory.displayName}: Fan speed 1`);
         break;
       case 3:
         parameters.ecoMode = ComfortCloudEcoMode.AutoOrManual;
         parameters.fanSpeed = ComfortCloudFanSpeed.Two;
+        this.platform.log.info(`${this.accessory.displayName}: Fan speed 2`);
         break;
       case 4:
         parameters.ecoMode = ComfortCloudEcoMode.AutoOrManual;
         parameters.fanSpeed = ComfortCloudFanSpeed.Three;
+        this.platform.log.info(`${this.accessory.displayName}: Fan speed 3`);
         break;
       case 5:
         parameters.ecoMode = ComfortCloudEcoMode.AutoOrManual;
         parameters.fanSpeed = ComfortCloudFanSpeed.Four;
+        this.platform.log.info(`${this.accessory.displayName}: Fan speed 4`);
         break;
       case 6:
         parameters.ecoMode = ComfortCloudEcoMode.AutoOrManual;
         parameters.fanSpeed = ComfortCloudFanSpeed.Five;
+        this.platform.log.info(`${this.accessory.displayName}: Fan speed 5`);
         break;
       case 7:
         parameters.ecoMode = ComfortCloudEcoMode.Powerful;
+        this.platform.log.info(`${this.accessory.displayName}: Powerful Mode`);
         break;
       case 8:
         parameters.ecoMode = ComfortCloudEcoMode.AutoOrManual;
@@ -461,19 +472,23 @@ export default class IndoorUnitAccessory {
       switch (this.platform.platformConfig.swingModeDirections) {
         case SwingModeDirection.LeftRightAndUpDown:
           parameters.fanAutoMode = ComfortCloudFanAutoMode.AirSwingAuto;
+          this.platform.log.info(`${this.accessory.displayName}: Swing mode Left/Right and Up/Down`);
           break;
         case SwingModeDirection.LeftRightOnly:
           parameters.fanAutoMode = ComfortCloudFanAutoMode.AirSwingLR;
           parameters.airSwingUD = this.swingModeUpDownToComfortCloudPayloadValue(
             this.platform.platformConfig.swingModeDefaultPositionUpDown);
+          this.platform.log.info(`${this.accessory.displayName}: Swing mode Left/Right`);
           break;
         case SwingModeDirection.UpDownOnly:
           parameters.fanAutoMode = ComfortCloudFanAutoMode.AirSwingUD;
           parameters.airSwingLR = this.swingModeLeftRightToComfortCloudPayloadValue(
             this.platform.platformConfig.swingModeDefaultPositionLeftRight);
+          this.platform.log.info(`${this.accessory.displayName}: Swing mode Up/Down`);
           break;
         default:
           parameters.fanAutoMode = ComfortCloudFanAutoMode.AirSwingAuto;
+          this.platform.log.info(`${this.accessory.displayName}: Swing mode Auto`);
           break;
       }
     } else if (value === this.platform.Characteristic.SwingMode.SWING_DISABLED) {
@@ -483,6 +498,7 @@ export default class IndoorUnitAccessory {
         this.platform.platformConfig.swingModeDefaultPositionLeftRight);
       parameters.airSwingUD = this.swingModeUpDownToComfortCloudPayloadValue(
         this.platform.platformConfig.swingModeDefaultPositionUpDown);
+      this.platform.log.info(`${this.accessory.displayName}: Swing mode Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
