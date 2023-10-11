@@ -230,8 +230,7 @@ export default class ComfortCloudApi {
       'X-APP-TIMESTAMP': (new Date()).toISOString().replace(/-/g, '')
         .replace('T', ' ').slice(0, 17),
       'X-APP-TYPE': '0',
-      'X-APP-VERSION': this.config.appVersionOverride
-        || this.config.latestAppVersion || APP_VERSION,
+      'X-APP-VERSION': this.config.latestAppVersion || this.config.appVersionOverride || settings_1.APP_VERSION,
       'X-CFC-API-KEY': '0',
     };
   }
