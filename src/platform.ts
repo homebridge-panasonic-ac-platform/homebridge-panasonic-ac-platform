@@ -149,29 +149,31 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
            * | 9  | 54 | 270
            * | 10 | 60 | 330 (= 5h 30mins)
            */
-        
-        var nextRetryDelay = LOGIN_RETRY_BASE_DELAY * this.noOfFailedLoginAttempts;
-       
-        if (this.noOfFailedLoginAttempts > 10) {
-          nextRetryDelay = 60;
+
+        if (this.platformConfig.maxAttempts === 0 || this.noOfFailedAttempts <= this.platformConfig.maxAttempts) {
+          var nextRetryDelay = LOGIN_RETRY_BASE_DELAY * this.noOfFailedLoginAttempts;
+         
+          if (this.noOfFailedLoginAttempts > 10) {
+            nextRetryDelay = 60;
+          }
+  
+          this.log.error(
+            'The Comfort Cloud server might be experiencing issues at the moment. '
+            + `The plugin will try to log in again in ${nextRetryDelay / 60} minutes. `
+            + 'If the issue persists, make sure you configured the correct email and password '
+            + 'and run the latest version of the plugin. '
+            + 'Restart Homebridge when you change your config.',
+          );
+  
+          if ((this.noOfFailedLoginAttempts == 1) || (this.noOfFailedLoginAttempts %5 == 0)) {
+            this.getAppVersion.bind(this);
+          }
+  
+          this._loginRetryTimeout = setTimeout(
+            this.loginAndDiscoverDevices.bind(this),
+            nextRetryDelay * 1000,
+          );
         }
-
-        this.log.error(
-          'The Comfort Cloud server might be experiencing issues at the moment. '
-          + `The plugin will try to log in again in ${nextRetryDelay / 60} minutes. `
-          + 'If the issue persists, make sure you configured the correct email and password '
-          + 'and run the latest version of the plugin. '
-          + 'Restart Homebridge when you change your config.',
-        );
-
-        if ((this.noOfFailedLoginAttempts == 1) || (this.noOfFailedLoginAttempts %5 == 0)) {
-          this.getAppVersion.bind(this);
-        }
-
-        this._loginRetryTimeout = setTimeout(
-          this.loginAndDiscoverDevices.bind(this),
-          nextRetryDelay * 1000,
-        );
         
       });
   }
