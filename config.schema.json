@@ -88,7 +88,7 @@
         "title": "Emulated Comfort Cloud app version (override)",
         "description": "Leave this field empty to automatically fetch the latest version from the App Store and if that fails, it will use the last known working value which is hard-coded. Filling in this field will make the entered version used (automatic overwriting of versions from the App Store will not work).",
         "type": "string",
-        "placeholder": "1.17.0"
+        "placeholder": "App version, E.G.: 1.19.0"
       },
       "minHeatingTemperature": {
         "title": "Minimum heating temperature (override)",
