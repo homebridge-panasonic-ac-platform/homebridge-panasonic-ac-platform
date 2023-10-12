@@ -33,6 +33,55 @@
         "type": "boolean",
         "default": false
       },
+      "startNanoe" : {
+        "title": "Start Nanoe",
+        "description": "Nanoe value on every activation: do nothing, set on, set off.",
+        "type": "string",
+        "default": "false",
+        "oneOf": [
+          { "title": "Do nothing", "enum": ["false"] },
+          { "title": "Set on", "enum": ["on"] },
+          { "title": "Set off", "enum": ["off"] }      
+        ],
+        "required": true
+      },
+      "startEcoNavi" : {
+        "title": "Start Eco Navi",
+        "description": "Eco Navi value on every activation: do nothing, set on, set off.",
+        "type": "string",
+        "default": "false",
+        "oneOf": [
+          { "title": "Do nothing", "enum": ["false"] },
+          { "title": "Set on", "enum": ["on"] },
+          { "title": "Set off", "enum": ["off"] }      
+        ],
+        "required": true
+      },
+      "startInsideCleaning" : {
+        "title": "Start Inside Cleaning",
+        "description": "Inside Cleaning value on every activation: do nothing, set on, set off.",
+        "type": "string",
+        "default": "false",
+        "oneOf": [
+          { "title": "Do nothing", "enum": ["false"] },
+          { "title": "Set on", "enum": ["on"] },
+          { "title": "Set off", "enum": ["off"] }      
+        ],
+        "required": true
+      },
+      "oscilateSwitch" : {
+        "title": "Oscilate Switch",
+        "description": "Oscilate Switch",
+        "type": "string",
+        "default": "swing",
+        "oneOf": [
+          { "title": "Swing Mode", "enum": ["swing"] },
+          { "title": "Nanoe", "enum": ["nanoe"] },
+          { "title": "Eco Navi", "enum": ["ecoNavi"] },
+		  { "title": "Inside Cleaning", "enum": ["insideCleaning"] }          
+        ],
+        "required": true
+      },
       "swingModeDirections" : {
         "title": "Swing Directions",
         "description": "The Home app only has one 'Oscillate' switch, but most Panasonic ACs have two swing directions. This setting controls which swing direction(s) will be activated when 'Oscillate' is switched on.",
@@ -124,27 +173,34 @@
       "type": "flex",
       "flex-flow": "row wrap",
       "items": [
-        "exposeOutdoorUnit"
+         "appVersionOverride"
       ]
     },
     {
       "type": "flex",
       "flex-flow": "row wrap",
       "items": [
-        "swingModeDirections"
+         "oscilateSwitch"
       ]
     },
     {
-      "type": "flex",
-      "flex-flow": "row wrap",
+      "type": "fieldset",
+      "title": "Default Values",
+      "expandable": true,
       "items": [
-        "swingModeDefaultPositionLeftRight"
+		    "startSwing",
+        "startNanoe",
+		    "startEcoNavi",
+		    "startInsideCleaning"
       ]
     },
     {
-      "type": "flex",
-      "flex-flow": "row wrap",
+      "type": "fieldset",
+      "title": "Swing Mode settings",
+      "expandable": true,
       "items": [
+        "swingModeDirections",
+        "swingModeDefaultPositionLeftRight",
         "swingModeDefaultPositionUpDown"
       ]
     },
@@ -155,7 +211,7 @@
       "items": [
         "debugMode",
         "suppressOutgoingUpdates",
-        "appVersionOverride",
+		    "exposeOutdoorUnit",
         "minHeatingTemperature"
       ]
     }
