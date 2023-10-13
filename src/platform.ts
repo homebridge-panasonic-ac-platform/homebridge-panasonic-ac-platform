@@ -86,8 +86,8 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
 
   async getAppVersion() {
     this.log.info('Attempting to fetch latest Comfort Cloud version from the App Store.');
-    var curVersion = this.platformConfig.appVersionOverride;
-    this.log.info(`Current App Version is: ${this.curVersion}.`);
+    const curVersion = this.platformConfig.appVersionOverride;
+    this.log.info(`Current App Version is: ${curVersion}.`);
     try {
       const response = await axios.request({
         method: 'get',
@@ -100,9 +100,9 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
         // followed by ., followed by one or more digit(s)
         const matches = $(p).text().match(/\d+(.)\d+(.)\d+/);
         if (Array.isArray(matches)) {
-          var newVersion = matches[0];
+          const newVersion = matches[0];
           if (newVersion > curVersion) {
-            this.platformConfig.latestAppVersion = newVersion;				
+            this.platformConfig.latestAppVersion = newVersion;
             this.log.info(`New App Version available: ${newVersion}. Currently: ${curVersion}.`);
           }
           else {
