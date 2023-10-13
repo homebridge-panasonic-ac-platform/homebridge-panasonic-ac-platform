@@ -115,6 +115,9 @@ export interface ComfortCloudDeviceStatus {
   airSwingLR: number;
   airSwingUD: number;
   temperatureUnit: string;
+  nanoe: number;
+  ecoNavi: number;
+  insideCleaning: number;
 }
 
 // Set device status
@@ -128,4 +131,7 @@ export interface ComfortCloudDeviceUpdatePayload {
   airSwingLR?: number;
   airSwingUD?: number;
   temperatureSet?: number;
+  nanoe?: number;
+  ecoNavi?: number;
+  insideCleaning?: number;
 }
