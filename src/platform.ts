@@ -17,7 +17,6 @@ import PanasonicPlatformLogger from './logger';
 import { PanasonicAccessoryContext, PanasonicPlatformConfig } from './types';
 import {
   LOGIN_RETRY_BASE_DELAY,
-  MAX_NO_OF_LOGIN_RETRIES,
   PLATFORM_NAME,
   PLUGIN_NAME,
 } from './settings';
@@ -137,24 +136,27 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
         this.noOfFailedLoginAttempts++;
 
           /**
-           * | Login retry | Delay (in mins) | Total time lapsed
-           * | 1  | 6  | 6
-           * | 2  | 12 | 18
-           * | 3  | 18 | 36
-           * | 4  | 24 | 60
-           * | 5  | 30 | 90
-           * | 6  | 36 | 126
-           * | 7  | 42 | 168
-           * | 8  | 48 | 216
-           * | 9  | 54 | 270
-           * | 10 | 60 | 330 (= 5h 30mins)
-           */
+          * | Login retry | Delay (in mins) | Total time lapsed
+          * | 1  | 6  | 6
+          * | 2  | 12 | 18
+          * | 3  | 18 | 36
+          * | 4  | 24 | 60
+          * | 5  | 30 | 90
+          * | 6  | 36 | 126
+          * | 7  | 42 | 168
+          * | 8  | 48 | 216
+          * | 9  | 54 | 270
+          * | 10 | 60 | 330 (= 5h 30mins)
+          */
 
-        if (this.platformConfig.maxAttempts === 0 || this.noOfFailedAttempts <= this.platformConfig.maxAttempts) {
-          var nextRetryDelay = LOGIN_RETRY_BASE_DELAY * this.noOfFailedLoginAttempts;
-         
-          if (this.noOfFailedLoginAttempts > 10) {
-            nextRetryDelay = 60;
+        if (this.platformConfig.maxAttempts === 0
+            || this.noOfFailedLoginAttempts <= this.platformConfig.maxAttempts) {
+          
+          if (this.noOfFailedLoginAttempts <= 10) {
+            const nextRetryDelay = LOGIN_RETRY_BASE_DELAY * this.noOfFailedLoginAttempts;
+          }
+          else {
+            const nextRetryDelay = 60;
           }
   
           this.log.error(
