@@ -104,8 +104,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
           if (newVersion > curVersion) {
             this.platformConfig.latestAppVersion = newVersion;
             this.log.info(`New App Version available: ${newVersion}. Currently: ${curVersion}.`);
-          }
-          else {
+          } else {
             this.log.info(`No update available, You have latest App Version: ${curVersion}`);
           }
         } else {
