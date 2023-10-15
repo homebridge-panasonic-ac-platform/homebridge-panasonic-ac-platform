@@ -135,30 +135,25 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
         this.log.error('Login failed. Skipping device discovery.');
         this.noOfFailedLoginAttempts++;
 
-          /**
-          * | Login retry | Delay (in mins) | Total time lapsed
-          * | 1  | 6  | 6
-          * | 2  | 12 | 18
-          * | 3  | 18 | 36
-          * | 4  | 24 | 60
-          * | 5  | 30 | 90
-          * | 6  | 36 | 126
-          * | 7  | 42 | 168
-          * | 8  | 48 | 216
-          * | 9  | 54 | 270
-          * | 10 | 60 | 330 (= 5h 30mins)
-          */
+        /**
+        * | Login retry | Delay (in mins) | Total time lapsed
+        * | 1  | 6  | 6
+        * | 2  | 12 | 18
+        * | 3  | 18 | 36
+        * | 4  | 24 | 60
+        * | 5  | 30 | 90
+        * | 6  | 36 | 126
+        * | 7  | 42 | 168
+        * | 8  | 48 | 216
+        * | 9  | 54 | 270
+        * | 10 | 60 | 330 (= 5h 30mins)
+        */
 
         if (this.platformConfig.maxAttempts === 0
             || this.noOfFailedLoginAttempts <= this.platformConfig.maxAttempts) {
-          
-          if (this.noOfFailedLoginAttempts <= 10) {
-            const nextRetryDelay = LOGIN_RETRY_BASE_DELAY * this.noOfFailedLoginAttempts;
-          }
-          else {
-            const nextRetryDelay = 60;
-          }
-  
+
+          const nextRetryDelay = Math.min(LOGIN_RETRY_BASE_DELAY * this.noOfFailedLoginAttempts, 60);
+
           this.log.error(
             'The Comfort Cloud server might be experiencing issues at the moment. '
             + `The plugin will try to log in again in ${nextRetryDelay / 60} minutes. `
@@ -166,11 +161,11 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
             + 'and run the latest version of the plugin. '
             + 'Restart Homebridge when you change your config.',
           );
-  
-          if ((this.noOfFailedLoginAttempts == 1) || (this.noOfFailedLoginAttempts %5 == 0)) {
+
+          if ((this.noOfFailedLoginAttempts === 1) || (this.noOfFailedLoginAttempts %5 === 0)) {
             this.getAppVersion.bind(this);
           }
-  
+
           this._loginRetryTimeout = setTimeout(
             this.loginAndDiscoverDevices.bind(this),
             nextRetryDelay * 1000,
