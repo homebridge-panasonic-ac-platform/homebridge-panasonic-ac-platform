@@ -152,7 +152,8 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
         if (this.platformConfig.maxAttempts === 0
             || this.noOfFailedLoginAttempts <= this.platformConfig.maxAttempts) {
 
-          const nextRetryDelay = Math.min(LOGIN_RETRY_BASE_DELAY * this.noOfFailedLoginAttempts, 60);
+          const nextRetryDelay = Math.min(LOGIN_RETRY_BASE_DELAY 
+                                          * this.noOfFailedLoginAttempts, 60);
 
           this.log.error(
             'The Comfort Cloud server might be experiencing issues at the moment. '
@@ -171,7 +172,6 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
             nextRetryDelay * 1000,
           );
         }
-        
       });
   }
 
