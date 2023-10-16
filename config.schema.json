@@ -35,9 +35,12 @@
       },
       "maxAttempts": {
         "title": "Maximum number of login attempts",
-        "type": "number",
+        "type": "integer",
+        "description": "0 - infinited.",
+        "required": true,
         "default": 0,
-        "description": "0 - infinited."
+        "minimum": 0,
+        "maximum": 10
       },
       "swingModeDirections" : {
         "title": "Swing Directions",
