@@ -162,6 +162,7 @@
         "debugMode",
         "suppressOutgoingUpdates",
         "appVersionOverride",
+        "maxAttempts",
         "minHeatingTemperature"
       ]
     }
