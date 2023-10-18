@@ -20,7 +20,7 @@ import {
   MAX_NO_OF_LOGIN_RETRIES,
   PLATFORM_NAME,
   PLUGIN_NAME,
-  APP_VERSION
+  APP_VERSION,
 } from './settings';
 
 
@@ -87,7 +87,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
 
   async getAppVersion() {
     this.log.info('Attempting to fetch latest Comfort Cloud version from the App Store.');
-    const curVersion = this.platformConfig.appVersionOverride || settings.APP_VERSION;
+    const curVersion = this.platformConfig.appVersionOverride || APP_VERSION;
     this.log.info(`Current App Version is: ${curVersion}.`);
     try {
       const response = await axios.request({
