@@ -152,15 +152,24 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
         if (this.platformConfig.maxAttempts === 0
             || this.noOfFailedLoginAttempts <= this.platformConfig.maxAttempts) {
 
-          const nextRetryDelay = Math.min(LOGIN_RETRY_BASE_DELAY 
+          const nextRetryDelay = Math.min(LOGIN_RETRY_BASE_DELAY
                                           * this.noOfFailedLoginAttempts, 60);
 
           this.log.error(
-            'The Comfort Cloud server might be experiencing issues at the moment. '
-            + `The plugin will try to log in again in ${nextRetryDelay / 60} minutes. `
-            + 'If the issue persists, make sure you configured the correct email and password '
-            + 'and run the latest version of the plugin. '
-            + 'Restart Homebridge when you change your config.',
+            'The Comfort Cloud server might be experiencing issues at the moment.'
+            + `The plugin will try to log in again in ${nextRetryDelay / 60} minutes.`,
+          );
+
+          this.log.error(
+            + 'If the issue persists, make sure you:'
+            + '1. configured the correct email and password in plugin settings,'
+            + '2. have the latest version of the plugin.'
+            + '3. field "Emulated Comfort Cloud app version (override)" in settings '
+            + 'is empty or entered is the latest version of Panasonic Comfort Cloud '
+            + 'from the App Store (like 1.19.0),'
+            + '4. accepted the latest terms and conditions after logging '
+            + 'into the Comfort Cloud app.'
+            + 'Restart Homebridge if you change plugin settings.',
           );
 
           if ((this.noOfFailedLoginAttempts === 1) || (this.noOfFailedLoginAttempts %5 === 0)) {
