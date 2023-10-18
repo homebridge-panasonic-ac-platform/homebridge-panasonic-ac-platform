@@ -161,14 +161,14 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
           );
 
           this.log.error(
-            + 'If the issue persists, make sure you:'
-            + '1. configured the correct email and password in plugin settings,'
-            + '2. have the latest version of the plugin.'
-            + '3. field "Emulated Comfort Cloud app version (override)" in settings '
-            + 'is empty or entered is the latest version of Panasonic Comfort Cloud '
+            + 'If the issue persists, make sure: '
+            + 'configured is the correct email and password in plugin settings,'
+            + 'field "Emulated Comfort Cloud app version (override)" in settings '
+            + 'is empty or have the latest version of Panasonic Comfort Cloud '
             + 'from the App Store (like 1.19.0),'
-            + '4. accepted the latest terms and conditions after logging '
-            + 'into the Comfort Cloud app.'
+            + 'the latest version of this plugin is installed,'
+            + 'all terms and conditions after logging into '
+            + 'the Panasonic Comfort Cloud app are accepted.'
             + 'Restart Homebridge if you change plugin settings.',
           );
 
