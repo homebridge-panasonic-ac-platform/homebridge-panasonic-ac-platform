@@ -36,7 +36,7 @@
       "maxAttempts": {
         "title": "Maximum number of login attempts",
         "type": "integer",
-        "description": "0 - infinited.",
+        "description": "0 - infinited. Minimum 0, Maximum 10.",
         "required": true,
         "default": 0,
         "minimum": 0,
