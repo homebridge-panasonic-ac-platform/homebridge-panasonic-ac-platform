@@ -180,6 +180,11 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
             this.loginAndDiscoverDevices.bind(this),
             nextRetryDelay * 1000,
           );
+        } else {
+          this.log.error(
+            + 'Maximum number of login retries reached.'
+            + 'Check your login details and restart Homebridge..',
+          );
         }
       });
   }
