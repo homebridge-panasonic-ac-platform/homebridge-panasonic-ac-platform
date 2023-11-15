@@ -173,14 +173,7 @@
       "type": "flex",
       "flex-flow": "row wrap",
       "items": [
-         "appVersionOverride"
-      ]
-    },
-    {
-      "type": "flex",
-      "flex-flow": "row wrap",
-      "items": [
-         "oscilateSwitch"
+	      "oscilateSwitch"
       ]
     },
     {
@@ -188,10 +181,10 @@
       "title": "Default Values",
       "expandable": true,
       "items": [
-		    "startSwing",
-        "startNanoe",
-		    "startEcoNavi",
-		    "startInsideCleaning"
+	      "startSwing",
+	      "startNanoe",
+	      "startEcoNavi",
+	      "startInsideCleaning"
       ]
     },
     {
@@ -199,9 +192,9 @@
       "title": "Swing Mode settings",
       "expandable": true,
       "items": [
-        "swingModeDirections",
-        "swingModeDefaultPositionLeftRight",
-        "swingModeDefaultPositionUpDown"
+	      "swingModeDirections",
+	      "swingModeDefaultPositionLeftRight",
+	      "swingModeDefaultPositionUpDown"
       ]
     },
     {
@@ -209,10 +202,11 @@
       "title": "Advanced configuration",
       "expandable": true,
       "items": [
-        "debugMode",
-        "suppressOutgoingUpdates",
-		    "exposeOutdoorUnit",
-        "minHeatingTemperature"
+	      "debugMode",
+	      "appVersionOverride",
+	      "suppressOutgoingUpdates",
+	      "exposeOutdoorUnit",
+	      "minHeatingTemperature"
       ]
     }
   ]
