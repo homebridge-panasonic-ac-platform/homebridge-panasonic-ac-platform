@@ -33,6 +33,15 @@
         "type": "boolean",
         "default": false
       },
+      "maxAttempts": {
+        "title": "Maximum number of login attempts",
+        "type": "integer",
+        "description": "0 - infinited. Minimum 0, Maximum 10.",
+        "required": true,
+        "default": 0,
+        "minimum": 0,
+        "maximum": 10
+      },
       "swingModeDirections" : {
         "title": "Swing Directions",
         "description": "The Home app only has one 'Oscillate' switch, but most Panasonic ACs have two swing directions. This setting controls which swing direction(s) will be activated when 'Oscillate' is switched on.",
@@ -156,6 +165,7 @@
         "debugMode",
         "suppressOutgoingUpdates",
         "appVersionOverride",
+        "maxAttempts",
         "minHeatingTemperature"
       ]
     }
