@@ -149,8 +149,9 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
         * | 10 | 60 | 330 (= 5h 30mins)
         */
 
-        if (this.platformConfig.maxAttempts === 0
-            || this.noOfFailedLoginAttempts <= this.platformConfig.maxAttempts) {
+        const maxAttempts = this.platformConfig.maxAttempts || 0;
+        if (maxAttempts === 0
+            || this.noOfFailedLoginAttempts <= maxAttempts) {
 
           const nextRetryDelay = Math.min(LOGIN_RETRY_BASE_DELAY
                                           * this.noOfFailedLoginAttempts, 60);
