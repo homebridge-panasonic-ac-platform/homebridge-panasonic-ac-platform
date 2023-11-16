@@ -20,6 +20,7 @@ import {
   MAX_NO_OF_LOGIN_RETRIES,
   PLATFORM_NAME,
   PLUGIN_NAME,
+  APP_VERSION,
 } from './settings';
 
 
@@ -86,6 +87,8 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
 
   async getAppVersion() {
     this.log.info('Attempting to fetch latest Comfort Cloud version from the App Store.');
+    const curVersion = this.platformConfig.appVersionOverride || APP_VERSION;
+    this.log.info(`Current App Version is: ${curVersion}.`);
     try {
       const response = await axios.request({
         method: 'get',
@@ -98,8 +101,9 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
         // followed by ., followed by one or more digit(s)
         const matches = $(p).text().match(/\d+(.)\d+(.)\d+/);
         if (Array.isArray(matches)) {
-          this.log.info(`The latest app version is ${matches[0]}.`);
-          this.platformConfig.latestAppVersion = matches[0];
+          const newVersion = matches[0];
+          this.platformConfig.latestAppVersion = newVersion;
+          this.log.info(`App Store Version: ${newVersion}.`);
         } else {
           this.log.error('Could not find latest app version. '
             + 'Falling back to override or hard-coded value.');
