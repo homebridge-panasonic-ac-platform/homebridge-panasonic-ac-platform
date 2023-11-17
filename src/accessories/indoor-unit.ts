@@ -457,8 +457,8 @@ export default class IndoorUnitAccessory {
         parameters.fanSpeed = ComfortCloudFanSpeed.Auto;
         break;
       default:
-        parameters.ecoMode = enums_1.ComfortCloudEcoMode.AutoOrManual;
-        parameters.fanSpeed = enums_1.ComfortCloudFanSpeed.Auto;
+        parameters.ecoMode = ComfortCloudEcoMode.AutoOrManual;
+        parameters.fanSpeed = ComfortCloudFanSpeed.Auto;
         break;
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
