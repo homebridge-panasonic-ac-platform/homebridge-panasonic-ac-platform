@@ -1,165 +1,178 @@
 {
-  "pluginAlias": "Panasonic AC Platform",
-  "pluginType": "platform",
-  "singular": true,
-  "schema": {
-    "type": "object",
-    "properties": {
-      "name": {
-        "title": "Plugin Name",
-        "description": "This name will be displayed in the Homebridge log.",
-        "type": "string",
-        "default": "Homebridge Panasonic AC Platform",
-        "placeholder": "Homebridge Panasonic AC Platform",
-        "required": true
-      },
-      "email": {
-        "title": "Email",
-        "description": "It is recommended to set up a separate account for Homebridge and share the devices from your main account.",
-        "type": "string",
-        "placeholder": "Email",
-        "required": true,
-        "format": "email"
-      },
-      "password": {
-        "title": "Password",
-        "type": "string",
-        "placeholder": "Password",
-        "required": true
-      },
-      "exposeOutdoorUnit": {
-        "title": "Expose Outdoor Unit",
-        "description": "When enabled, the plugin will create a separate accessory for your outdoor unit which will display the (outdoor) temperature it measures. This can be used for monitoring and automation purposes.",
-        "type": "boolean",
-        "default": false
-      },
-      "startNanoe" : {
-        "title": "Start Nanoe",
-        "description": "Nanoe value on every activation: do nothing, set on, set off.",
-        "type": "string",
-        "default": "false",
-        "oneOf": [
-          { "title": "Do nothing", "enum": ["false"] },
-          { "title": "Set on", "enum": ["on"] },
-          { "title": "Set off", "enum": ["off"] }      
-        ],
-        "required": true
-      },
-      "startEcoNavi" : {
-        "title": "Start Eco Navi",
-        "description": "Eco Navi value on every activation: do nothing, set on, set off.",
-        "type": "string",
-        "default": "false",
-        "oneOf": [
-          { "title": "Do nothing", "enum": ["false"] },
-          { "title": "Set on", "enum": ["on"] },
-          { "title": "Set off", "enum": ["off"] }      
-        ],
-        "required": true
-      },
-      "startInsideCleaning" : {
-        "title": "Start Inside Cleaning",
-        "description": "Inside Cleaning value on every activation: do nothing, set on, set off.",
-        "type": "string",
-        "default": "false",
-        "oneOf": [
-          { "title": "Do nothing", "enum": ["false"] },
-          { "title": "Set on", "enum": ["on"] },
-          { "title": "Set off", "enum": ["off"] }      
-        ],
-        "required": true
-      },
-      "oscilateSwitch" : {
-        "title": "Oscilate Switch",
-        "description": "Oscilate Switch",
-        "type": "string",
-        "default": "swing",
-        "oneOf": [
-          { "title": "Swing Mode", "enum": ["swing"] },
-          { "title": "Nanoe", "enum": ["nanoe"] },
-          { "title": "Eco Navi", "enum": ["ecoNavi"] },
-		    { "title": "Inside Cleaning", "enum": ["insideCleaning"] }          
-        ],
-        "required": true
-      },
-      "maxAttempts" : {
-        "title": "Maximum number of login attempts",
-        "type": "integer",
-        "description": "0 - infinited. Minimum 0, Maximum 10.",
-        "required": true,
-        "default": 0,
-        "minimum": 0,
-        "maximum": 10
-      },
-      "swingModeDirections" : {
-        "title": "Swing Directions",
-        "description": "The Home app only has one 'Oscillate' switch, but most Panasonic ACs have two swing directions. This setting controls which swing direction(s) will be activated when 'Oscillate' is switched on.",
-        "type": "string",
-        "default": "LEFT-RIGHT-UP-DOWN",
-        "oneOf": [
-          { "title": "Left-Right and Up-Down", "enum": ["LEFT-RIGHT-UP-DOWN"] },
-          { "title": "Left-Right only", "enum": ["LEFT-RIGHT"] },
-          { "title": "Up-Down only", "enum": ["UP-DOWN"] }
-        ],
-        "required": true
-      },
-      "swingModeDefaultPositionLeftRight" : {
-        "title": "Swing Mode Default Position (Left-Right)",
-        "description": "The desired position of the Left-Right flaps when 'Oscillate' is switched off.",
-        "type": "string",
-        "default": "CENTER",
-        "oneOf": [
-          { "title": "Left", "enum": ["LEFT"] },
-          { "title": "Center-Left", "enum": ["CENTER-LEFT"] },
-          { "title": "Center", "enum": ["CENTER"] },
-          { "title": "Center-Right", "enum": ["CENTER-RIGHT"] },
-          { "title": "Right", "enum": ["RIGHT"] }
-        ],
-        "required": true
-      },
-      "swingModeDefaultPositionUpDown" : {
-        "title": "Swing Mode Default Position (Up-Down)",
-        "description": "The desired position of the Up-Down flaps when 'Oscillate' is switched off.",
-        "type": "string",
-        "default": "CENTER",
-        "oneOf": [
-          { "title": "Up", "enum": ["UP"] },
-          { "title": "Center-Up", "enum": ["CENTER-UP"] },
-          { "title": "Center", "enum": ["CENTER"] },
-          { "title": "Center-Down", "enum": ["CENTER-DOWN"] },
-          { "title": "Down", "enum": ["DOWN"] }
-        ],
-        "required": true
-      },
-      "debugMode": {
-        "title": "Debug Mode",
-        "description": "When enabled, debug messages will be written to the log.",
-        "type": "boolean",
-        "default": false
-      },
-      "suppressOutgoingUpdates": {
-        "title": "Suppress outgoing device updates",
-        "description": "When enabled, changes in the Home app will not be sent to Comfort Cloud. Useful for testing your installation without constantly switching the state of your AC to minimise wear and tear.",
-        "type": "boolean"
-      },
-      "appVersionOverride": {
-        "title": "Emulated Comfort Cloud app version (override)",
-        "description": "Leave this field empty to automatically fetch the latest version from the App Store and if that fails, it will use the last known working value which is hard-coded. Filling in this field will make the entered version used (automatic overwriting of versions from the App Store will not work).",
-        "type": "string",
-        "placeholder": "App version, E.G.: 1.19.0"
-      },
-      "minHeatingTemperature": {
-        "title": "Minimum heating temperature (override)",
-        "description": "The default heating temperature range is 16-30°C. Some Panasonic ACs have an additional heating mode for the range of 8-15°C. If you own such a model, you can use this setting to adjust the minimum value. Leave it empty or undefined to use the default value.",
-        "type": "integer",
-        "placeholder": "16"
-      }
-    }
-  },
-  "layout": [
-	  {
-		  "type": "fieldset",
+	"pluginAlias": "Panasonic AC Platform",
+	"pluginType": "platform",
+	"singular": true,
+	"schema": {
+		"type": "object",
+		"properties": {
+			"name": {
+				"title": "Plugin Name",
+				"description": "This name will be displayed in the Homebridge log.",
+				"type": "string",
+				"default": "Homebridge Panasonic AC Platform",
+				"placeholder": "Homebridge Panasonic AC Platform",
+				"required": true
+			},
+			"email": {
+				"title": "Email",
+				"description": "",
+				"type": "string",
+				"placeholder": "Email",
+				"required": true,
+				"format": "email"
+			},
+			"password": {
+				"title": "Password",
+				"type": "string",
+				"placeholder": "Password",
+				"required": true
+			},
+			"exposeOutdoorUnit": {
+				"title": "Expose Outdoor Unit",
+				"description": "When enabled, the plugin will create a separate accessory for your outdoor unit which will display the (outdoor) temperature it measures. This can be used for monitoring and automation purposes.",
+				"type": "boolean",
+				"default": false
+			},
+			"startSwing" : {
+				"title": "Start Swing",
+				"description": "Swing value on every activation: do nothing, set on, set off.",
+				"type": "string",
+				"default": "false",
+				"required": true,
+				"oneOf": [
+					{ "title": "Do nothing", "enum": ["false"] },
+					{ "title": "Set on", "enum": ["on"] },
+					{ "title": "Set off", "enum": ["off"] }
+				]
+			},
+			"startNanoe" : {
+				"title": "Start Nanoe",
+				"description": "Nanoe value on every activation: do nothing, set on, set off.",
+				"type": "string",
+				"default": "false",
+				"oneOf": [
+					{ "title": "Do nothing", "enum": ["false"] },
+					{ "title": "Set on", "enum": ["on"] },
+					{ "title": "Set off", "enum": ["off"] }
+				],
+				"required": true
+			},
+			"startEcoNavi" : {
+				"title": "Start Eco Navi",
+				"description": "Eco Navi value on every activation: do nothing, set on, set off.",
+				"type": "string",
+				"default": "false",
+				"oneOf": [
+					{ "title": "Do nothing", "enum": ["false"] },
+					{ "title": "Set on", "enum": ["on"] },
+					{ "title": "Set off", "enum": ["off"] }
+				],
+				"required": true
+			},
+			"startInsideCleaning" : {
+				"title": "Start Inside Cleaning",
+				"description": "Inside Cleaning value on every activation: do nothing, set on, set off.",
+				"type": "string",
+				"default": "false",
+				"oneOf": [
+					{ "title": "Do nothing", "enum": ["false"] },
+					{ "title": "Set on", "enum": ["on"] },
+					{ "title": "Set off", "enum": ["off"] }
+				],
+				"required": true
+			},
+			"oscilateSwitch" : {
+				"title": "Oscilate Switch",
+				"description": "Decide what to control the Oscilate switch.",
+				"type": "string",
+				"default": "swing",
+				"oneOf": [
+					{ "title": "Swing Mode", "enum": ["swing"] },
+					{ "title": "Nanoe", "enum": ["nanoe"] },
+					{ "title": "Eco Navi", "enum": ["ecoNavi"] },
+					{ "title": "Inside Cleaning", "enum": ["insideCleaning"] }
+				],
+				"required": true
+			},
+			"maxAttempts" : {
+				"title": "Maximum number of login attempts.",
+				"type": "integer",
+				"description": "0 - infinited. Minimum 0, Maximum 10.",
+				"required": true,
+				"default": 0,
+				"minimum": 0,
+				"maximum": 10
+			},
+			"swingModeDirections" : {
+				"title": "Swing Directions",
+				"description": "This setting controls which swing direction(s) will be activated when 'Oscillate' is switched on.",
+				"type": "string",
+				"default": "LEFT-RIGHT-UP-DOWN",
+				"oneOf": [
+					{ "title": "Left-Right and Up-Down", "enum": ["LEFT-RIGHT-UP-DOWN"] },
+					{ "title": "Left-Right only", "enum": ["LEFT-RIGHT"] },
+					{ "title": "Up-Down only", "enum": ["UP-DOWN"] }
+				],
+				"required": true
+			},
+			"swingModeDefaultPositionLeftRight" : {
+				"title": "Swing Mode Default Position (Left-Right)",
+				"description": "The desired position of the Left-Right flaps when 'Oscillate' is switched off.",
+				"type": "string",
+				"default": "CENTER",
+				"oneOf": [
+					{ "title": "Left", "enum": ["LEFT"] },
+					{ "title": "Center-Left", "enum": ["CENTER-LEFT"] },
+					{ "title": "Center", "enum": ["CENTER"] },
+					{ "title": "Center-Right", "enum": ["CENTER-RIGHT"] },
+					{ "title": "Right", "enum": ["RIGHT"] }
+				],
+				"required": true
+			},
+			"swingModeDefaultPositionUpDown" : {
+				"title": "Swing Mode Default Position (Up-Down)",
+				"description": "The desired position of the Up-Down flaps when 'Oscillate' is switched off.",
+				"type": "string",
+				"default": "CENTER",
+				"oneOf": [
+					{ "title": "Up", "enum": ["UP"] },
+					{ "title": "Center-Up", "enum": ["CENTER-UP"] },
+					{ "title": "Center", "enum": ["CENTER"] },
+					{ "title": "Center-Down", "enum": ["CENTER-DOWN"] },
+					{ "title": "Down", "enum": ["DOWN"] }
+				],
+				"required": true
+			},
+			"debugMode": {
+				"title": "Debug Mode",
+				"description": "Enable to see debug messages in logs. For the function to work, it is also required to enable Debug in Homebridge Settings.",
+				"type": "boolean",
+				"default": false
+			},
+			"suppressOutgoingUpdates": {
+				"title": "Suppress outgoing device updates",
+				"description": "When enabled, changes in the Home app will not be sent to Comfort Cloud. Useful for testing your installation without constantly switching the state of your AC to minimise wear and tear.",
+				"type": "boolean"
+			},
+			"appVersionOverride": {
+				"title": "Emulated Comfort Cloud app version (override)",
+				"description": "Leave this field empty to automatically fetch the latest version from the App Store and if that fails, it will use the last known working value which is hard-coded. Filling in this field will make the entered version used (automatic overwriting of versions from the App Store will not work).",
+				"type": "string",
+				"placeholder": "App version, E.G.: 1.19.0"
+			},
+			"minHeatingTemperature": {
+				"title": "Minimum heating temperature (override)",
+				"description": "The default heating temperature range is 16-30°C. Some Panasonic ACs have an additional heating mode for the range of 8-15°C. If you own such a model, you can use this setting to adjust the minimum value. Leave it empty or undefined to use the default value.",
+				"type": "integer",
+				"placeholder": "16"
+			}
+		}
+	},
+	"layout": [
+		{
+			"type": "fieldset",
 		  "title": "Basic settings",
+		  "description": "Enter your Panasonic Comfort Cloud login details. It is recommended to set up a separate account for Homebridge and share the devices from your main account.",
 		  "expandable": true,
 		  "expanded": true,
 		  "items": [
@@ -195,6 +208,7 @@
 	  {
 		  "type": "fieldset",
 		  "title": "Swing Mode settings",
+		  "description": "The Home app has only one 'Oscillate' switch, but most Panasonic ACs have two swing directions. These settings controls which swing direction(s) will be activated.",
 		  "expandable": true,
 		  "expanded": false,
 		  "items": [
