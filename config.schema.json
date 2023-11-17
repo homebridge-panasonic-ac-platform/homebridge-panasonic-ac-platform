@@ -161,13 +161,6 @@
       "type": "flex",
       "flex-flow": "row wrap",
       "items": [
-        "name"
-      ]
-    },
-    {
-      "type": "flex",
-      "flex-flow": "row wrap",
-      "items": [
         {
           "key": "email",
           "type": "email"
@@ -179,17 +172,11 @@
       ]
     },
     {
-      "type": "flex",
-      "flex-flow": "row wrap",
-      "items": [
-	      "oscilateSwitch"
-      ]
-    },
-    {
       "type": "fieldset",
       "title": "Default Values",
       "expandable": true,
       "items": [
+	      "oscilateSwitch",
 	      "startSwing",
 	      "startNanoe",
 	      "startEcoNavi",
@@ -211,6 +198,7 @@
       "title": "Advanced configuration",
       "expandable": true,
       "items": [
+	"name",      
         "debugMode",
         "suppressOutgoingUpdates",
         "appVersionOverride",
