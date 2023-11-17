@@ -451,6 +451,7 @@ export default class IndoorUnitAccessory {
    
     this.sendDeviceUpdate(
       this.accessory.context.device.deviceGuid, parameters);
+    this.platform.log.info(`${this.accessory.displayName}: ${value === 1 ? "On" : "Off"}`);
   }
 
   async setTargetHeaterCoolerState(value: CharacteristicValue) {
@@ -462,14 +463,17 @@ export default class IndoorUnitAccessory {
     switch (value) {
       case this.platform.Characteristic.TargetHeaterCoolerState.AUTO:
         parameters.operationMode = 0;
+        this.platform.log.info(`${this.accessory.displayName}: Mode Auto`);
         break;
 
       case this.platform.Characteristic.TargetHeaterCoolerState.COOL:
         parameters.operationMode = 2;
+        this.platform.log.info(`${this.accessory.displayName}: Mode Cool`);
         break;
 
       case this.platform.Characteristic.TargetHeaterCoolerState.HEAT:
         parameters.operationMode = 3;
+        this.platform.log.info(`${this.accessory.displayName}: Mode Heat`);
         break;
 
       default:
@@ -492,29 +496,36 @@ export default class IndoorUnitAccessory {
         break;
       case 1:
         parameters.ecoMode = ComfortCloudEcoMode.Quiet;
+        this.platform.log.info(`${this.accessory.displayName}: Quiet Mode`);
         break;
       case 2:
         parameters.ecoMode = ComfortCloudEcoMode.AutoOrManual;
         parameters.fanSpeed = ComfortCloudFanSpeed.One;
+        this.platform.log.info(`${this.accessory.displayName}: Fan speed 1`);
         break;
       case 3:
         parameters.ecoMode = ComfortCloudEcoMode.AutoOrManual;
         parameters.fanSpeed = ComfortCloudFanSpeed.Two;
+        this.platform.log.info(`${this.accessory.displayName}: Fan speed 2`);
         break;
       case 4:
         parameters.ecoMode = ComfortCloudEcoMode.AutoOrManual;
         parameters.fanSpeed = ComfortCloudFanSpeed.Three;
+        this.platform.log.info(`${this.accessory.displayName}: Fan speed 3`);
         break;
       case 5:
         parameters.ecoMode = ComfortCloudEcoMode.AutoOrManual;
         parameters.fanSpeed = ComfortCloudFanSpeed.Four;
+        this.platform.log.info(`${this.accessory.displayName}: Fan speed 4`);
         break;
       case 6:
         parameters.ecoMode = ComfortCloudEcoMode.AutoOrManual;
         parameters.fanSpeed = ComfortCloudFanSpeed.Five;
+        this.platform.log.info(`${this.accessory.displayName}: Fan speed 5`);
         break;
       case 7:
         parameters.ecoMode = ComfortCloudEcoMode.Powerful;
+        this.platform.log.info(`${this.accessory.displayName}: Powerful Mode`);
         break;
       case 8:
         parameters.ecoMode = ComfortCloudEcoMode.AutoOrManual;
@@ -531,7 +542,6 @@ export default class IndoorUnitAccessory {
     const parameters: ComfortCloudDeviceUpdatePayload = {};
 
     if (value === this.platform.Characteristic.SwingMode.SWING_ENABLED) {
-      
       if (this.platform.platformConfig.oscilateSwitch == "nanoe") {
 	      parameters.nanoe = 2;
 	      this.platform.log.info(`${this.accessory.displayName}: Nanoe On`);

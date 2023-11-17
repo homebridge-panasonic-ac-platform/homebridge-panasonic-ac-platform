@@ -81,6 +81,15 @@
 		  { "title": "Inside Cleaning", "enum": ["insideCleaning"] }          
         ],
         "required": true
+
+      "maxAttempts": {
+        "title": "Maximum number of login attempts",
+        "type": "integer",
+        "description": "0 - infinited. Minimum 0, Maximum 10.",
+        "required": true,
+        "default": 0,
+        "minimum": 0,
+        "maximum": 10
       },
       "swingModeDirections" : {
         "title": "Swing Directions",
@@ -135,9 +144,9 @@
       },
       "appVersionOverride": {
         "title": "Emulated Comfort Cloud app version (override)",
-        "description": "The plugin will automatically fetch the latest version number from the App Store. If that fails, it will use the last known working value which is hard-coded. This setting allows you to override both of these if needed. It should normally reflect the latest version on the App Store.",
+        "description": "Leave this field empty to automatically fetch the latest version from the App Store and if that fails, it will use the last known working value which is hard-coded. Filling in this field will make the entered version used (automatic overwriting of versions from the App Store will not work).",
         "type": "string",
-        "placeholder": "1.17.0"
+        "placeholder": "App version, E.G.: 1.19.0"
       },
       "minHeatingTemperature": {
         "title": "Minimum heating temperature (override)",
@@ -202,11 +211,12 @@
       "title": "Advanced configuration",
       "expandable": true,
       "items": [
-	      "debugMode",
-	      "appVersionOverride",
-	      "suppressOutgoingUpdates",
-	      "exposeOutdoorUnit",
-	      "minHeatingTemperature"
+        "debugMode",
+        "suppressOutgoingUpdates",
+        "appVersionOverride",
+        "maxAttempts",
+        "exposeOutdoorUnit",
+        "minHeatingTemperature"
       ]
     }
   ]
