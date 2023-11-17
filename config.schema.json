@@ -171,66 +171,66 @@
 	"layout": [
 		{
 			"type": "fieldset",
-		  "title": "Basic settings",
-		  "description": "Enter your Panasonic Comfort Cloud login details. It is recommended to set up a separate account for Homebridge and share the devices from your main account.",
-		  "expandable": true,
-		  "expanded": true,
-		  "items": [
-			  {
-				  "type": "flex",
-				  "flex-flow": "row wrap",
-				  "items": [
-					  {
-						  "key": "email",
-						  "type": "email"
-					  },
-					  {
-						  "key": "password",
-						  "type": "password"
-					  }
-				  ]
-			  }
-		  ]
-	  },
-	  {
-		  "type": "fieldset",
-		  "title": "Default Values",
-		  "expandable": true,
-		  "expanded": false,
-		  "items": [
-			  "oscilateSwitch",
-			  "startSwing",
-			  "startNanoe",
-			  "startEcoNavi",
-			  "startInsideCleaning"
-		  ]
-	  },
-	  {
-		  "type": "fieldset",
-		  "title": "Swing Mode settings",
-		  "description": "The Home app has only one 'Oscillate' switch, but most Panasonic ACs have two swing directions. These settings controls which swing direction(s) will be activated.",
-		  "expandable": true,
-		  "expanded": false,
-		  "items": [
-			  "swingModeDirections",
-			  "swingModeDefaultPositionLeftRight",
-			  "swingModeDefaultPositionUpDown"
-		  ]
-	  },
-	  {
-		  "type": "fieldset",
-		  "title": "Advanced settings",
-		  "expandable": true,
-		  "expanded": false,
-		  "items": [
-			  "name",
-			  "debugMode",
-			  "suppressOutgoingUpdates",
-			  "appVersionOverride",
-			  "maxAttempts",
-			  "exposeOutdoorUnit",
-			  "minHeatingTemperature"
-		  ]
-	  }
-  ]
+		  	"title": "Basic settings",
+			"description": "Enter your Panasonic Comfort Cloud login details. It is recommended to set up a separate account for Homebridge and share the devices from your main account.",
+			"expandable": true,
+			"expanded": true,
+			"items": [
+				{
+					"type": "flex",
+					"flex-flow": "row wrap",
+					"items": [
+						{
+							"key": "email",
+							"type": "email"
+						},
+						{
+							"key": "password",
+							"type": "password"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "fieldset",
+			"title": "Default Values",
+			"expandable": true,
+			"expanded": false,
+			"items": [
+				"oscilateSwitch",
+				"startSwing",
+				"startNanoe",
+				"startEcoNavi",
+				"startInsideCleaning"
+			]
+		},
+		{
+			"type": "fieldset",
+			"title": "Swing Mode settings",
+			"description": "The Home app has only one 'Oscillate' switch, but most Panasonic ACs have two swing directions. These settings controls which swing direction(s) will be activated.",
+			"expandable": true,
+			"expanded": false,
+			"items": [
+				"swingModeDirections",
+				"swingModeDefaultPositionLeftRight",
+				"swingModeDefaultPositionUpDown"
+			]
+		},
+		{
+			"type": "fieldset",
+			"title": "Advanced settings",
+			"expandable": true,
+			"expanded": false,
+			"items": [
+				"name",
+				"debugMode",
+				"suppressOutgoingUpdates",
+				"appVersionOverride",
+				"maxAttempts",
+				"exposeOutdoorUnit",
+				"minHeatingTemperature"
+			]
+		}
+	]
 }
