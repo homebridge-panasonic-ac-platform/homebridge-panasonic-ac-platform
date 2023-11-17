@@ -3,14 +3,8 @@
 name: Publish package to npm
 
 on:
-  workflow_dispatch:
-     inputs:
-      logLevel:
-        description: 'Log level'     
-        required: true
-        default: 'warning'
-      tags:
-        description: 'Beta test'
+  release:
+    types: [created]
 
 jobs:
   # The prepublishOnly script lints and builds the project (see package.json)
@@ -26,3 +20,4 @@ jobs:
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+          
