@@ -78,11 +78,11 @@
           { "title": "Swing Mode", "enum": ["swing"] },
           { "title": "Nanoe", "enum": ["nanoe"] },
           { "title": "Eco Navi", "enum": ["ecoNavi"] },
-		  { "title": "Inside Cleaning", "enum": ["insideCleaning"] }          
+		    { "title": "Inside Cleaning", "enum": ["insideCleaning"] }          
         ],
         "required": true
-
-      "maxAttempts": {
+      },
+      "maxAttempts" : {
         "title": "Maximum number of login attempts",
         "type": "integer",
         "description": "0 - infinited. Minimum 0, Maximum 10.",
@@ -157,55 +157,66 @@
     }
   },
   "layout": [
-    {
-      "type": "flex",
-      "flex-flow": "row wrap",
-      "items": [
-        {
-          "key": "email",
-          "type": "email"
-        },
-        {
-          "key": "password",
-          "type": "password"
-        }
-      ]
-    },
-    {
-      "type": "fieldset",
-      "title": "Default Values",
-      "expandable": true,
-      "items": [
-	      "oscilateSwitch",
-	      "startSwing",
-	      "startNanoe",
-	      "startEcoNavi",
-	      "startInsideCleaning"
-      ]
-    },
-    {
-      "type": "fieldset",
-      "title": "Swing Mode settings",
-      "expandable": true,
-      "items": [
-	      "swingModeDirections",
-	      "swingModeDefaultPositionLeftRight",
-	      "swingModeDefaultPositionUpDown"
-      ]
-    },
-    {
-      "type": "fieldset",
-      "title": "Advanced configuration",
-      "expandable": true,
-      "items": [
-	"name",      
-        "debugMode",
-        "suppressOutgoingUpdates",
-        "appVersionOverride",
-        "maxAttempts",
-        "exposeOutdoorUnit",
-        "minHeatingTemperature"
-      ]
-    }
+	  {
+		  "type": "fieldset",
+		  "title": "Basic settings",
+		  "expandable": true,
+		  "expanded": true,
+		  "items": [
+			  {
+				  "type": "flex",
+				  "flex-flow": "row wrap",
+				  "items": [
+					  {
+						  "key": "email",
+						  "type": "email"
+					  },
+					  {
+						  "key": "password",
+						  "type": "password"
+					  }
+				  ]
+			  }
+		  ]
+	  },
+	  {
+		  "type": "fieldset",
+		  "title": "Default Values",
+		  "expandable": true,
+		  "expanded": false,
+		  "items": [
+			  "oscilateSwitch",
+			  "startSwing",
+			  "startNanoe",
+			  "startEcoNavi",
+			  "startInsideCleaning"
+		  ]
+	  },
+	  {
+		  "type": "fieldset",
+		  "title": "Swing Mode settings",
+		  "expandable": true,
+		  "expanded": false,
+		  "items": [
+			  "swingModeDirections",
+			  "swingModeDefaultPositionLeftRight",
+			  "swingModeDefaultPositionUpDown"
+		  ]
+	  },
+	  {
+		  "type": "fieldset",
+		  "title": "Advanced settings",
+		  "expandable": true,
+		  "expanded": false,
+		  "items": [
+			  "name",
+			  "debugMode",
+			  "suppressOutgoingUpdates",
+			  "appVersionOverride",
+			  "maxAttempts",
+			  "exposeOutdoorUnit",
+			  "minHeatingTemperature"
+		  ]
+	  }
   ]
 }
