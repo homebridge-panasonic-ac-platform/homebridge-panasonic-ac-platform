@@ -84,7 +84,7 @@
       },
       "debugMode": {
         "title": "Debug Mode",
-        "description": "When enabled, debug messages will be written to the log.",
+        "description": "Enable to see debug messages in logs. For the function to work, it is also required to enable Debug in Homebridge Settings.",
         "type": "boolean",
         "default": false
       },
