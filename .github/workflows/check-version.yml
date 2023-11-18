@@ -1,0 +1,69 @@
+# This workflow checks whether the pull request has a package version
+# number that is greater than the latest released version.
+#
+# The npm registry will return an error if we try to publish the package
+# with the same version number again, and therefore it's helpful
+# to perform this check upstream in the development process.
+#
+# Instead of checking the latest available tag, we could also compare
+# the PR's version number to the latest version of the master branch,
+# but then every single PR would need in introduce a new version.
+#
+# We choose to skip this for now because it allows us to bundle multiple
+# changes/PRs into the next release when it makes sense.
+
+name: Check version number
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+
+jobs:
+  version-check:
+    name: Compare version numbers
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-tags: true
+
+      - name: Get last released version
+        id: get-latest-version
+        # GitHub workflows create a detached ref, see logs:
+        # > You are in 'detached HEAD' state. You can look around, make experimental
+        # > changes and commit them, and you can discard any commits you make in this
+        # > state without impacting any branches by switching back to a branch.
+
+        # We therefore need to locate tags that are technically
+        # unreachable from the current detached commit.
+
+        # We also need to fetch the tags manually because
+        # the 'fetch-tags' option above doesn't seem to work.
+        run: |
+          git fetch --tags
+          latest_version=$(git describe --tags $(git rev-list --tags --max-count=1) | sed 's/^v//')
+          echo "The last released version is $latest_version"
+          echo "latest_version=$latest_version" >> "$GITHUB_OUTPUT"
+
+      - name: Get new version from PR
+        id: get-new-version
+        run: |
+          new_version=$(jq -r .version package.json)
+          echo "The new package version is $new_version"
+          echo "new_version=$new_version" >> "$GITHUB_OUTPUT"
+
+      - name: Compare versions
+        id: compare-versions
+        run: |
+          latest_version="${{ steps.get-latest-version.outputs.latest_version }}"
+          new_version="${{ steps.get-new-version.outputs.new_version }}"
+          if dpkg --compare-versions "$latest_version" "lt-nl" "$new_version"; then
+            echo "::notice title=Version check passed::New package version is greater than the latest release."
+          else
+            echo "::error title=Version check failed::New package version is not greater than the latest release."
+            exit 1
+          fi

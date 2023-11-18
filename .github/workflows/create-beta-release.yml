@@ -1,0 +1,40 @@
+# Creates a new beta release and publishes it to npm.
+
+# The release will be marked as 'pre-release'
+# on GitHub and carry the 'beta' tag on npm.
+
+name: Create and publish beta release
+
+on:
+  workflow_dispatch:
+
+jobs:
+  create-release:
+    name: Create beta release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20.x'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Create GitHub release
+        env:
+          GITHUB_TOKEN: ${{secrets.GH_CLI_TOKEN}}
+        run: |
+          version=$(jq -r .version package.json)
+          echo "The beta release version will be: $version"
+          gh release create "v${version}" --title "v${version} --prerelease"
+
+      - name: Publish to npm
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+        # The prepublishOnly script lints and builds the project (see package.json)
+        run: |
+          npm ci
+          npm publish --tag beta
