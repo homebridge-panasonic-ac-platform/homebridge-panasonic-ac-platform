@@ -1,0 +1,41 @@
+# This workflow tags the latest commit with the version from package.json.
+# Example: If we push or merge changes onto `master` and package.json
+# contains the version "1.3.0", we will tag the commit with "v1.3.0".
+#
+# If the tag already exists on a previous commit, we
+# will force the tag to be moved to the latest commit.
+
+name: Tag latest commit
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  tag-commit:
+    name: Tag commit
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Get version from package.json
+        id: get-version
+        run: |
+          version=$(jq -r .version package.json)
+          echo "The package.json version is: $version"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - name: Create tag
+        id: create-tag
+        run: |
+          tag="v${{ steps.get-version.outputs.version }}"
+          echo "Tagging commit with: ${tag}"
+          git tag --force "${tag}"
+
+      - name: Push tag
+        id: push-tag
+        run: |
+          git push origin "${tag}"
