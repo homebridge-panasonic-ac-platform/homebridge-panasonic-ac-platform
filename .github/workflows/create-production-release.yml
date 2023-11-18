@@ -1,7 +1,7 @@
-# Creates a new production release and publishes it to npm
+# Creates a new production release and publishes it to npm.
 
-# The release will be marked as 'latest release' on GitHub
-# and carry the 'latest' tag on npm.
+# The release will be marked as 'latest release'
+# on GitHub and carry the 'latest' tag on npm.
 
 name: Create and publish production release
 
@@ -9,24 +9,32 @@ on:
   workflow_dispatch:
 
 jobs:
-  - create-release:
-    env:
-      GITHUB_TOKEN: ${{secrets.GH_CLI_TOKEN}}
-    run: |
-      next_version=$(jq -r .version package.json)
-      echo "The production release version will be: $next_version"
-      gh release create "v${next_version}" --title "v${next_version} --latest"
-
-  # The prepublishOnly script lints and builds the project (see package.json)
-  - publish-npm:
+  create-release:
+    name: Create production release
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node
       - uses: actions/setup-node@v3
         with:
           node-version: '20.x'
           registry-url: 'https://registry.npmjs.org'
-      - run: npm ci
-      - run: npm publish
+
+      - name: Create GitHub release
+        env:
+          GITHUB_TOKEN: ${{secrets.GH_CLI_TOKEN}}
+        run: |
+          version=$(jq -r .version package.json)
+          echo "The beta release version will be: $version"
+          gh release create "v${version}" --title "v${version} --latest"
+
+      - name: Publish to npm
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+        # The prepublishOnly script lints and builds the project (see package.json)
+        run: |
+          npm ci
+          npm publish
