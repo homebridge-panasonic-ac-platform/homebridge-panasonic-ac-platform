@@ -144,14 +144,14 @@ export default class IndoorUnitAccessory {
       
       if (deviceStatus.insideTemperature < 126) {
 	      this.service.updateCharacteristic(this.platform.Characteristic.CurrentTemperature, deviceStatus.insideTemperature);
-	      this.platform.log.info(`Indoor temperature: '${deviceStatus.insideTemperature}'`);
+	      this.platform.log.debug(`Indoor temperature: '${deviceStatus.insideTemperature}'`);
       } else {
         this.platform.log.info('Indoor temperature: is not available');
         if (deviceStatus.outTemperature < 126) {
 		this.service.updateCharacteristic(this.platform.Characteristic.CurrentTemperature, deviceStatus.outTemperature);
-		this.platform.log.info(`Outdoor temperature: '${deviceStatus.outTemperature}'`);
+		this.platform.log.debug(`Outdoor temperature: '${deviceStatus.outTemperature}'`);
         } else {
-		this.platform.log.info('Indoor and Outdoor temperature are not available - setting default temperature');		
+		this.platform.log.debug('Indoor and Outdoor temperature are not available - setting default temperature');		
 		this.service.updateCharacteristic(this.platform.Characteristic.CurrentTemperature, (deviceStatus.operationMode === 3) ? 30 : 8);			  
         }
       } 
