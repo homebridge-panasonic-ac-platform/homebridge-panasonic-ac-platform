@@ -1,11 +1,13 @@
-# This workflow tags the latest commit with the version from package.json.
+# This workflow tags the latest commit with the version
+# from package.json if that tag doesn't yet exist.
+#
+# The created tag can be used by deployment workflows
+# to create releases and publish the plugin to npm.
+#
 # Example: If we push or merge changes onto `master` and package.json
 # contains the version "1.3.0", we will tag the commit with "v1.3.0".
-#
-# If the tag already exists on a previous commit, we
-# will force the tag to be moved to the latest commit.
 
-name: Tag latest commit
+name: Tag commit
 
 on:
   push:
@@ -16,11 +18,9 @@ jobs:
   tag-commit:
     name: Tag commit
     runs-on: ubuntu-latest
+    uses: actions/checkout@v4
 
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-
       - name: Get version from package.json
         id: get-version
         run: |
@@ -38,7 +38,7 @@ jobs:
         run: |
           tag="v${{ steps.get-version.outputs.version }}"
           echo "Tagging commit with: ${tag}"
-          git tag --force "${tag}"
+          git tag "${tag}"
 
       - name: Push tag
         id: push-tag
