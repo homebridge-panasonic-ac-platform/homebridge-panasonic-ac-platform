@@ -103,6 +103,10 @@ To keep things simple and easy to maintain, we choose a light-weight approach wi
 #### Merging pull requests
 Besides reviewing the proposed changes, check the results of the workflow runs. A failing version check should only be ignored if the pull request only contains non-functional changes, like documentation.
 
+Once a pull request has been merged, the feature branch will automatically be deleted by GitHub as configured in the repository settings.
+
+As stated above, the workflows will be run for the respective tag on the `master` branch. This helps to keep our repository clean and better manageable.
+
 #### Workflows
 
 There are two workflows for publishing releases to npm:
