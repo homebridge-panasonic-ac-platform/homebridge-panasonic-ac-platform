@@ -110,7 +110,13 @@ git push -u origin branch-name
 ### Create a pull request
 Ask collaborators for feedback on your changes. Include a summary of the changes and what problem they solve. You can use images, links, and tables to help convey this information.
 
-If your pull request addresses an issue, link the issue so that issue stakeholders are aware of the pull request and vice versa.
+If your pull request (PR) addresses an issue, link the issue so that issue stakeholders are aware of the pull request and vice versa.
+
+After submitting your pull request, only add additional commits if it's to fix issues or to incorporate feedback. If you notice that things are missing, you have two options:
+1) Inform reviewers that more commits are coming and they should hold off reviewing.
+2) Delete your PR and resubmit it at a later time when the proposed changes are complete.
+
+This prevents scope creep and helps reviewers to keep an overview of changes. Aim for PRs to be complete and well-tested – they are not a development or test environment.
 
 ### Check workflow runs
 After publishing your pull request, pay attention to the workflows that are run.
@@ -132,8 +138,8 @@ To keep things simple and easy to maintain, we choose a light-weight approach wi
 
 - All releases are created from the `master` branch.
 - Feature branches are considered work in progress until they are merged.
-- Every pull request should introduce a new version number. There is a workflow in place that checks this. This ensures that every change is versioned and we don't try to publish the same package twice. Exceptions apply to non-functional changes like documentation.
-- When a PR is merged, a workflow will automatically create a tag for the latest commit. The tag will reflect the version number in `package.json`. This tag can be used when running the release workflows (see below).
+- Any pull request should introduce or contain a version number that is greater than the latest release. There is a workflow in place that checks this. This ensures that every change is versioned and we don't try to publish the same package twice. Exceptions apply to non-functional changes like documentation.
+- When a release workflow is run, it will create a tag which will reflect the version number in `package.json`. This tag can be used when running the release workflows (see below).
 - If the tag exists already (see exception above), no action is taken. But in this case re-running the release workflow would result in an error.
 - When a release workflow is run, it will publish the package to npm and create a release on GitHub.
 
