@@ -27,7 +27,44 @@ git checkout -b branch-name
 ```
 
 ### Make changes
-On your branch, make any desired and necessary changes.
+On your branch, make any desired and necessary changes. Do not edit any JavaScript files (`.js`) in the `dist` directory.
+
+Instead, change the TypeScript files (`.ts`) in the `src` directory and then build the project using the following commands:
+
+```bash
+# Build once
+npm run build
+
+# Build and watch changes
+npm run build-watch
+```
+
+### Test changes
+
+To test your changes locally, copy the entire project directory into the `node_modules` directory of your Homebridge installation. This is where all plugins are stored.
+
+The way to achieve this will vary by platform and your development setup. If you run Homebridge in Docker container and you edit the project on the same machine, you can use the following script to do the copying.
+
+```bash
+# Create the copy script
+touch copy-to-homebridge.sh
+chmod u+x copy-to-homebridge.sh
+nano copy-to-homebridge.sh
+```
+
+Content of the script:
+
+```bash
+#!/bin/bash
+
+REPOSITORY_DIR=~/projects/homebridge-panasonic-ac-platform
+HOMEBRIDGE_PLUGIN_DIR=~/path-to-your-homebridge-volume/node_modules/homebridge-panasonic-ac-platform
+
+rm -rf $HOMEBRIDGE_PLUGIN_DIR
+mkdir -p $HOMEBRIDGE_PLUGIN_DIR
+
+rsync -ar --exclude='.git' $REPOSITORY_DIR $HOMEBRIDGE_PLUGIN_DIR
+```
 
 ### Increase version number
 Since you are introducing new changes which would find their way into the next release, you need to increase the version number in the `package.json` and `package-lock.json` files.
