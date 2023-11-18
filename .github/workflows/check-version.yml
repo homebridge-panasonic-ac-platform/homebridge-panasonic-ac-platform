@@ -1,10 +1,10 @@
 # This workflow checks whether the pull request has a package version
 # number that is greater than the latest released version.
-
+#
 # The npm registry will return an error if we try to publish the package
 # with the same version number again, and therefore it's helpful
 # to perform this check upstream in the development process.
-
+#
 # Instead of checking the latest available tag, we could also compare
 # the PR's version number to the latest version of the master branch,
 # but then every single PR would need in introduce a new version.
@@ -23,17 +23,13 @@ on:
 jobs:
   version-check:
     name: Compare version numbers
-
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out code
+      - name: Check out repository
         uses: actions/checkout@v4
         with:
           fetch-tags: true
-
-      - name: Set up Node
-        uses: actions/setup-node@v3
 
       - name: Get last released version
         id: get-latest-version
