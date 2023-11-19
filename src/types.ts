@@ -67,11 +67,11 @@ export interface ComfortCloudDevice {
   dryMode: boolean;
   coolMode: boolean;
   ecoNavi: boolean;
+  ecoFunction: number;
   powerfulMode: boolean;
   quietMode: boolean;
   airSwingLR: boolean;
   autoSwingUD: boolean;
-  ecoFunction: number;
   temperatureUnit: number;
   modeAvlList: {
     autoMode: number;
@@ -115,6 +115,10 @@ export interface ComfortCloudDeviceStatus {
   airSwingLR: number;
   airSwingUD: number;
   temperatureUnit: string;
+  nanoe: number;
+  ecoNavi: number;
+  ecoFunctionData: number;
+  insideCleaning: number;
 }
 
 // Set device status
@@ -128,4 +132,8 @@ export interface ComfortCloudDeviceUpdatePayload {
   airSwingLR?: number;
   airSwingUD?: number;
   temperatureSet?: number;
+  nanoe?: number;
+  ecoNavi?: number;
+  ecoFunctionData?: number;
+  insideCleaning?: number;
 }

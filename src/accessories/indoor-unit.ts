@@ -138,16 +138,29 @@ export default class IndoorUnitAccessory {
       }
 
       // Current Temperature
-      // Note: Only update the temperature when the heat pump is reporting a valid temperature.
-      // Otherwise it will just incorrectly report zero to HomeKit.
-      if (deviceStatus.insideTemperature >= 126) {
-        // Temperature of 126 from the API = null/failure
-        this.platform.log.error('Temperature state is not available');
-      } else {
+      // If the temperature of the indoor unit is not available, the temperature of the
+      // outdoor unit will be used. If both are not available, the default values will
+      // be used: 8°C for heating and 30°C for cooling.
+      // Temperature of 126 from the API = null/failure
+
+      if (deviceStatus.insideTemperature < 126) {
         this.service.updateCharacteristic(
-          this.platform.Characteristic.CurrentTemperature,
-          deviceStatus.insideTemperature,
-        );
+          this.platform.Characteristic.CurrentTemperature, deviceStatus.insideTemperature);
+        this.platform.log.debug(`Indoor temperature: '${deviceStatus.insideTemperature}'`);
+      } else {
+        this.platform.log.debug('Indoor temperature: is not available');
+        if (deviceStatus.outTemperature < 126) {
+          this.service.updateCharacteristic(
+            this.platform.Characteristic.CurrentTemperature, deviceStatus.outTemperature);
+          this.platform.log.debug(`Outdoor temperature: '${deviceStatus.outTemperature}'`);
+        } else {
+          this.platform.log.debug(
+            'Indoor and Outdoor temperature are not available - setting default temperature');
+          this.service.updateCharacteristic(
+            this.platform.Characteristic.CurrentTemperature,
+            (deviceStatus.operationMode === 3) ? 30 : 8,
+          );
+        }
       }
 
       // Outdoor temperature
@@ -298,23 +311,37 @@ export default class IndoorUnitAccessory {
         .updateValue(sliderValue);
 
       // Swing Mode
-      if (
-        (
-          deviceStatus.fanAutoMode === ComfortCloudFanAutoMode.AirSwingAuto
-          && this.platform.platformConfig.swingModeDirections
-          === SwingModeDirection.LeftRightAndUpDown
-        )
-        || (
-          deviceStatus.fanAutoMode === ComfortCloudFanAutoMode.AirSwingLR
-          && this.platform.platformConfig.swingModeDirections
-          === SwingModeDirection.LeftRightOnly
-        )
-        || (
-          deviceStatus.fanAutoMode === ComfortCloudFanAutoMode.AirSwingUD
-          && this.platform.platformConfig.swingModeDirections
-          === SwingModeDirection.UpDownOnly
-        )
-      ) {
+      if (this.platform.platformConfig.oscilateSwitch === 'nanoe') {
+        if (deviceStatus.nanoe === 2) {
+          this.service.getCharacteristic(this.platform.Characteristic.SwingMode)
+            .updateValue(this.platform.Characteristic.SwingMode.SWING_ENABLED);
+        } else {
+          this.service.getCharacteristic(this.platform.Characteristic.SwingMode)
+            .updateValue(this.platform.Characteristic.SwingMode.SWING_DISABLED);
+        }
+      } else if (this.platform.platformConfig.oscilateSwitch === 'ecoNavi') {
+        if (deviceStatus.ecoNavi === 2 || deviceStatus.ecoFunctionData === 2) {
+          this.service.getCharacteristic(this.platform.Characteristic.SwingMode)
+            .updateValue(this.platform.Characteristic.SwingMode.SWING_ENABLED);
+        } else {
+          this.service.getCharacteristic(this.platform.Characteristic.SwingMode)
+            .updateValue(this.platform.Characteristic.SwingMode.SWING_DISABLED);
+        }
+      } else if (this.platform.platformConfig.oscilateSwitch === 'insideCleaning') {
+        if (deviceStatus.insideCleaning === 2) {
+          this.service.getCharacteristic(this.platform.Characteristic.SwingMode)
+            .updateValue(this.platform.Characteristic.SwingMode.SWING_ENABLED);
+        } else {
+          this.service.getCharacteristic(this.platform.Characteristic.SwingMode)
+            .updateValue(this.platform.Characteristic.SwingMode.SWING_DISABLED);
+        }
+      } else if ((deviceStatus.fanAutoMode === ComfortCloudFanAutoMode.AirSwingAuto
+        && this.platform.platformConfig.swingModeDirections
+        === SwingModeDirection.LeftRightAndUpDown)
+        || (deviceStatus.fanAutoMode === ComfortCloudFanAutoMode.AirSwingLR
+          && this.platform.platformConfig.swingModeDirections === SwingModeDirection.LeftRightOnly)
+        || (deviceStatus.fanAutoMode === ComfortCloudFanAutoMode.AirSwingUD
+          && this.platform.platformConfig.swingModeDirections === SwingModeDirection.UpDownOnly)) {
         this.service.getCharacteristic(this.platform.Characteristic.SwingMode)
           .updateValue(this.platform.Characteristic.SwingMode.SWING_ENABLED);
       } else {
@@ -374,6 +401,70 @@ export default class IndoorUnitAccessory {
     const parameters: ComfortCloudDeviceUpdatePayload = {
       operate: value === this.platform.Characteristic.Active.ACTIVE ? 1 : 0,
     };
+
+    // Swing Mode
+    if (this.platform.platformConfig.startSwing === 'on') {
+      switch (this.platform.platformConfig.swingModeDirections) {
+        case SwingModeDirection.LeftRightAndUpDown:
+          parameters.fanAutoMode = ComfortCloudFanAutoMode.AirSwingAuto;
+          this.platform.log.debug(
+            `${this.accessory.displayName}: Swing mode Left/Right and Up/Down`);
+          break;
+        case SwingModeDirection.LeftRightOnly:
+          parameters.fanAutoMode = ComfortCloudFanAutoMode.AirSwingLR;
+          parameters.airSwingUD = this.swingModeUpDownToComfortCloudPayloadValue(
+            this.platform.platformConfig.swingModeDefaultPositionUpDown);
+          this.platform.log.debug(`${this.accessory.displayName}: Swing mode Left/Right`);
+          break;
+        case SwingModeDirection.UpDownOnly:
+          parameters.fanAutoMode = ComfortCloudFanAutoMode.AirSwingUD;
+          parameters.airSwingLR = this.swingModeLeftRightToComfortCloudPayloadValue(
+            this.platform.platformConfig.swingModeDefaultPositionLeftRight);
+          this.platform.log.debug(`${this.accessory.displayName}: Swing mode Up/Down`);
+          break;
+        default:
+          parameters.fanAutoMode = ComfortCloudFanAutoMode.AirSwingAuto;
+          this.platform.log.debug(`${this.accessory.displayName}: Swing mode Auto`);
+          break;
+      }
+    } else if (this.platform.platformConfig.startSwing === 'off') {
+      parameters.fanAutoMode = ComfortCloudFanAutoMode.Disabled;
+      parameters.airSwingLR = this.swingModeLeftRightToComfortCloudPayloadValue(
+        this.platform.platformConfig.swingModeDefaultPositionLeftRight);
+      parameters.airSwingUD = this.swingModeUpDownToComfortCloudPayloadValue(
+        this.platform.platformConfig.swingModeDefaultPositionUpDown);
+      this.platform.log.debug(`${this.accessory.displayName}: Swing mode Off`);
+    }
+
+    // Nanoe
+    if (this.platform.platformConfig.startNanoe === 'on') {
+      parameters.nanoe = 2;
+      this.platform.log.debug('Nanoe on');
+    } else if (this.platform.platformConfig.startNanoe === 'off') {
+      parameters.nanoe = 1;
+      this.platform.log.debug('Nanoe off');
+    }
+
+    // Eco Navi
+    if (this.platform.platformConfig.startEcoNavi === 'on') {
+      parameters.ecoNavi = 2;
+      parameters.ecoFunctionData = 2;
+      this.platform.log.debug('Eco Navi on');
+    } else if (this.platform.platformConfig.startEcoNavi === 'off') {
+      parameters.ecoNavi = 1;
+      parameters.ecoFunctionData = 1;
+      this.platform.log.debug('Eco Navi off');
+    }
+
+    // Inside Cleaning
+    if (this.platform.platformConfig.startInsideCleaning === 'on') {
+      parameters.insideCleaning = 2;
+      this.platform.log.debug('Inside cleaning on');
+    } else if (this.platform.platformConfig.startInsideCleaning === 'off') {
+      parameters.insideCleaning = 1;
+      this.platform.log.debug('Inside cleaning off');
+    }
+
     this.sendDeviceUpdate(
       this.accessory.context.device.deviceGuid, parameters);
     this.platform.log.debug(`${this.accessory.displayName}: ${value === 1 ? 'On' : 'Off'}`);
@@ -473,37 +564,61 @@ export default class IndoorUnitAccessory {
     if (value === this.platform.Characteristic.SwingMode.SWING_ENABLED) {
       // Activate swing mode
       // and (if needed) reset one set of fins to their default position.
-      switch (this.platform.platformConfig.swingModeDirections) {
-        case SwingModeDirection.LeftRightAndUpDown:
-          parameters.fanAutoMode = ComfortCloudFanAutoMode.AirSwingAuto;
-          this.platform.log.debug(
-            `${this.accessory.displayName}: Swing mode Left/Right and Up/Down`);
-          break;
-        case SwingModeDirection.LeftRightOnly:
-          parameters.fanAutoMode = ComfortCloudFanAutoMode.AirSwingLR;
-          parameters.airSwingUD = this.swingModeUpDownToComfortCloudPayloadValue(
-            this.platform.platformConfig.swingModeDefaultPositionUpDown);
-          this.platform.log.debug(`${this.accessory.displayName}: Swing mode Left/Right`);
-          break;
-        case SwingModeDirection.UpDownOnly:
-          parameters.fanAutoMode = ComfortCloudFanAutoMode.AirSwingUD;
-          parameters.airSwingLR = this.swingModeLeftRightToComfortCloudPayloadValue(
-            this.platform.platformConfig.swingModeDefaultPositionLeftRight);
-          this.platform.log.debug(`${this.accessory.displayName}: Swing mode Up/Down`);
-          break;
-        default:
-          parameters.fanAutoMode = ComfortCloudFanAutoMode.AirSwingAuto;
-          this.platform.log.debug(`${this.accessory.displayName}: Swing mode Auto`);
-          break;
+      if (this.platform.platformConfig.oscilateSwitch === 'nanoe') {
+        parameters.nanoe = 2;
+        this.platform.log.debug(`${this.accessory.displayName}: Nanoe On`);
+      } else if (this.platform.platformConfig.oscilateSwitch === 'ecoNavi') {
+        parameters.ecoNavi = 2;
+        parameters.ecoFunctionData = 2;
+        this.platform.log.debug(`${this.accessory.displayName}: Eco Navi On`);
+      } else if (this.platform.platformConfig.oscilateSwitch === 'insideCleaning') {
+        parameters.insideCleaning = 2;
+        this.platform.log.debug(`${this.accessory.displayName}: Inside Cleaning On`);
+      } else {
+        switch (this.platform.platformConfig.swingModeDirections) {
+          case SwingModeDirection.LeftRightAndUpDown:
+            parameters.fanAutoMode = ComfortCloudFanAutoMode.AirSwingAuto;
+            this.platform.log.debug(
+              `${this.accessory.displayName}: Swing mode Left/Right and Up/Down`);
+            break;
+          case SwingModeDirection.LeftRightOnly:
+            parameters.fanAutoMode = ComfortCloudFanAutoMode.AirSwingLR;
+            parameters.airSwingUD = this.swingModeUpDownToComfortCloudPayloadValue(
+              this.platform.platformConfig.swingModeDefaultPositionUpDown);
+            this.platform.log.debug(`${this.accessory.displayName}: Swing mode Left/Right`);
+            break;
+          case SwingModeDirection.UpDownOnly:
+            parameters.fanAutoMode = ComfortCloudFanAutoMode.AirSwingUD;
+            parameters.airSwingLR = this.swingModeLeftRightToComfortCloudPayloadValue(
+              this.platform.platformConfig.swingModeDefaultPositionLeftRight);
+            this.platform.log.debug(`${this.accessory.displayName}: Swing mode Up/Down`);
+            break;
+          default:
+            parameters.fanAutoMode = ComfortCloudFanAutoMode.AirSwingAuto;
+            this.platform.log.debug(`${this.accessory.displayName}: Swing mode Auto`);
+            break;
+        }
       }
+
     } else if (value === this.platform.Characteristic.SwingMode.SWING_DISABLED) {
-      // Deactivate swing mode and reset fins to default positions.
-      parameters.fanAutoMode = ComfortCloudFanAutoMode.Disabled;
-      parameters.airSwingLR = this.swingModeLeftRightToComfortCloudPayloadValue(
-        this.platform.platformConfig.swingModeDefaultPositionLeftRight);
-      parameters.airSwingUD = this.swingModeUpDownToComfortCloudPayloadValue(
-        this.platform.platformConfig.swingModeDefaultPositionUpDown);
-      this.platform.log.debug(`${this.accessory.displayName}: Swing mode Off`);
+      if (this.platform.platformConfig.oscilateSwitch === 'nanoe') {
+        parameters.nanoe = 1;
+        this.platform.log.debug(`${this.accessory.displayName}: Nanoe Off`);
+      } else if (this.platform.platformConfig.oscilateSwitch === 'ecoNavi') {
+        parameters.ecoNavi = 1;
+        parameters.ecoFunctionData = 1;
+        this.platform.log.debug(`${this.accessory.displayName}: Eco Navi Off`);
+      } else if (this.platform.platformConfig.oscilateSwitch === 'insideCleaning') {
+        parameters.insideCleaning = 0;
+        this.platform.log.debug(`${this.accessory.displayName}: Inside Cleaning Off`);
+      } else {
+        parameters.fanAutoMode = ComfortCloudFanAutoMode.Disabled;
+        parameters.airSwingLR = this.swingModeLeftRightToComfortCloudPayloadValue(
+          this.platform.platformConfig.swingModeDefaultPositionLeftRight);
+        parameters.airSwingUD = this.swingModeUpDownToComfortCloudPayloadValue(
+          this.platform.platformConfig.swingModeDefaultPositionUpDown);
+        this.platform.log.debug(`${this.accessory.displayName}: Swing mode Off`);
+      }
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
