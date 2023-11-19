@@ -79,7 +79,6 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
   }
 
   async configurePlugin() {
-    await this.getAppVersion();
     await this.loginAndDiscoverDevices();
   }
 
@@ -121,6 +120,13 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
       this.log.error('Password is not configured - aborting plugin start. '
         + 'Please set the field `password` in your config and restart Homebridge.');
       return;
+    }
+
+    if (this.noOfFailedLoginAttempts % 5 === 0) {
+      // Check for a new Comfort Cloud App Store version.
+      // This condition will apply on the first run (0 % 0 = 0)
+      // and subsequently on every fifth run (5, 10, 15, etc).
+      await this.getAppVersion();
     }
 
     this.log.info('Attempting to log into Comfort Cloud.');
@@ -172,10 +178,6 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
             + 'the Panasonic Comfort Cloud app are accepted. '
             + 'Restart Homebridge if you change plugin settings.',
           );
-
-          if ((this.noOfFailedLoginAttempts === 1) || (this.noOfFailedLoginAttempts %5 === 0)) {
-            this.getAppVersion.bind(this);
-          }
 
           this._loginRetryTimeout = setTimeout(
             this.loginAndDiscoverDevices.bind(this),
