@@ -26,10 +26,26 @@ jobs:
       - name: Create GitHub release
         env:
           GITHUB_TOKEN: ${{secrets.GH_CLI_TOKEN}}
+        # 1) If the release already exists as a draft, it means that we
+        # published the package as a beta release before. Because the intent
+        # of this workflow is to publish a production release, we will remove
+        # the --prelease flag and mark it as latest release.
+        #
+        # 2) If the release doesn't exist yet, we will simply create a new
+        # production release. Reason: We might not want to create a draft
+        # release for every single version, for example when we just publish
+        # hotfixes.
         run: |
           version=$(jq -r .version package.json)
-          echo "The beta release version will be: $version"
-          gh release create "v${version}" --title "v${version}" --latest
+          echo "The production release version will be: $version"
+          tag="v${version}"
+          draft_exists=$(gh release view "$tag" --json isPrerelease --jq ".isPrerelease" 2>/dev/null)
+
+          if "$draft_exists" ; then
+            gh release edit "$tag" --prerelease=false --latest
+          else
+            gh release create "$tag" --title "$tag" --latest
+          fi
 
       - name: Publish to npm
         env:
