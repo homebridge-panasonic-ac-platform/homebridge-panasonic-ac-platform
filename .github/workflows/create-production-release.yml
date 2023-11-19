@@ -47,10 +47,24 @@ jobs:
             gh release create "$tag" --title "$tag" --latest
           fi
 
+      - name: Check if (beta) version exists on npm
+        id: check-beta
+        run: |
+          version=$(jq -r .version package.json)
+          npm_version=$(npm view .@1.7.3 "$version")
+          echo "npm_version=$npm_version" >> "$GITHUB_OUTPUT"
+
       - name: Publish to npm
+        if: ${{ ! steps.check-beta.outputs.npm_version }}
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
         # The prepublishOnly script lints and builds the project (see package.json)
         run: |
           npm ci
           npm publish
+
+      - name: Tag existing version with 'latest'
+        if: ${{ steps.check-beta.outputs.npm_version }}
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+        run: npm dist-tag add .@${{ steps.check-beta.outputs.npm_version }} latest
