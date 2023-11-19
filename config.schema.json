@@ -33,6 +33,15 @@
         "type": "boolean",
         "default": false
       },
+      "maxAttempts": {
+        "title": "Maximum number of login attempts",
+        "type": "integer",
+        "description": "0 - infinite. Minimum 0, Maximum 10.",
+        "required": true,
+        "default": 0,
+        "minimum": 0,
+        "maximum": 10
+      },
       "swingModeDirections" : {
         "title": "Swing Directions",
         "description": "The Home app only has one 'Oscillate' switch, but most Panasonic ACs have two swing directions. This setting controls which swing direction(s) will be activated when 'Oscillate' is switched on.",
@@ -75,7 +84,7 @@
       },
       "debugMode": {
         "title": "Debug Mode",
-        "description": "When enabled, debug messages will be written to the log.",
+        "description": "Enable to see debug messages in logs. For the function to work, it is also required to enable Debug in Homebridge Settings.",
         "type": "boolean",
         "default": false
       },
@@ -86,9 +95,9 @@
       },
       "appVersionOverride": {
         "title": "Emulated Comfort Cloud app version (override)",
-        "description": "The plugin will automatically fetch the latest version number from the App Store. If that fails, it will use the last known working value which is hard-coded. This setting allows you to override both of these if needed. It should normally reflect the latest version on the App Store.",
+        "description": "Leave this field empty to automatically fetch the latest version from the App Store and if that fails, it will use the last known working value which is hard-coded. Filling in this field will make the entered version used (automatic overwriting of versions from the App Store will not work).",
         "type": "string",
-        "placeholder": "1.17.0"
+        "placeholder": "App version, E.G.: 1.19.0"
       },
       "minHeatingTemperature": {
         "title": "Minimum heating temperature (override)",
@@ -156,6 +165,7 @@
         "debugMode",
         "suppressOutgoingUpdates",
         "appVersionOverride",
+        "maxAttempts",
         "minHeatingTemperature"
       ]
     }

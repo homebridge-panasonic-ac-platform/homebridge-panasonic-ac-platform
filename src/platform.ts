@@ -17,7 +17,6 @@ import PanasonicPlatformLogger from './logger';
 import { PanasonicAccessoryContext, PanasonicPlatformConfig } from './types';
 import {
   LOGIN_RETRY_BASE_DELAY,
-  MAX_NO_OF_LOGIN_RETRIES,
   PLATFORM_NAME,
   PLUGIN_NAME,
 } from './settings';
@@ -98,7 +97,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
         // followed by ., followed by one or more digit(s)
         const matches = $(p).text().match(/\d+(.)\d+(.)\d+/);
         if (Array.isArray(matches)) {
-          this.log.info(`The latest app version is ${matches[0]}.`);
+          this.log.info(`The latest App Store version is ${matches[0]}.`);
           this.platformConfig.latestAppVersion = matches[0];
         } else {
           this.log.error('Could not find latest app version. '
@@ -136,29 +135,47 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
         this.log.error('Login failed. Skipping device discovery.');
         this.noOfFailedLoginAttempts++;
 
-        if (this.noOfFailedLoginAttempts <= MAX_NO_OF_LOGIN_RETRIES) {
-          /**
-           * | Login retry | Delay (in mins) | Total time lapsed
-           * | 1  | 6  | 6
-           * | 2  | 12 | 18
-           * | 3  | 18 | 36
-           * | 4  | 24 | 60
-           * | 5  | 30 | 90
-           * | 6  | 36 | 126
-           * | 7  | 42 | 168
-           * | 8  | 48 | 216
-           * | 9  | 54 | 270
-           * | 10 | 60 | 330 (= 5h 30mins)
-           */
-          const nextRetryDelay = LOGIN_RETRY_BASE_DELAY * this.noOfFailedLoginAttempts;
+        /**
+        * | Login retry | Delay (in mins) | Total time lapsed
+        * | 1  | 6  | 6
+        * | 2  | 12 | 18
+        * | 3  | 18 | 36
+        * | 4  | 24 | 60
+        * | 5  | 30 | 90
+        * | 6  | 36 | 126
+        * | 7  | 42 | 168
+        * | 8  | 48 | 216
+        * | 9  | 54 | 270
+        * | 10 | 60 | 330 (= 5h 30mins)
+        */
+
+        const maxAttempts = this.platformConfig.maxAttempts || 0;
+
+        if (maxAttempts === 0
+          || this.noOfFailedLoginAttempts <= maxAttempts) {
+
+          const nextRetryDelay = Math.min(LOGIN_RETRY_BASE_DELAY
+            * this.noOfFailedLoginAttempts, 60000);
 
           this.log.error(
-            'The Comfort Cloud server might be experiencing issues at the moment. '
-            + `The plugin will try to log in again in ${nextRetryDelay / 60} minutes. `
-            + 'If the issue persists, make sure you configured the correct email and password '
-            + 'and run the latest version of the plugin. '
-            + 'Restart Homebridge when you change your config.',
+            'The Comfort Cloud server might be experiencing issues at the moment.'
+            + `The plugin will try to log in again in ${nextRetryDelay / 60} minutes.`,
           );
+
+          this.log.error('If the issue persists, make sure: '
+            + 'configured is the correct email and password in plugin settings,'
+            + 'field "Emulated Comfort Cloud app version (override)" in settings '
+            + 'is empty or have the latest version of Panasonic Comfort Cloud '
+            + 'from the App Store (like 1.19.0), '
+            + 'the latest version of this plugin is installed, '
+            + 'all terms and conditions after logging into '
+            + 'the Panasonic Comfort Cloud app are accepted. '
+            + 'Restart Homebridge if you change plugin settings.',
+          );
+
+          if ((this.noOfFailedLoginAttempts === 1) || (this.noOfFailedLoginAttempts %5 === 0)) {
+            this.getAppVersion.bind(this);
+          }
 
           this._loginRetryTimeout = setTimeout(
             this.loginAndDiscoverDevices.bind(this),
@@ -166,9 +183,8 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
           );
         } else {
           this.log.error(
-            'Maximum number of login retries reached '
-            + `(${MAX_NO_OF_LOGIN_RETRIES}). `
-            + 'Check your login details and restart Homebridge to reset the plugin.',
+            + 'Maximum number of login retries reached.'
+            + 'Check your login details and restart Homebridge.',
           );
         }
       });
