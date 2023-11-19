@@ -29,7 +29,7 @@ jobs:
         run: |
           version=$(jq -r .version package.json)
           echo "The beta release version will be: $version"
-          gh release create "v${version}" --title "v${version} --latest"
+          gh release create "v${version}" --title "v${version}" --latest
 
       - name: Publish to npm
         env:
