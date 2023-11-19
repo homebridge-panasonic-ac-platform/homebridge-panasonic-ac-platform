@@ -18,9 +18,11 @@ jobs:
   tag-commit:
     name: Tag commit
     runs-on: ubuntu-latest
-    uses: actions/checkout@v4
 
     steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
       - name: Get version from package.json
         id: get-version
         run: |
