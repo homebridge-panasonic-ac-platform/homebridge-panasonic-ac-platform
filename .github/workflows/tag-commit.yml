@@ -22,8 +22,6 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
-        with:
-          fetch-tags: true
 
       - name: Get version from package.json
         id: get-version
@@ -42,6 +40,7 @@ jobs:
         run: |
           tag="v${{ steps.get-version.outputs.version }}"
           echo "Tagging commit with: ${tag}"
+          git fetch --tags
           git tag "${tag}"
 
       - name: Push tag
