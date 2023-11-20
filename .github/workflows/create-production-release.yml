@@ -35,8 +35,7 @@ jobs:
           version=$(jq -r .version package.json)
           echo "The production release version will be: $version"
           tag="v${version}"
-          gh release list
-          existing_release=$(gh release list | grep "$tag")
+          local existing_release=$(gh release list | grep "$tag")
 
           if [[ -n "$existing_release" ]]
           then
