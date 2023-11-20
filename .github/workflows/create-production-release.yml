@@ -26,15 +26,45 @@ jobs:
       - name: Create GitHub release
         env:
           GITHUB_TOKEN: ${{secrets.GH_CLI_TOKEN}}
+        # If the release already exists, we will remove the --prelease flag
+        # and mark it as latest release.
+        #
+        # If the release doesn't exist yet, we will create a new one and mark
+        # it as latest release.
         run: |
           version=$(jq -r .version package.json)
-          echo "The beta release version will be: $version"
-          gh release create "v${version}" --title "v${version} --latest"
+          echo "The production release version will be: $version"
+          tag="v${version}"
+          existing_release=$(gh release list | grep "$tag" | wc -l | tr -d ' ')
+
+          if [[ "$existing_release" -gt 0 ]]
+          then
+            gh release edit "$tag" --prerelease=false --latest
+          else
+            gh release create "$tag" --title "$tag" --latest
+          fi
+
+      - name: Check if (beta) version exists on npm
+        id: check-beta
+        run: |
+          version=$(jq -r .version package.json)
+          package_exists=$(npm view .@$version version | wc -l | tr -d ' ')
+          echo "package_exists=$package_exists" >> "$GITHUB_OUTPUT"
 
       - name: Publish to npm
+        if: ${{ steps.check-beta.outputs.package_exists == 0}}
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
         # The prepublishOnly script lints and builds the project (see package.json)
         run: |
           npm ci
           npm publish
+
+      - name: Tag existing version with 'latest'
+        if: ${{ steps.check-beta.outputs.package_exists > 0 }}
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+        run: |
+          version=$(jq -r .version package.json)
+          npm dist-tag add homebridge-panasonic-ac-platform@$version latest
+          npm dist-tag rm homebridge-panasonic-ac-platform@$version beta
