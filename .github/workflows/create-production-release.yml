@@ -57,8 +57,6 @@ jobs:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
         # The prepublishOnly script lints and builds the project (see package.json)
         run: |
-          echo "Publishing to npm"
-          exit 1
           npm ci
           npm publish
 
@@ -67,8 +65,6 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
         run: |
-          echo "Updating tag"
-          exit 1
           version=$(jq -r .version package.json)
           npm dist-tag add homebridge-panasonic-ac-platform@$version latest
           npm dist-tag rm homebridge-panasonic-ac-platform@$version beta
