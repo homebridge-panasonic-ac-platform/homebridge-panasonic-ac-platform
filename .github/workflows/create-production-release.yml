@@ -35,7 +35,9 @@ jobs:
           version=$(jq -r .version package.json)
           echo "The production release version will be: $version"
           tag="v${version}"
-          existing_release=$(gh release view "$tag" 2>/dev/null)
+          existing_release=$(gh release view "$tag" 2> /dev/null)
+          echo "Existing release: $existing_release"
+          exit 1
           if [[ -n "$existing_release" ]]
           then
             echo "Updating existing release."
