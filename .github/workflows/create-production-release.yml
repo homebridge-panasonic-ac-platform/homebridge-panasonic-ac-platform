@@ -37,9 +37,12 @@ jobs:
           tag="v${version}"
           existing_release=$(gh release view "$tag" 2>/dev/null)
 
-          if [[ -n "$existing_release" ]] ; then
+          if [[ -n "$existing_release" ]]
+          then
+            echo "Updating existing release."
             gh release edit "$tag" --prerelease=false --latest
           else
+            echo "Creating new release."
             gh release create "$tag" --title "$tag" --latest
           fi
 
