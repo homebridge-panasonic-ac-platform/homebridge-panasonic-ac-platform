@@ -48,7 +48,7 @@ jobs:
         id: check-beta
         run: |
           version=$(jq -r .version package.json)
-          npm_version=$(npm view .@"$version" version 2> /dev/null)
+          npm_version=$(npm view .@"$version" version | wc -l | tr -d ' ')
           echo "npm_version=$npm_version" >> "$GITHUB_OUTPUT"
 
       - name: Publish to npm
