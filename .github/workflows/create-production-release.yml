@@ -36,7 +36,6 @@ jobs:
           echo "The production release version will be: $version"
           tag="v${version}"
           existing_release=$(gh release view "$tag" 2>/dev/null)
-
           if [[ -n "$existing_release" ]]
           then
             echo "Updating existing release."
