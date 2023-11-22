@@ -105,6 +105,25 @@ The Home app offers no extra buttons for the Quiet and Powerful Modes. All setti
 
 - If the plugin affects the general responsiveness and reliability of your Homebridge setup, you can run it as an isolated [child bridge](https://github.com/homebridge/homebridge/wiki/Child-Bridges).
 
+## Latest Beta
+
+Beta versions of this plugin are made available from time to time for those who wish to test new features. Please be aware that there may still be issues that need addressing (see 'Contributing' below for reporting any issues you find). The current beta release version, along with its changes, are listed below. To install the latest beta on Homebridge, click on the three vertical dots to the right of 'Settings' for your current Homebridge Panaonic AC Platform and choose 'Install Alternate Version'.
+
+New beta released 1.8.0 released: New functions include support for Eco Navi, Nanoe.
+
+New functions:
+
+- Support for: Swing, Nanoe, Eco Navi, and Inside cleaning (for compatible units);
+- The ability to select which option the AC should start with when turned on: swing, nanoe, eco navi, inside cleaning;
+- If the internal unit does not have an internal temperature sensor, the temperature of the external unit is displayed, and when there are neither, it is set automatically depending on the heating or cooling mode.
+
+To help with development, we would be grateful to get feedback from beta testers on the following:
+
+- Which functions does your AC have: swing, nanoe, eco navi, inside cleaning?
+- Does your AC have a temperature sensor in the internal and external units? Does this new approach work for you?
+- If you discover any issues, please enable 'Homebridge Debug Mode' in the plug-in settings and, from the Homebridge settings, paste the response from your AC logs and send us the status of a given function (swing, nanoe, eco navi, inside cleaning) for this response;
+- Do the new functions work for you?
+
 ## Contributing
 
 You can contribute to this project in the following ways:
