@@ -36,6 +36,7 @@ Configure the plugin through the settings UI or directly in the JSON editor:
         "suppressOutgoingUpdates": false,
         "minHeatingTemperature": 16,
         "maxAttempts": 0,
+        "refreshInterval": 10,
         "oscilateSwitch": "swing",
         "startSwing": false,
         "startNanoe": false,
@@ -79,6 +80,9 @@ The default heating temperature range is 16-30°C. Some Panasonic ACs have an ad
 
 * `maxAttempts` (integer):
 Maximum number of failed login attempts. If set to 0 - without the limit.
+
+* `refreshInterval` (integer):
+Refresh interval in seconds.
 
 * `oscilateSwitch` (string):
 Decide what the switch should control: Swing Mode, Nanoe, Eco Navi or Inside Cleaning.
