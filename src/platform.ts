@@ -124,7 +124,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
 
     if (this.noOfFailedLoginAttempts % 5 === 0) {
       // Check for a new Comfort Cloud App Store version.
-      // This condition will apply on the first run (0 % 0 = 0)
+      // This condition will apply on the first run (0 % 5 === 0)
       // and subsequently after every fifth failed login attempt.
       await this.getAppVersion();
     }

@@ -34,7 +34,7 @@
 			},
 			"startSwing" : {
 				"title": "Start Swing",
-				"description": "Swing value on every activation: do nothing, set on, set off.",
+				"description": "Swing value with each state change made with Homekit (e.g. activation): do nothing, set on, set off.",
 				"type": "string",
 				"default": "false",
 				"required": true,
@@ -46,7 +46,7 @@
 			},
 			"startNanoe" : {
 				"title": "Start Nanoe",
-				"description": "Nanoe value on every activation: do nothing, set on, set off.",
+				"description": "Nanoe value with each state change made with Homekit (e.g. activation): do nothing, set on, set off.",
 				"type": "string",
 				"default": "false",
 				"oneOf": [
@@ -58,7 +58,7 @@
 			},
 			"startEcoNavi" : {
 				"title": "Start Eco Navi",
-				"description": "Eco Navi value on every activation: do nothing, set on, set off.",
+				"description": "Eco Navi value with each state change made with Homekit (e.g. activation): do nothing, set on, set off.",
 				"type": "string",
 				"default": "false",
 				"oneOf": [
@@ -70,7 +70,7 @@
 			},
 			"startInsideCleaning" : {
 				"title": "Start Inside Cleaning",
-				"description": "Inside Cleaning value on every activation: do nothing, set on, set off.",
+				"description": "Inside Cleaning value with each state change made with Homekit (e.g. activation): do nothing, set on, set off.",
 				"type": "string",
 				"default": "false",
 				"oneOf": [
@@ -82,7 +82,7 @@
 			},
 			"oscilateSwitch" : {
 				"title": "Oscilate Switch",
-				"description": "Decide what to control the Oscilate switch.",
+				"description": "Decide what the switch should control: Swing Mode, Nanoe, Eco Navi or Inside Cleaning.",
 				"type": "string",
 				"default": "swing",
 				"oneOf": [
@@ -94,13 +94,22 @@
 				"required": true
 			},
 			"maxAttempts" : {
-				"title": "Maximum number of login attempts.",
+				"title": "Maximum number of failed login attempts.",
 				"type": "integer",
 				"description": "0 - infinited. Minimum 0, Maximum 10.",
 				"required": true,
 				"default": 0,
 				"minimum": 0,
 				"maximum": 10
+			},
+			"refreshInterval" : {
+				"title": "Refresh interval (in seconds)",
+				"type": "integer",
+				"description": "Minimum 1, Maximum 300.",
+				"required": true,
+				"default": 10,
+				"minimum": 1,
+				"maximum": 300
 			},
 			"swingModeDirections" : {
 				"title": "Swing Directions",
@@ -227,6 +236,7 @@
 				"suppressOutgoingUpdates",
 				"appVersionOverride",
 				"maxAttempts",
+				"refreshInterval",
 				"exposeOutdoorUnit",
 				"minHeatingTemperature"
 			]

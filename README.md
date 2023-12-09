@@ -34,7 +34,14 @@ Configure the plugin through the settings UI or directly in the JSON editor:
         "debugMode": false,
         "appVersionOverride": "1.19.0",
         "suppressOutgoingUpdates": false,
-        "minHeatingTemperature": 16
+        "minHeatingTemperature": 16,
+        "maxAttempts": 0,
+        "refreshInterval": 10,
+        "oscilateSwitch": "swing",
+        "startSwing": false,
+        "startNanoe": false,
+        "startEcoNavi": false,
+        "startInsideCleaning": false
     }
   ]
 }
@@ -71,9 +78,38 @@ If `true`, changes in the Home app will not be sent to Comfort Cloud. Useful for
 * `minHeatingTemperature` (integer):
 The default heating temperature range is 16-30°C. Some Panasonic ACs have an additional heating mode for the range of 8-15°C. If you own such a model, you can use this setting to adjust the minimum value. Leave it empty or undefined to use the default value.
 
+* `maxAttempts` (integer):
+Maximum number of failed login attempts. If set to 0 - without the limit.
+
+* `refreshInterval` (integer):
+Refresh interval in seconds.
+
+* `oscilateSwitch` (string):
+Decide what the switch should control: Swing Mode, Nanoe, Eco Navi or Inside Cleaning.
+
+* `startSwing` (string):
+Swing value with each state change made with Homekit (e.g. activation): do nothing, set on, set off.
+
+* `startNanoe` (string):
+Nanoe value with each state change made with Homekit (e.g. activation): do nothing, set on, set off.
+
+* `startEcoNavi` (string):
+Eco Navi value with each state change made with Homekit (e.g. activation): do nothing, set on, set off.
+
+* `startInsideCleaning` (string):
+InsideCleaning value with each state change made with Homekit (e.g. activation): do nothing, set on, set off.
+
+## Oscillate Switch
+
+Decide what the switch should control: Swing Mode, Nanoe, Eco Navi or Inside Cleaning.
+
+## Default values
+
+Value with each state change made with Homekit (e.g. activation) separate for: Swing Mode, Nanoe, Eco Navi or Inside Cleaning. Available options: do nothing, set on, set off.
+
 ## Swing modes
 
-The Home app only has one 'Oscillate' switch, but most Panasonic air conditioning units have two swing directions. To make the two compatible, you can use the following settings:
+Homekit doesn't have so many switches to support all Swing modes. That's why here you can choose how it works.
 
 * The setting `Swing Directions` (`swingModeDirections` in the JSON config) controls which swing direction(s) will be activated when 'Oscillate' is switched on.
 
