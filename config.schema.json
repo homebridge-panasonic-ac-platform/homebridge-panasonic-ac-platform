@@ -102,6 +102,15 @@
 				"minimum": 0,
 				"maximum": 10
 			},
+			"refreshInterval" : {
+				"title": "Refresh interval (in seconds)",
+				"type": "integer",
+				"description": "Minimum 1, Maximum 300.",
+				"required": true,
+				"default": 10,
+				"minimum": 1,
+				"maximum": 300
+			},
 			"swingModeDirections" : {
 				"title": "Swing Directions",
 				"description": "This setting controls which swing direction(s) will be activated when 'Oscillate' is switched on.",
@@ -227,6 +236,7 @@
 				"suppressOutgoingUpdates",
 				"appVersionOverride",
 				"maxAttempts",
+				"refreshInterval",
 				"exposeOutdoorUnit",
 				"minHeatingTemperature"
 			]
