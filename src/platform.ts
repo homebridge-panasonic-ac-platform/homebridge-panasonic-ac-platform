@@ -174,7 +174,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
             + 'all terms and conditions after logging into '
             + 'the Panasonic Comfort Cloud app are accepted. '
             + 'Restart Homebridge if you change plugin settings.');
-          
+
           this.log.error(`Next login atempt in ${nextRetryDelay / 60} minutes.`);
 
           this._loginRetryTimeout = setTimeout(
