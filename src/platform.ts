@@ -162,19 +162,26 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
           * | ...
           */
           this.log.error(`Login failed:  ${JSON.stringify(error, null, 2)}`);
-          // error 429 = too many incorect login attempts
 
-          this.log.error(
-            'The Comfort Cloud server might be experiencing issues at the moment. '
-            + 'If issue persists, make sure: '
-            + 'configured is the correct email and password in plugin settings, '
-            + 'field "Emulated Comfort Cloud app version (override)" in settings '
-            + 'is empty or have the latest version of Panasonic Comfort Cloud '
-            + 'from the App Store (like 1.19.0), '
-            + 'the latest version of this plugin is installed, '
-            + 'all terms and conditions after logging into '
-            + 'the Panasonic Comfort Cloud app are accepted. '
-            + 'Restart Homebridge if you change plugin settings.');
+          if (error.message === 'Request failed with status code 429') {
+            this.log.error('Request failed with status code 429. '
+              + 'Too many incorect login attempts. '
+              + 'You have to wait until Panasonic removes the lock.' 
+              + 'It may take up to 24 hours. '
+            );
+          } else {
+            this.log.error(
+              'The Comfort Cloud server might be experiencing issues at the moment. '
+              + 'If issue persists, make sure: '
+              + 'configured is the correct email and password in plugin settings, '
+              + 'field "Emulated Comfort Cloud app version (override)" in settings '
+              + 'is empty or have the latest version of Panasonic Comfort Cloud '
+              + 'from the App Store (like 1.19.0), '
+              + 'the latest version of this plugin is installed, '
+              + 'all terms and conditions after logging into '
+              + 'the Panasonic Comfort Cloud app are accepted. '
+              + 'Restart Homebridge if you change plugin settings.');
+          }
 
           this.log.error(`Next login atempt in ${nextRetryDelay / 60} minutes.`);
 
