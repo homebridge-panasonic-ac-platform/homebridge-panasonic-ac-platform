@@ -16,7 +16,6 @@ import OutdoorUnitAccessory from './accessories/outdoor-unit';
 import PanasonicPlatformLogger from './logger';
 import { PanasonicAccessoryContext, PanasonicPlatformConfig } from './types';
 import {
-  LOGIN_RETRY_BASE_DELAY,
   PLATFORM_NAME,
   PLUGIN_NAME,
 } from './settings';
@@ -138,7 +137,6 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
         this.discoverDevices();
       })
       .catch(() => {
-        this.log.error('Login failed. Skipping device discovery.');
         this.noOfFailedLoginAttempts++;
 
         const maxAttempts = this.platformConfig.maxAttempts || 0;
@@ -146,39 +144,37 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
         if (maxAttempts === 0
           || this.noOfFailedLoginAttempts <= maxAttempts) {
 
-          const nextRetryDelay = Math.min(LOGIN_RETRY_BASE_DELAY
-            * this.noOfFailedLoginAttempts, 60000);
+          const nextRetryDelay = Math.min(600 * this.noOfFailedLoginAttempts
+                                          * this.noOfFailedLoginAttempts, 28800);
           /**
-          * | Login attempt | Delay (in mins) | Total time lapsed
-          * | 0  | 0  | 0 (the first login attempt at plugin start)
-          * | 1  | 6  | 6
-          * | 2  | 12 | 18
-          * | 3  | 18 | 36
-          * | 4  | 24 | 60
-          * | 5  | 30 | 90
-          * | 6  | 36 | 126
-          * | 7  | 42 | 168
-          * | 8  | 48 | 216
-          * | 9  | 54 | 270
-          * | 10 | 60 | 330 (= 5h 30mins)
+          * | Login attempt | Delay (in mins) | Max 480 min ( 8 hours )
+          * | 0  | 0   | (the first login attempt at plugin start)
+          * | 1  | 10  |
+          * | 2  | 40  |
+          * | 3  | 90  |
+          * | 4  | 160 |
+          * | 5  | 250 |
+          * | 6  | 360 |
+          * | 7  | 480 |
+          * | 8  | 480 |
+          * | 9  | 480 |
+          * | 10 | 480 |
           * | ...
           */
 
-          this.log.error(
-            'The Comfort Cloud server might be experiencing issues at the moment.'
-            + `The plugin will try to log in again in ${nextRetryDelay / 60} minutes.`,
-          );
-
-          this.log.error('If the issue persists, make sure: '
-            + 'configured is the correct email and password in plugin settings,'
+          this.log.error('Login failed. '
+            + 'The Comfort Cloud server might be experiencing issues at the moment. '
+            + 'If issue persists, make sure: '
+            + 'configured is the correct email and password in plugin settings, '
             + 'field "Emulated Comfort Cloud app version (override)" in settings '
             + 'is empty or have the latest version of Panasonic Comfort Cloud '
             + 'from the App Store (like 1.19.0), '
             + 'the latest version of this plugin is installed, '
             + 'all terms and conditions after logging into '
             + 'the Panasonic Comfort Cloud app are accepted. '
-            + 'Restart Homebridge if you change plugin settings.',
-          );
+            + 'Restart Homebridge if you change plugin settings.');
+
+          this.log.error(`Next login atempt in ${nextRetryDelay / 60} minutes.`);
 
           this._loginRetryTimeout = setTimeout(
             this.loginAndDiscoverDevices.bind(this),
