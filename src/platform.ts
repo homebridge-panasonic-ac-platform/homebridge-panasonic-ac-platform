@@ -16,7 +16,6 @@ import OutdoorUnitAccessory from './accessories/outdoor-unit';
 import PanasonicPlatformLogger from './logger';
 import { PanasonicAccessoryContext, PanasonicPlatformConfig } from './types';
 import {
-  LOGIN_RETRY_BASE_DELAY,
   PLATFORM_NAME,
   PLUGIN_NAME,
 } from './settings';
@@ -151,16 +150,16 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
           /**
           * | Login attempt | Delay (in mins) | Max 480 min ( 8 hours )
           * | 0  | 0   | (the first login attempt at plugin start)
-          * | 1  | 10  | 
-          * | 2  | 40  | 
-          * | 3  | 90  | 
-          * | 4  | 160 | 
-          * | 5  | 250 | 
-          * | 6  | 360 | 
-          * | 7  | 480 | 
-          * | 8  | 480 | 
-          * | 9  | 480 | 
-          * | 10 | 480 | 
+          * | 1  | 10  |
+          * | 2  | 40  |
+          * | 3  | 90  |
+          * | 4  | 160 |
+          * | 5  | 250 |
+          * | 6  | 360 |
+          * | 7  | 480 |
+          * | 8  | 480 |
+          * | 9  | 480 |
+          * | 10 | 480 |
           * | ...
           */
 
