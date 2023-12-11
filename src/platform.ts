@@ -161,9 +161,9 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
           * | 10 | 480 |
           * | ...
           */
-          
+
           this.log.error(`Error: ${error.message}`);
-          
+
           if (error.message === 'Request failed with status code 429') {
             this.log.error('Too many incorect login attempts. '
               + 'You have to wait until Panasonic will unlock the account - '
