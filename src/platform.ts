@@ -144,31 +144,13 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
         if (maxAttempts === 0
           || this.noOfFailedLoginAttempts <= maxAttempts) {
 
-          const nextRetryDelay = Math.min(600 * this.noOfFailedLoginAttempts
-                                          * this.noOfFailedLoginAttempts, 28800);
-          /**
-          * | Login attempt | Delay (in mins) | Max 480 min ( 8 hours )
-          * | 0  | 0   | (the first login attempt at plugin start)
-          * | 1  | 10  |
-          * | 2  | 40  |
-          * | 3  | 90  |
-          * | 4  | 160 |
-          * | 5  | 250 |
-          * | 6  | 360 |
-          * | 7  | 480 |
-          * | 8  | 480 |
-          * | 9  | 480 |
-          * | 10 | 480 |
-          * | ...
-          */
-
           this.log.error(`Error: ${error.message}`);
 
           if (error.message === 'Request failed with status code 429') {
             this.log.error('Too many incorect login attempts. '
               + 'You have to wait until Panasonic will unlock the account - '
               + 'it may take up to 24 hours. ');
-            this.log.error(`Next login attempt in 8 hours.`);
+            this.log.error('Next login attempt in 8 hours.');
             clearTimeout(this._loginRetryTimeout);
             this._loginRetryTimeout = setTimeout(
               this.loginAndDiscoverDevices.bind(this),
@@ -186,6 +168,25 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
               + 'all terms and conditions after logging into '
               + 'the Panasonic Comfort Cloud app are accepted. '
               + 'Restart Homebridge if you change plugin settings.');
+
+            const nextRetryDelay = Math.min(600 * this.noOfFailedLoginAttempts
+                                          * this.noOfFailedLoginAttempts, 28800);
+            /**
+            * | Login attempt | Delay (in mins) | Max 480 min ( 8 hours )
+            * | 0  | 0   | (the first login attempt at plugin start)
+            * | 1  | 10  |
+            * | 2  | 40  |
+            * | 3  | 90  |
+            * | 4  | 160 |
+            * | 5  | 250 |
+            * | 6  | 360 |
+            * | 7  | 480 |
+            * | 8  | 480 |
+            * | 9  | 480 |
+            * | 10 | 480 |
+            * | ...
+            */
+            
             this.log.error(`Next login attempt in ${nextRetryDelay / 60} minutes.`);
             clearTimeout(this._loginRetryTimeout);
             this._loginRetryTimeout = setTimeout(
