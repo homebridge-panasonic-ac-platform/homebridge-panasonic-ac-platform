@@ -136,7 +136,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
         this.configureOutdoorUnit();
         this.discoverDevices();
       })
-      .catch(() => {
+      .catch((error) => {
         this.noOfFailedLoginAttempts++;
 
         const maxAttempts = this.platformConfig.maxAttempts || 0;
@@ -161,9 +161,9 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
           * | 10 | 480 |
           * | ...
           */
-
-          this.log.error('Login failed. '
-            + 'The Comfort Cloud server might be experiencing issues at the moment. '
+          this.log.error(`Login failed:  ${error}`);
+          this.log.error(
+            'The Comfort Cloud server might be experiencing issues at the moment. '
             + 'If issue persists, make sure: '
             + 'configured is the correct email and password in plugin settings, '
             + 'field "Emulated Comfort Cloud app version (override)" in settings '
