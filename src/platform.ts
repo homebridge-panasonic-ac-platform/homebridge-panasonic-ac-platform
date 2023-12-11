@@ -136,7 +136,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
         this.configureOutdoorUnit();
         this.discoverDevices();
       })
-      .catch(() => {
+      .catch((error) => {
         this.noOfFailedLoginAttempts++;
 
         const maxAttempts = this.platformConfig.maxAttempts || 0;
@@ -144,45 +144,59 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
         if (maxAttempts === 0
           || this.noOfFailedLoginAttempts <= maxAttempts) {
 
-          const nextRetryDelay = Math.min(600 * this.noOfFailedLoginAttempts
+          this.log.error(`Error: ${error.message}`);
+
+          if (error.message === 'Request failed with status code 429') {
+            this.log.error('Too many incorect login attempts. '
+              + 'You have to wait until Panasonic will unlock the account - '
+              + 'it may take up to 24 hours. ');
+            this.log.error('Next login attempt in 8 hours.');
+            clearTimeout(this._loginRetryTimeout);
+            this._loginRetryTimeout = setTimeout(
+              this.loginAndDiscoverDevices.bind(this),
+              28800 * 1000,
+            );
+          } else {
+            this.log.error(
+              'The Comfort Cloud server might be experiencing issues at the moment. '
+              + 'If issue persists, make sure: '
+              + 'configured is the correct email and password in plugin settings, '
+              + 'field "Emulated Comfort Cloud app version (override)" in settings '
+              + 'is empty or have the latest version of Panasonic Comfort Cloud '
+              + 'from the App Store (like 1.19.0), '
+              + 'the latest version of this plugin is installed, '
+              + 'all terms and conditions after logging into '
+              + 'the Panasonic Comfort Cloud app are accepted. '
+              + 'Restart Homebridge if you change plugin settings.');
+
+            const nextRetryDelay = Math.min(600 * this.noOfFailedLoginAttempts
                                           * this.noOfFailedLoginAttempts, 28800);
-          /**
-          * | Login attempt | Delay (in mins) | Max 480 min ( 8 hours )
-          * | 0  | 0   | (the first login attempt at plugin start)
-          * | 1  | 10  |
-          * | 2  | 40  |
-          * | 3  | 90  |
-          * | 4  | 160 |
-          * | 5  | 250 |
-          * | 6  | 360 |
-          * | 7  | 480 |
-          * | 8  | 480 |
-          * | 9  | 480 |
-          * | 10 | 480 |
-          * | ...
-          */
+            /**
+            * | Login attempt | Delay (in mins) | Max 480 min ( 8 hours )
+            * | 0  | 0   | (the first login attempt at plugin start)
+            * | 1  | 10  |
+            * | 2  | 40  |
+            * | 3  | 90  |
+            * | 4  | 160 |
+            * | 5  | 250 |
+            * | 6  | 360 |
+            * | 7  | 480 |
+            * | 8  | 480 |
+            * | 9  | 480 |
+            * | 10 | 480 |
+            * | ...
+            */
 
-          this.log.error('Login failed. '
-            + 'The Comfort Cloud server might be experiencing issues at the moment. '
-            + 'If issue persists, make sure: '
-            + 'configured is the correct email and password in plugin settings, '
-            + 'field "Emulated Comfort Cloud app version (override)" in settings '
-            + 'is empty or have the latest version of Panasonic Comfort Cloud '
-            + 'from the App Store (like 1.19.0), '
-            + 'the latest version of this plugin is installed, '
-            + 'all terms and conditions after logging into '
-            + 'the Panasonic Comfort Cloud app are accepted. '
-            + 'Restart Homebridge if you change plugin settings.');
-
-          this.log.error(`Next login atempt in ${nextRetryDelay / 60} minutes.`);
-
-          this._loginRetryTimeout = setTimeout(
-            this.loginAndDiscoverDevices.bind(this),
-            nextRetryDelay * 1000,
-          );
+            this.log.error(`Next login attempt in ${nextRetryDelay / 60} minutes.`);
+            clearTimeout(this._loginRetryTimeout);
+            this._loginRetryTimeout = setTimeout(
+              this.loginAndDiscoverDevices.bind(this),
+              nextRetryDelay * 1000,
+            );
+          }
         } else {
           this.log.error(
-            + 'Maximum number of login retries reached.'
+            + 'Maximum number of login attempts reached.'
             + 'Check your login details and restart Homebridge.',
           );
         }
