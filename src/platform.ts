@@ -196,7 +196,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
           }
         } else {
           this.log.error(
-            + 'Maximum number of login retries reached.'
+            + 'Maximum number of login attempts reached.'
             + 'Check your login details and restart Homebridge.',
           );
         }
