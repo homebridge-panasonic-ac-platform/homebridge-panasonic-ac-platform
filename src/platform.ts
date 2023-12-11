@@ -169,6 +169,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
               + 'You have to wait until Panasonic will unlock the account - '
               + 'it may take up to 24 hours. ');
             this.log.error(`Next login attempt in 8 hours.`);
+            clearTimeout(this._loginRetryTimeout);
             this._loginRetryTimeout = setTimeout(
               this.loginAndDiscoverDevices.bind(this),
               28800 * 1000,
@@ -186,6 +187,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
               + 'the Panasonic Comfort Cloud app are accepted. '
               + 'Restart Homebridge if you change plugin settings.');
             this.log.error(`Next login attempt in ${nextRetryDelay / 60} minutes.`);
+            clearTimeout(this._loginRetryTimeout);
             this._loginRetryTimeout = setTimeout(
               this.loginAndDiscoverDevices.bind(this),
               nextRetryDelay * 1000,
