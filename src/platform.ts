@@ -138,7 +138,6 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
         this.discoverDevices();
       })
       .catch(() => {
-        this.log.error('Login failed. Skipping device discovery.');
         this.noOfFailedLoginAttempts++;
 
         const maxAttempts = this.platformConfig.maxAttempts || 0;
@@ -164,7 +163,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
           * | ...
           */
 
-          this.log.error('The Comfort Cloud server might be experiencing issues at the moment. '
+          this.log.error('Login failed. The Comfort Cloud server might be experiencing issues at the moment. '
             + 'If issue persists, make sure: '
             + 'configured is the correct email and password in plugin settings, '
             + 'field "Emulated Comfort Cloud app version (override)" in settings '
