@@ -186,7 +186,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
             * | 10 | 480 |
             * | ...
             */
-            
+
             this.log.error(`Next login attempt in ${nextRetryDelay / 60} minutes.`);
             clearTimeout(this._loginRetryTimeout);
             this._loginRetryTimeout = setTimeout(
