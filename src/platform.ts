@@ -161,7 +161,6 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
           * | 10 | 480 |
           * | ...
           */
-          this.log.error(`Login failed:  ${JSON.stringify(error, null, 2)}`);
 
           if (error.message === 'Request failed with status code 429') {
             this.log.error('Request failed with status code 429. '
