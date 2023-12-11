@@ -168,6 +168,11 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
             this.log.error('Too many incorect login attempts. '
               + 'You have to wait until Panasonic will unlock the account - '
               + 'it may take up to 24 hours. ');
+            this.log.error(`Next login attempt in 8 hours.`);
+            this._loginRetryTimeout = setTimeout(
+              this.loginAndDiscoverDevices.bind(this),
+              28800 * 1000,
+            );
           } else {
             this.log.error(
               'The Comfort Cloud server might be experiencing issues at the moment. '
@@ -180,14 +185,12 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
               + 'all terms and conditions after logging into '
               + 'the Panasonic Comfort Cloud app are accepted. '
               + 'Restart Homebridge if you change plugin settings.');
+            this.log.error(`Next login attempt in ${nextRetryDelay / 60} minutes.`);
+            this._loginRetryTimeout = setTimeout(
+              this.loginAndDiscoverDevices.bind(this),
+              nextRetryDelay * 1000,
+            );
           }
-
-          this.log.error(`Next login atempt in ${nextRetryDelay / 60} minutes.`);
-
-          this._loginRetryTimeout = setTimeout(
-            this.loginAndDiscoverDevices.bind(this),
-            nextRetryDelay * 1000,
-          );
         } else {
           this.log.error(
             + 'Maximum number of login retries reached.'
