@@ -163,7 +163,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
           */
           this.log.error(`Login failed:  ${JSON.stringify(error, null, 2)}`);
           // error 429 = too many incorect login attempts
-          
+
           this.log.error(
             'The Comfort Cloud server might be experiencing issues at the moment. '
             + 'If issue persists, make sure: '
