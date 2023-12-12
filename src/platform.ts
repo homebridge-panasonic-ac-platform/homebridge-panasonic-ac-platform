@@ -165,7 +165,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
             clearTimeout(this._loginRetryTimeout);
             this._loginRetryTimeout = setTimeout(
               this.loginAndDiscoverDevices.bind(this),
-              28800 * 1000
+              28800 * 1000,
             );
           } else {
             this.log.error(
