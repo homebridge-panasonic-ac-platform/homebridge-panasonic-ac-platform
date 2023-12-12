@@ -161,6 +161,12 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
             this.log.error('Incorect login and/or password. '
                            + 'Correct login and/or password in plugin settings '
                            + 'and restart Homebridge. ');
+            this.log.error('Next login attempt in 8 hours.');
+            clearTimeout(this._loginRetryTimeout);
+            this._loginRetryTimeout = setTimeout(
+              this.loginAndDiscoverDevices.bind(this),
+              28800 * 1000
+            );
           } else {
             this.log.error(
               'The Comfort Cloud server might be experiencing issues at the moment. '
