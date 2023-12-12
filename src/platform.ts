@@ -157,6 +157,10 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
               this.loginAndDiscoverDevices.bind(this),
               28800 * 1000,
             );
+          } else if (error.message === 'Request failed with status code 401') {
+            this.log.error('Incorect login and/or password. '
+                           + 'Correct login and/or password in plugin settings '
+                           + 'and restart Homebridge. ');
           } else {
             this.log.error(
               'The Comfort Cloud server might be experiencing issues at the moment. '
