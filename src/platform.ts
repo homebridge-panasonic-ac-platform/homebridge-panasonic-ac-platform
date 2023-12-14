@@ -147,9 +147,21 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
           this.log.error(`Error: ${error.message}`);
 
           if (error.message === 'Request failed with status code 429') {
-            this.log.error('Too many incorect login attempts. '
-              + 'You have to wait until Panasonic will unlock the account - '
-              + 'it may take up to 24 hours. ');
+            this.log.error('Too many incorect login attempts '
+              + 'or other suspicious activity on the account.'
+              + 'You have to wait until Panasonic will unlock the account '
+              + '(it may take up to 24 hours) '
+              + 'or change IP of Homebridge (restart router). ');
+            this.log.error('Next login attempt in 8 hours.');
+            clearTimeout(this._loginRetryTimeout);
+            this._loginRetryTimeout = setTimeout(
+              this.loginAndDiscoverDevices.bind(this),
+              28800 * 1000,
+            );
+          } else if (error.message === 'Request failed with status code 401') {
+            this.log.error('Incorect login and/or password. '
+                           + 'Correct login and/or password in plugin settings '
+                           + 'and restart Homebridge. ');
             this.log.error('Next login attempt in 8 hours.');
             clearTimeout(this._loginRetryTimeout);
             this._loginRetryTimeout = setTimeout(

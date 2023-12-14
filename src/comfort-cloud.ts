@@ -44,7 +44,7 @@ export default class ComfortCloudApi {
       headers: this.getBaseRequestHeaders(),
       data: {
         'loginId': this.config.email,
-        'language': '0',
+        'language': 0,
         'password': this.config.password,
       },
     })
