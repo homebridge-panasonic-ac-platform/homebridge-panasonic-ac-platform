@@ -105,10 +105,10 @@
 			"refreshInterval" : {
 				"title": "Refresh interval (in seconds)",
 				"type": "integer",
-				"description": "Minimum 1, Maximum 300.",
+				"description": "Minimum 10, Maximum 300.",
 				"required": true,
 				"default": 10,
-				"minimum": 1,
+				"minimum": 10,
 				"maximum": 300
 			},
 			"swingModeDirections" : {
