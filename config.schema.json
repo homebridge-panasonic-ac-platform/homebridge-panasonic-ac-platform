@@ -107,7 +107,7 @@
 				"type": "integer",
 				"description": "Minimum 10, Maximum 300.",
 				"required": true,
-				"default": 60,
+				"default": 30,
 				"minimum": 10,
 				"maximum": 300
 			},
