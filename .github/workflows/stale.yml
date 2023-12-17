@@ -6,7 +6,7 @@ on:
   issues:
     types: [reopened]
   schedule:
-  - cron: "15 8 * * *"
+  - cron: "30 4 * * *"
 
 jobs:
   stale:
@@ -15,8 +15,8 @@ jobs:
     - name: Autoclose stale issues.
       uses: actions/stale@v8
       with:
-        days-before-close: 1
-        days-before-stale: 2
+        days-before-close: 7
+        days-before-stale: 21
         exempt-issue-labels: 'discussion,help wanted,long running'
         exempt-pr-labels: 'awaiting-approval,work-in-progress'
         remove-stale-when-updated: true
