@@ -82,7 +82,7 @@ The default heating temperature range is 16-30°C. Some Panasonic ACs have an ad
 Maximum number of failed login attempts. If set to 0 - without the limit.
 
 * `refreshInterval` (integer):
-Refresh interval in seconds.
+Refresh interval in minutes. Minimum 1 minute, maximum 360 minutes (6 hours). Note: More frequent refresh would result in too much daily number of requests to the Panasonic server, which could result in an account lock for 24 hours, or even a complete API lock.
 
 * `oscilateSwitch` (string):
 Decide what the switch should control: Swing Mode, Nanoe, Eco Navi or Inside Cleaning.

@@ -16,5 +16,5 @@ export const MAX_NO_OF_LOGIN_RETRIES = 10;
 // 604,800 sec = 7 days
 export const LOGIN_TOKEN_REFRESH_INTERVAL = 604800 * 1000;
 
-// 10 sec
-export const DEVICE_STATUS_REFRESH_INTERVAL = 30 * 1000;
+// 10 minutes
+export const DEVICE_STATUS_REFRESH_INTERVAL = 10 * 60 * 1000;

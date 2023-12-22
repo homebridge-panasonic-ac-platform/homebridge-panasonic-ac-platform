@@ -94,7 +94,7 @@
 				"required": true
 			},
 			"maxAttempts" : {
-				"title": "Maximum number of failed login attempts.",
+				"title": "Maximum number of failed login attempts",
 				"type": "integer",
 				"description": "0 - infinited. Minimum 0, Maximum 10.",
 				"required": true,
@@ -103,13 +103,13 @@
 				"maximum": 10
 			},
 			"refreshInterval" : {
-				"title": "Refresh interval (in seconds)",
+				"title": "Refresh interval (in minutes)",
 				"type": "integer",
-				"description": "Minimum 10, Maximum 300.",
+				"description": "Recomended: 10 minutes. Minimum 1 minute, Maximum 360 minutes (6 hours). Note: More frequent refresh would result in too much daily number of requests to the Panasonic server, which could result in an account lock for 24 hours, or even a complete API lock.",
 				"required": true,
-				"default": 30,
-				"minimum": 10,
-				"maximum": 300
+				"default": 10,
+				"minimum": 1,
+				"maximum": 360
 			},
 			"swingModeDirections" : {
 				"title": "Swing Directions",
