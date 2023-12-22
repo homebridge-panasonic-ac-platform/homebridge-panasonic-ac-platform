@@ -60,7 +60,6 @@ export default class ComfortCloudApi {
       .catch((error: AxiosError) => {
         this.log.debug('Comfort Cloud - login(): Error');
         this.log.debug(JSON.stringify(error, null, 2));
-        throw error;
       });
   }
 
