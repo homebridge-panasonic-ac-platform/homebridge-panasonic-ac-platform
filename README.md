@@ -4,20 +4,17 @@
 [![GitHub version](https://img.shields.io/github/package-json/v/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform?label=GitHub)](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform)
 [![npm version](https://img.shields.io/npm/v/homebridge-panasonic-ac-platform?color=%23cb3837&label=npm)](https://www.npmjs.com/package/homebridge-panasonic-ac-platform)
 
-`homebridge-panasonic-ac-platform` is a dynamic platform plugin for [Homebridge](https://homebridge.io) that provides HomeKit support for Panasonic single and multi-split air conditioning systems.
+`homebridge-panasonic-ac-platform` is a dynamic platform plugin for [Homebridge](https://homebridge.io) that provides HomeKit support for Panasonic Comfort Cloud devices, like single and multi-split air conditioning systems.
 
 ## How it works
-The plugin communicates with your AC units through the Comfort Cloud service. This means your units must be registered and set up there before you can use this plugin.
+The plugin communicates with your devices through the Comfort Cloud service. This means your units must be registered and set up there before you can use this plugin.
 
-All devices that are set up on your Comfort Cloud account will appear in your Home app. If you remove a device from your Comfort Cloud account, it will also disappear from your Home app after you restart Homebridge.
+All devices that are set up on your Comfort Cloud account will appear in your HomeKit (and Home app). If you remove a device from your Comfort Cloud account, it will also disappear from your HomeKit (and Home app) after you restart Homebridge.
 
-## Comfort Cloud account
+## Comfort Cloud account (Panasonic ID)
 
-In the past, using the same account on multiple devices often resulted in being logged out of one of them. This made it necessary to create a secondary account in order for the plugin to operate reliably.
-
-Recent improvements to Panasonic's token management should now allow you to simply use your main login details for the Homebridge plugin as well (see Comfort Cloud app release notes for 1.14.0).
-
-In case you are still experiencing random logouts, refer to [this guide](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/blob/master/docs/dual-account-setup.md) for instructions on how to create a dual-account setup. It explains how devices can be shared with a dedicated account that can be used for Homebridge.
+- Register and manage your Panasonic ID (used to manage Comfort Cloud) via app (iOS / Android) or browser [Panasonic ID](https://csapl.pcpf.panasonic.com).
+- Instructions on how to create a [dual-account setup](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/blob/master/docs/dual-account-setup.md).
 
 ## Homebridge setup
 Configure the plugin through the settings UI or directly in the JSON editor:
