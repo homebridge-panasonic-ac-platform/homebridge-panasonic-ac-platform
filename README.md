@@ -78,9 +78,7 @@ You can contribute to this project in the following ways:
 
 * Test/use the plugin and [report issues and share feedback](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/issues).
 
-* Review source code changes [before](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/pulls) and [after](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/commits/master) they are published.
-
-* Contribute with your own bug fixes, code clean-ups, or additional features (pull requests are accepted).
+* Contribute with your own bug fixes, code clean-ups, or additional features - [Pull Request](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/pulls).
 
 ## Acknowledgements
 * Thanks to [codyc1515](https://github.com/codyc1515) for creating and maintaining [homebridge-panasonic-air-conditioner](https://github.com/codyc1515/homebridge-panasonic-air-conditioner), which served as motivation for this platform plugin and proved particularly helpful in determining API request/response payloads.
