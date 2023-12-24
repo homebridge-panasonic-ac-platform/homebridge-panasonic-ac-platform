@@ -67,7 +67,7 @@ rsync -ar --exclude='.git' $REPOSITORY_DIR $HOMEBRIDGE_PLUGIN_DIR
 ```
 
 ### Increase version number
-Since you are introducing new changes which would find their way into the next release, you need to increase the version number in the `package.json` and `package-lock.json` files.
+Since you are introducing new changes which would find their way into the next release, you can increase the version number in the `package.json` and `package-lock.json` files.
 
 Preferably, use the following commands rather than editing the files manually:
 
@@ -121,7 +121,7 @@ This prevents scope creep and helps reviewers to keep an overview of changes. Ai
 ### Check workflow runs
 After publishing your pull request, pay attention to the workflows that are run.
 
-For security purposes, workflows on pull requests to public repositories from some outside contributors will not run automatically, and might need to be approved first.
+For security purposes, workflows on pull requests to public repositories from some outside contributors will might need to be approved first.
 
 If the workflows highlight errors, fix them and push additional commits to your branch. This will automatically update the pull request and run the checks again.
 
