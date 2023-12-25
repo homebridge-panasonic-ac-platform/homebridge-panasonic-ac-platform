@@ -17,7 +17,7 @@ All devices that are set up on your Comfort Cloud account will appear via HomeKi
 ## Homebridge setup
 Configure the plugin through the settings UI or directly in the JSON editor.
 
-Basic setings (required):
+Basic settings (required):
 
 ```json
 {
