@@ -11,10 +11,18 @@
 ## How it works
 The plugin communicates with your devices through the Comfort Cloud service. This means you must have a Comfort Cloud account (Panasonic ID) and your units must be registered and set up there before you can use this plugin.
 
+All devices that are set up on your Comfort Cloud account will appear via HomeKit in your Home app (or other HomeKit app). If you remove a device from your Comfort Cloud account, it will also disappear from your HomeKit app after you restart Homebridge.
+
+## Comfort Cloud account (Panasonic ID)
+
 - Register and manage your Panasonic ID (used to manage Comfort Cloud) via app (iOS / Android) or browser [Panasonic ID](https://csapl.pcpf.panasonic.com).
 - Instructions on how to create a [dual-account setup](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/blob/master/docs/dual-account-setup.md).
 
-All devices that are set up on your Comfort Cloud account will appear via HomeKit in your Home app (or other HomeKit app). If you remove a device from your Comfort Cloud account, it will also disappear from your HomeKit app after you restart Homebridge.
+## Install plugin
+
+This plugin can be easily installed and configured through Homebridge UI or via [NPM](https://www.npmjs.com/package/homebridge-panasonic-ac-platform) "globally" by typing:
+
+    npm install -g homebridge-panasonic-ac-platform
 
 ## Homebridge setup
 Configure the plugin through the settings UI or directly in the JSON editor.
