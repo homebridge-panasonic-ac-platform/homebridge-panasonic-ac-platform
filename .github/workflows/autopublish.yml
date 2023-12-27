@@ -15,7 +15,7 @@
 
 
 
-name: Create and publish latest / beta release
+name: Autopublish release
 
 on:
   release:
