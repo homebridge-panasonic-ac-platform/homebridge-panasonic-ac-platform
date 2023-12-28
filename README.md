@@ -42,17 +42,10 @@ Basic settings (required):
 }
 ```
 
-* `platform` (string):
-Tells Homebridge which platform this config belongs to. Leave as is.
-
-* `name` (string):
-Will be displayed in the Homebridge log.
-
-* `email` (string):
-The username of your Comfort Cloud (Panasonic ID) account.
-
-* `password` (string):
-The password of your Comfort Cloud (Panasonic ID) account.
+- `platform` (string): Tells Homebridge which platform this config belongs to. Leave as is.
+- `name` (string): Will be displayed in the Homebridge log.
+- `email` (string): The username of your Comfort Cloud (Panasonic ID) account.
+- `password` (string): The password of your Comfort Cloud (Panasonic ID) account.
 
 See: [advanced config](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/blob/master/docs/config.md).
 
@@ -77,23 +70,19 @@ The Home app offers no extra buttons for the Quiet and Powerful Modes. All setti
 ## Troubleshooting
 
 - If you have any issues with this plugin, enable the debug mode in the settings (and restart the plugin). This will print additional information to the log. If this doesn't help you resolve the issue, feel free to create a [GitHub issue](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/issues) and attach the available debugging information.
-
 - If you run into login errors despite using the correct login details, make sure you accepted the latest terms and conditions after logging into the Comfort Cloud app.
-
 - If the plugin affects the general responsiveness and reliability of your Homebridge setup, you can run it as an isolated [child bridge](https://github.com/homebridge/homebridge/wiki/Child-Bridges).
 
 ## Contributing
 
 You can contribute to this project in the following ways:
-
-* Test/use the plugin and [report issues and share feedback](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/issues).
-
-* Contribute with your own bug fixes, code clean-ups, or additional features - [Pull Request](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/pulls).
+- Test/use the plugin and [report issues and share feedback](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/issues).
+- Contribute with your own bug fixes, code clean-ups, or additional features - [Pull Request](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/pulls).
+- See more: [contributing-collaborators.md](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/blob/master/docs/contributing-collaborators.md). 
 
 ## Acknowledgements
-* Thanks to [codyc1515](https://github.com/codyc1515) for creating and maintaining [homebridge-panasonic-air-conditioner](https://github.com/codyc1515/homebridge-panasonic-air-conditioner), which served as motivation for this platform plugin and proved particularly helpful in determining API request/response payloads.
-
-* Thanks to the team behind Homebridge. Your efforts do not go unnoticed.
+- Thanks to [codyc1515](https://github.com/codyc1515) for creating and maintaining [homebridge-panasonic-air-conditioner](https://github.com/codyc1515/homebridge-panasonic-air-conditioner), which served as motivation for this platform plugin and proved particularly helpful in determining API request/response payloads.
+- Thanks to the team behind Homebridge. Your efforts do not go unnoticed.
 
 ## Disclaimer
 All product and company names are trademarks™ or registered® trademarks of their respective holders. Use of them does not imply any affiliation with or endorsement by them.
