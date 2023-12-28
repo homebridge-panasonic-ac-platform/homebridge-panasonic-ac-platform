@@ -1,26 +1,33 @@
+<img src="https://raw.githubusercontent.com/homebridge/verified/latest/icons/homebridge-panasonic-ac-platform.png" width="100px"></img>
+
 # Homebridge Panasonic AC Platform
 
 [![verified-by-homebridge](https://badgen.net/badge/homebridge/verified/purple)](https://github.com/homebridge/homebridge/wiki/Verified-Plugins)
 [![GitHub version](https://img.shields.io/github/package-json/v/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform?label=GitHub)](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform)
 [![npm version](https://img.shields.io/npm/v/homebridge-panasonic-ac-platform?color=%23cb3837&label=npm)](https://www.npmjs.com/package/homebridge-panasonic-ac-platform)
 
-`homebridge-panasonic-ac-platform` is a dynamic platform plugin for [Homebridge](https://homebridge.io) that provides HomeKit support for Panasonic single and multi-split air conditioning systems.
+`homebridge-panasonic-ac-platform` is a dynamic platform plugin for [Homebridge](https://homebridge.io) that provides HomeKit support for Panasonic Comfort Cloud devices (like single and multi-split air conditioning systems).
 
 ## How it works
-The plugin communicates with your AC units through the Comfort Cloud service. This means your units must be registered and set up there before you can use this plugin.
+The plugin communicates with your devices through the Comfort Cloud service. This means you must have a Comfort Cloud account (Panasonic ID) and your units must be registered and set up there before you can use this plugin.
 
-All devices that are set up on your Comfort Cloud account will appear in your Home app. If you remove a device from your Comfort Cloud account, it will also disappear from your Home app after you restart Homebridge.
+All devices that are set up on your Comfort Cloud account will appear via HomeKit in your Home app (or other HomeKit app). If you remove a device from your Comfort Cloud account, it will also disappear from your HomeKit app after you restart Homebridge.
 
-## Comfort Cloud account
+## Comfort Cloud account (Panasonic ID)
 
-In the past, using the same account on multiple devices often resulted in being logged out of one of them. This made it necessary to create a secondary account in order for the plugin to operate reliably.
+- Register and manage your Panasonic ID (used to manage Comfort Cloud) via app (iOS / Android) or browser [Panasonic ID](https://csapl.pcpf.panasonic.com).
+- Instructions on how to create a [dual-account setup](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/blob/master/docs/dual-account-setup.md).
 
-Recent improvements to Panasonic's token management should now allow you to simply use your main login details for the Homebridge plugin as well (see Comfort Cloud app release notes for 1.14.0).
+## Install plugin
 
-In case you are still experiencing random logouts, refer to [this guide](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/blob/master/docs/dual-account-setup.md) for instructions on how to create a dual-account setup. It explains how devices can be shared with a dedicated account that can be used for Homebridge.
+This plugin can be easily installed and configured through Homebridge UI or via [NPM](https://www.npmjs.com/package/homebridge-panasonic-ac-platform) "globally" by typing:
+
+    npm install -g homebridge-panasonic-ac-platform
 
 ## Homebridge setup
-Configure the plugin through the settings UI or directly in the JSON editor:
+Configure the plugin through the settings UI or directly in the JSON editor.
+
+Basic settings (required):
 
 ```json
 {
@@ -29,25 +36,11 @@ Configure the plugin through the settings UI or directly in the JSON editor:
         "platform": "Panasonic AC Platform",
         "name": "Homebridge Panasonic AC Platform",
         "email": "mail@example.com",
-        "password": "********",
-        "exposeOutdoorUnit": true,
-        "debugMode": false,
-        "appVersionOverride": "1.19.0",
-        "suppressOutgoingUpdates": false,
-        "minHeatingTemperature": 16,
-        "maxAttempts": 0,
-        "refreshInterval": 10,
-        "oscilateSwitch": "swing",
-        "startSwing": false,
-        "startNanoe": false,
-        "startEcoNavi": false,
-        "startInsideCleaning": false
+        "password": "********"
     }
   ]
 }
 ```
-
-Required:
 
 * `platform` (string):
 Tells Homebridge which platform this config belongs to. Leave as is.
@@ -56,66 +49,14 @@ Tells Homebridge which platform this config belongs to. Leave as is.
 Will be displayed in the Homebridge log.
 
 * `email` (string):
-The username of your Comfort Cloud account.
+The username of your Comfort Cloud (Panasonic ID) account.
 
 * `password` (string):
-The password of your account.
+The password of your Comfort Cloud (Panasonic ID) account.
 
-Optional:
+See: [advanced config](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/blob/master/docs/config.md).
 
-* `exposeOutdoorUnit` (boolean):
-If `true`, the plugin will create a separate accessory for your outdoor unit which will display the (outdoor) temperature it measures. This can be used for monitoring and automation purposes.
 
-* `debugMode` (boolean):
-If `true`, the plugin will print debugging information to the Homebridge log.
-
-* `appVersionOverride` (string):
-The plugin will automatically use the last known working value when this setting is empty or undefined (default). This setting allows you to override the default value if needed. It should reflect the latest version on the App Store, although older clients might remain supported for some time.
-
-* `suppressOutgoingUpdates` (boolean):
-If `true`, changes in the Home app will not be sent to Comfort Cloud. Useful for testing your installation without constantly switching the state of your AC to minimise wear and tear.
-
-* `minHeatingTemperature` (integer):
-The default heating temperature range is 16-30°C. Some Panasonic ACs have an additional heating mode for the range of 8-15°C. If you own such a model, you can use this setting to adjust the minimum value. Leave it empty or undefined to use the default value.
-
-* `maxAttempts` (integer):
-Maximum number of failed login attempts. If set to 0 - without the limit.
-
-* `refreshInterval` (integer):
-Refresh interval in minutes. Minimum 1 minute, maximum 360 minutes (6 hours). Note: More frequent refresh would result in too much daily number of requests to the Panasonic server, which could result in an account lock for 24 hours, or even a complete API lock.
-
-* `oscilateSwitch` (string):
-Decide what the switch should control: Swing Mode, Nanoe, Eco Navi or Inside Cleaning.
-
-* `startSwing` (string):
-Swing value with each state change made with Homekit (e.g. activation): do nothing, set on, set off.
-
-* `startNanoe` (string):
-Nanoe value with each state change made with Homekit (e.g. activation): do nothing, set on, set off.
-
-* `startEcoNavi` (string):
-Eco Navi value with each state change made with Homekit (e.g. activation): do nothing, set on, set off.
-
-* `startInsideCleaning` (string):
-InsideCleaning value with each state change made with Homekit (e.g. activation): do nothing, set on, set off.
-
-## Oscillate Switch
-
-Decide what the switch should control: Swing Mode, Nanoe, Eco Navi or Inside Cleaning.
-
-## Default values
-
-Value with each state change made with Homekit (e.g. activation) separate for: Swing Mode, Nanoe, Eco Navi or Inside Cleaning. Available options: do nothing, set on, set off.
-
-## Swing modes
-
-Homekit doesn't have so many switches to support all Swing modes. That's why here you can choose how it works.
-
-* The setting `Swing Directions` (`swingModeDirections` in the JSON config) controls which swing direction(s) will be activated when 'Oscillate' is switched on.
-
-* The setting `Swing Mode Default Position (Left-Right)` (`swingModeDefaultPositionLeftRight` in the JSON config) controls the desired position of the Left-Right flaps when 'Oscillate' is switched off or the swing directions setting (see above) is "Up-Down only".
-
-* The setting `Swing Mode Default Position (Up-Down)` (`swingModeDefaultPositionUpDown` in the JSON config) controls the desired position of the Up-Down flaps when 'Oscillate' is switched off or the swing directions setting (see above) is "Left-Right only".
 
 ## Fan speed, Quiet Mode, Powerful Mode
 
@@ -147,9 +88,7 @@ You can contribute to this project in the following ways:
 
 * Test/use the plugin and [report issues and share feedback](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/issues).
 
-* Review source code changes [before](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/pulls) and [after](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/commits/master) they are published.
-
-* Contribute with your own bug fixes, code clean-ups, or additional features (pull requests are accepted).
+* Contribute with your own bug fixes, code clean-ups, or additional features - [Pull Request](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/pulls).
 
 ## Acknowledgements
 * Thanks to [codyc1515](https://github.com/codyc1515) for creating and maintaining [homebridge-panasonic-air-conditioner](https://github.com/codyc1515/homebridge-panasonic-air-conditioner), which served as motivation for this platform plugin and proved particularly helpful in determining API request/response payloads.
