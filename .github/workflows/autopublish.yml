@@ -1,0 +1,83 @@
+# Workflow to publish to NPM.
+
+# It starts automatically when a new Github Release is published
+# or the draft is changed to a public version.
+# It will not start for drafts.
+
+# Automatically detects if there should be a latest or beta version.
+# When a Github Release is marked as a Pre-release it will publish to NPM as beta.
+
+# Get version from the Github Release tag. 
+# For latest version it should be like: 1.2.3 , 1.2.4 , 1.3.0 , etc.
+# For beta version it should be like: 1.2.3-beta.0 , 1.2.3-beta.1 , 1.2.3-beta.2 , etc.
+
+# Github Release description for Pre-releases (beta) is not required.
+
+
+
+name: Autopublish release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  create-release:
+    
+    name: Create latest / beta release
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Summary
+        run: |
+          echo "The release version will be: ${{ github.event.release.tag_name }}"
+      
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PAT }}
+
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.x'
+          registry-url: 'https://registry.npmjs.org'
+
+      # Configure Git
+      - name: Git configuration
+        run: |
+          git config user.email "72648264+github-actions[bot]@users.noreply.github.com"
+          git config user.name "GitHub Actions"
+          
+      - name: Upgrade version ⬆
+        run: npm version ${{ github.event.release.tag_name }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          
+      - name: Install dependencies and build 🔧
+        run: npm ci && npm run build
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish package on NPM - LATEST 📦
+        if: "!github.event.release.prerelease"
+        run: npm publish --tag latest
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          
+      - name: Publish package on NPM - BETA 📦
+        if: "github.event.release.prerelease"
+        run: npm publish --tag beta
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+          # Push git repository changes
+      - name: Push changes to repository
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git push origin HEAD:master && git push --tags
+      
+
+      
