@@ -69,7 +69,7 @@ The Home app offers no extra buttons for the Quiet and Powerful Modes. All setti
 
 ## Troubleshooting
 
-- If you have any issues with this plugin, enable the debug mode in the settings (and restart the plugin). This will print additional information to the log. If this doesn't help you resolve the issue, feel free to create a [GitHub issue](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/issues) and attach the available debugging information.
+- If you have any issues with this plugin, enable the debug mode (in plugin settings and homebridge settings) and restart homebridge / child bridge. This will print additional information to the log. If this doesn't help you resolve the issue, feel free to create a [GitHub issue](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/issues) and attach the available debugging information.
 - If you run into login errors despite using the correct login details, make sure you accepted the latest terms and conditions after logging into the Comfort Cloud app.
 - If the plugin affects the general responsiveness and reliability of your Homebridge setup, you can run it as an isolated [child bridge](https://github.com/homebridge/homebridge/wiki/Child-Bridges).
 
