@@ -7,7 +7,7 @@
 [![GitHub version](https://img.shields.io/github/package-json/v/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform?label=GitHub)](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/releases)
 [![npm version](https://img.shields.io/npm/v/homebridge-panasonic-ac-platform?color=%23cb3837&label=npm)](https://www.npmjs.com/package/homebridge-panasonic-ac-platform)
 
-`homebridge-panasonic-ac-platform` is a dynamic platform plugin for [Homebridge](https://homebridge.io) that provides HomeKit support for Panasonic Comfort Cloud devices (like single and multi-split air conditioning systems).
+`homebridge-panasonic-ac-platform` is a dynamic platform plugin for [Homebridge](https://homebridge.io) which provides HomeKit support for Panasonic Comfort Cloud devices (such as single and multi-split air conditioning systems).
 
 ## How it works
 The plugin communicates with your devices through the Comfort Cloud service. This means you must have a Comfort Cloud account (Panasonic ID) and your units must be registered and set up there before you can use this plugin.
@@ -70,9 +70,9 @@ The Home app offers no extra buttons for the Quiet and Powerful Modes. All setti
 
 ## Troubleshooting
 
-- If you have any issues with this plugin, enable the debug mode (in plugin settings and homebridge settings) and restart homebridge / child bridge. This will print additional information to the log.
-- If you run into login errors despite using the correct login details, make sure you accepted the latest terms and conditions after logging into the Comfort Cloud app.
-- It is recommended to run this plugin as [child bridge](https://github.com/homebridge/homebridge/wiki/Child-Bridges).
+- If you have any issues with this plugin, please enable debug mode (in both the plugin and homebridge settings) and restart homebridge / child bridge. This will include more detailed information in the log
+- If you run into login errors despite using the correct login details, make sure you accepted the latest terms and conditions after logging into the Comfort Cloud app
+- It's recommended you run this plugin as a [child bridge](https://github.com/homebridge/homebridge/wiki/Child-Bridges).
 
 ## Contributing and support
 
