@@ -3,7 +3,7 @@
 # Homebridge Panasonic AC Platform
 
 [![verified-by-homebridge](https://badgen.net/badge/homebridge/verified/purple)](https://github.com/homebridge/homebridge/wiki/Verified-Plugins)
-[![GitHub version](https://img.shields.io/github/package-json/v/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform?label=GitHub)](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform)
+[![GitHub version](https://img.shields.io/github/package-json/v/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform?label=GitHub)](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/releases)
 [![npm version](https://img.shields.io/npm/v/homebridge-panasonic-ac-platform?color=%23cb3837&label=npm)](https://www.npmjs.com/package/homebridge-panasonic-ac-platform)
 
 `homebridge-panasonic-ac-platform` is a dynamic platform plugin for [Homebridge](https://homebridge.io) that provides HomeKit support for Panasonic Comfort Cloud devices (like single and multi-split air conditioning systems).
@@ -69,13 +69,12 @@ The Home app offers no extra buttons for the Quiet and Powerful Modes. All setti
 
 ## Troubleshooting
 
-- If you have any issues with this plugin, enable the debug mode (in plugin settings and homebridge settings) and restart homebridge / child bridge. This will print additional information to the log. If this doesn't help you resolve the issue, feel free to create a [GitHub issue](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/issues) and attach the available debugging information.
+- If you have any issues with this plugin, enable the debug mode (in plugin settings and homebridge settings) and restart homebridge / child bridge. This will print additional information to the log.
 - If you run into login errors despite using the correct login details, make sure you accepted the latest terms and conditions after logging into the Comfort Cloud app.
-- If the plugin affects the general responsiveness and reliability of your Homebridge setup, you can run it as an isolated [child bridge](https://github.com/homebridge/homebridge/wiki/Child-Bridges).
+- It is recommended to run this plugin as [child bridge](https://github.com/homebridge/homebridge/wiki/Child-Bridges).
 
-## Contributing
+## Contributing and support
 
-You can contribute to this project in the following ways:
 - Test/use the plugin and [report issues and share feedback](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/issues).
 - Contribute with your own bug fixes, code clean-ups, or additional features - [Pull Request](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/pulls).
 - See more: [contributing-collaborators.md](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/blob/master/docs/contributing-collaborators.md). 
