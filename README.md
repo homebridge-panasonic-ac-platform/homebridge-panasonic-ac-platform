@@ -11,7 +11,7 @@
 ## How it works
 The plugin communicates with your devices through the Comfort Cloud service. This means you must have a Comfort Cloud account (Panasonic ID) and your units must be registered and set up there before you can use this plugin.
 
-All devices that are set up on your Comfort Cloud account will appear via HomeKit in your Home app (or other HomeKit app). If you remove a device from your Comfort Cloud account, it will also disappear from your HomeKit app after you restart Homebridge.
+All devices that are set up on your Comfort Cloud account will appear in Homebridge and via HomeKit in your Home app (or other HomeKit app). If you remove a device from your Comfort Cloud account, it will also disappear from your Homebridge and HomeKit app after you restart Homebridge (unless you have the option to 'keep accessories of uninstalled plugins' selected in Homebridge settings). 
 
 ## Comfort Cloud account (Panasonic ID)
 
