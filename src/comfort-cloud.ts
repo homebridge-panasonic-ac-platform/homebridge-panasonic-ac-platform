@@ -20,7 +20,7 @@ import {
  */
 export default class ComfortCloudApi {
   private token: string;
-  private _loginRefreshInterval: NodeJS.Timer | undefined;
+  private _loginRefreshInterval: NodeJS.Timer;
 
   constructor(
     private readonly config: PanasonicPlatformConfig,
