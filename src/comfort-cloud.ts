@@ -20,7 +20,7 @@ import {
  */
 export default class ComfortCloudApi {
   private token: string;
-  private _loginRefreshInterval: NodeJS.Timer | undefined;
+  private _loginRefreshInterval;
 
   constructor(
     private readonly config: PanasonicPlatformConfig,
@@ -36,7 +36,7 @@ export default class ComfortCloudApi {
   async login() {
     this.log.debug('Comfort Cloud: login()');
 
-    clearInterval(<NodeJS.Timer>this._loginRefreshInterval);
+    clearInterval(this._loginRefreshInterval);
 
     return axios.request<ComfortCloudAuthResponse>({
       method: 'post',

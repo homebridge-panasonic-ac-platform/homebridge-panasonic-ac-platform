@@ -33,7 +33,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
   private readonly accessories: PlatformAccessory<PanasonicAccessoryContext>[] = [];
   private outdoorUnit: OutdoorUnitAccessory | undefined;
 
-  private _loginRetryTimeout: NodeJS.Timer | undefined;
+  private _loginRetryTimeout;
   private noOfFailedLoginAttempts = 0;
 
   public readonly comfortCloud: ComfortCloudApi;
