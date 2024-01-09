@@ -33,8 +33,8 @@
 				"default": false
 			},
 			"startSwing" : {
-				"title": "Start Swing",
-				"description": "Swing value with each state change made with Homekit (e.g. activation): do nothing, set on, set off.",
+				"title": "Override Swing",
+				"description": "Swing value with each state change made with HomeKit (e.g. activation): do nothing, set on, set off.",
 				"type": "string",
 				"default": "false",
 				"required": true,
@@ -45,8 +45,8 @@
 				]
 			},
 			"startNanoe" : {
-				"title": "Start Nanoe",
-				"description": "Nanoe value with each state change made with Homekit (e.g. activation): do nothing, set on, set off.",
+				"title": "Override Nanoe",
+				"description": "Nanoe value with each state change made with HomeKit (e.g. activation): do nothing, set on, set off.",
 				"type": "string",
 				"default": "false",
 				"oneOf": [
@@ -57,8 +57,8 @@
 				"required": true
 			},
 			"startEcoNavi" : {
-				"title": "Start Eco Navi",
-				"description": "Eco Navi value with each state change made with Homekit (e.g. activation): do nothing, set on, set off.",
+				"title": "Override Eco Navi",
+				"description": "Eco Navi value with each state change made with HomeKit (e.g. activation): do nothing, set on, set off.",
 				"type": "string",
 				"default": "false",
 				"oneOf": [
@@ -69,8 +69,8 @@
 				"required": true
 			},
 			"startInsideCleaning" : {
-				"title": "Start Inside Cleaning",
-				"description": "Inside Cleaning value with each state change made with Homekit (e.g. activation): do nothing, set on, set off.",
+				"title": "Override Inside Cleaning",
+				"description": "Inside Cleaning value with each state change made with HomeKit (e.g. activation): do nothing, set on, set off.",
 				"type": "string",
 				"default": "false",
 				"oneOf": [
@@ -103,7 +103,7 @@
 				"maximum": 10
 			},
 			"refreshInterval" : {
-				"title": "Refresh interval (in minutes)",
+				"title": "Refresh interval (minutes)",
 				"type": "integer",
 				"description": "Recomended: 10 minutes. Minimum 1 minute, Maximum 360 minutes (6 hours). Note: More frequent refresh would result in too much daily number of requests to the Panasonic server, which could result in an account lock for 24 hours, or even a complete API lock.",
 				"required": true,
@@ -112,8 +112,8 @@
 				"maximum": 360
 			},
 			"swingModeDirections" : {
-				"title": "Swing Directions",
-				"description": "This setting controls which swing direction(s) will be activated when 'Oscillate' is switched on.",
+				"title": "Swing Mode Directions",
+				"description": "Swing direction(s) when activated via HomeKit (by 'Oscillate switch' or by 'Override Swing').",
 				"type": "string",
 				"default": "LEFT-RIGHT-UP-DOWN",
 				"oneOf": [
@@ -125,7 +125,7 @@
 			},
 			"swingModeDefaultPositionLeftRight" : {
 				"title": "Swing Mode Default Position (Left-Right)",
-				"description": "The desired position of the Left-Right flaps when 'Oscillate' is switched off.",
+				"description": "Position of the Left-Right flaps when Swing Mode is deactivated via HomeKit (by 'Oscillate switch' or 'Override Swing').",
 				"type": "string",
 				"default": "CENTER",
 				"oneOf": [
@@ -139,7 +139,7 @@
 			},
 			"swingModeDefaultPositionUpDown" : {
 				"title": "Swing Mode Default Position (Up-Down)",
-				"description": "The desired position of the Up-Down flaps when 'Oscillate' is switched off.",
+				"description": "Position of the Up-Down flaps when Swing Mode is deactivated via HomeKit (by 'Oscillate switch' or 'Override Swing').",
 				"type": "string",
 				"default": "CENTER",
 				"oneOf": [
@@ -202,24 +202,16 @@
 		},
 		{
 			"type": "fieldset",
-			"title": "Default Values",
+			"title": "More control (Swing, Nanoe, Eco Navi, Inside Cleaning)",
 			"expandable": true,
 			"expanded": false,
+			"description": "HomeKit has only one 'Oscillate' switch, but most Panasonic ACs have more options: Nanoe, Eco Navi, Inside Cleaning and Swing mode have two swing directions.",
 			"items": [
 				"oscilateSwitch",
 				"startSwing",
 				"startNanoe",
 				"startEcoNavi",
-				"startInsideCleaning"
-			]
-		},
-		{
-			"type": "fieldset",
-			"title": "Swing Mode settings",
-			"description": "The Home app has only one 'Oscillate' switch, but most Panasonic ACs have two swing directions. These settings controls which swing direction(s) will be activated.",
-			"expandable": true,
-			"expanded": false,
-			"items": [
+				"startInsideCleaning",
 				"swingModeDirections",
 				"swingModeDefaultPositionLeftRight",
 				"swingModeDefaultPositionUpDown"
