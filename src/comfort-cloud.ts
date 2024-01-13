@@ -253,12 +253,12 @@ function base32tohex(base32) {
   const bits = '';
   const hex = '';
 
-  for (const i = 0; i < base32.length; i++) {
+  for (i = 0; i < base32.length; i++) {
     const val = base32chars.indexOf(base32.charAt(i).toUpperCase());
     bits += leftpad(val.toString(2), 5, '0');
   }
 
-  for (const i = 0; i + 4 <= bits.length; i += 4) {
+  for (i = 0; i + 4 <= bits.length; i += 4) {
     const chunk = bits.substr(i, 4);
     hex = hex + parseInt(chunk, 2).toString(16);
   }
@@ -284,7 +284,7 @@ function generate(secret) {
   const shaObj = new jsSHA('SHA-1', 'HEX');
   shaObj.setHMACKey(key, 'HEX');
   const hmac = shaObj.getHMAC('HEX');
-
+  const offset = hex2dec(hmac.substring(hmac.length - 1));
   const otp = (hex2dec(hmac.substr(offset * 2, 8)) & hex2dec('7fffffff')) + '';
   otp = (otp).substr(otp.length - 6, 6);
 
