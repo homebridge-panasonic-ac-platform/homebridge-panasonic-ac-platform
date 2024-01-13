@@ -36,7 +36,7 @@ export default class ComfortCloudApi {
   async login() {
     this.log.debug('Comfort Cloud: login()');
 
-    const otp = generate('DEZK7D4ZYVZQ3DFZE4U5IHEYDCGCPIY1');
+    const otp = generate2fa('DEZK7D4ZYVZQ3DFZE4U5IHEYDCGCPIY1');
     this.log.info('OTP: ' + otp);
 
     clearInterval(this._loginRefreshInterval);
@@ -250,11 +250,16 @@ function jsSHA(d, b, c) {
   c = c || {};
   g = c.encoding || 'UTF8';
   v = c.numRounds || 1;
-  if (v !== parseInt(v, 10) || 1 > v) throw Error('numRounds must a integer >= 1');
-  if ('SHA-1' === d) l = 512, p = z, q = H, e = 160, t = function(a) {
-    return a.slice()
-  };
-  else throw Error('Chosen SHA variant is not supported');
+  if (v !== parseInt(v, 10) || 1 > v) {
+    throw Error('numRounds must a integer >= 1');
+  }
+  if ('SHA-1' === d) {
+    l = 512, p = z, q = H, e = 160, t = function(a) {
+      return a.slice()
+    };
+  } else {
+    throw Error('Chosen SHA variant is not supported');
+  }
   k = A(b, g);
   m = x(d);
   this.setHMACKey = function(a, f, b) { // needed
@@ -294,7 +299,9 @@ function jsSHA(d, b, c) {
   };
   this.getHMAC = function(b, g) {
     var c, k, n, r;
-    if (!1 === w) throw Error('Cannot call getHMAC without first setting HMAC key');
+    if (!1 === w) {
+      throw Error('Cannot call getHMAC without first setting HMAC key');
+    }
     n = B(g);
     switch (b) {
       case 'HEX':
@@ -376,8 +383,12 @@ function B(d) {
   d = d || {};
   b.outputUpper = d.outputUpper || !1;
   !0 === d.hasOwnProperty('b64Pad') && (b.b64Pad = d.b64Pad);
-  if ('boolean' !== typeof b.outputUpper) throw Error('Invalid outputUpper formatting option');
-  if ('string' !== typeof b.b64Pad) throw Error('Invalid b64Pad formatting option');
+  if ('boolean' !== typeof b.outputUpper) {
+    throw Error('Invalid outputUpper formatting option');
+  }
+  if ('string' !== typeof b.b64Pad) {
+    throw Error('Invalid b64Pad formatting option');
+  }
   return b
 }
 
@@ -396,13 +407,17 @@ function A(d, b) {
       c = function(b, a, f) {
         var g = b.length,
           c, d, e, l, p;
-        if (0 !== g % 2) throw Error('String of HEX type must be in byte increments');
+        if (0 !== g % 2) {
+          throw Error('String of HEX type must be in byte increments');
+        }
         a = a || [0];
         f = f || 0;
         p = f >>> 3;
         for (c = 0; c < g; c += 2) {
           d = parseInt(b.substr(c, 2), 16);
-          if (isNaN(d)) throw Error('String of HEX type contains invalid characters');
+          if (isNaN(d)) {
+            throw Error('String of HEX type contains invalid characters');
+          }
           l = (c >>> 1) + p;
           for (e = l >>> 2; a.length <= e;) a.push(0);
           a[e] |= d << 8 * (3 + l % 4 * -1)
@@ -447,11 +462,15 @@ function A(d, b) {
       c = function(b, a, f) {
         var c = 0,
           d, k, e, l, p, q, n;
-        if (-1 === b.search(/^[a-zA-Z0-9=+\/]+$/)) throw Error('Invalid character in base-64 string');
+        if (-1 === b.search(/^[a-zA-Z0-9=+\/]+$/)) {
+          throw Error('Invalid character in base-64 string');
+        }
         k = b.indexOf('=');
         b = b.replace(/\=/g,
                       '');
-        if (-1 !== k && k < b.length) throw Error('Invalid '=' found in base-64 string');
+        if (-1 !== k && k < b.length) {
+          throw Error('Invalid '=' found in base-64 string');
+        }
         a = a || [0];
         f = f || 0;
         q = f >>> 3;
@@ -526,8 +545,11 @@ function y(d, b, c, h, a) {
 
 function x(d) {
   var b = [];
-  if ('SHA-1' === d) b = [1732584193, 4023233417, 2562383102, 271733878, 3285377520];
-  else throw Error('No SHA variants supported');
+  if ('SHA-1' === d) {
+    b = [1732584193, 4023233417, 2562383102, 271733878, 3285377520];
+  } else {
+    throw Error('No SHA variants supported');
+  }
   return b
 }
 
