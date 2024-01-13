@@ -243,7 +243,7 @@ function jsSHA(d, b, c) {
   let h = 0;
   let a = [];
   let f = 0;
-  const g, 
+  const g = !1;
   let m = !1, 
   const k = !1,
   let e = !1,
