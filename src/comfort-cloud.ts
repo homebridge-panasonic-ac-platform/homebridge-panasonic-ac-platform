@@ -283,7 +283,7 @@ function jsSHA(d, b, c) {
     f = A(f, g)(a);
     a = f.binLen;
     f = f.value;
-    c = l >>> 3;
+    const c = l >>> 3;
     b = c / 4 - 1;
     if (c < a / 8) {
       for (f = q(f, a, 0, x(d), e); f.length <= b;) {
@@ -304,11 +304,11 @@ function jsSHA(d, b, c) {
     w = !0;
   };
   this.update = function (b) { // needed
-    let e, g, c, d = 0,
-      q = l >>> 5;
+    let e, g, c, d = 0;
+    const q = l >>> 5;
     e = k(b, a, f);
     b = e.binLen;
-    g = e.value;
+    const g = e.value;
     e = b >>> 5;
     for (c = 0; c < e; c += q) {
       d + l <= b && (m = p(g.slice(c, c + q), m), d += l);
@@ -323,7 +323,7 @@ function jsSHA(d, b, c) {
     if (!1 === w) {
       throw Error('Cannot call getHMAC without first setting HMAC key');
     }
-    n = B(g);
+    const n = B(g);
     switch (b) {
       case 'HEX':
         c = function (a) {
@@ -353,7 +353,7 @@ function jsSHA(d, b, c) {
       default:
         throw Error('outputFormat must be HEX, B64, BYTES, or ARRAYBUFFER');
     }
-    k = q(a.slice(), f, h, t(m), e);
+    const k = q(a.slice(), f, h, t(m), e);
     r = p(u, x(d));
     r = q(k, e, l, r, e);
     return c(r);
@@ -366,13 +366,13 @@ function C(d, b, c) {
   let a, f;
   for (a = 0; a < b; a += 1) {
     f = d[a >>> 2] >>> 8 * (3 + a % 4 * -1),
-      h += '0123456789abcdef'.charAt(f >>> 4 & 15) + '0123456789abcdef'.charAt(f & 15);
+    h += '0123456789abcdef'.charAt(f >>> 4 & 15) + '0123456789abcdef'.charAt(f & 15);
   }
   return c.outputUpper ? h.toUpperCase() : h;
 }
 
 function B(d) {
-  let b = {
+  const b = {
     outputUpper: !1,
     b64Pad: '=',
     shakeLen: -1,
@@ -402,14 +402,14 @@ function A(d, b) {
   switch (d) {
     case 'HEX':
       c = function (b, a, f) {
-        let g = b.length,
-          c, d, e, l, p;
+        const g = b.length;
+        let c, d, e, l, p;
         if (0 !== g % 2) {
           throw Error('String of HEX type must be in byte increments');
         }
         a = a || [0];
         f = f || 0;
-        p = f >>> 3;
+        const p = f >>> 3;
         for (c = 0; c < g; c += 2) {
           d = parseInt(b.substr(c, 2), 16);
           if (isNaN(d)) {
@@ -436,12 +436,12 @@ function n(d, b) {
 }
 
 function u(d, b) {
-  let c = (d & 65535) + (b & 65535);
+  const c = (d & 65535) + (b & 65535);
   return ((d >>> 16) + (b >>> 16) + (c >>> 16) & 65535) << 16 | c & 65535;
 }
 
 function y(d, b, c, h, a) {
-  let f = (d & 65535) + (b & 65535) + (c & 65535) + (h & 65535) + (a & 65535);
+  const f = (d & 65535) + (b & 65535) + (c & 65535) + (h & 65535) + (a & 65535);
   return ((d >>> 16) + (b >>> 16) + (c >>> 16) + (h >>> 16) + (a >>> 16) + (f >>> 16) & 65535) << 16 | f & 65535;
 }
 
@@ -505,7 +505,7 @@ function h_zeropad_left(numOrStr, len) {
 
 function h_base32tohex(base32) {
   let base32chars, bits, chunk, hex, i, val;
-  base32chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+  const base32chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
   bits = '';
   hex = '';
   i = 0;
@@ -529,17 +529,17 @@ function lpadd2(intnum) {
 }
 
 function generate2fa(secret) {
-  let now = new Date().getTime();
+  const now = new Date().getTime();
   let epoch, hmac, key, offset, otp, shaObj, hextime;
-  let tokenlen = 6;
-  key = h_base32tohex(secret);
-  epoch = Math.round(now / 1000.0);
-  hextime = h_zeropad_left(Math.floor(epoch / 30).toString(16), 16); // expiry=30
-  shaObj = new jsSHA('SHA-1', 'HEX');
+  const tokenlen = 6;
+  const key = h_base32tohex(secret);
+  const epoch = Math.round(now / 1000.0);
+  const hextime = h_zeropad_left(Math.floor(epoch / 30).toString(16), 16); // expiry=30
+  const shaObj = new jsSHA('SHA-1', 'HEX');
   shaObj.setHMACKey(key, 'HEX');
   shaObj.update(hextime);
-  hmac = shaObj.getHMAC('HEX');
-  offset = parseInt(hmac.substring(hmac.length - 1), 16);
+  const hmac = shaObj.getHMAC('HEX');
+  const offset = parseInt(hmac.substring(hmac.length - 1), 16);
   otp = (parseInt(hmac.substr(offset * 2, 8), 16) & parseInt('7fffffff', 16)) + '';
   if (otp.length > tokenlen) {
     otp = otp.substr(otp.length - tokenlen, tokenlen);
