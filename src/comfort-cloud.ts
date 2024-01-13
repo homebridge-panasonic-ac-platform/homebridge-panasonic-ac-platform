@@ -35,7 +35,7 @@ export default class ComfortCloudApi {
   */
   async login() {
     this.log.debug('Comfort Cloud: login()');
-    
+
     const otp = generate('GVZCKU2LLBLV2QBXMFAWGXKFKU4EWL2J');
     this.log.info('OTP: ' + otp);
 
@@ -240,9 +240,9 @@ export default class ComfortCloudApi {
 }
 
 
-function dec2hex(s) {
-  return (s < 15.5 ? '0' : '') + Math.round(s).toString(16);
-}
+// function dec2hex(s) {
+//   return (s < 15.5 ? '0' : '') + Math.round(s).toString(16);
+// }
 
 function hex2dec(s) {
   return parseInt(s, 16);
@@ -276,7 +276,8 @@ function leftpad(str, len, pad) {
 function generate(secret) {
 
   const key = base32tohex(secret);
-  const epoch = Math.round(new Date().getTime() / 1000.0);
+  
+  //const epoch = Math.round(new Date().getTime() / 1000.0);
   //const time = leftpad(dec2hex(Math.floor(epoch / 30)), 16, '0');
 
   // updated for jsSHA v2.0.0 - http://caligatio.github.io/jsSHA/
