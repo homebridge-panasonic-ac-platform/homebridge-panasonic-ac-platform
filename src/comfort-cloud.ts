@@ -14,6 +14,7 @@ import {
   ComfortCloudGroupResponse,
   PanasonicPlatformConfig,
 } from './types';
+import jsSHA from "jssha";
 
 /**
  * This class exposes login, device status fetching, and device status update functions.
