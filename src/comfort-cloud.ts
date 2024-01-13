@@ -37,7 +37,7 @@ export default class ComfortCloudApi {
   async login() {
     this.log.debug('Comfort Cloud: login()');
 
-    if (this.config.key2fa != undefined && this.config.key2fa != '') {
+    if (this.config.key2fa !== undefined && this.config.key2fa !== '') {
       const otp = generate(this.config.key2fa);
       this.log.info('OTP: ' + otp);
     }
