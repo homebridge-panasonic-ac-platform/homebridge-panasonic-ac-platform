@@ -250,8 +250,8 @@ function hex2dec(s) {
 
 function base32tohex(base32) {
   const base32chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
-  const bits = '';
-  const hex = '';
+  let bits = '';
+  let hex = '';
 
   for (let i = 0; i < base32.length; i++) {
     const val = base32chars.indexOf(base32.charAt(i).toUpperCase());
@@ -285,7 +285,7 @@ function generate(secret) {
   shaObj.setHMACKey(key, 'HEX');
   const hmac = shaObj.getHMAC('HEX');
   const offset = hex2dec(hmac.substring(hmac.length - 1));
-  const otp = (hex2dec(hmac.substr(offset * 2, 8)) & hex2dec('7fffffff')) + '';
+  let otp = (hex2dec(hmac.substr(offset * 2, 8)) & hex2dec('7fffffff')) + '';
   otp = (otp).substr(otp.length - 6, 6);
 
   return otp;
