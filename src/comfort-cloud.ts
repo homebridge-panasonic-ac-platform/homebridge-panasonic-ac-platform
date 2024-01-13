@@ -252,7 +252,7 @@ function jsSHA(d, b, c) {
   v = c.numRounds || 1;
   if (v !== parseInt(v, 10) || 1 > v) throw Error('numRounds must a integer >= 1');
   if ('SHA-1' === d) l = 512, p = z, q = H, e = 160, t = function (a) {
-    return a.slice()
+    return a.slice();
   };
   else throw Error('Chosen SHA letiant is not supported');
   k = A(b, g);
@@ -269,15 +269,15 @@ function jsSHA(d, b, c) {
     b = c / 4 - 1;
     if (c < a / 8) {
       for (f = q(f, a, 0, x(d), e); f.length <= b;) f.push(0);
-      f[b] &= 4294967040
+      f[b] &= 4294967040;
     } else if (c > a / 8) {
       for (; f.length <= b;) f.push(0);
-      f[b] &= 4294967040
+      f[b] &= 4294967040;
     }
     for (a = 0; a <= b; a += 1) n[a] = f[a] ^ 909522486, u[a] = f[a] ^ 1549556828;
     m = p(n, m);
     h = l;
-    w = !0
+    w = !0;
   };
   this.update = function (b) { // needed
     let e, g, c, d = 0,
@@ -290,7 +290,7 @@ function jsSHA(d, b, c) {
     h += d;
     a = g.slice(d >>> 5);
     f = b % l;
-    r = !0
+    r = !0;
   };
   this.getHMAC = function (b, g) {
     let c, k, n, r;
@@ -299,7 +299,7 @@ function jsSHA(d, b, c) {
     switch (b) {
       case 'HEX':
         c = function (a) {
-          return C(a, e, n)
+          return C(a, e, n);
         };
         break;
       // case 'B64':
@@ -328,8 +328,8 @@ function jsSHA(d, b, c) {
     k = q(a.slice(), f, h, t(m), e);
     r = p(u, x(d));
     r = q(k, e, l, r, e);
-    return c(r)
-  }
+    return c(r);
+  };
 }
 
 function C(d, b, c) {
@@ -337,7 +337,7 @@ function C(d, b, c) {
   b /= 8;
   let a, f;
   for (a = 0; a < b; a += 1) f = d[a >>> 2] >>> 8 * (3 + a % 4 * -1), h += '0123456789abcdef'.charAt(f >>> 4 & 15) + '0123456789abcdef'.charAt(f & 15);
-  return c.outputUpper ? h.toUpperCase() : h
+  return c.outputUpper ? h.toUpperCase() : h;
 }
 
 // function D(d, b, c) {
@@ -371,14 +371,14 @@ function B(d) {
   let b = {
     outputUpper: !1,
     b64Pad: '=',
-    shakeLen: -1
+    shakeLen: -1,
   };
   d = d || {};
   b.outputUpper = d.outputUpper || !1;
   !0 === d.hasOwnProperty('b64Pad') && (b.b64Pad = d.b64Pad);
   if ('boolean' !== typeof b.outputUpper) throw Error('Invalid outputUpper formatting option');
   if ('string' !== typeof b.b64Pad) throw Error('Invalid b64Pad formatting option');
-  return b
+  return b;
 }
 
 function A(d, b) {
@@ -405,12 +405,12 @@ function A(d, b) {
           if (isNaN(d)) throw Error('String of HEX type contains invalid characters');
           l = (c >>> 1) + p;
           for (e = l >>> 2; a.length <= e;) a.push(0);
-          a[e] |= d << 8 * (3 + l % 4 * -1)
+          a[e] |= d << 8 * (3 + l % 4 * -1);
         }
         return {
           value: a,
-          binLen: 4 * g + f
-        }
+          binLen: 4 * g + f,
+        };
       };
       break;
     // case 'TEXT':
@@ -507,28 +507,28 @@ function A(d, b) {
     default:
       throw Error('format must be HEX, TEXT, B64, BYTES, or ARRAYBUFFER');
   }
-  return c
+  return c;
 }
 
 function n(d, b) {
-  return d << b | d >>> 32 - b
+  return d << b | d >>> 32 - b;
 }
 
 function u(d, b) {
   let c = (d & 65535) + (b & 65535);
-  return ((d >>> 16) + (b >>> 16) + (c >>> 16) & 65535) << 16 | c & 65535
+  return ((d >>> 16) + (b >>> 16) + (c >>> 16) & 65535) << 16 | c & 65535;
 }
 
 function y(d, b, c, h, a) {
   let f = (d & 65535) + (b & 65535) + (c & 65535) + (h & 65535) + (a & 65535);
-  return ((d >>> 16) + (b >>> 16) + (c >>> 16) + (h >>> 16) + (a >>> 16) + (f >>> 16) & 65535) << 16 | f & 65535
+  return ((d >>> 16) + (b >>> 16) + (c >>> 16) + (h >>> 16) + (a >>> 16) + (f >>> 16) & 65535) << 16 | f & 65535;
 }
 
 function x(d) {
   let b = [];
   if ('SHA-1' === d) b = [1732584193, 4023233417, 2562383102, 271733878, 3285377520];
   else throw Error('No SHA letiants supported');
-  return b
+  return b;
 }
 
 function z(d, b) {
@@ -545,7 +545,7 @@ function z(d, b) {
   b[2] = u(f, b[2]);
   b[3] = u(g, b[3]);
   b[4] = u(m, b[4]);
-  return b
+  return b;
 }
 
 function H(d, b, c, h) {
@@ -557,7 +557,7 @@ function H(d, b, c, h) {
   d[a - 1] = b / 4294967296 | 0;
   b = d.length;
   for (a = 0; a < b; a += 16) h = z(d.slice(a, a + 16), h);
-  return h
+  return h;
 }
 
 function h_zeropad_left(numOrStr, len) {
