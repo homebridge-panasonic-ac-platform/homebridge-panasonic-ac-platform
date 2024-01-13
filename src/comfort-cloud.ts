@@ -457,7 +457,7 @@ function A(d, b) {
         a = a || [0];
         f = f || 0;
         p = f >>> 3;
-        if ('UTF8' === b) {
+        if ('UTF8' === b)
           for (n = 3, e = 0; e < c.length; e += 1)
             for (g = c.charCodeAt(e), d = [], 128 > g ? d.push(g) : 2048 > g ? (d.push(192 | g >>> 6), d.push(128 | g & 63)) : 55296 > g || 57344 <= g ? d.push(224 | g >>> 12, 128 | g >>> 6 & 63, 128 | g & 63) : (e += 1, g = 65536 + ((g & 1023) << 10 | c.charCodeAt(e) & 1023), d.push(240 | g >>> 18, 128 | g >>> 12 & 63, 128 | g >>> 6 & 63, 128 | g & 63)), l = 0; l < d.length; l += 1) {
               t = k +
@@ -480,7 +480,6 @@ function A(d, b) {
           value: a,
           binLen: 8 * k + f,
         };
-    
       };
       break;
     case 'B64':
