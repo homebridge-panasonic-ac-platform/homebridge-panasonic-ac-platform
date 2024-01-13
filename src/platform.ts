@@ -289,6 +289,9 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
     try {
       const comfortCloudDevices = await this.comfortCloud.getDevices();
 
+      const excludeArray = 'CS-Z50VKEW+4962605183'.split(',');
+      comfortCloudDevices = devicesList.filter(el => !excludeArray.includes(el.deviceGuid));
+
       // Loop over the discovered (indoor) devices and register each
       // one if it has not been registered before.
       for (const device of comfortCloudDevices) {
