@@ -295,7 +295,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
         comfortCloudDevices
           = comfortCloudDevices.filter(el => !excludeArray.includes(el.deviceGuid));
         comfortCloudDevices
-          = comfortCloudDevices.filter(el => !excludeArray.includes(el.displayName));
+          = comfortCloudDevices.filter(el => !excludeArray.includes(el.deviceName));
       }
 
       // Loop over the discovered (indoor) devices and register each
