@@ -256,7 +256,7 @@ function jsSHA(d, b, c) {
   const u = [];
   const v = !1;
   let r = !1;
-  const c = c || {};
+  c = c || {};
   g = c.encoding || 'UTF8';
   v = c.numRounds || 1;
   if (v !== parseInt(v, 10) || 1 > v) {
