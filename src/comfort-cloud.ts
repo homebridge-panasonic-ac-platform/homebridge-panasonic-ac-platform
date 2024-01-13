@@ -357,7 +357,7 @@ function C(d, b, c) {
   const a, f;
   for (a = 0; a < b; a += 1) {
     f = d[a >>> 2] >>> 8 * (3 + a % 4 * -1),
-      h += '0123456789abcdef'.charAt(f >>> 4 & 15) + '0123456789abcdef'.charAt(f & 15);
+    h += '0123456789abcdef'.charAt(f >>> 4 & 15) + '0123456789abcdef'.charAt(f & 15);
   }
   return c.outputUpper ? h.toUpperCase() : h;
 }
@@ -421,7 +421,7 @@ function A(d, b) {
       break;
     default:
       throw Error('encoding must be UTF8, UTF16BE, or UTF16LE');
-    }
+  }
   switch (d) {
     case 'HEX':
       c = function(b, a, f) {
@@ -447,7 +447,7 @@ function A(d, b) {
         return {
           value: a,
           binLen: 4 * g + f,
-        }
+        };
       };
       break;
     case 'TEXT':
@@ -457,7 +457,7 @@ function A(d, b) {
         a = a || [0];
         f = f || 0;
         p = f >>> 3;
-        if ('UTF8' === b)
+        if ('UTF8' === b) 
           for (n = 3, e = 0; e < c.length; e += 1)
             for (g = c.charCodeAt(e), d = [], 128 > g ? d.push(g) : 2048 > g ? (d.push(192 | g >>> 6), d.push(128 | g & 63)) : 55296 > g || 57344 <= g ? d.push(224 | g >>> 12, 128 | g >>> 6 & 63, 128 | g & 63) : (e += 1, g = 65536 + ((g & 1023) << 10 | c.charCodeAt(e) & 1023), d.push(240 | g >>> 18, 128 | g >>> 12 & 63, 128 | g >>> 6 & 63, 128 | g & 63)), l = 0; l < d.length; l += 1) {
               t = k +
@@ -470,7 +470,9 @@ function A(d, b) {
               g = c.charCodeAt(e);
               !0 === d && (l = g & 255, g = l << 8 | g >>> 8);
               t = k + p;
-              for (q = t >>> 2; a.length <= q;) a.push(0);
+              for (q = t >>> 2; a.length <= q;) {
+                a.push(0);
+              }
               a[q] |= g << 8 * (n + t % 4 * -1);
               k += 2;
             }
