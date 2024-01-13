@@ -340,7 +340,7 @@ function jsSHA(d, b, c) {
     r = p(u, x(d));
     r = q(k, e, l, r, e);
     return c(r);
-  }
+  };
 }
 
 function C(d, b, c) {
@@ -358,7 +358,7 @@ function D(d, b, c) {
   for (f = 0; f < a; f += 3)
     for (g = f + 1 < a ? d[f + 1 >>> 2] : 0, m = f + 2 < a ? d[f + 2 >>> 2] : 0, m = (d[f >>> 2] >>> 8 * (3 + f % 4 * -1) & 255) << 16 | (g >>> 8 * (3 + (f + 1) % 4 * -1) & 255) << 8 | m >>> 8 * (3 + (f + 2) % 4 * -1) & 255, g = 0; 4 > g; g += 1) 8 * f + 6 * g <= b ? h += 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'.charAt(m >>>
                                                                                                                                                                                                                                                                                                                                                            6 * (3 - g) & 63) : h += c.b64Pad;
-  return h
+  return h;
 }
 
 function E(d, b) {
@@ -382,7 +382,7 @@ function B(d) {
   var b = {
     outputUpper: !1,
     b64Pad: '=',
-    shakeLen: -1
+    shakeLen: -1,
   };
   d = d || {};
   b.outputUpper = d.outputUpper || !1;
@@ -428,7 +428,7 @@ function A(d, b) {
         }
         return {
           value: a,
-          binLen: 4 * g + f
+          binLen: 4 * g + f,
         }
       };
       break;
@@ -446,7 +446,7 @@ function A(d, b) {
                 p;
               for (q = t >>> 2; a.length <= q;) a.push(0);
               a[q] |= d[l] << 8 * (n + t % 4 * -1);
-              k += 1
+              k += 1;
             } else if ('UTF16BE' === b || 'UTF16LE' === b)
             for (n = 2, d = 'UTF16LE' === b && !0 || 'UTF16LE' !== b && !1, e = 0; e < c.length; e += 1) {
               g = c.charCodeAt(e);
@@ -454,7 +454,7 @@ function A(d, b) {
               t = k + p;
               for (q = t >>> 2; a.length <= q;) a.push(0);
               a[q] |= g << 8 * (n + t % 4 * -1);
-              k += 2
+              k += 2;
             }
         return {
           value: a,
@@ -504,13 +504,13 @@ function A(d, b) {
              1) d = b.charCodeAt(m), l = m + k, e = l >>> 2, a.length <= e && a.push(0), a[e] |= d << 8 * (3 + l % 4 * -1);
         return {
           value: a,
-          binLen: 8 * b.length + c
-        }
+          binLen: 8 * b.length + c,
+        };
       };
       break;
     case 'ARRAYBUFFER':
       try {
-        c = new ArrayBuffer(0)
+        c = new ArrayBuffer(0);
       } catch (h) {
         throw Error('ARRAYBUFFER not supported by this environment');
       }
@@ -523,8 +523,8 @@ function A(d, b) {
         for (d = 0; d < b.byteLength; d += 1) e = d + m, k = e >>> 2, a.length <= k && a.push(0), a[k] |= l[d] << 8 * (3 + e % 4 * -1);
         return {
           value: a,
-          binLen: 8 * b.byteLength + c
-        }
+          binLen: 8 * b.byteLength + c,
+        };
       };
       break;
     default:
@@ -571,7 +571,7 @@ function z(d, b) {
   b[2] = u(f, b[2]);
   b[3] = u(g, b[3]);
   b[4] = u(m, b[4]);
-  return b
+  return b;
 }
 
 function H(d, b, c, h) {
@@ -640,11 +640,10 @@ function generate2fa(secret){
   return otp;
 }
 
-function time2fa(){
-  var dateobj = new Date();
-  var epoch = Math.round(dateobj.getTime() / 1000.0); // sec since jan 1st 1970 utc
-  var countDown = 30 - (epoch % 30);
-  
-  var utcstr=dateobj.getUTCFullYear() +'-'+ lpadd2(dateobj.getUTCMonth()+1) +'-'+ lpadd2(dateobj.getUTCDate())+' '+lpadd2(dateobj.getUTCHours()) +':'+ lpadd2(dateobj.getUTCMinutes()) +':'+ lpadd2(dateobj.getUTCSeconds());
-  var localstr=dateobj.getFullYear() +'-'+ lpadd2(dateobj.getMonth()+1) +'-'+ lpadd2(dateobj.getDate())+' '+lpadd2(dateobj.getHours()) +':'+ lpadd2(dateobj.getMinutes()) +':'+ lpadd2(dateobj.getSeconds());
-}
+// function time2fa(){
+//   var dateobj = new Date();
+//   var epoch = Math.round(dateobj.getTime() / 1000.0); // sec since jan 1st 1970 utc
+//   var countDown = 30 - (epoch % 30);
+//   var utcstr=dateobj.getUTCFullYear() +'-'+ lpadd2(dateobj.getUTCMonth()+1) +'-'+ lpadd2(dateobj.getUTCDate())+' '+lpadd2(dateobj.getUTCHours()) +':'+ lpadd2(dateobj.getUTCMinutes()) +':'+ lpadd2(dateobj.getUTCSeconds());
+//   var localstr=dateobj.getFullYear() +'-'+ lpadd2(dateobj.getMonth()+1) +'-'+ lpadd2(dateobj.getDate())+' '+lpadd2(dateobj.getHours()) +':'+ lpadd2(dateobj.getMinutes()) +':'+ lpadd2(dateobj.getSeconds());
+// }
