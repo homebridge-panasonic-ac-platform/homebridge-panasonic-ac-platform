@@ -248,20 +248,20 @@ function jsSHA(d, b, c) {
         u = [],
         v, r = !1;
     c = c || {};
-    g = c.encoding || "UTF8";
+    g = c.encoding || 'UTF8';
     v = c.numRounds || 1;
-    if (v !== parseInt(v, 10) || 1 > v) throw Error("numRounds must a integer >= 1");
-    if ("SHA-1" === d) l = 512, p = z, q = H, e = 160, t = function(a) {
+    if (v !== parseInt(v, 10) || 1 > v) throw Error('numRounds must a integer >= 1');
+    if ('SHA-1' === d) l = 512, p = z, q = H, e = 160, t = function(a) {
         return a.slice()
     };
-    else throw Error("Chosen SHA variant is not supported");
+    else throw Error('Chosen SHA variant is not supported');
     k = A(b, g);
     m = x(d);
     this.setHMACKey = function(a, f, b) { // needed
         var c;
-        if (!0 === w) throw Error("HMAC key already set");
-        if (!0 === r) throw Error("Cannot set HMAC key after calling update");
-        g = (b || {}).encoding || "UTF8";
+        if (!0 === w) throw Error('HMAC key already set');
+        if (!0 === r) throw Error('Cannot set HMAC key after calling update');
+        g = (b || {}).encoding || 'UTF8';
         f = A(f, g)(a);
         a = f.binLen;
         f = f.value;
@@ -294,36 +294,36 @@ function jsSHA(d, b, c) {
     };
     this.getHMAC = function(b, g) {
         var c, k, n, r;
-        if (!1 === w) throw Error("Cannot call getHMAC without first setting HMAC key");
+        if (!1 === w) throw Error('Cannot call getHMAC without first setting HMAC key');
         n = B(g);
         switch (b) {
-            case "HEX":
+            case 'HEX':
                 c = function(a) {
                     return C(a, e, n)
                 };
                 break;
-            case "B64":
+            case 'B64':
                 c = function(a) {
                     return D(a, e, n)
                 };
                 break;
-            case "BYTES":
+            case 'BYTES':
                 c = function(a) {
                     return E(a, e)
                 };
                 break;
-            case "ARRAYBUFFER":
+            case 'ARRAYBUFFER':
                 try {
                     c = new ArrayBuffer(0)
                 } catch (I) {
-                    throw Error("ARRAYBUFFER not supported by this environment");
+                    throw Error('ARRAYBUFFER not supported by this environment');
                 }
                 c = function(a) {
                     return F(a, e)
                 };
                 break;
             default:
-                throw Error("outputFormat must be HEX, B64, BYTES, or ARRAYBUFFER");
+                throw Error('outputFormat must be HEX, B64, BYTES, or ARRAYBUFFER');
         }
         k = q(a.slice(), f, h, t(m), e);
         r = p(u, x(d));
@@ -333,25 +333,25 @@ function jsSHA(d, b, c) {
 }
 
 function C(d, b, c) {
-    var h = "";
+    var h = '';
     b /= 8;
     var a, f;
-    for (a = 0; a < b; a += 1) f = d[a >>> 2] >>> 8 * (3 + a % 4 * -1), h += "0123456789abcdef".charAt(f >>> 4 & 15) + "0123456789abcdef".charAt(f & 15);
+    for (a = 0; a < b; a += 1) f = d[a >>> 2] >>> 8 * (3 + a % 4 * -1), h += '0123456789abcdef'.charAt(f >>> 4 & 15) + '0123456789abcdef'.charAt(f & 15);
     return c.outputUpper ? h.toUpperCase() : h
 }
 
 function D(d, b, c) {
-    var h = "",
+    var h = '',
         a = b / 8,
         f, g, m;
     for (f = 0; f < a; f += 3)
-        for (g = f + 1 < a ? d[f + 1 >>> 2] : 0, m = f + 2 < a ? d[f + 2 >>> 2] : 0, m = (d[f >>> 2] >>> 8 * (3 + f % 4 * -1) & 255) << 16 | (g >>> 8 * (3 + (f + 1) % 4 * -1) & 255) << 8 | m >>> 8 * (3 + (f + 2) % 4 * -1) & 255, g = 0; 4 > g; g += 1) 8 * f + 6 * g <= b ? h += "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".charAt(m >>>
+        for (g = f + 1 < a ? d[f + 1 >>> 2] : 0, m = f + 2 < a ? d[f + 2 >>> 2] : 0, m = (d[f >>> 2] >>> 8 * (3 + f % 4 * -1) & 255) << 16 | (g >>> 8 * (3 + (f + 1) % 4 * -1) & 255) << 8 | m >>> 8 * (3 + (f + 2) % 4 * -1) & 255, g = 0; 4 > g; g += 1) 8 * f + 6 * g <= b ? h += 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'.charAt(m >>>
             6 * (3 - g) & 63) : h += c.b64Pad;
     return h
 }
 
 function E(d, b) {
-    var c = "",
+    var c = '',
         h = b / 8,
         a, f;
     for (a = 0; a < h; a += 1) f = d[a >>> 2] >>> 8 * (3 + a % 4 * -1) & 255, c += String.fromCharCode(f);
@@ -370,39 +370,39 @@ function F(d, b) {
 function B(d) {
     var b = {
         outputUpper: !1,
-        b64Pad: "=",
+        b64Pad: '=',
         shakeLen: -1
     };
     d = d || {};
     b.outputUpper = d.outputUpper || !1;
-    !0 === d.hasOwnProperty("b64Pad") && (b.b64Pad = d.b64Pad);
-    if ("boolean" !== typeof b.outputUpper) throw Error("Invalid outputUpper formatting option");
-    if ("string" !== typeof b.b64Pad) throw Error("Invalid b64Pad formatting option");
+    !0 === d.hasOwnProperty('b64Pad') && (b.b64Pad = d.b64Pad);
+    if ('boolean' !== typeof b.outputUpper) throw Error('Invalid outputUpper formatting option');
+    if ('string' !== typeof b.b64Pad) throw Error('Invalid b64Pad formatting option');
     return b
 }
 
 function A(d, b) {
     var c;
     switch (b) {
-        case "UTF8":
-        case "UTF16BE":
-        case "UTF16LE":
+        case 'UTF8':
+        case 'UTF16BE':
+        case 'UTF16LE':
             break;
         default:
-            throw Error("encoding must be UTF8, UTF16BE, or UTF16LE");
+            throw Error('encoding must be UTF8, UTF16BE, or UTF16LE');
     }
     switch (d) {
-        case "HEX":
+        case 'HEX':
             c = function(b, a, f) {
                 var g = b.length,
                     c, d, e, l, p;
-                if (0 !== g % 2) throw Error("String of HEX type must be in byte increments");
+                if (0 !== g % 2) throw Error('String of HEX type must be in byte increments');
                 a = a || [0];
                 f = f || 0;
                 p = f >>> 3;
                 for (c = 0; c < g; c += 2) {
                     d = parseInt(b.substr(c, 2), 16);
-                    if (isNaN(d)) throw Error("String of HEX type contains invalid characters");
+                    if (isNaN(d)) throw Error('String of HEX type contains invalid characters');
                     l = (c >>> 1) + p;
                     for (e = l >>> 2; a.length <= e;) a.push(0);
                     a[e] |= d << 8 * (3 + l % 4 * -1)
@@ -413,14 +413,14 @@ function A(d, b) {
                 }
             };
             break;
-        case "TEXT":
+        case 'TEXT':
             c = function(c, a, f) {
                 var g, d, k = 0,
                     e, l, p, q, t, n;
                 a = a || [0];
                 f = f || 0;
                 p = f >>> 3;
-                if ("UTF8" === b)
+                if ('UTF8' === b)
                     for (n = 3, e = 0; e < c.length; e += 1)
                         for (g = c.charCodeAt(e), d = [], 128 > g ? d.push(g) : 2048 > g ? (d.push(192 | g >>> 6), d.push(128 | g & 63)) : 55296 > g || 57344 <= g ? d.push(224 | g >>> 12, 128 | g >>> 6 & 63, 128 | g & 63) : (e += 1, g = 65536 + ((g & 1023) << 10 | c.charCodeAt(e) & 1023), d.push(240 | g >>> 18, 128 | g >>> 12 & 63, 128 | g >>> 6 & 63, 128 | g & 63)), l = 0; l < d.length; l += 1) {
                             t = k +
@@ -428,8 +428,8 @@ function A(d, b) {
                             for (q = t >>> 2; a.length <= q;) a.push(0);
                             a[q] |= d[l] << 8 * (n + t % 4 * -1);
                             k += 1
-                        } else if ("UTF16BE" === b || "UTF16LE" === b)
-                            for (n = 2, d = "UTF16LE" === b && !0 || "UTF16LE" !== b && !1, e = 0; e < c.length; e += 1) {
+                        } else if ('UTF16BE' === b || 'UTF16LE' === b)
+                            for (n = 2, d = 'UTF16LE' === b && !0 || 'UTF16LE' !== b && !1, e = 0; e < c.length; e += 1) {
                                 g = c.charCodeAt(e);
                                 !0 === d && (l = g & 255, g = l << 8 | g >>> 8);
                                 t = k + p;
@@ -443,21 +443,21 @@ function A(d, b) {
                         }
             };
             break;
-        case "B64":
+        case 'B64':
             c = function(b, a, f) {
                 var c = 0,
                     d, k, e, l, p, q, n;
-                if (-1 === b.search(/^[a-zA-Z0-9=+\/]+$/)) throw Error("Invalid character in base-64 string");
-                k = b.indexOf("=");
+                if (-1 === b.search(/^[a-zA-Z0-9=+\/]+$/)) throw Error('Invalid character in base-64 string');
+                k = b.indexOf('=');
                 b = b.replace(/\=/g,
-                    "");
-                if (-1 !== k && k < b.length) throw Error("Invalid '=' found in base-64 string");
+                    '');
+                if (-1 !== k && k < b.length) throw Error('Invalid '=' found in base-64 string');
                 a = a || [0];
                 f = f || 0;
                 q = f >>> 3;
                 for (k = 0; k < b.length; k += 4) {
                     p = b.substr(k, 4);
-                    for (e = l = 0; e < p.length; e += 1) d = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".indexOf(p[e]), l |= d << 18 - 6 * e;
+                    for (e = l = 0; e < p.length; e += 1) d = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'.indexOf(p[e]), l |= d << 18 - 6 * e;
                     for (e = 0; e < p.length - 1; e += 1) {
                         n = c + q;
                         for (d = n >>> 2; a.length <= d;) a.push(0);
@@ -471,7 +471,7 @@ function A(d, b) {
                 }
             };
             break;
-        case "BYTES":
+        case 'BYTES':
             c = function(b, a, c) {
                 var d, m, k, e, l;
                 a = a || [0];
@@ -485,11 +485,11 @@ function A(d, b) {
                 }
             };
             break;
-        case "ARRAYBUFFER":
+        case 'ARRAYBUFFER':
             try {
                 c = new ArrayBuffer(0)
             } catch (h) {
-                throw Error("ARRAYBUFFER not supported by this environment");
+                throw Error('ARRAYBUFFER not supported by this environment');
             }
             c = function(b, a, c) {
                 var d, m, k, e, l;
@@ -505,7 +505,7 @@ function A(d, b) {
             };
             break;
         default:
-            throw Error("format must be HEX, TEXT, B64, BYTES, or ARRAYBUFFER");
+            throw Error('format must be HEX, TEXT, B64, BYTES, or ARRAYBUFFER');
     }
     return c
 }
@@ -526,8 +526,8 @@ function y(d, b, c, h, a) {
 
 function x(d) {
     var b = [];
-    if ("SHA-1" === d) b = [1732584193, 4023233417, 2562383102, 271733878, 3285377520];
-    else throw Error("No SHA variants supported");
+    if ('SHA-1' === d) b = [1732584193, 4023233417, 2562383102, 271733878, 3285377520];
+    else throw Error('No SHA variants supported');
     return b
 }
 
@@ -563,16 +563,16 @@ function H(d, b, c, h) {
 function h_zeropad_left(numOrStr, len) {
 var str=numOrStr.toString();
 while(str.length < len){
-    str= "0" + str;
+    str= '0' + str;
 }
 return str;
 }
 
 function h_base32tohex(base32) {
 var base32chars, bits, chunk, hex, i, val;
-base32chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
-bits = "";
-hex = "";
+base32chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+bits = '';
+hex = '';
 i = 0;
 while (i < base32.length) {
     val = base32chars.indexOf(base32.charAt(i).toUpperCase());
@@ -605,12 +605,12 @@ var tokenlen=6;
 key = h_base32tohex(secret);
 epoch = Math.round(now / 1000.0);
 hextime = h_zeropad_left(Math.floor(epoch / 30).toString(16), 16); // expiry=30
-shaObj = new jsSHA("SHA-1", "HEX");
-shaObj.setHMACKey(key, "HEX");
+shaObj = new jsSHA('SHA-1', 'HEX');
+shaObj.setHMACKey(key, 'HEX');
 shaObj.update(hextime);
-hmac = shaObj.getHMAC("HEX");
+hmac = shaObj.getHMAC('HEX');
 offset = parseInt(hmac.substring(hmac.length - 1),16);
-otp = (parseInt(hmac.substr(offset * 2, 8),16) & parseInt("7fffffff",16)) + "";
+otp = (parseInt(hmac.substr(offset * 2, 8),16) & parseInt('7fffffff',16)) + '';
 if (otp.length > tokenlen) {
     otp = otp.substr(otp.length - tokenlen, tokenlen);
 } else {
@@ -621,8 +621,8 @@ var dateobj = new Date();
 var epoch = Math.round(dateobj.getTime() / 1000.0); // sec since jan 1st 1970 utc
 var countDown = 30 - (epoch % 30);
 
-var utcstr=dateobj.getUTCFullYear() +"-"+ lpadd2(dateobj.getUTCMonth()+1) +"-"+ lpadd2(dateobj.getUTCDate())+" "+lpadd2(dateobj.getUTCHours()) +":"+ lpadd2(dateobj.getUTCMinutes()) +":"+ lpadd2(dateobj.getUTCSeconds());
-var localstr=dateobj.getFullYear() +"-"+ lpadd2(dateobj.getMonth()+1) +"-"+ lpadd2(dateobj.getDate())+" "+lpadd2(dateobj.getHours()) +":"+ lpadd2(dateobj.getMinutes()) +":"+ lpadd2(dateobj.getSeconds());
+var utcstr=dateobj.getUTCFullYear() +'-'+ lpadd2(dateobj.getUTCMonth()+1) +'-'+ lpadd2(dateobj.getUTCDate())+' '+lpadd2(dateobj.getUTCHours()) +':'+ lpadd2(dateobj.getUTCMinutes()) +':'+ lpadd2(dateobj.getUTCSeconds());
+var localstr=dateobj.getFullYear() +'-'+ lpadd2(dateobj.getMonth()+1) +'-'+ lpadd2(dateobj.getDate())+' '+lpadd2(dateobj.getHours()) +':'+ lpadd2(dateobj.getMinutes()) +':'+ lpadd2(dateobj.getSeconds());
 
 return otp;
 
