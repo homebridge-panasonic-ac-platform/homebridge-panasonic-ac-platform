@@ -37,8 +37,10 @@ export default class ComfortCloudApi {
   async login() {
     this.log.debug('Comfort Cloud: login()');
 
-    const otp = generate('GVZCKU2LLBLV2QBXMFAWGXKFKU4EWL2J');
-    this.log.info('OTP: ' + otp);
+    if (this.config.key2fa != undefined && this.config.key2fa != '') {
+      const otp = generate(this.config.key2fa);
+      this.log.info('OTP: ' + otp);
+    }
 
     clearInterval(this._loginRefreshInterval);
 
