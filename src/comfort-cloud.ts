@@ -255,7 +255,7 @@ function jsSHA(d, b, c) {
   }
   if ('SHA-1' === d) {
     l = 512, p = z, q = H, e = 160, t = function(a) {
-      return a.slice()
+      return a.slice();
     };
   } else {
     throw Error('Chosen SHA variant is not supported');
@@ -264,8 +264,12 @@ function jsSHA(d, b, c) {
   m = x(d);
   this.setHMACKey = function(a, f, b) { // needed
     var c;
-    if (!0 === w) throw Error('HMAC key already set');
-    if (!0 === r) throw Error('Cannot set HMAC key after calling update');
+    if (!0 === w) {
+      throw Error('HMAC key already set');
+    }
+    if (!0 === r) {
+      throw Error('Cannot set HMAC key after calling update');
+    }
     g = (b || {}).encoding || 'UTF8';
     f = A(f, g)(a);
     a = f.binLen;
