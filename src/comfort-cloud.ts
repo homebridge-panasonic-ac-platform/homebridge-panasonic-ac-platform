@@ -262,8 +262,7 @@ function jsSHA(d, b, c) {
     l = 512, p = z, q = H, e = 160, t = function(a) {
     return a.slice();
     }
-  };
-  else {
+  } else {
     throw Error("Chosen SHA variant is not supported");
   }
   k = A(b, g);
