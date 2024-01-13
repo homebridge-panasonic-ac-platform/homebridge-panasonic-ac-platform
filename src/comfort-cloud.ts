@@ -278,15 +278,15 @@ function jsSHA(d, b, c) {
     b = c / 4 - 1;
     if (c < a / 8) {
       for (f = q(f, a, 0, x(d), e); f.length <= b;) f.push(0);
-      f[b] &= 4294967040
+      f[b] &= 4294967040;
     } else if (c > a / 8) {
       for (; f.length <= b;) f.push(0);
-      f[b] &= 4294967040
+      f[b] &= 4294967040;
     }
     for (a = 0; a <= b; a += 1) n[a] = f[a] ^ 909522486, u[a] = f[a] ^ 1549556828;
     m = p(n, m);
     h = l;
-    w = !0
+    w = !0;
   };
   this.update = function(b) { // needed
     var e, g, c, d = 0,
@@ -299,7 +299,7 @@ function jsSHA(d, b, c) {
     h += d;
     a = g.slice(d >>> 5);
     f = b % l;
-    r = !0
+    r = !0;
   };
   this.getHMAC = function(b, g) {
     var c, k, n, r;
@@ -310,27 +310,27 @@ function jsSHA(d, b, c) {
     switch (b) {
       case 'HEX':
         c = function(a) {
-          return C(a, e, n)
+          return C(a, e, n);
         };
         break;
       case 'B64':
         c = function(a) {
-          return D(a, e, n)
+          return D(a, e, n);
         };
         break;
       case 'BYTES':
         c = function(a) {
-          return E(a, e)
+          return E(a, e);
         };
         break;
       case 'ARRAYBUFFER':
         try {
-          c = new ArrayBuffer(0)
+          c = new ArrayBuffer(0);
         } catch (I) {
           throw Error('ARRAYBUFFER not supported by this environment');
         }
         c = function(a) {
-          return F(a, e)
+          return F(a, e);
         };
         break;
       default:
@@ -339,7 +339,7 @@ function jsSHA(d, b, c) {
     k = q(a.slice(), f, h, t(m), e);
     r = p(u, x(d));
     r = q(k, e, l, r, e);
-    return c(r)
+    return c(r);
   }
 }
 
@@ -348,7 +348,7 @@ function C(d, b, c) {
   b /= 8;
   var a, f;
   for (a = 0; a < b; a += 1) f = d[a >>> 2] >>> 8 * (3 + a % 4 * -1), h += '0123456789abcdef'.charAt(f >>> 4 & 15) + '0123456789abcdef'.charAt(f & 15);
-  return c.outputUpper ? h.toUpperCase() : h
+  return c.outputUpper ? h.toUpperCase() : h;
 }
 
 function D(d, b, c) {
@@ -366,7 +366,7 @@ function E(d, b) {
     h = b / 8,
     a, f;
   for (a = 0; a < h; a += 1) f = d[a >>> 2] >>> 8 * (3 + a % 4 * -1) & 255, c += String.fromCharCode(f);
-  return c
+  return c;
 }
 
 function F(d, b) {
@@ -375,7 +375,7 @@ function F(d, b) {
     f;
   f = new Uint8Array(a);
   for (h = 0; h < c; h += 1) f[h] = d[h >>> 2] >>> 8 * (3 + h % 4 * -1) & 255;
-  return a
+  return a;
 }
 
 function B(d) {
@@ -393,7 +393,7 @@ function B(d) {
   if ('string' !== typeof b.b64Pad) {
     throw Error('Invalid b64Pad formatting option');
   }
-  return b
+  return b;
 }
 
 function A(d, b) {
@@ -424,7 +424,7 @@ function A(d, b) {
           }
           l = (c >>> 1) + p;
           for (e = l >>> 2; a.length <= e;) a.push(0);
-          a[e] |= d << 8 * (3 + l % 4 * -1)
+          a[e] |= d << 8 * (3 + l % 4 * -1);
         }
         return {
           value: a,
@@ -485,7 +485,7 @@ function A(d, b) {
             n = c + q;
             for (d = n >>> 2; a.length <= d;) a.push(0);
             a[d] |= (l >>> 16 - 8 * e & 255) << 8 * (3 + n % 4 * -1);
-            c += 1
+            c += 1;
           }
         }
         return {
@@ -530,21 +530,21 @@ function A(d, b) {
     default:
       throw Error('format must be HEX, TEXT, B64, BYTES, or ARRAYBUFFER');
   }
-  return c
+  return c;
 }
 
 function n(d, b) {
-  return d << b | d >>> 32 - b
+  return d << b | d >>> 32 - b;
 }
 
 function u(d, b) {
   var c = (d & 65535) + (b & 65535);
-  return ((d >>> 16) + (b >>> 16) + (c >>> 16) & 65535) << 16 | c & 65535
+  return ((d >>> 16) + (b >>> 16) + (c >>> 16) & 65535) << 16 | c & 65535;
 }
 
 function y(d, b, c, h, a) {
   var f = (d & 65535) + (b & 65535) + (c & 65535) + (h & 65535) + (a & 65535);
-  return ((d >>> 16) + (b >>> 16) + (c >>> 16) + (h >>> 16) + (a >>> 16) + (f >>> 16) & 65535) << 16 | f & 65535
+  return ((d >>> 16) + (b >>> 16) + (c >>> 16) + (h >>> 16) + (a >>> 16) + (f >>> 16) & 65535) << 16 | f & 65535;
 }
 
 function x(d) {
@@ -554,7 +554,7 @@ function x(d) {
   } else {
     throw Error('No SHA variants supported');
   }
-  return b
+  return b;
 }
 
 function z(d, b) {
@@ -583,7 +583,7 @@ function H(d, b, c, h) {
   d[a - 1] = b / 4294967296 | 0;
   b = d.length;
   for (a = 0; a < b; a += 16) h = z(d.slice(a, a + 16), h);
-  return h
+  return h;
 }
 
 function h_zeropad_left(numOrStr, len) {
