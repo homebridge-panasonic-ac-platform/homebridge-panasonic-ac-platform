@@ -26,6 +26,12 @@
 				"placeholder": "Password",
 				"required": true
 			},
+			"excludeDevices": {
+				"title": "Exclude Devices",
+				"type": "string",
+				"description": "Exclude one or more devices. Put comma separated devices serial numbers, E.G.: ",
+				"required": true
+			},
 			"exposeOutdoorUnit": {
 				"title": "Expose Outdoor Unit",
 				"description": "When enabled, the plugin will create a separate accessory for your outdoor unit which will display the (outdoor) temperature it measures. This can be used for monitoring and automation purposes.",
