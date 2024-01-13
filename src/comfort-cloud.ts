@@ -240,14 +240,23 @@ export default class ComfortCloudApi {
 }
 
 function jsSHA(d, b, c) {
-  let h = 0,
-    a = [],
-    f = 0,
-    g, m, k, e, l, p, q, t, w = !1,
-    n = [],
-    u = [],
-    v, r = !1;
-  c = c || {};
+  let h = 0;
+  let a = [];
+  let f = 0;
+  const g, 
+  let m = !1, 
+  const k = !1,
+  let e = !1,
+  let l = !1,
+  let p = !1,
+  const q = !1,
+  let t = !1,
+  let w = !1;
+  const n = [];
+  const u = [],
+  const v = !1;
+  let r = !1;
+  const c = c || {};
   g = c.encoding || 'UTF8';
   v = c.numRounds || 1;
   if (v !== parseInt(v, 10) || 1 > v) {
