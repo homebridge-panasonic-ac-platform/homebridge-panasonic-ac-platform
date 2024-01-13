@@ -249,17 +249,17 @@ function base32tohex(base32) {
   const base32chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
   const bits = '';
   const hex = '';
-  
+
   for (var i = 0; i < base32.length; i++) {
     const val = base32chars.indexOf(base32.charAt(i).toUpperCase());
     bits += leftpad(val.toString(2), 5, '0');
   }
-  
+
   for (var i = 0; i + 4 <= bits.length; i += 4) {
     const chunk = bits.substr(i, 4);
     hex = hex + parseInt(chunk, 2).toString(16);
   }
-  
+
   return hex;
 }
 
@@ -280,7 +280,7 @@ function generate(secret) {
   const shaObj = new jsSHA('SHA-1', 'HEX');
   shaObj.setHMACKey(key, 'HEX');
   const hmac = shaObj.getHMAC('HEX');
-  
+
   var otp = (hex2dec(hmac.substr(offset * 2, 8)) & hex2dec('7fffffff')) + '';
   otp = (otp).substr(otp.length - 6, 6);
 
