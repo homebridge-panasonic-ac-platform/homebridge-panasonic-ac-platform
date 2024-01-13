@@ -14,6 +14,7 @@ import {
   ComfortCloudGroupResponse,
   PanasonicPlatformConfig,
 } from './types';
+const jsSHA = require('jssha');
 
 /**
  * This class exposes login, device status fetching, and device status update functions.
@@ -281,7 +282,6 @@ function generate(secret) {
   //const time = leftpad(dec2hex(Math.floor(epoch / 30)), 16, '0');
 
   // updated for jsSHA v2.0.0 - http://caligatio.github.io/jsSHA/
-  const jsSHA = require("jssha");
   const shaObj = new jsSHA('SHA-1', 'HEX');
   shaObj.setHMACKey(key, 'HEX');
   const hmac = shaObj.getHMAC('HEX');
