@@ -250,17 +250,26 @@ function jsSHA(d, b, c) {
   c = c || {};
   g = c.encoding || 'UTF8';
   v = c.numRounds || 1;
-  if (v !== parseInt(v, 10) || 1 > v) throw Error('numRounds must a integer >= 1');
-  if ('SHA-1' === d) l = 512, p = z, q = H, e = 160, t = function (a) {
-    return a.slice();
-  };
-  else throw Error('Chosen SHA letiant is not supported');
+  if (v !== parseInt(v, 10) || 1 > v) {
+    throw Error('numRounds must a integer >= 1');
+  }
+  if ('SHA-1' === d) {
+    l = 512, p = z, q = H, e = 160, t = function (a) {
+      return a.slice();
+    };
+  } else {
+    throw Error('Chosen SHA letiant is not supported');
+  }
   k = A(b, g);
   m = x(d);
   this.setHMACKey = function (a, f, b) { // needed
     let c;
-    if (!0 === w) throw Error('HMAC key already set');
-    if (!0 === r) throw Error('Cannot set HMAC key after calling update');
+    if (!0 === w) {
+      throw Error('HMAC key already set');
+    }
+    if (!0 === r) {
+      throw Error('Cannot set HMAC key after calling update');
+    }
     g = (b || {}).encoding || 'UTF8';
     f = A(f, g)(a);
     a = f.binLen;
@@ -268,13 +277,19 @@ function jsSHA(d, b, c) {
     c = l >>> 3;
     b = c / 4 - 1;
     if (c < a / 8) {
-      for (f = q(f, a, 0, x(d), e); f.length <= b;) f.push(0);
+      for (f = q(f, a, 0, x(d), e); f.length <= b;) {
+        f.push(0);
+      }
       f[b] &= 4294967040;
     } else if (c > a / 8) {
-      for (; f.length <= b;) f.push(0);
+      for (; f.length <= b;) {
+        f.push(0);
+      }
       f[b] &= 4294967040;
     }
-    for (a = 0; a <= b; a += 1) n[a] = f[a] ^ 909522486, u[a] = f[a] ^ 1549556828;
+    for (a = 0; a <= b; a += 1) {
+      n[a] = f[a] ^ 909522486, u[a] = f[a] ^ 1549556828;
+    }
     m = p(n, m);
     h = l;
     w = !0;
@@ -286,7 +301,9 @@ function jsSHA(d, b, c) {
     b = e.binLen;
     g = e.value;
     e = b >>> 5;
-    for (c = 0; c < e; c += q) d + l <= b && (m = p(g.slice(c, c + q), m), d += l);
+    for (c = 0; c < e; c += q) {
+      d + l <= b && (m = p(g.slice(c, c + q), m), d += l);
+    }
     h += d;
     a = g.slice(d >>> 5);
     f = b % l;
@@ -294,7 +311,9 @@ function jsSHA(d, b, c) {
   };
   this.getHMAC = function (b, g) {
     let c, k, n, r;
-    if (!1 === w) throw Error('Cannot call getHMAC without first setting HMAC key');
+    if (!1 === w) {
+      throw Error('Cannot call getHMAC without first setting HMAC key');
+    }
     n = B(g);
     switch (b) {
       case 'HEX':
@@ -336,7 +355,9 @@ function C(d, b, c) {
   let h = '';
   b /= 8;
   let a, f;
-  for (a = 0; a < b; a += 1) f = d[a >>> 2] >>> 8 * (3 + a % 4 * -1), h += '0123456789abcdef'.charAt(f >>> 4 & 15) + '0123456789abcdef'.charAt(f & 15);
+  for (a = 0; a < b; a += 1) {
+    f = d[a >>> 2] >>> 8 * (3 + a % 4 * -1), h += '0123456789abcdef'.charAt(f >>> 4 & 15) + '0123456789abcdef'.charAt(f & 15);
+  }
   return c.outputUpper ? h.toUpperCase() : h;
 }
 
@@ -376,8 +397,12 @@ function B(d) {
   d = d || {};
   b.outputUpper = d.outputUpper || !1;
   !0 === d.hasOwnProperty('b64Pad') && (b.b64Pad = d.b64Pad);
-  if ('boolean' !== typeof b.outputUpper) throw Error('Invalid outputUpper formatting option');
-  if ('string' !== typeof b.b64Pad) throw Error('Invalid b64Pad formatting option');
+  if ('boolean' !== typeof b.outputUpper) {
+    throw Error('Invalid outputUpper formatting option');
+  }
+  if ('string' !== typeof b.b64Pad) {
+    throw Error('Invalid b64Pad formatting option');
+  }
   return b;
 }
 
@@ -396,13 +421,17 @@ function A(d, b) {
       c = function (b, a, f) {
         let g = b.length,
           c, d, e, l, p;
-        if (0 !== g % 2) throw Error('String of HEX type must be in byte increments');
+        if (0 !== g % 2) {
+          throw Error('String of HEX type must be in byte increments');
+        }
         a = a || [0];
         f = f || 0;
         p = f >>> 3;
         for (c = 0; c < g; c += 2) {
           d = parseInt(b.substr(c, 2), 16);
-          if (isNaN(d)) throw Error('String of HEX type contains invalid characters');
+          if (isNaN(d)) {
+            throw Error('String of HEX type contains invalid characters');
+          }
           l = (c >>> 1) + p;
           for (e = l >>> 2; a.length <= e;) a.push(0);
           a[e] |= d << 8 * (3 + l % 4 * -1);
@@ -526,8 +555,11 @@ function y(d, b, c, h, a) {
 
 function x(d) {
   let b = [];
-  if ('SHA-1' === d) b = [1732584193, 4023233417, 2562383102, 271733878, 3285377520];
-  else throw Error('No SHA letiants supported');
+  if ('SHA-1' === d) {
+    b = [1732584193, 4023233417, 2562383102, 271733878, 3285377520];
+  } else {
+    throw Error('No SHA letiants supported');
+  }
   return b;
 }
 
@@ -539,7 +571,14 @@ function z(d, b) {
   f = b[2];
   g = b[3];
   m = b[4];
-  for (e = 0; 80 > e; e += 1) c[e] = 16 > e ? d[e] : n(c[e - 3] ^ c[e - 8] ^ c[e - 14] ^ c[e - 16], 1), k = 20 > e ? y(n(h, 5), a & f ^ ~a & g, m, 1518500249, c[e]) : 40 > e ? y(n(h, 5), a ^ f ^ g, m, 1859775393, c[e]) : 60 > e ? y(n(h, 5), a & f ^ a & g ^ f & g, m, 2400959708, c[e]) : y(n(h, 5), a ^ f ^ g, m, 3395469782, c[e]), m = g, g = f, f = n(a, 30), a = h, h = k;
+  for (e = 0; 80 > e; e += 1) {
+    c[e] = 16 > e ? d[e] : n(c[e - 3] ^ c[e - 8] ^ c[e - 14] ^ c[e - 16], 1), 
+      k = 20 > e ? y(n(h, 5), a & f ^ ~a & g, m, 1518500249, c[e]) : 40 > e ? y(n(h, 5), 
+                                                                                a ^ f ^ g, m, 1859775393, 
+                                                                                c[e]) : 60 > e ? y(n(h, 5), a & f ^ a & g ^ f & g, m, 2400959708, 
+                                                                                                   c[e]) : y(n(h, 5), a ^ f ^ g, m, 3395469782, 
+                                                                                                             c[e]), m = g, g = f, f = n(a, 30), a = h, h = k;
+  }
   b[0] = u(h, b[0]);
   b[1] = u(a, b[1]);
   b[2] = u(f, b[2]);
@@ -550,13 +589,17 @@ function z(d, b) {
 
 function H(d, b, c, h) {
   let a;
-  for (a = (b + 65 >>> 9 << 4) + 15; d.length <= a;) d.push(0);
+  for (a = (b + 65 >>> 9 << 4) + 15; d.length <= a;) {
+    d.push(0);
+  }
   d[b >>> 5] |= 128 << 24 - b % 32;
   b += c;
   d[a] = b & 4294967295;
   d[a - 1] = b / 4294967296 | 0;
   b = d.length;
-  for (a = 0; a < b; a += 16) h = z(d.slice(a, a + 16), h);
+  for (a = 0; a < b; a += 16) {
+    h = z(d.slice(a, a + 16), h);
+  }
   return h;
 }
 
