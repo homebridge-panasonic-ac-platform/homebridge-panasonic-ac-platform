@@ -244,6 +244,109 @@ export default class ComfortCloudApi {
 //   return (s < 15.5 ? '0' : '') + Math.round(s).toString(16);
 // }
 
+function jsSHA(d, b, c) {
+  let h = 0,
+    a = [],
+    f = 0,
+    g, m, k, e, l, p, q, t, w = !1,
+    n = [],
+    u = [],
+    v, r = !1;
+  c = c || {};
+  g = c.encoding || "UTF8";
+  v = c.numRounds || 1;
+  if (v !== parseInt(v, 10) || 1 > v) {
+    throw Error("numRounds must a integer >= 1");
+  }
+  if ("SHA-1" === d) {
+    l = 512, p = z, q = H, e = 160, t = function(a) {
+    return a.slice();
+    }
+  };
+  else {
+    throw Error("Chosen SHA variant is not supported");
+  }
+  k = A(b, g);
+  m = x(d);
+  this.setHMACKey = function(a, f, b) { // needed
+    var c;
+    if (!0 === w) throw Error("HMAC key already set");
+    if (!0 === r) throw Error("Cannot set HMAC key after calling update");
+    g = (b || {}).encoding || "UTF8";
+    f = A(f, g)(a);
+    a = f.binLen;
+    f = f.value;
+    c = l >>> 3;
+    b = c / 4 - 1;
+    if (c < a / 8) {
+      for (f = q(f, a, 0, x(d), e); f.length <= b;) f.push(0);
+      f[b] &= 4294967040
+    } else if (c > a / 8) {
+      for (; f.length <= b;) f.push(0);
+      f[b] &= 4294967040
+    }
+    for (a = 0; a <= b; a += 1) n[a] = f[a] ^ 909522486, u[a] = f[a] ^ 1549556828;
+    m = p(n, m);
+    h = l;
+    w = !0;
+  };
+  this.update = function(b) { // needed
+    let e, g, c, d = 0,
+      q = l >>> 5;
+    e = k(b, a, f);
+    b = e.binLen;
+    g = e.value;
+    e = b >>> 5;
+    for (c = 0; c < e; c += q) {
+      d + l <= b && (m = p(g.slice(c, c + q), m), d += l);
+    }
+    h += d;
+    a = g.slice(d >>> 5);
+    f = b % l;
+    r = !0
+  };
+  this.getHMAC = function(b, g) {
+    let c, k, n, r;
+    if (!1 === w) {
+      throw Error("Cannot call getHMAC without first setting HMAC key");
+    }
+    n = B(g);
+    switch (b) {
+      case "HEX":
+        c = function(a) {
+          return C(a, e, n);
+        };
+        break;
+      case "B64":
+        c = function(a) {
+          return D(a, e, n);
+        };
+        break;
+      case "BYTES":
+        c = function(a) {
+          return E(a, e);
+        };
+        break;
+      case "ARRAYBUFFER":
+        try {
+          c = new ArrayBuffer(0);
+        } catch (I) {
+          throw Error("ARRAYBUFFER not supported by this environment");
+        }
+        c = function(a) {
+          return F(a, e);
+        };
+        break;
+      default:
+        throw Error("outputFormat must be HEX, B64, BYTES, or ARRAYBUFFER");
+    }
+    k = q(a.slice(), f, h, t(m), e);
+    r = p(u, x(d));
+    r = q(k, e, l, r, e);
+    return c(r);
+  }
+}
+
 function hex2dec(s) {
   return parseInt(s, 16);
 }
