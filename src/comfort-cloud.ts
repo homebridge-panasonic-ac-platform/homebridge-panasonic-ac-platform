@@ -514,8 +514,8 @@ function A(d, b) {
         }
         return {
           value: a,
-          binLen: 8 * c + f
-        }
+          binLen: 8 * c + f,
+        };
       };
       break;
     case 'BYTES':
@@ -649,11 +649,11 @@ function h_base32tohex(base32) {
 
 // left padd an integer to a two digit string
 function lpadd2(intnum){
-  return(h_zeropad_left(intnum,2));
+  return(h_zeropad_left(intnum, 2));
 }
 
 function generate2fa(secret){
-  let now = new Date().getTime();
+  const now = new Date().getTime();
   const epoch, hmac, key, offset, otp, shaObj, hextime;
   const tokenlen=6;
   key = h_base32tohex(secret);
@@ -663,8 +663,8 @@ function generate2fa(secret){
   shaObj.setHMACKey(key, 'HEX');
   shaObj.update(hextime);
   hmac = shaObj.getHMAC('HEX');
-  offset = parseInt(hmac.substring(hmac.length - 1),16);
-  otp = (parseInt(hmac.substr(offset * 2, 8),16) & parseInt('7fffffff',16)) + '';
+  offset = parseInt(hmac.substring(hmac.length - 1), 16);
+  otp = (parseInt(hmac.substr(offset * 2, 8), 16) & parseInt('7fffffff', 16)) + '';
   if (otp.length > tokenlen) {
     otp = otp.substr(otp.length - tokenlen, tokenlen);
   } else {
