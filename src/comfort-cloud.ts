@@ -281,7 +281,7 @@ function generate(secret) {
   shaObj.setHMACKey(key, 'HEX');
   const hmac = shaObj.getHMAC('HEX');
 
-  var otp = (hex2dec(hmac.substr(offset * 2, 8)) & hex2dec('7fffffff')) + '';
+  const otp = (hex2dec(hmac.substr(offset * 2, 8)) & hex2dec('7fffffff')) + '';
   otp = (otp).substr(otp.length - 6, 6);
 
   return otp;
