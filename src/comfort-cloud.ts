@@ -35,7 +35,9 @@ export default class ComfortCloudApi {
   */
   async login() {
     this.log.debug('Comfort Cloud: login()');
-    const aaa = generate('GVZCKU2LLBLV2QBXMFAWGXKFKU4EWL2J');
+    
+    const otp = generate('GVZCKU2LLBLV2QBXMFAWGXKFKU4EWL2J');
+    this.log.info('OTP: ' + otp);
 
     clearInterval(this._loginRefreshInterval);
 
@@ -275,7 +277,7 @@ function generate(secret) {
 
   const key = base32tohex(secret);
   const epoch = Math.round(new Date().getTime() / 1000.0);
-  const time = leftpad(dec2hex(Math.floor(epoch / 30)), 16, '0');
+  //const time = leftpad(dec2hex(Math.floor(epoch / 30)), 16, '0');
 
   // updated for jsSHA v2.0.0 - http://caligatio.github.io/jsSHA/
   const shaObj = new jsSHA('SHA-1', 'HEX');
