@@ -356,37 +356,11 @@ function C(d, b, c) {
   b /= 8;
   let a, f;
   for (a = 0; a < b; a += 1) {
-    f = d[a >>> 2] >>> 8 * (3 + a % 4 * -1), h += '0123456789abcdef'.charAt(f >>> 4 & 15) + '0123456789abcdef'.charAt(f & 15);
+    f = d[a >>> 2] >>> 8 * (3 + a % 4 * -1),
+      h += '0123456789abcdef'.charAt(f >>> 4 & 15) + '0123456789abcdef'.charAt(f & 15);
   }
   return c.outputUpper ? h.toUpperCase() : h;
 }
-
-// function D(d, b, c) {
-//     let h = '',
-//         a = b / 8,
-//         f, g, m;
-//     for (f = 0; f < a; f += 3)
-//         for (g = f + 1 < a ? d[f + 1 >>> 2] : 0, m = f + 2 < a ? d[f + 2 >>> 2] : 0, m = (d[f >>> 2] >>> 8 * (3 + f % 4 * -1) & 255) << 16 | (g >>> 8 * (3 + (f + 1) % 4 * -1) & 255) << 8 | m >>> 8 * (3 + (f + 2) % 4 * -1) & 255, g = 0; 4 > g; g += 1) 8 * f + 6 * g <= b ? h += 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'.charAt(m >>>
-//             6 * (3 - g) & 63) : h += c.b64Pad;
-//     return h
-// }
-
-// function E(d, b) {
-//     let c = '',
-//         h = b / 8,
-//         a, f;
-//     for (a = 0; a < h; a += 1) f = d[a >>> 2] >>> 8 * (3 + a % 4 * -1) & 255, c += String.fromCharCode(f);
-//     return c
-// }
-
-// function F(d, b) {
-//     let c = b / 8,
-//         h, a = new ArrayBuffer(c),
-//         f;
-//     f = new Uint8Array(a);
-//     for (h = 0; h < c; h += 1) f[h] = d[h >>> 2] >>> 8 * (3 + h % 4 * -1) & 255;
-//     return a
-// }
 
 function B(d) {
   let b = {
@@ -442,97 +416,6 @@ function A(d, b) {
         };
       };
       break;
-    // case 'TEXT':
-    //     c = function (c, a, f) {
-    //         let g, d, k = 0,
-    //             e, l, p, q, t, n;
-    //         a = a || [0];
-    //         f = f || 0;
-    //         p = f >>> 3;
-    //         if ('UTF8' === b)
-    //             for (n = 3, e = 0; e < c.length; e += 1)
-    //                 for (g = c.charCodeAt(e), d = [], 128 > g ? d.push(g) : 2048 > g ? (d.push(192 | g >>> 6), d.push(128 | g & 63)) : 55296 > g || 57344 <= g ? d.push(224 | g >>> 12, 128 | g >>> 6 & 63, 128 | g & 63) : (e += 1, g = 65536 + ((g & 1023) << 10 | c.charCodeAt(e) & 1023), d.push(240 | g >>> 18, 128 | g >>> 12 & 63, 128 | g >>> 6 & 63, 128 | g & 63)), l = 0; l < d.length; l += 1) {
-    //                     t = k +
-    //                         p;
-    //                     for (q = t >>> 2; a.length <= q;) a.push(0);
-    //                     a[q] |= d[l] << 8 * (n + t % 4 * -1);
-    //                     k += 1
-    //                 } else if ('UTF16BE' === b || 'UTF16LE' === b)
-    //             for (n = 2, d = 'UTF16LE' === b && !0 || 'UTF16LE' !== b && !1, e = 0; e < c.length; e += 1) {
-    //                 g = c.charCodeAt(e);
-    //                 !0 === d && (l = g & 255, g = l << 8 | g >>> 8);
-    //                 t = k + p;
-    //                 for (q = t >>> 2; a.length <= q;) a.push(0);
-    //                 a[q] |= g << 8 * (n + t % 4 * -1);
-    //                 k += 2
-    //             }
-    //         return {
-    //             value: a,
-    //             binLen: 8 * k + f
-    //         }
-    //     };
-    //     break;
-    // case 'B64':
-    //     c = function (b, a, f) {
-    //         let c = 0,
-    //             d, k, e, l, p, q, n;
-    //         if (-1 === b.search(/^[a-zA-Z0-9=+\/]+$/)) throw Error('Invalid character in base-64 string');
-    //         k = b.indexOf('=');
-    //         b = b.replace(/\=/g,
-    //             '');
-    //         if (-1 !== k && k < b.length) throw Error('Invalid '=' found in base-64 string');
-    //         a = a || [0];
-    //         f = f || 0;
-    //         q = f >>> 3;
-    //         for (k = 0; k < b.length; k += 4) {
-    //             p = b.substr(k, 4);
-    //             for (e = l = 0; e < p.length; e += 1) d = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'.indexOf(p[e]), l |= d << 18 - 6 * e;
-    //             for (e = 0; e < p.length - 1; e += 1) {
-    //                 n = c + q;
-    //                 for (d = n >>> 2; a.length <= d;) a.push(0);
-    //                 a[d] |= (l >>> 16 - 8 * e & 255) << 8 * (3 + n % 4 * -1);
-    //                 c += 1
-    //             }
-    //         }
-    //         return {
-    //             value: a,
-    //             binLen: 8 * c + f
-    //         }
-    //     };
-    //     break;
-    // case 'BYTES':
-    //     c = function (b, a, c) {
-    //         let d, m, k, e, l;
-    //         a = a || [0];
-    //         c = c || 0;
-    //         k = c >>> 3;
-    //         for (m = 0; m < b.length; m +=
-    //             1) d = b.charCodeAt(m), l = m + k, e = l >>> 2, a.length <= e && a.push(0), a[e] |= d << 8 * (3 + l % 4 * -1);
-    //         return {
-    //             value: a,
-    //             binLen: 8 * b.length + c
-    //         }
-    //     };
-    //     break;
-    // case 'ARRAYBUFFER':
-    //     try {
-    //         c = new ArrayBuffer(0)
-    //     } catch (h) {
-    //         throw Error('ARRAYBUFFER not supported by this environment');
-    //     }
-    //     c = function (b, a, c) {
-    //         let d, m, k, e, l;
-    //         a = a || [0];
-    //         c = c || 0;
-    //         m = c >>> 3;
-    //         l = new Uint8Array(b);
-    //         for (d = 0; d < b.byteLength; d += 1) e = d + m, k = e >>> 2, a.length <= k && a.push(0), a[k] |= l[d] << 8 * (3 + e % 4 * -1);
-    //         return {
-    //             value: a,
-    //             binLen: 8 * b.byteLength + c
-    //         }
-    //     };
-    //     break;
     default:
       throw Error('format must be HEX, TEXT, B64, BYTES, or ARRAYBUFFER');
   }
@@ -656,14 +539,5 @@ function generate2fa(secret) {
   }
 
   return otp;
-
-  // let dateobj = new Date();
-  // let epoch = Math.round(dateobj.getTime() / 1000.0); // sec since jan 1st 1970 utc
-  // let countDown = 30 - (epoch % 30);
-
-  // let utcstr = dateobj.getUTCFullYear() + '-' + lpadd2(dateobj.getUTCMonth() + 1) + '-' + lpadd2(dateobj.getUTCDate()) + ' ' + lpadd2(dateobj.getUTCHours()) + ':' + lpadd2(dateobj.getUTCMinutes()) + ':' + lpadd2(dateobj.getUTCSeconds());
-  // let localstr = dateobj.getFullYear() + '-' + lpadd2(dateobj.getMonth() + 1) + '-' + lpadd2(dateobj.getDate()) + ' ' + lpadd2(dateobj.getHours()) + ':' + lpadd2(dateobj.getMinutes()) + ':' + lpadd2(dateobj.getSeconds());
-
-
 
 }
