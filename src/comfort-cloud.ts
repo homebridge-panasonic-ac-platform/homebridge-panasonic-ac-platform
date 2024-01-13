@@ -240,7 +240,7 @@ export default class ComfortCloudApi {
 }
 
 function jsSHA(d, b, c) {
-  var h = 0,
+  const h = 0,
     a = [],
     f = 0,
     g, m, k, e, l, p, q, t, w = !1,
@@ -258,12 +258,12 @@ function jsSHA(d, b, c) {
       return a.slice();
     };
   } else {
-    throw Error('Chosen SHA variant is not supported');
+    throw Error('Chosen SHA constiant is not supported');
   }
   k = A(b, g);
   m = x(d);
   this.setHMACKey = function(a, f, b) { // needed
-    var c;
+    const c;
     if (!0 === w) {
       throw Error('HMAC key already set');
     }
@@ -289,7 +289,7 @@ function jsSHA(d, b, c) {
     w = !0;
   };
   this.update = function(b) { // needed
-    var e, g, c, d = 0,
+    const e, g, c, d = 0,
       q = l >>> 5;
     e = k(b, a, f);
     b = e.binLen;
@@ -302,7 +302,7 @@ function jsSHA(d, b, c) {
     r = !0;
   };
   this.getHMAC = function(b, g) {
-    var c, k, n, r;
+    const c, k, n, r;
     if (!1 === w) {
       throw Error('Cannot call getHMAC without first setting HMAC key');
     }
@@ -344,15 +344,15 @@ function jsSHA(d, b, c) {
 }
 
 function C(d, b, c) {
-  var h = '';
+  const h = '';
   b /= 8;
-  var a, f;
+  const a, f;
   for (a = 0; a < b; a += 1) f = d[a >>> 2] >>> 8 * (3 + a % 4 * -1), h += '0123456789abcdef'.charAt(f >>> 4 & 15) + '0123456789abcdef'.charAt(f & 15);
   return c.outputUpper ? h.toUpperCase() : h;
 }
 
 function D(d, b, c) {
-  var h = '',
+  const h = '',
     a = b / 8,
     f, g, m;
   for (f = 0; f < a; f += 3)
@@ -362,7 +362,7 @@ function D(d, b, c) {
 }
 
 function E(d, b) {
-  var c = '',
+  const c = '',
     h = b / 8,
     a, f;
   for (a = 0; a < h; a += 1) f = d[a >>> 2] >>> 8 * (3 + a % 4 * -1) & 255, c += String.fromCharCode(f);
@@ -370,7 +370,7 @@ function E(d, b) {
 }
 
 function F(d, b) {
-  var c = b / 8,
+  const c = b / 8,
     h, a = new ArrayBuffer(c),
     f;
   f = new Uint8Array(a);
@@ -379,7 +379,7 @@ function F(d, b) {
 }
 
 function B(d) {
-  var b = {
+  const b = {
     outputUpper: !1,
     b64Pad: '=',
     shakeLen: -1,
@@ -397,7 +397,7 @@ function B(d) {
 }
 
 function A(d, b) {
-  var c;
+  const c;
   switch (b) {
     case 'UTF8':
     case 'UTF16BE':
@@ -409,7 +409,7 @@ function A(d, b) {
   switch (d) {
     case 'HEX':
       c = function(b, a, f) {
-        var g = b.length,
+        const g = b.length,
           c, d, e, l, p;
         if (0 !== g % 2) {
           throw Error('String of HEX type must be in byte increments');
@@ -434,7 +434,7 @@ function A(d, b) {
       break;
     case 'TEXT':
       c = function(c, a, f) {
-        var g, d, k = 0,
+        const g, d, k = 0,
           e, l, p, q, t, n;
         a = a || [0];
         f = f || 0;
@@ -464,7 +464,7 @@ function A(d, b) {
       break;
     case 'B64':
       c = function(b, a, f) {
-        var c = 0,
+        const c = 0,
           d, k, e, l, p, q, n;
         if (-1 === b.search(/^[a-zA-Z0-9=+\/]+$/)) {
           throw Error('Invalid character in base-64 string');
@@ -496,7 +496,7 @@ function A(d, b) {
       break;
     case 'BYTES':
       c = function(b, a, c) {
-        var d, m, k, e, l;
+        const d, m, k, e, l;
         a = a || [0];
         c = c || 0;
         k = c >>> 3;
@@ -515,7 +515,7 @@ function A(d, b) {
         throw Error('ARRAYBUFFER not supported by this environment');
       }
       c = function(b, a, c) {
-        var d, m, k, e, l;
+        const d, m, k, e, l;
         a = a || [0];
         c = c || 0;
         m = c >>> 3;
@@ -538,27 +538,27 @@ function n(d, b) {
 }
 
 function u(d, b) {
-  var c = (d & 65535) + (b & 65535);
+  const c = (d & 65535) + (b & 65535);
   return ((d >>> 16) + (b >>> 16) + (c >>> 16) & 65535) << 16 | c & 65535;
 }
 
 function y(d, b, c, h, a) {
-  var f = (d & 65535) + (b & 65535) + (c & 65535) + (h & 65535) + (a & 65535);
+  const f = (d & 65535) + (b & 65535) + (c & 65535) + (h & 65535) + (a & 65535);
   return ((d >>> 16) + (b >>> 16) + (c >>> 16) + (h >>> 16) + (a >>> 16) + (f >>> 16) & 65535) << 16 | f & 65535;
 }
 
 function x(d) {
-  var b = [];
+  const b = [];
   if ('SHA-1' === d) {
     b = [1732584193, 4023233417, 2562383102, 271733878, 3285377520];
   } else {
-    throw Error('No SHA variants supported');
+    throw Error('No SHA constiants supported');
   }
   return b;
 }
 
 function z(d, b) {
-  var c = [],
+  const c = [],
     h, a, f, g, m, k, e;
   h = b[0];
   a = b[1];
@@ -575,7 +575,7 @@ function z(d, b) {
 }
 
 function H(d, b, c, h) {
-  var a;
+  const a;
   for (a = (b + 65 >>> 9 << 4) + 15; d.length <= a;) d.push(0);
   d[b >>> 5] |= 128 << 24 - b % 32;
   b += c;
@@ -587,7 +587,7 @@ function H(d, b, c, h) {
 }
 
 function h_zeropad_left(numOrStr, len) {
-  var str=numOrStr.toString();
+  const str=numOrStr.toString();
   while(str.length < len){
     str= '0' + str;
   }
@@ -595,7 +595,7 @@ function h_zeropad_left(numOrStr, len) {
 }
 
 function h_base32tohex(base32) {
-  var base32chars, bits, chunk, hex, i, val;
+  const base32chars, bits, chunk, hex, i, val;
   base32chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
   bits = '';
   hex = '';
@@ -621,8 +621,8 @@ function lpadd2(intnum){
 
 function generate2fa(secret){
   let now = new Date().getTime();
-  var epoch, hmac, key, offset, otp, shaObj, hextime;
-  var tokenlen=6;
+  const epoch, hmac, key, offset, otp, shaObj, hextime;
+  const tokenlen=6;
   key = h_base32tohex(secret);
   epoch = Math.round(now / 1000.0);
   hextime = h_zeropad_left(Math.floor(epoch / 30).toString(16), 16); // expiry=30
@@ -641,9 +641,9 @@ function generate2fa(secret){
 }
 
 // function time2fa(){
-//   var dateobj = new Date();
-//   var epoch = Math.round(dateobj.getTime() / 1000.0); // sec since jan 1st 1970 utc
-//   var countDown = 30 - (epoch % 30);
-//   var utcstr=dateobj.getUTCFullYear() +'-'+ lpadd2(dateobj.getUTCMonth()+1) +'-'+ lpadd2(dateobj.getUTCDate())+' '+lpadd2(dateobj.getUTCHours()) +':'+ lpadd2(dateobj.getUTCMinutes()) +':'+ lpadd2(dateobj.getUTCSeconds());
-//   var localstr=dateobj.getFullYear() +'-'+ lpadd2(dateobj.getMonth()+1) +'-'+ lpadd2(dateobj.getDate())+' '+lpadd2(dateobj.getHours()) +':'+ lpadd2(dateobj.getMinutes()) +':'+ lpadd2(dateobj.getSeconds());
+//   const dateobj = new Date();
+//   const epoch = Math.round(dateobj.getTime() / 1000.0); // sec since jan 1st 1970 utc
+//   const countDown = 30 - (epoch % 30);
+//   const utcstr=dateobj.getUTCFullYear() +'-'+ lpadd2(dateobj.getUTCMonth()+1) +'-'+ lpadd2(dateobj.getUTCDate())+' '+lpadd2(dateobj.getUTCHours()) +':'+ lpadd2(dateobj.getUTCMinutes()) +':'+ lpadd2(dateobj.getUTCSeconds());
+//   const localstr=dateobj.getFullYear() +'-'+ lpadd2(dateobj.getMonth()+1) +'-'+ lpadd2(dateobj.getDate())+' '+lpadd2(dateobj.getHours()) +':'+ lpadd2(dateobj.getMinutes()) +':'+ lpadd2(dateobj.getSeconds());
 // }
