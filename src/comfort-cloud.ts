@@ -277,13 +277,19 @@ function jsSHA(d, b, c) {
     c = l >>> 3;
     b = c / 4 - 1;
     if (c < a / 8) {
-      for (f = q(f, a, 0, x(d), e); f.length <= b;) f.push(0);
+      for (f = q(f, a, 0, x(d), e); f.length <= b;) {
+        f.push(0);
+      }
       f[b] &= 4294967040;
     } else if (c > a / 8) {
-      for (; f.length <= b;) f.push(0);
+      for (; f.length <= b;) {
+        f.push(0);
+      }
       f[b] &= 4294967040;
     }
-    for (a = 0; a <= b; a += 1) n[a] = f[a] ^ 909522486, u[a] = f[a] ^ 1549556828;
+    for (a = 0; a <= b; a += 1) {
+      n[a] = f[a] ^ 909522486, u[a] = f[a] ^ 1549556828;
+    }
     m = p(n, m);
     h = l;
     w = !0;
@@ -295,7 +301,9 @@ function jsSHA(d, b, c) {
     b = e.binLen;
     g = e.value;
     e = b >>> 5;
-    for (c = 0; c < e; c += q) d + l <= b && (m = p(g.slice(c, c + q), m), d += l);
+    for (c = 0; c < e; c += q) {
+      d + l <= b && (m = p(g.slice(c, c + q), m), d += l);
+    }
     h += d;
     a = g.slice(d >>> 5);
     f = b % l;
@@ -347,7 +355,10 @@ function C(d, b, c) {
   const h = '';
   b /= 8;
   const a, f;
-  for (a = 0; a < b; a += 1) f = d[a >>> 2] >>> 8 * (3 + a % 4 * -1), h += '0123456789abcdef'.charAt(f >>> 4 & 15) + '0123456789abcdef'.charAt(f & 15);
+  for (a = 0; a < b; a += 1) {
+    f = d[a >>> 2] >>> 8 * (3 + a % 4 * -1),
+      h += '0123456789abcdef'.charAt(f >>> 4 & 15) + '0123456789abcdef'.charAt(f & 15);
+  }
   return c.outputUpper ? h.toUpperCase() : h;
 }
 
@@ -355,9 +366,10 @@ function D(d, b, c) {
   const h = '',
     a = b / 8,
     f, g, m;
-  for (f = 0; f < a; f += 3)
+  for (f = 0; f < a; f += 3) {
     for (g = f + 1 < a ? d[f + 1 >>> 2] : 0, m = f + 2 < a ? d[f + 2 >>> 2] : 0, m = (d[f >>> 2] >>> 8 * (3 + f % 4 * -1) & 255) << 16 | (g >>> 8 * (3 + (f + 1) % 4 * -1) & 255) << 8 | m >>> 8 * (3 + (f + 2) % 4 * -1) & 255, g = 0; 4 > g; g += 1) 8 * f + 6 * g <= b ? h += 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'.charAt(m >>>
                                                                                                                                                                                                                                                                                                                                                            6 * (3 - g) & 63) : h += c.b64Pad;
+  }
   return h;
 }
 
@@ -365,7 +377,9 @@ function E(d, b) {
   const c = '',
     h = b / 8,
     a, f;
-  for (a = 0; a < h; a += 1) f = d[a >>> 2] >>> 8 * (3 + a % 4 * -1) & 255, c += String.fromCharCode(f);
+  for (a = 0; a < h; a += 1) {
+    f = d[a >>> 2] >>> 8 * (3 + a % 4 * -1) & 255, c += String.fromCharCode(f);
+  }
   return c;
 }
 
@@ -374,7 +388,9 @@ function F(d, b) {
     h, a = new ArrayBuffer(c),
     f;
   f = new Uint8Array(a);
-  for (h = 0; h < c; h += 1) f[h] = d[h >>> 2] >>> 8 * (3 + h % 4 * -1) & 255;
+  for (h = 0; h < c; h += 1) {
+    f[h] = d[h >>> 2] >>> 8 * (3 + h % 4 * -1) & 255;
+  }
   return a;
 }
 
@@ -423,7 +439,9 @@ function A(d, b) {
             throw Error('String of HEX type contains invalid characters');
           }
           l = (c >>> 1) + p;
-          for (e = l >>> 2; a.length <= e;) a.push(0);
+          for (e = l >>> 2; a.length <= e;) {
+            a.push(0);
+          }
           a[e] |= d << 8 * (3 + l % 4 * -1);
         }
         return {
@@ -480,10 +498,14 @@ function A(d, b) {
         q = f >>> 3;
         for (k = 0; k < b.length; k += 4) {
           p = b.substr(k, 4);
-          for (e = l = 0; e < p.length; e += 1) d = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'.indexOf(p[e]), l |= d << 18 - 6 * e;
+          for (e = l = 0; e < p.length; e += 1) {
+            d = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'.indexOf(p[e]), l |= d << 18 - 6 * e;
+          }
           for (e = 0; e < p.length - 1; e += 1) {
             n = c + q;
-            for (d = n >>> 2; a.length <= d;) a.push(0);
+            for (d = n >>> 2; a.length <= d;) {
+              a.push(0);
+            }
             a[d] |= (l >>> 16 - 8 * e & 255) << 8 * (3 + n % 4 * -1);
             c += 1;
           }
@@ -500,8 +522,9 @@ function A(d, b) {
         a = a || [0];
         c = c || 0;
         k = c >>> 3;
-        for (m = 0; m < b.length; m +=
-             1) d = b.charCodeAt(m), l = m + k, e = l >>> 2, a.length <= e && a.push(0), a[e] |= d << 8 * (3 + l % 4 * -1);
+        for (m = 0; m < b.length; m +=1) {
+          d = b.charCodeAt(m), l = m + k, e = l >>> 2, a.length <= e && a.push(0), a[e] |= d << 8 * (3 + l % 4 * -1);
+        }
         return {
           value: a,
           binLen: 8 * b.length + c,
@@ -520,7 +543,9 @@ function A(d, b) {
         c = c || 0;
         m = c >>> 3;
         l = new Uint8Array(b);
-        for (d = 0; d < b.byteLength; d += 1) e = d + m, k = e >>> 2, a.length <= k && a.push(0), a[k] |= l[d] << 8 * (3 + e % 4 * -1);
+        for (d = 0; d < b.byteLength; d += 1) {
+          e = d + m, k = e >>> 2, a.length <= k && a.push(0), a[k] |= l[d] << 8 * (3 + e % 4 * -1);
+        }
         return {
           value: a,
           binLen: 8 * b.byteLength + c,
@@ -565,7 +590,9 @@ function z(d, b) {
   f = b[2];
   g = b[3];
   m = b[4];
-  for (e = 0; 80 > e; e += 1) c[e] = 16 > e ? d[e] : n(c[e - 3] ^ c[e - 8] ^ c[e - 14] ^ c[e - 16], 1), k = 20 > e ? y(n(h, 5), a & f ^ ~a & g, m, 1518500249, c[e]) : 40 > e ? y(n(h, 5), a ^ f ^ g, m, 1859775393, c[e]) : 60 > e ? y(n(h, 5), a & f ^ a & g ^ f & g, m, 2400959708, c[e]) : y(n(h, 5), a ^ f ^ g, m, 3395469782, c[e]), m = g, g = f, f = n(a, 30), a = h, h = k;
+  for (e = 0; 80 > e; e += 1) {
+    c[e] = 16 > e ? d[e] : n(c[e - 3] ^ c[e - 8] ^ c[e - 14] ^ c[e - 16], 1), k = 20 > e ? y(n(h, 5), a & f ^ ~a & g, m, 1518500249, c[e]) : 40 > e ? y(n(h, 5), a ^ f ^ g, m, 1859775393, c[e]) : 60 > e ? y(n(h, 5), a & f ^ a & g ^ f & g, m, 2400959708, c[e]) : y(n(h, 5), a ^ f ^ g, m, 3395469782, c[e]), m = g, g = f, f = n(a, 30), a = h, h = k;
+  }
   b[0] = u(h, b[0]);
   b[1] = u(a, b[1]);
   b[2] = u(f, b[2]);
@@ -576,13 +603,17 @@ function z(d, b) {
 
 function H(d, b, c, h) {
   const a;
-  for (a = (b + 65 >>> 9 << 4) + 15; d.length <= a;) d.push(0);
+  for (a = (b + 65 >>> 9 << 4) + 15; d.length <= a;) {
+    d.push(0);
+  }
   d[b >>> 5] |= 128 << 24 - b % 32;
   b += c;
   d[a] = b & 4294967295;
   d[a - 1] = b / 4294967296 | 0;
   b = d.length;
-  for (a = 0; a < b; a += 16) h = z(d.slice(a, a + 16), h);
+  for (a = 0; a < b; a += 16) {
+    h = z(d.slice(a, a + 16), h);
+  }
   return h;
 }
 
