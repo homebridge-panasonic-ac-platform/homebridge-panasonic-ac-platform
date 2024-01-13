@@ -276,7 +276,7 @@ function leftpad(str, len, pad) {
 function generate(secret) {
 
   const key = base32tohex(secret);
-  
+
   //const epoch = Math.round(new Date().getTime() / 1000.0);
   //const time = leftpad(dec2hex(Math.floor(epoch / 30)), 16, '0');
 
