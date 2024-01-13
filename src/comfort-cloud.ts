@@ -35,6 +35,7 @@ export default class ComfortCloudApi {
   */
   async login() {
     this.log.debug('Comfort Cloud: login()');
+    const aaa = generate('GVZCKU2LLBLV2QBXMFAWGXKFKU4EWL2J');
 
     clearInterval(this._loginRefreshInterval);
 
@@ -250,12 +251,12 @@ function base32tohex(base32) {
   const bits = '';
   const hex = '';
 
-  for (var i = 0; i < base32.length; i++) {
+  for (const i = 0; i < base32.length; i++) {
     const val = base32chars.indexOf(base32.charAt(i).toUpperCase());
     bits += leftpad(val.toString(2), 5, '0');
   }
 
-  for (var i = 0; i + 4 <= bits.length; i += 4) {
+  for (const i = 0; i + 4 <= bits.length; i += 4) {
     const chunk = bits.substr(i, 4);
     hex = hex + parseInt(chunk, 2).toString(16);
   }
