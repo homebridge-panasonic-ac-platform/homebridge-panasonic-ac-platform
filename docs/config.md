@@ -9,9 +9,10 @@ Configure the plugin through the settings UI or directly in the JSON editor:
         "name": "Homebridge Panasonic AC Platform",
         "email": "mail@example.com",
         "password": "********",
+        "excludeDevices": "",
         "exposeOutdoorUnit": true,
         "debugMode": false,
-        "appVersionOverride": "1.19.0",
+        "appVersionOverride": "1.20.0",
         "suppressOutgoingUpdates": false,
         "minHeatingTemperature": 16,
         "maxAttempts": 0,
@@ -42,26 +43,19 @@ The password of your account.
 
 Optional:
 
+* `excludeDevices` (string): By default this plugin will add all devices from Comfort Cloud. To exclude one or more, put comma separated names or serial numbers of devices, E.G.: 'CS-Z50VKEW+4962605183,Bedroom AC,CS-Z50VKEW+4962605184,My AC unit'. 
+
 * `exposeOutdoorUnit` (boolean):
 If `true`, the plugin will create a separate accessory for your outdoor unit which will display the (outdoor) temperature it measures. This can be used for monitoring and automation purposes.
-
-* `debugMode` (boolean):
-If `true`, the plugin will print debugging information to the Homebridge log.
-
-* `appVersionOverride` (string):
-The plugin will automatically use the last known working value when this setting is empty or undefined (default). This setting allows you to override the default value if needed. It should reflect the latest version on the App Store, although older clients might remain supported for some time.
 
 * `suppressOutgoingUpdates` (boolean):
 If `true`, changes in the Home app will not be sent to Comfort Cloud. Useful for testing your installation without constantly switching the state of your AC to minimise wear and tear.
 
+* `appVersionOverride` (string):
+The plugin will automatically use the last known working value when this setting is empty or undefined (default). This setting allows you to override the default value if needed. It should reflect the latest version on the App Store, although older clients might remain supported for some time.
+
 * `minHeatingTemperature` (integer):
 The default heating temperature range is 16-30°C. Some Panasonic ACs have an additional heating mode for the range of 8-15°C. If you own such a model, you can use this setting to adjust the minimum value. Leave it empty or undefined to use the default value.
-
-* `maxAttempts` (integer):
-Maximum number of failed login attempts. If set to 0 - without the limit.
-
-* `refreshInterval` (integer):
-Refresh interval in minutes. 0 - disabled. Recomended min. 10 minutes. Maximum 360 minutes (6 hours). Note: More frequent refresh would result in too much daily number of requests to the Panasonic server, which could result in an account lock for 24 hours, or even a complete API lock.
 
 * `oscilateSwitch` (string):
 Decide what the switch should control: Swing Mode, Nanoe, Eco Navi or Inside Cleaning.
@@ -77,6 +71,15 @@ Eco Navi value with each state change made with Homekit (e.g. activation): do no
 
 * `startInsideCleaning` (string):
 InsideCleaning value with each state change made with Homekit (e.g. activation): do nothing, set on, set off.
+
+* `maxAttempts` (integer):
+Maximum number of failed login attempts. If set to 0 - without the limit.
+
+* `refreshInterval` (integer):
+Refresh interval in minutes. 0 - disabled. Recomended min. 10 minutes. Maximum 360 minutes (6 hours). Note: More frequent refresh would result in too much daily number of requests to the Panasonic server, which could result in an account lock for 24 hours, or even a complete API lock.
+
+* `debugMode` (boolean):
+If `true`, the plugin will print debugging information to the Homebridge log.
 
 ## Oscillate Switch
 

@@ -354,7 +354,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
           if (comfortCloudDevice === undefined) {
             // This cached devices does not exist on the Comfort Cloud account (anymore).
             this.log.info(`Removing accessory '${cachedAccessory.displayName}' (${guid}) `
-              + 'because it does not exist on the Comfort Cloud account (anymore?).');
+              + 'because it does not exist on the Comfort Cloud account or has been excluded in plugin config.');
 
             this.api.unregisterPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [cachedAccessory]);
           }
