@@ -42,6 +42,8 @@ The password of your account.
 
 Optional:
 
+* `key2fa` (string): 2FA key received from Panasonic. Example: 'GVZCKT2LLBLV2QBXMFAWFXKFKU5EWL2H').
+
 * `exposeOutdoorUnit` (boolean):
 If `true`, the plugin will create a separate accessory for your outdoor unit which will display the (outdoor) temperature it measures. This can be used for monitoring and automation purposes.
 
