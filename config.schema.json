@@ -30,7 +30,7 @@
 				"title": "Exclude Devices",
 				"type": "string",
 				"description": "Exclude one or more devices. Put comma separated devices name or serial number, E.G.: 'CS-Z50VKEW+4962605183,Bedroom AC,CS-Z50VKEW+4962605184,My AC unit'.",
-				"required": true
+				"required": false
 			},
 			"exposeOutdoorUnit": {
 				"title": "Expose Outdoor Unit",
