@@ -31,6 +31,12 @@
 				"type": "string",
 				"description": "2FA key received from Panasonic. Example: 'GVZCKT2LLBLV2QBXMFAWFXKFKU5EWL2H').",
 				"required": false
+      }
+			"excludeDevices": {
+				"title": "Exclude Devices",
+				"type": "string",
+				"description": "Exclude one or more devices. Put comma separated devices name or serial number, E.G.: 'CS-Z50VKEW+4962605183,Bedroom AC,CS-Z50VKEW+4962605184,My AC unit'.",
+				"required": false
 			},
 			"exposeOutdoorUnit": {
 				"title": "Expose Outdoor Unit",
@@ -230,6 +236,7 @@
 			"expanded": false,
 			"items": [
 				"name",
+				"excludeDevices",
 				"debugMode",
 				"suppressOutgoingUpdates",
 				"appVersionOverride",
