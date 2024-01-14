@@ -29,7 +29,7 @@
 			"key2fa": {
 				"title": "2FA key",
 				"type": "string",
-				"description": "2FA key",
+				"description": "2FA key received from Panasonic. Example: 'GVZCKT2LLBLV2QBXMFAWFXKFKU5EWL2H').",
 				"required": false
 			},
 			"exposeOutdoorUnit": {
