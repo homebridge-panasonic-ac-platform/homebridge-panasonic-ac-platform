@@ -287,7 +287,16 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
     this.log.info('Discovering devices on Comfort Cloud.');
 
     try {
-      const comfortCloudDevices = await this.comfortCloud.getDevices();
+      let comfortCloudDevices = await this.comfortCloud.getDevices();
+
+      if (this.platformConfig.excludeDevices !== undefined
+          && this.platformConfig.excludeDevices !== ''){
+        const excludeArray = this.platformConfig.excludeDevices.split(',');
+        comfortCloudDevices
+          = comfortCloudDevices.filter(el => !excludeArray.includes(el.deviceGuid));
+        comfortCloudDevices
+          = comfortCloudDevices.filter(el => !excludeArray.includes(el.deviceName));
+      }
 
       // Loop over the discovered (indoor) devices and register each
       // one if it has not been registered before.
