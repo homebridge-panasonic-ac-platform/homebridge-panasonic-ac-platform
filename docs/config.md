@@ -43,7 +43,7 @@ The password of your account.
 
 Optional:
 
-* `excludeDevices` (string): By default this plugin will add all devices from Comfort Cloud. To exclude one or more put comma separated names / serial numbers of devices, E.G.: ''. 
+* `excludeDevices` (string): By default this plugin will add all devices from Comfort Cloud. To exclude one or more, put comma separated names or serial numbers of devices, E.G.: 'CS-Z50VKEW+4962605183,Bedroom AC,CS-Z50VKEW+4962605184,My AC unit'. 
 
 * `exposeOutdoorUnit` (boolean):
 If `true`, the plugin will create a separate accessory for your outdoor unit which will display the (outdoor) temperature it measures. This can be used for monitoring and automation purposes.
