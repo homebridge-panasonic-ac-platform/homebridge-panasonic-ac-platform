@@ -9,7 +9,7 @@ Configure the plugin through the settings UI or directly in the JSON editor:
         "name": "Homebridge Panasonic AC Platform",
         "email": "mail@example.com",
         "password": "********",
-        "excludeDevices": null
+        "excludeDevices": "",
         "exposeOutdoorUnit": true,
         "debugMode": false,
         "appVersionOverride": "1.19.0",
