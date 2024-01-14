@@ -9,6 +9,7 @@ Configure the plugin through the settings UI or directly in the JSON editor:
         "name": "Homebridge Panasonic AC Platform",
         "email": "mail@example.com",
         "password": "********",
+        "excludeDevices": null
         "exposeOutdoorUnit": true,
         "debugMode": false,
         "appVersionOverride": "1.19.0",
@@ -41,6 +42,8 @@ The username of your Comfort Cloud account.
 The password of your account.
 
 Optional:
+
+* `excludeDevices` (string): By default this plugin will add all devices from Comfort Cloud. To exclude one or more put comma separated names / serial numbers of devices, E.G.: ''. 
 
 * `exposeOutdoorUnit` (boolean):
 If `true`, the plugin will create a separate accessory for your outdoor unit which will display the (outdoor) temperature it measures. This can be used for monitoring and automation purposes.
