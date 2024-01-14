@@ -29,7 +29,7 @@
 			"excludeDevices": {
 				"title": "Exclude Devices",
 				"type": "string",
-				"description": "Exclude one or more devices. Put comma separated devices name or serial number, E.G.: 'CS-Z50VKEW+4962605183,Bedroom AC,CS-Z50VKEW+4962605184,My AC unit'.",
+				"description": "By default this plugin will add all devices from Comfort Cloud. To exclude one or more, put comma separated names or serial numbers of devices, E.G.: 'CS-Z50VKEW+4962605183,Bedroom AC,CS-Z50VKEW+4962605184,My AC unit'.",
 				"required": false
 			},
 			"exposeOutdoorUnit": {
