@@ -53,7 +53,7 @@ jobs:
           git config user.name "GitHub Actions"
           
       - name: Upgrade version ⬆
-        run: npm version ${{ github.event.release.tag_name }}
+        run: npm version ${{ github.event.release.tag_name }} --force
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           
