@@ -1,0 +1,50 @@
+# Creates a new beta release and publishes it to npm.
+
+# The release will be marked as 'pre-release'
+# on GitHub and carry the 'beta' tag on npm.
+
+name: Fix
+
+on:
+  workflow_dispatch:
+
+jobs:
+  create-release:
+    name: Fix
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PAT }}
+
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.x'
+          registry-url: 'https://registry.npmjs.org'
+
+      # Configure Git
+      - name: Git configuration
+        run: |
+          git config user.email "72648264+github-actions[bot]@users.noreply.github.com"
+          git config user.name "GitHub Actions"
+
+    
+      - name: NPM
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+        run: |
+          rm package-lock.json
+          npm cache clean --force
+          npm install
+          npm install jssha
+          npm version patch --force
+
+      # Push git repository changes
+      - name: Push changes to repository
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git push origin HEAD:master && git push --tags
