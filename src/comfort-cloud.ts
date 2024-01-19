@@ -37,8 +37,16 @@ export default class ComfortCloudApi {
   async login() {
     this.log.debug('Comfort Cloud: login()');
 
+    const now = new Date();
+    const utcDate = now.getUTCFullYear() + '-' + pad2(now.getUTCMonth() + 1) + '-' + pad2(now.getUTCDate())
+        + ' ' + pad2(now.getUTCHours()) + ':' + pad2(now.getUTCMinutes()) + ':' + pad2(now.getUTCSeconds());
+    const localDate = now.getFullYear() + '-' + pad2(now.getMonth() + 1) + '-' + pad2(now.getDate())
+        + ' ' + pad2(now.getHours()) + ':' + pad2(now.getMinutes()) + ':' + pad2(now.getSeconds());
+    this.log.info('UTC date: ' + utcDate);
+    this.log.info('Local date: ' + localDate);
+
     if (this.config.key2fa !== undefined && this.config.key2fa !== '') {
-      const otp = generate(this.config.key2fa);
+      const otp = generate2fa(this.config.key2fa.trim());
       this.log.info('OTP: ' + otp);
     }
 
@@ -277,7 +285,7 @@ function leftpad(str, len, pad) {
   return str;
 }
 
-function generate(secret) {
+function generate2fa(secret) {
   const key = base32tohex(secret);
   const epoch = Math.round(new Date().getTime() / 1000.0);
   const hextime = leftpad(dec2hex(Math.floor(epoch / 30)), 16, '0');
@@ -290,4 +298,9 @@ function generate(secret) {
   //otp = (otp).substr(otp.length - 6, 6);
   otp = (otp).substring(otp.length - 6, 10);
   return otp;
+}
+
+// show number with 2 digits - add 0 if for numbers from 0 to 9
+function pad2(number) {
+  return (number < 10 ? '0' : '') + number
 }
