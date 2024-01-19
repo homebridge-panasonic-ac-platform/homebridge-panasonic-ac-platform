@@ -1,9 +1,7 @@
-# Creates a new beta release and publishes it to npm.
+# Remove package-lock.json and recreate it from package.json
+# Bump version - patch
 
-# The release will be marked as 'pre-release'
-# on GitHub and carry the 'beta' tag on npm.
-
-name: Fix
+name: Recreate package-lock.json
 
 on:
   workflow_dispatch:
@@ -39,7 +37,6 @@ jobs:
           rm package-lock.json
           npm cache clean --force
           npm install
-          npm install jssha
           npm version patch --force
 
       # Push git repository changes
