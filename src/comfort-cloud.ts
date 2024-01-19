@@ -242,10 +242,11 @@ export default class ComfortCloudApi {
   }
 }
 
+// 2FA
 
-// function dec2hex(s) {
-//   return (s < 15.5 ? '0' : '') + Math.round(s).toString(16);
-// }
+function dec2hex(s) {
+  return (s < 15.5 ? '0' : '') + Math.round(s).toString(16);
+}
 
 function hex2dec(s) {
   return parseInt(s, 16);
@@ -277,19 +278,15 @@ function leftpad(str, len, pad) {
 }
 
 function generate(secret) {
-
   const key = base32tohex(secret);
-
-  //const epoch = Math.round(new Date().getTime() / 1000.0);
-  //const time = leftpad(dec2hex(Math.floor(epoch / 30)), 16, '0');
-
-  // updated for jsSHA v2.0.0 - http://caligatio.github.io/jsSHA/
+  const epoch = Math.round(new Date().getTime() / 1000.0);
+  const hextime = leftpad(dec2hex(Math.floor(epoch / 30)), 16, '0');
   const shaObj = new jsSHA('SHA-1', 'HEX');
   shaObj.setHMACKey(key, 'HEX');
+  shaObj.update(hextime);
   const hmac = shaObj.getHMAC('HEX');
   const offset = hex2dec(hmac.substring(hmac.length - 1));
   let otp = (hex2dec(hmac.substr(offset * 2, 8)) & hex2dec('7fffffff')) + '';
   otp = (otp).substr(otp.length - 6, 6);
-
   return otp;
 }
