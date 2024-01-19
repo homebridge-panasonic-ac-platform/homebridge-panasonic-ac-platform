@@ -296,7 +296,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
         excludeArray = excludeArray.map(s => s.trim());
         // remove empty elements
         excludeArray = excludeArray.filter(function(el){
-          return el
+          return el;
         });
 
         // exclude by serial number
