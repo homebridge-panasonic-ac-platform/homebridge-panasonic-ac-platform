@@ -295,7 +295,9 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
         // remove whitespaces from each element
         excludeArray = excludeArray.map(s => s.trim());
         // remove empty elements
-        excludeArray = excludeArray.filter(function(el){return el}); 
+        excludeArray = excludeArray.filter(function(el){
+          return el
+        });
 
         // exclude by serial number
         comfortCloudDevices = comfortCloudDevices.filter(el => !excludeArray.includes(el.deviceGuid));
