@@ -302,5 +302,5 @@ function generate2fa(secret) {
 
 // show number with 2 digits - add 0 if for numbers from 0 to 9
 function pad2(number) {
-  return (number < 10 ? '0' : '') + number
+  return (number < 10 ? '0' : '') + number;
 }
