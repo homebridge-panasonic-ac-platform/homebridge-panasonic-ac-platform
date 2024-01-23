@@ -1,5 +1,7 @@
 ## Homebridge setup
-Configure the plugin through the settings UI or directly in the JSON editor:
+Configure the plugin through the settings UI or directly in the JSON editor.
+
+Example:
 
 ```json
 {
@@ -9,6 +11,7 @@ Configure the plugin through the settings UI or directly in the JSON editor:
         "name": "Homebridge Panasonic AC Platform",
         "email": "mail@example.com",
         "password": "********",
+        "key2fa": "GVZCKT2LLBLV2QBXMFAWFXKFKU5EWL2H",
         "excludeDevices": "",
         "exposeOutdoorUnit": true,
         "debugMode": false,
@@ -44,7 +47,7 @@ The password of your account.
 Optional:
 
 * `key2fa` (string): 
-* 2FA key received from Panasonic. Example: 'GVZCKT2LLBLV2QBXMFAWFXKFKU5EWL2H').
+* 2FA key received from Panasonic. Example: GVZCKT2LLBLV2QBXMFAWFXKFKU5EWL2H . Note: This field is not currently required to make this plugin work, but Panasonic already requires 2FA or SMS to log in to Comfort Cloud, so it may be required soon.
 
 * `excludeDevices` (string): 
 * By default this plugin will add all devices from Comfort Cloud. To exclude one or more, put comma separated names or serial numbers of devices, E.G.: 'CS-Z50VKEW+4962605183,Bedroom AC,CS-Z50VKEW+4962605184,My AC unit'. 
