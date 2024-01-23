@@ -31,7 +31,7 @@
 				"type": "string",
 				"description": "2FA key received from Panasonic. Example: 'GVZCKT2LLBLV2QBXMFAWFXKFKU5EWL2H').",
 				"required": false
-      }
+			},
 			"excludeDevices": {
 				"title": "Exclude Devices",
 				"type": "string",
@@ -209,6 +209,11 @@
 							"type": "password"
 						}
 					]
+				},
+				{
+					"type": "flex",
+					"flex-flow": "row wrap",
+					"items": ["key2fa"]
 				}
 			]
 		},
