@@ -26,6 +26,12 @@
 				"placeholder": "Password",
 				"required": true
 			},
+			"key2fa": {
+				"title": "2FA key",
+				"type": "string",
+				"description": "2FA key received from Panasonic. Example: 'GVZCKT2LLBLV2QBXMFAWFXKFKU5EWL2H').",
+				"required": false
+      }
 			"excludeDevices": {
 				"title": "Exclude Devices",
 				"type": "string",

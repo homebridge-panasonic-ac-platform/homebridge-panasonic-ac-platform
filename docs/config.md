@@ -43,7 +43,11 @@ The password of your account.
 
 Optional:
 
-* `excludeDevices` (string): By default this plugin will add all devices from Comfort Cloud. To exclude one or more, put comma separated names or serial numbers of devices, E.G.: 'CS-Z50VKEW+4962605183,Bedroom AC,CS-Z50VKEW+4962605184,My AC unit'. 
+* `key2fa` (string): 
+* 2FA key received from Panasonic. Example: 'GVZCKT2LLBLV2QBXMFAWFXKFKU5EWL2H').
+
+* `excludeDevices` (string): 
+* By default this plugin will add all devices from Comfort Cloud. To exclude one or more, put comma separated names or serial numbers of devices, E.G.: 'CS-Z50VKEW+4962605183,Bedroom AC,CS-Z50VKEW+4962605184,My AC unit'. 
 
 * `exposeOutdoorUnit` (boolean):
 If `true`, the plugin will create a separate accessory for your outdoor unit which will display the (outdoor) temperature it measures. This can be used for monitoring and automation purposes.
