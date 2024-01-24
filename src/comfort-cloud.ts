@@ -46,8 +46,11 @@ export default class ComfortCloudApi {
     this.log.info('Local date: ' + localDate);
 
     if (this.config.key2fa !== undefined && this.config.key2fa !== '') {
-      const otp = generate2fa(this.config.key2fa.trim());
-      this.log.info('OTP: ' + otp);
+      const key2fa = this.config.key2fa.trim();
+      const code2fa = generate2fa(key2fa);
+      this.log.info('2FA code: ' + code2fa
+                    + ' (for key: ' + key2fa[0] + key2fa[1] + key2fa[2] + key2fa[3]
+                    + ' ... ' + key2fa[28] + key2fa[29] + key2fa[30] + key2fa[31] + ')');
     }
 
     clearInterval(this._loginRefreshInterval);
