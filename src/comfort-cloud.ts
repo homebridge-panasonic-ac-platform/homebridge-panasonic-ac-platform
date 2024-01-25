@@ -45,9 +45,14 @@ export default class ComfortCloudApi {
     this.log.info('UTC date: ' + utcDate);
     this.log.info('Local date: ' + localDate);
 
-    if (this.config.key2fa !== undefined && this.config.key2fa !== '') {
-      const otp = generate2fa(this.config.key2fa.trim());
-      this.log.info('OTP: ' + otp);
+    if (this.config.key2fa && this.config.key2fa.lenght === 32) {
+      const key2fa = this.config.key2fa;
+      const code2fa = generate2fa(key2fa);
+      this.log.info('2FA code: ' + code2fa
+                    + ' (for key: ' + key2fa[0] + key2fa[1] + key2fa[2] + key2fa[3]
+                    + ' ... ' + key2fa[28] + key2fa[29] + key2fa[30] + key2fa[31] + ')');
+    } else {
+      this.log.info('No 2FA key or incorrect key');
     }
 
     clearInterval(this._loginRefreshInterval);
