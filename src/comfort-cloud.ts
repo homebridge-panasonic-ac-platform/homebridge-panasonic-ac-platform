@@ -45,7 +45,7 @@ export default class ComfortCloudApi {
     this.log.info('UTC date: ' + utcDate);
     this.log.info('Local date: ' + localDate);
 
-    if (this.config.key2fa && this.config.key2fa.lenght === 32) {
+    if (this.config.key2fa && this.config.key2fa.length === 32) {
       const key2fa = this.config.key2fa;
       const code2fa = generate2fa(key2fa);
       this.log.info('2FA code: ' + code2fa
