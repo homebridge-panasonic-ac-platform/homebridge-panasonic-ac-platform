@@ -103,7 +103,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
         }
       });
     } catch (error) {
-      this.log.debug('Could not fetch latest app version:');
+      this.log.error('Could not fetch latest app version from App Store.');
       this.log.debug(JSON.stringify(error, null, 2));
     }
   }
@@ -237,8 +237,6 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
    * depending on the user's configuration.
    */
   configureOutdoorUnit() {
-    this.log.info('Configuring outdoor unit.');
-
     try {
       // We'll use a dummy identifier because the Comfort Cloud API
       // doesn't expose the outdoor unit as separate device.
@@ -253,12 +251,12 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
       if (this.platformConfig.exposeOutdoorUnit) {
         if (existingAccessory !== undefined) {
           // The accessory already exists, we only need to set up its handlers.
-          this.log.info(`Restoring accessory '${existingAccessory.displayName}' `
+          this.log.info(`Restoring outdoor unit '${existingAccessory.displayName}' `
             + `(${existingAccessory.UUID}) from cache.`);
           this.outdoorUnit = new OutdoorUnitAccessory(this, existingAccessory);
         } else {
           // The accessory does not yet exist, so we need to create it.
-          this.log.info(`Adding accessory '${outdoorUnitName}' (${outdoorUnitUUID}).`);
+          this.log.info(`Adding outdoor unit '${outdoorUnitName}' (${outdoorUnitUUID}).`);
           const accessory = new this.api.platformAccessory(outdoorUnitName, outdoorUnitUUID);
           this.outdoorUnit = new OutdoorUnitAccessory(this, accessory);
           this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
@@ -266,7 +264,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
       } else {
         if (existingAccessory !== undefined) {
           // This accessory is no longer needed.
-          this.log.info(`Removing accessory '${existingAccessory.displayName}' `
+          this.log.info(`Removing outdoor unit '${existingAccessory.displayName}' `
             + `(${existingAccessory.UUID}) `);
           this.api.unregisterPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [existingAccessory]);
         }
@@ -284,7 +282,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
    * must not be registered again to prevent "duplicate UUID" errors.
    */
   async discoverDevices() {
-    this.log.info('Discovering devices on Comfort Cloud.');
+    this.log.debug('Discovering devices on Comfort Cloud.');
 
     try {
       let comfortCloudDevices = await this.comfortCloud.getDevices();
