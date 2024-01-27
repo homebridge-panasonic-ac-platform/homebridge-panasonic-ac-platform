@@ -51,10 +51,10 @@ export default class ComfortCloudApi {
       this.log.info('2FA code: ' + code2fa
                     + ' (for key '
                     + key2fa[0] + key2fa[1] + key2fa[2] + key2fa[3]
-                    + ' ' + key2fa[4] + key2fa[5] + key2fa[6] + key2fa[7]
+                    + key2fa[4] + key2fa[5] + key2fa[6] + key2fa[7]
                     + '...'
                     + key2fa[24] + key2fa[25] + key2fa[26] + key2fa[27]
-                    + ' ' + key2fa[28] + key2fa[29] + key2fa[30] + key2fa[31] + ')');
+                    + key2fa[28] + key2fa[29] + key2fa[30] + key2fa[31] + ')');
     } else {
       this.log.info('No 2FA key or incorrect key');
     }
@@ -81,7 +81,7 @@ export default class ComfortCloudApi {
           LOGIN_TOKEN_REFRESH_INTERVAL);
       })
       .catch((error: AxiosError) => {
-        this.log.debug('Comfort Cloud - login(): Error');
+        this.log.error('Comfort Cloud - login(): Error');
         this.log.debug(JSON.stringify(error, null, 2));
       });
   }
@@ -119,7 +119,7 @@ export default class ComfortCloudApi {
           });
         });
         if (fetchedDevices.length === 0) {
-          this.log.info('No devices found. '
+          this.log.error('No devices found. '
             + 'Check whether you have added at least one device to your Comfort Cloud account.');
         }
         return fetchedDevices;
@@ -259,7 +259,7 @@ export default class ComfortCloudApi {
   }
 }
 
-// 2FA
+// 2FA TOTP
 
 function dec2hex(s) {
   return (s < 15.5 ? '0' : '') + Math.round(s).toString(16);

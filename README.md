@@ -17,6 +17,7 @@ All devices that are set up on your Comfort Cloud account will appear in Homebri
 ## Comfort Cloud account (Panasonic ID)
 
 - Register and manage your Panasonic ID (used to manage Comfort Cloud) via app (iOS / Android) or browser [Panasonic ID](https://csapl.pcpf.panasonic.com).
+- From January 2024, Panasonic requires 2FA (Two Factor Authentication), you can choose: the code or SMS - the recommended choice is the code.
 - Instructions on how to create a [dual-account setup](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/blob/master/docs/dual-account-setup.md).
 
 ## Install plugin
@@ -87,7 +88,10 @@ The Home app offers no extra buttons for the Quiet and Powerful Modes. All setti
 ## Disclaimer
 - All product and company names are trademarks™ or registered® trademarks of their respective holders. Use of them does not imply any affiliation with or endorsement by them.
 - This is not the official Panasonic plugin.
-- The plugin uses the official Panasonic API used to support official applications for iOS and Android. Homebridge connect via Internet with Comfort Cloud (Panasonic platform), this solution does not work locally. Panasonic has not provided an official API to support external plugins, so this method may stop working at any time (Panasonic updates its API quite often, E.G. in January 2024, Panasonic introduced two-factor authentication). Alternatives: 
+- The plugin uses the official Panasonic API used to support official applications for iOS and Android.
+- Homebridge connect via Internet with Comfort Cloud (Panasonic platform), this solution does not work locally.
+- Panasonic has not provided an official API to support external plugins, so this method may stop working at any time.
+- Alternatives: 
     - Local access, but this requires reworking of the equipment, which will lose the warranty, so rather not recommended.
     - Control by IR (imitates an IR remote control), E.G. through the Aqata Hub M2 or M3 gate, but it only allows you to send commands (not possible to read the state).
 - Despite the efforts made, the operation of the plugin is without any guarantees and at your own risk.
