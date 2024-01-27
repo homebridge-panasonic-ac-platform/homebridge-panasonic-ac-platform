@@ -82,7 +82,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
   }
 
   async getAppVersion() {
-    this.log.info('Attempting to fetch latest Comfort Cloud version from the App Store.');
+    this.log.debug('Attempting to fetch latest Comfort Cloud version from the App Store.');
     try {
       const response = await axios.request({
         method: 'get',
@@ -131,7 +131,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
     this.log.info('Attempting to log into Comfort Cloud.');
     this.comfortCloud.login()
       .then(() => {
-        this.log.info('Successfully logged in.');
+        this.log.info('Successfully logged in to Comfort Cloud.');
         this.noOfFailedLoginAttempts = 0;
         this.configureOutdoorUnit();
         this.discoverDevices();
