@@ -123,7 +123,7 @@ export default class IndoorUnitAccessory {
    * Retrieves the device status from Comfort Cloud and updates its characteristics.
    */
   async refreshDeviceStatus() {
-    this.platform.log.debug(`Accessory: Refresh status for device '${this.accessory.displayName}'`);
+    this.platform.log.debug(`${this.accessory.displayName}: refresh status`);
 
     try {
       const deviceStatus = await this.platform.comfortCloud.getDeviceStatus(
@@ -135,6 +135,7 @@ export default class IndoorUnitAccessory {
           ? this.platform.Characteristic.Active.ACTIVE
           : this.platform.Characteristic.Active.INACTIVE;
         this.service.updateCharacteristic(this.platform.Characteristic.Active, active);
+        this.platform.log.info(`${this.accessory.displayName}: ${(active === 1) ? 'On' : 'Off'}`);
       }
 
       // Current Temperature
@@ -146,13 +147,13 @@ export default class IndoorUnitAccessory {
       if (deviceStatus.insideTemperature < 126) {
         this.service.updateCharacteristic(
           this.platform.Characteristic.CurrentTemperature, deviceStatus.insideTemperature);
-        this.platform.log.debug(`Indoor temperature: '${deviceStatus.insideTemperature}'`);
+        this.platform.log.info(`${this.accessory.displayName}: indoor temperature ${deviceStatus.insideTemperature}`);
       } else {
         this.platform.log.debug('Indoor temperature: is not available');
         if (deviceStatus.outTemperature < 126) {
           this.service.updateCharacteristic(
             this.platform.Characteristic.CurrentTemperature, deviceStatus.outTemperature);
-          this.platform.log.debug(`Outdoor temperature: '${deviceStatus.outTemperature}'`);
+          this.platform.log.info(`${this.accessory.displayName} indoor temperature (from outdoor) ${deviceStatus.outTemperature}`);
         } else {
           this.platform.log.debug(
             'Indoor and Outdoor temperature are not available - setting default temperature');
@@ -171,6 +172,7 @@ export default class IndoorUnitAccessory {
         } else {
           // Update the value of the connected outdoor unit
           this.connectedOutdoorUnit.setOutdoorTemperature(deviceStatus.outTemperature);
+          this.platform.log.info(`${this.accessory.displayName} outdoor temperature ${deviceStatus.outTemperature}`);
         }
       }
 
