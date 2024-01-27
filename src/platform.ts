@@ -128,7 +128,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
       await this.getAppVersion();
     }
 
-    this.log.info('Attempting to log into Comfort Cloud.');
+    this.log.debug('Attempting to log into Comfort Cloud.');
     this.comfortCloud.login()
       .then(() => {
         this.log.info('Successfully logged in to Comfort Cloud.');
