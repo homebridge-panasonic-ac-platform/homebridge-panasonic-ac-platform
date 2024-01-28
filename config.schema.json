@@ -106,13 +106,18 @@
 				"required": true
 			},
 			"refreshInterval" : {
-				"title": "Refresh interval (minutes)",
+				"title": "Refresh interval",
 				"type": "integer",
-				"description": "0 - disabled. Recomended min. 10 minutes. Maximum 360 minutes (6 hours). Note: More frequent refresh would result in too much daily number of requests to the Panasonic server, which could result in an account lock for 24 hours, or even a complete API lock.",
+				"description": "Note: More frequent refresh would result in too much daily number of requests to the Panasonic server, which could result in an account lock for 24 hours, or even a complete API lock.",
 				"required": true,
-				"default": 10,
-				"minimum": 0,
-				"maximum": 360
+				"default": 30,
+				"oneOf": [
+					{ "title": "Disabled", "enum": [0] },
+					{ "title": "10 min", "enum": [10] },
+					{ "title": "30 min", "enum": [30] },
+					{ "title": "60 min", "enum": [60] },
+					{ "title": "6 hours", "enum": [360] }
+				]
 			},
 			"swingModeDirections" : {
 				"title": "Swing Mode Directions",
