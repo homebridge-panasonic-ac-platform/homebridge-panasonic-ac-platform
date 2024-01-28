@@ -105,15 +105,6 @@
 				],
 				"required": true
 			},
-			"maxAttempts" : {
-				"title": "Maximum number of failed login attempts",
-				"type": "integer",
-				"description": "0 - infinited. Minimum 0, Maximum 10.",
-				"required": true,
-				"default": 0,
-				"minimum": 0,
-				"maximum": 10
-			},
 			"refreshInterval" : {
 				"title": "Refresh interval (minutes)",
 				"type": "integer",
@@ -245,7 +236,6 @@
 				"debugMode",
 				"suppressOutgoingUpdates",
 				"appVersionOverride",
-				"maxAttempts",
 				"refreshInterval",
 				"exposeOutdoorUnit",
 				"minHeatingTemperature"
