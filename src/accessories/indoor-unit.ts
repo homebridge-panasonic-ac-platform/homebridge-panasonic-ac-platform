@@ -1,7 +1,6 @@
 import { Service, PlatformAccessory, CharacteristicValue } from 'homebridge';
 import PanasonicPlatform from '../platform';
 import OutdoorUnitAccessory from './outdoor-unit';
-import { DEVICE_STATUS_REFRESH_INTERVAL } from '../settings';
 import { ComfortCloudDeviceUpdatePayload, PanasonicAccessoryContext } from '../types';
 import {
   ComfortCloudAirSwingLR,
