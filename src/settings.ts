@@ -11,6 +11,3 @@ export const APP_VERSION = '1.20.0';
 // network errors dynamically and re-issuing a login upon a 401 Unauthorized error.
 // 604,800 sec = 7 days
 export const LOGIN_TOKEN_REFRESH_INTERVAL = 604800 * 1000;
-
-// 10 minutes
-export const DEVICE_STATUS_REFRESH_INTERVAL = 10 * 60 * 1000;
