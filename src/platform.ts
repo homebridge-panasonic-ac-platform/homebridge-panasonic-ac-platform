@@ -179,7 +179,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
           const delayMap = new Map([
             [1, 300], // 5 min
             [2, 1800], // 30 min
-            [3, 3600] // 60 min
+            [3, 3600], // 60 min
           ]);
           const nextRetryDelay = delayMap.get(this.noOfFailedLoginAttempts) || 28800;
 
@@ -190,7 +190,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
             nextRetryDelay * 1000,
           );
         }
-        
+
       });
   }
 
