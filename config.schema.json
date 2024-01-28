@@ -110,7 +110,7 @@
 				"type": "integer",
 				"description": "Note: More frequent refresh would result in too much daily number of requests to the Panasonic server, which could result in an account lock for 24 hours, or even a complete API lock.",
 				"required": true,
-				"default": 30,
+				"default": 60,
 				"oneOf": [
 					{ "title": "Disabled", "enum": [0] },
 					{ "title": "10 min", "enum": [10] },
