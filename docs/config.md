@@ -18,7 +18,7 @@ Example:
         "appVersionOverride": "1.20.0",
         "suppressOutgoingUpdates": false,
         "minHeatingTemperature": 16,
-        "refreshInterval": 10,
+        "refreshInterval": 60,
         "oscilateSwitch": "swing",
         "startSwing": false,
         "startNanoe": false,
@@ -79,7 +79,7 @@ Eco Navi value with each state change made with Homekit (e.g. activation): do no
 InsideCleaning value with each state change made with Homekit (e.g. activation): do nothing, set on, set off.
 
 * `refreshInterval` (integer):
-Refresh interval in minutes. 0 - disabled. Recomended min. 10 minutes. Maximum 360 minutes (6 hours). Note: More frequent refresh would result in too much daily number of requests to the Panasonic server, which could result in an account lock for 24 hours, or even a complete API lock.
+Note: More frequent refresh would result in too much daily number of requests to the Panasonic server, which could result in an account lock for 24 hours, or even a complete API lock.
 
 * `debugMode` (boolean):
 If `true`, the plugin will print debugging information to the Homebridge log.
