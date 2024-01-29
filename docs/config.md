@@ -46,7 +46,7 @@ The password of your account.
 Optional:
 
 * `key2fa` (string): 
-2FA key received from Panasonic. Example: GVZCKT2LLBLV2QBXMFAWFXKFKU5EWL2H . Note: This field is not currently required to make this plugin work, but Panasonic already requires 2FA or SMS (recommended 2FA) to log in to Comfort Cloud, so it may be required soon.
+2FA key received from Panasonic (32 characters). Example: GVZCKT2LLBLV2QBXMFAWFXKFKU5EWL2H. Note: This field is currently not required to make this plugin work, but Panasonic already requires 2FA (code or SMS, recommended code) to log in to Comfort Cloud, so it may be required soon.
 
 * `oscilateSwitch` (string):
 Decide what the switch should control: Swing Mode, Nanoe, Eco Navi or Inside Cleaning.
