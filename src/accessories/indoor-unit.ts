@@ -1,7 +1,6 @@
 import { Service, PlatformAccessory, CharacteristicValue } from 'homebridge';
 import PanasonicPlatform from '../platform';
 import OutdoorUnitAccessory from './outdoor-unit';
-import { DEVICE_STATUS_REFRESH_INTERVAL } from '../settings';
 import { ComfortCloudDeviceUpdatePayload, PanasonicAccessoryContext } from '../types';
 import {
   ComfortCloudAirSwingLR,
@@ -385,11 +384,10 @@ export default class IndoorUnitAccessory {
     }
 
     // Schedule continuous device updates on the first run
-    if (!this._refreshInterval && this.platform.platformConfig.refreshInterval > 0) {
+    if (!this._refreshInterval && this.platform.platformConfig.refreshInterval >= 10) {
       this._refreshInterval = setInterval(
         this.refreshDeviceStatus.bind(this),
-        this.platform.platformConfig.refreshInterval * 60 * 1000 || DEVICE_STATUS_REFRESH_INTERVAL,
-      );
+        this.platform.platformConfig.refreshInterval * 60 * 1000 || 360000);
     }
   }
 

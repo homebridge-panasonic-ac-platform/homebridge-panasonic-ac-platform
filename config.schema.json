@@ -29,7 +29,7 @@
 			"key2fa": {
 				"title": "2FA key",
 				"type": "string",
-				"description": "2FA key received from Panasonic. Example: GVZCKT2LLBLV2QBXMFAWFXKFKU5EWL2H . Note: This field is not currently required to make this plugin work, but Panasonic already requires 2FA or SMS (recommended 2FA) to log in to Comfort Cloud, so it may be required soon.",
+				"description": "2FA key received from Panasonic (32 characters). Note: This field is currently not required to make this plugin work, but Panasonic already requires 2FA (code or SMS, recommended code) to log in to Comfort Cloud, so it may be required soon.",
 				"required": false
 			},
 			"excludeDevices": {
@@ -105,23 +105,21 @@
 				],
 				"required": true
 			},
-			"maxAttempts" : {
-				"title": "Maximum number of failed login attempts",
-				"type": "integer",
-				"description": "0 - infinited. Minimum 0, Maximum 10.",
-				"required": true,
-				"default": 0,
-				"minimum": 0,
-				"maximum": 10
-			},
 			"refreshInterval" : {
-				"title": "Refresh interval (minutes)",
+				"title": "Refresh interval",
 				"type": "integer",
-				"description": "0 - disabled. Recomended min. 10 minutes. Maximum 360 minutes (6 hours). Note: More frequent refresh would result in too much daily number of requests to the Panasonic server, which could result in an account lock for 24 hours, or even a complete API lock.",
+				"description": "Note: More frequent refresh would result in too much daily number of requests to the Panasonic server, which could result in an account lock for 24 hours, or even a complete API lock.",
 				"required": true,
-				"default": 10,
-				"minimum": 0,
-				"maximum": 360
+				"default": 60,
+				"oneOf": [
+					{ "title": "Disabled", "enum": [0] },
+					{ "title": "10 minutes", "enum": [10] },
+					{ "title": "30 minutes", "enum": [30] },
+					{ "title": "1 hour", "enum": [60] },
+					{ "title": "6 hours", "enum": [360] },
+					{ "title": "12 hours", "enum": [720] },
+					{ "title": "1 day", "enum": [1440] }
+				]
 			},
 			"swingModeDirections" : {
 				"title": "Swing Mode Directions",
@@ -241,14 +239,13 @@
 			"expanded": false,
 			"items": [
 				"name",
-				"excludeDevices",
-				"debugMode",
-				"suppressOutgoingUpdates",
-				"appVersionOverride",
-				"maxAttempts",
 				"refreshInterval",
+				"excludeDevices",
 				"exposeOutdoorUnit",
-				"minHeatingTemperature"
+				"minHeatingTemperature",
+				"appVersionOverride",
+				"suppressOutgoingUpdates",
+				"debugMode"
 			]
 		}
 	]
