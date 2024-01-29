@@ -113,8 +113,8 @@
 				"default": 60,
 				"oneOf": [
 					{ "title": "Disabled", "enum": [0] },
-					{ "title": "10 min", "enum": [10] },
-					{ "title": "30 min", "enum": [30] },
+					{ "title": "10 minutes", "enum": [10] },
+					{ "title": "30 minutes", "enum": [30] },
 					{ "title": "1 hour", "enum": [60] },
 					{ "title": "6 hours", "enum": [360] },
 					{ "title": "12 hours", "enum": [720] },
