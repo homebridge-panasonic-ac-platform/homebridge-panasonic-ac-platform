@@ -239,13 +239,13 @@
 			"expanded": false,
 			"items": [
 				"name",
-				"excludeDevices",
-				"debugMode",
-				"suppressOutgoingUpdates",
-				"appVersionOverride",
 				"refreshInterval",
+				"excludeDevices",
 				"exposeOutdoorUnit",
-				"minHeatingTemperature"
+				"minHeatingTemperature",
+				"appVersionOverride",
+				"suppressOutgoingUpdates",
+				"debugMode"
 			]
 		}
 	]
