@@ -93,6 +93,6 @@ The Home app offers no extra buttons for the Quiet and Powerful Modes. All setti
 - Panasonic has not provided an official API to support external plugins, so this method may stop working at any time.
 - Alternatives: 
     - Local access, but this requires reworking of the equipment, which will lose the warranty, so rather not recommended.
-    - Control by IR (imitates an IR remote control), E.G. through the Aqata Hub M2 or M3 gate, but it only allows you to send commands (not possible to read the state).
+    - Control by IR (imitates an IR remote control), E.G. through the Aqara Hub M2 or M3, but it only allows you to send commands (not possible to read the state).
 - Despite the efforts made, the operation of the plugin is without any guarantees and at your own risk.
 
