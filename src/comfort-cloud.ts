@@ -163,7 +163,10 @@ export default class ComfortCloudApi {
         return response.data.parameters;
       })
       .catch((error: AxiosError) => {
-        this.log.debug(`Comfort Cloud - getDeviceStatus() for GUID '${deviceGuid}': Error`);
+        this.log.error(`Comfort Cloud - getDeviceStatus() for GUID '${deviceGuid}': Error`);
+        this.log.error('Try restarting the AC (turn it off from the power completely'
+                       +' and turn it on again) and Internet router and Homebridge.');
+        this.log.error('Turn on debug for more info.');
         this.handleNetworkRequestError(error);
         return Promise.reject(`Comfort Cloud - getDeviceStatus() for GUID '${deviceGuid}': Error`);
       });
@@ -211,7 +214,10 @@ export default class ComfortCloudApi {
         this.log.debug(response.data);
       })
       .catch((error: AxiosError) => {
-        this.log.debug('Comfort Cloud - setDeviceStatus(): Error');
+        this.log.error('Comfort Cloud - setDeviceStatus(): Error');
+        this.log.error('Try restarting the AC (turn it off from the power completely'
+                       +' and turn it on again) and Internet router and Homebridge.');
+        this.log.error('Turn on debug for more info.');
         this.handleNetworkRequestError(error);
         return Promise.reject('Comfort Cloud - setDeviceStatus(): Error');
       });

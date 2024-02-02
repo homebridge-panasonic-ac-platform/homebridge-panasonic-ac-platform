@@ -89,10 +89,13 @@ The Home app offers no extra buttons for the Quiet and Powerful Modes. All setti
 - All product and company names are trademarks™ or registered® trademarks of their respective holders. Use of them does not imply any affiliation with or endorsement by them.
 - This is not the official Panasonic plugin.
 - The plugin uses the official Panasonic API used to support official applications for iOS and Android.
-- Homebridge connect via Internet with Comfort Cloud (Panasonic platform), this solution does not work locally.
 - Panasonic has not provided an official API to support external plugins, so this method may stop working at any time.
+- Homebridge connect via Internet with Comfort Cloud (Panasonic platform), this solution does not work locally.
 - Alternatives: 
     - Local access, but this requires reworking of the equipment, which will lose the warranty, so rather not recommended.
-    - Control by IR (imitates an IR remote control), E.G. through the Aqara Hub M2 or M3, but it only allows you to send commands (not possible to read the state).
+    - Control by IR (imitates an IR remote control), but it only allows you to send commands (not possible to read the state). Examples:
+        - Aqara Hub M2 or M3. This Hub will directly exposes IR to Homekit. You need to create scene in Aqara app for every IR command, for IR commands scenes are the only way to sync to HomeKit.
+        - Broadlink RM4 Mini or Pro. They work as WiFi devices. You need to install Homebridge plugin ([homebridge-broadlink-rm](https://github.com/kiwi-cam/homebridge-broadlink-rm)) to work with this. For every command there will be separate accessory in HomeKit.
+        - Any Zigbee IR blaster. You can easily add Zigbee support to Homebridge. Just connect the Conbee stick, enable the support in hb-config (Extra packages / deCONZ), install the appropriate plugin (E.G.: [homebridge-deconz](https://github.com/ebaauw/homebridge-deconz)) and add the selected IR blaster.
 - Despite the efforts made, the operation of the plugin is without any guarantees and at your own risk.
 
