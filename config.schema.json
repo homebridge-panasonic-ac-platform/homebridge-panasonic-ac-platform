@@ -180,14 +180,13 @@
 			},
 			"logsLevel" : {
 				"title": "Logs Level",
-				"description": "Logs level. Note: To see debug messages in logs it is also required to enable Debug in Homebridge Settings.",
+				"description": "Logs level.",
 				"type": "integer",
 				"default": "1",
 				"oneOf": [
 					{ "title": "Disabled", "enum": [0] },
-					{ "title": "Info - basic", "enum": [1] },
-					{ "title": "Info - more", "enum": [2] },
-					{ "title": "All (including debug)", "enum": [3] }
+					{ "title": "Info", "enum": [1] },
+					{ "title": "All (including debug)", "enum": [2] }
 				],
 				"required": true
 			}
