@@ -401,6 +401,8 @@ export default class IndoorUnitAccessory {
     const parameters: ComfortCloudDeviceUpdatePayload = {
       operate: value === this.platform.Characteristic.Active.ACTIVE ? 1 : 0,
     };
+    this.platform.log.info(
+      `${this.accessory.displayName}: ${value === this.platform.Characteristic.Active.ACTIVE ? 'set On' : 'set Off'}`);
 
     // Swing Mode
     if (this.platform.platformConfig.startSwing === 'on') {
