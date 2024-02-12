@@ -6,7 +6,7 @@ import { Logger } from 'homebridge';
 export default class PanasonicPlatformLogger {
   constructor(
     private readonly logger: Logger,
-    private readonly logsLevel: int,
+    private readonly logsLevel: integer,
   ) {}
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
