@@ -57,7 +57,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
     this.platformConfig = config as PanasonicPlatformConfig;
 
     // Initialise logging utility
-    this.log = new PanasonicPlatformLogger(homebridgeLogger, this.platformConfig.debugMode);
+    this.log = new PanasonicPlatformLogger(homebridgeLogger, this.platformConfig.logsLevel);
 
     // Create Comfort Cloud communication module
     this.comfortCloud = new ComfortCloudApi(
