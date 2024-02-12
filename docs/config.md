@@ -82,7 +82,7 @@ If `true`, changes in the Home app will not be sent to Comfort Cloud. Useful for
 The plugin will automatically use the last known working value when this setting is empty or undefined (default). This setting allows you to override the default value if needed. It should reflect the latest version on the App Store, although older clients might remain supported for some time.
 
 * `logsLevel` (integer):
-Logs level. From 0 - disabled, to 3 - all logs.
+Logs level. From 0 - disabled, to 2 - all logs.
 
 ## Oscillate Switch
 
