@@ -161,12 +161,6 @@
 				],
 				"required": true
 			},
-			"debugMode": {
-				"title": "Debug Mode",
-				"description": "Enable to see debug messages in logs. For the function to work, it is also required to enable Debug in Homebridge Settings.",
-				"type": "boolean",
-				"default": false
-			},
 			"suppressOutgoingUpdates": {
 				"title": "Suppress outgoing device updates",
 				"description": "When enabled, changes in the Home app will not be sent to Comfort Cloud. Useful for testing your installation without constantly switching the state of your AC to minimise wear and tear.",
@@ -183,6 +177,18 @@
 				"description": "The default heating temperature range is 16-30°C. Some Panasonic ACs have an additional heating mode for the range of 8-15°C. If you own such a model, you can use this setting to adjust the minimum value. Leave it empty or undefined to use the default value.",
 				"type": "integer",
 				"placeholder": "16"
+			},
+			"logsLevel" : {
+				"title": "Logs Level",
+				"description": "Logs level. Note: to see debug messages in logs it is also required to enable Debug in Homebridge Settings.",
+				"type": "integer",
+				"default": "1",
+				"oneOf": [
+					{ "title": "Disabled", "enum": [0] },
+					{ "title": "Info", "enum": [1] },
+					{ "title": "All (including debug)", "enum": [2] }
+				],
+				"required": true
 			}
 		}
 	},
@@ -245,7 +251,7 @@
 				"minHeatingTemperature",
 				"appVersionOverride",
 				"suppressOutgoingUpdates",
-				"debugMode"
+				"logsLevel"
 			]
 		}
 	]

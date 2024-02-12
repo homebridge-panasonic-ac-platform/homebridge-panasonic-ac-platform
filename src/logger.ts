@@ -6,12 +6,12 @@ import { Logger } from 'homebridge';
 export default class PanasonicPlatformLogger {
   constructor(
     private readonly logger: Logger,
-    private readonly debugMode: boolean,
+    private readonly logsLevel: number,
   ) {}
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   debug(...messages: any[]) {
-    if (this.debugMode) {
+    if (this.logsLevel === 2) {
       for (let i = 0; i < messages.length; i++) {
         this.logger.debug(messages[i]);
       }
@@ -20,8 +20,10 @@ export default class PanasonicPlatformLogger {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   info(...messages: any[]) {
-    for (let i = 0; i < messages.length; i++) {
-      this.logger.info(messages[i]);
+    if (this.logsLevel >= 1) {
+      for (let i = 0; i < messages.length; i++) {
+        this.logger.info(messages[i]);
+      }
     }
   }
 
