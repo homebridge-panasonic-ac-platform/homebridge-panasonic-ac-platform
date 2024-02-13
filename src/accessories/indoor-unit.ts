@@ -285,27 +285,35 @@ export default class IndoorUnitAccessory {
 
       if (deviceStatus.ecoMode === ComfortCloudEcoMode.Quiet) {
         sliderValue = 1;
+        logOutput += `Speed 1 (Quiet Mode), `;
       } else if (deviceStatus.ecoMode === ComfortCloudEcoMode.Powerful) {
         sliderValue = 7;
+        logOutput += `Speed 7 (Powerful Mode), `;
       } else if (deviceStatus.ecoMode === ComfortCloudEcoMode.AutoOrManual) {
         switch (deviceStatus.fanSpeed) {
           case ComfortCloudFanSpeed.One:
             sliderValue = 2;
+            logOutput += `Speed 2, `;
             break;
           case ComfortCloudFanSpeed.Two:
             sliderValue = 3;
+            logOutput += `Speed 3, `;
             break;
           case ComfortCloudFanSpeed.Three:
             sliderValue = 4;
+            logOutput += `Speed 4, `;
             break;
           case ComfortCloudFanSpeed.Four:
             sliderValue = 5;
+            logOutput += `Speed 5, `;
             break;
           case ComfortCloudFanSpeed.Five:
             sliderValue = 6;
+            logOutput += `Speed 6, `;
             break;
           case ComfortCloudFanSpeed.Auto:
             sliderValue = 8;
+            logOutput += `Speed Auto, `;
             break;
         }
       }
@@ -317,25 +325,31 @@ export default class IndoorUnitAccessory {
         if (deviceStatus.nanoe === 2) {
           this.service.getCharacteristic(this.platform.Characteristic.SwingMode)
             .updateValue(this.platform.Characteristic.SwingMode.SWING_ENABLED);
+          logOutput += `Nanoe On`;
         } else {
           this.service.getCharacteristic(this.platform.Characteristic.SwingMode)
             .updateValue(this.platform.Characteristic.SwingMode.SWING_DISABLED);
+          logOutput += `Nanoe Off`;
         }
       } else if (this.platform.platformConfig.oscilateSwitch === 'ecoNavi') {
         if (deviceStatus.ecoNavi === 2 || deviceStatus.ecoFunctionData === 2) {
           this.service.getCharacteristic(this.platform.Characteristic.SwingMode)
             .updateValue(this.platform.Characteristic.SwingMode.SWING_ENABLED);
+          logOutput += `Eco Navi On`;
         } else {
           this.service.getCharacteristic(this.platform.Characteristic.SwingMode)
             .updateValue(this.platform.Characteristic.SwingMode.SWING_DISABLED);
+          logOutput += `Eco Navi Off`;
         }
       } else if (this.platform.platformConfig.oscilateSwitch === 'insideCleaning') {
         if (deviceStatus.insideCleaning === 2) {
           this.service.getCharacteristic(this.platform.Characteristic.SwingMode)
             .updateValue(this.platform.Characteristic.SwingMode.SWING_ENABLED);
+          logOutput += `Inside Cleaning On`;
         } else {
           this.service.getCharacteristic(this.platform.Characteristic.SwingMode)
             .updateValue(this.platform.Characteristic.SwingMode.SWING_DISABLED);
+          logOutput += `Inside Cleaning Off`;
         }
       } else if ((deviceStatus.fanAutoMode === ComfortCloudFanAutoMode.AirSwingAuto
         && this.platform.platformConfig.swingModeDirections
@@ -346,9 +360,11 @@ export default class IndoorUnitAccessory {
           && this.platform.platformConfig.swingModeDirections === SwingModeDirection.UpDownOnly)) {
         this.service.getCharacteristic(this.platform.Characteristic.SwingMode)
           .updateValue(this.platform.Characteristic.SwingMode.SWING_ENABLED);
+        logOutput += `Swing Mode On`;
       } else {
         this.service.getCharacteristic(this.platform.Characteristic.SwingMode)
           .updateValue(this.platform.Characteristic.SwingMode.SWING_DISABLED);
+        logOutput += `Swing Mode Off`;
       }
 
       // Cooling Threshold Temperature (optional)
