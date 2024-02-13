@@ -134,7 +134,9 @@ export default class IndoorUnitAccessory {
           ? this.platform.Characteristic.Active.ACTIVE
           : this.platform.Characteristic.Active.INACTIVE;
         this.service.updateCharacteristic(this.platform.Characteristic.Active, active);
-        this.platform.log.info(`${this.accessory.displayName}: ${(active === 1) ? 'On' : 'Off'}`);
+        if (this.platform.platformConfig.logsLevel >= 1) {
+          this.platform.log.info(`${this.accessory.displayName}: ${(active === 1) ? 'On' : 'Off'}`);
+        }
       }
 
       // Current Temperature
@@ -146,13 +148,17 @@ export default class IndoorUnitAccessory {
       if (deviceStatus.insideTemperature < 126) {
         this.service.updateCharacteristic(
           this.platform.Characteristic.CurrentTemperature, deviceStatus.insideTemperature);
-        this.platform.log.info(`${this.accessory.displayName}: indoor temperature ${deviceStatus.insideTemperature}`);
+        if (this.platform.platformConfig.logsLevel >= 1) {
+          this.platform.log.info(`${this.accessory.displayName}: indoor temperature ${deviceStatus.insideTemperature}`);
+        }
       } else {
         this.platform.log.debug('Indoor temperature: is not available');
         if (deviceStatus.outTemperature < 126) {
           this.service.updateCharacteristic(
             this.platform.Characteristic.CurrentTemperature, deviceStatus.outTemperature);
-          this.platform.log.info(`${this.accessory.displayName} indoor temperature (from outdoor) ${deviceStatus.outTemperature}`);
+          if (this.platform.platformConfig.logsLevel >= 1) {
+            this.platform.log.info(`${this.accessory.displayName} indoor temperature (from outdoor) ${deviceStatus.outTemperature}`);
+          }
         } else {
           this.platform.log.debug(
             'Indoor and Outdoor temperature are not available - setting default temperature');
@@ -171,7 +177,9 @@ export default class IndoorUnitAccessory {
         } else {
           // Update the value of the connected outdoor unit
           this.connectedOutdoorUnit.setOutdoorTemperature(deviceStatus.outTemperature);
-          this.platform.log.info(`${this.accessory.displayName} outdoor temperature ${deviceStatus.outTemperature}`);
+          if (this.platform.platformConfig.logsLevel >= 1) {
+            this.platform.log.info(`${this.accessory.displayName} outdoor temperature ${deviceStatus.outTemperature}`);
+          }
         }
       }
 
@@ -401,8 +409,10 @@ export default class IndoorUnitAccessory {
     const parameters: ComfortCloudDeviceUpdatePayload = {
       operate: value === this.platform.Characteristic.Active.ACTIVE ? 1 : 0,
     };
-    this.platform.log.info(
-      `${this.accessory.displayName}: ${value === this.platform.Characteristic.Active.ACTIVE ? 'set On' : 'set Off'}`);
+    if (this.platform.platformConfig.logsLevel >= 1) {
+      this.platform.log.info(
+        `${this.accessory.displayName}: ${value === this.platform.Characteristic.Active.ACTIVE ? 'set On' : 'set Off'}`);
+    }
 
     // Swing Mode
     if (this.platform.platformConfig.startSwing === 'on') {
