@@ -122,6 +122,7 @@ export default class IndoorUnitAccessory {
    * Retrieves the device status from Comfort Cloud and updates its characteristics.
    */
   async refreshDeviceStatus() {
+    let logOutput = '';
     this.platform.log.debug(`${this.accessory.displayName}: refresh status`);
 
     try {
@@ -134,9 +135,7 @@ export default class IndoorUnitAccessory {
           ? this.platform.Characteristic.Active.ACTIVE
           : this.platform.Characteristic.Active.INACTIVE;
         this.service.updateCharacteristic(this.platform.Characteristic.Active, active);
-        if (this.platform.platformConfig.logsLevel >= 1) {
-          this.platform.log.info(`${this.accessory.displayName}: ${(active === 1) ? 'On' : 'Off'}`);
-        }
+        logOutput += `${(active === 1) ? 'On, ' : 'Off, '}`;
       }
 
       // Current Temperature
@@ -148,17 +147,13 @@ export default class IndoorUnitAccessory {
       if (deviceStatus.insideTemperature < 126) {
         this.service.updateCharacteristic(
           this.platform.Characteristic.CurrentTemperature, deviceStatus.insideTemperature);
-        if (this.platform.platformConfig.logsLevel >= 1) {
-          this.platform.log.info(`${this.accessory.displayName}: indoor temperature ${deviceStatus.insideTemperature}`);
-        }
+        logOutput += `Indoor Temp. ${deviceStatus.insideTemperature}, `;
       } else {
         this.platform.log.debug('Indoor temperature: is not available');
         if (deviceStatus.outTemperature < 126) {
           this.service.updateCharacteristic(
             this.platform.Characteristic.CurrentTemperature, deviceStatus.outTemperature);
-          if (this.platform.platformConfig.logsLevel >= 1) {
-            this.platform.log.info(`${this.accessory.displayName} indoor temperature (from outdoor) ${deviceStatus.outTemperature}`);
-          }
+          logOutput += `Indoor Temp. (from Outdoor) ${deviceStatus.outTemperature}, `;
         } else {
           this.platform.log.debug(
             'Indoor and Outdoor temperature are not available - setting default temperature');
@@ -177,9 +172,7 @@ export default class IndoorUnitAccessory {
         } else {
           // Update the value of the connected outdoor unit
           this.connectedOutdoorUnit.setOutdoorTemperature(deviceStatus.outTemperature);
-          if (this.platform.platformConfig.logsLevel >= 1) {
-            this.platform.log.info(`${this.accessory.displayName} outdoor temperature ${deviceStatus.outTemperature}`);
-          }
+          logOutput += `Outdoor Temp. ${deviceStatus.outTemperature}, `;
         }
       }
 
@@ -364,6 +357,11 @@ export default class IndoorUnitAccessory {
         .updateValue(setTemperature);
       this.service.getCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature)
         .updateValue(setTemperature);
+
+      // log
+      if (this.platform.platformConfig.logsLevel >= 1) {
+        this.platform.log.info(`${this.accessory.displayName}: ${logOutput}`);
+      }
     } catch (error) {
       this.platform.log.error('An error occurred while refreshing the device status. '
         + 'Turn on debug mode for more information.');
