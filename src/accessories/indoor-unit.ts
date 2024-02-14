@@ -184,6 +184,7 @@ export default class IndoorUnitAccessory {
       switch (deviceStatus.operationMode) {
         // Auto
         case 0:
+          logOutput += 'Mode Auto, ';
           // Set target state and current state (based on current temperature)
           this.service.updateCharacteristic(
             this.platform.Characteristic.TargetHeaterCoolerState,
@@ -204,6 +205,7 @@ export default class IndoorUnitAccessory {
 
         // Heat
         case 3:
+          logOutput += 'Mode Heat, ';
           this.service.updateCharacteristic(
             this.platform.Characteristic.TargetHeaterCoolerState,
             this.platform.Characteristic.TargetHeaterCoolerState.HEAT,
@@ -220,6 +222,7 @@ export default class IndoorUnitAccessory {
 
         // Cool
         case 2:
+          logOutput += 'Mode Cool, ';
           this.service.updateCharacteristic(
             this.platform.Characteristic.TargetHeaterCoolerState,
             this.platform.Characteristic.TargetHeaterCoolerState.COOL,
@@ -236,6 +239,7 @@ export default class IndoorUnitAccessory {
 
         // Dry (Dehumidifier)
         case 1:
+          logOutput += 'Mode Dry, ';
           // TODO - improvement: Can we reflect this better/properly in Homebridge?
           // Could add a https://developers.homebridge.io/#/service/HumidifierDehumidifier service
           // to the accessory, but need to check what this implies for the UI.
@@ -250,6 +254,7 @@ export default class IndoorUnitAccessory {
 
         // Fan
         case 4:
+          logOutput += 'Mode Fan, ';
           // TODO - improvement: Same as above, related to:
           // https://developers.homebridge.io/#/service/Fan
           this.service.getCharacteristic(this.platform.Characteristic.CurrentHeaterCoolerState)
@@ -288,28 +293,28 @@ export default class IndoorUnitAccessory {
         logOutput += 'Speed 1 (Quiet Mode), ';
       } else if (deviceStatus.ecoMode === ComfortCloudEcoMode.Powerful) {
         sliderValue = 7;
-        logOutput += 'Speed 7 (Powerful Mode), ';
+        logOutput += 'Speed 5 (Powerful Mode), ';
       } else if (deviceStatus.ecoMode === ComfortCloudEcoMode.AutoOrManual) {
         switch (deviceStatus.fanSpeed) {
           case ComfortCloudFanSpeed.One:
             sliderValue = 2;
-            logOutput += 'Speed 2, ';
+            logOutput += 'Speed 1, ';
             break;
           case ComfortCloudFanSpeed.Two:
             sliderValue = 3;
-            logOutput += 'Speed 3, ';
+            logOutput += 'Speed 2, ';
             break;
           case ComfortCloudFanSpeed.Three:
             sliderValue = 4;
-            logOutput += 'Speed 4, ';
+            logOutput += 'Speed 3, ';
             break;
           case ComfortCloudFanSpeed.Four:
             sliderValue = 5;
-            logOutput += 'Speed 5, ';
+            logOutput += 'Speed 4, ';
             break;
           case ComfortCloudFanSpeed.Five:
             sliderValue = 6;
-            logOutput += 'Speed 6, ';
+            logOutput += 'Speed 5, ';
             break;
           case ComfortCloudFanSpeed.Auto:
             sliderValue = 8;
