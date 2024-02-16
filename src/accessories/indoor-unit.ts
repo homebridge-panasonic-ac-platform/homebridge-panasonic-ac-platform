@@ -122,6 +122,7 @@ export default class IndoorUnitAccessory {
    * Retrieves the device status from Comfort Cloud and updates its characteristics.
    */
   async refreshDeviceStatus() {
+    let logOutput = '';
     this.platform.log.debug(`${this.accessory.displayName}: refresh status`);
 
     try {
@@ -134,7 +135,7 @@ export default class IndoorUnitAccessory {
           ? this.platform.Characteristic.Active.ACTIVE
           : this.platform.Characteristic.Active.INACTIVE;
         this.service.updateCharacteristic(this.platform.Characteristic.Active, active);
-        this.platform.log.info(`${this.accessory.displayName}: ${(active === 1) ? 'On' : 'Off'}`);
+        logOutput += `${(active === 1) ? 'On, ' : 'Off, '}`;
       }
 
       // Current Temperature
@@ -146,13 +147,13 @@ export default class IndoorUnitAccessory {
       if (deviceStatus.insideTemperature < 126) {
         this.service.updateCharacteristic(
           this.platform.Characteristic.CurrentTemperature, deviceStatus.insideTemperature);
-        this.platform.log.info(`${this.accessory.displayName}: indoor temperature ${deviceStatus.insideTemperature}`);
+        logOutput += `Indoor Temp. ${deviceStatus.insideTemperature}, `;
       } else {
         this.platform.log.debug('Indoor temperature: is not available');
         if (deviceStatus.outTemperature < 126) {
           this.service.updateCharacteristic(
             this.platform.Characteristic.CurrentTemperature, deviceStatus.outTemperature);
-          this.platform.log.info(`${this.accessory.displayName} indoor temperature (from outdoor) ${deviceStatus.outTemperature}`);
+          logOutput += `Indoor Temp. (from Outdoor) ${deviceStatus.outTemperature}, `;
         } else {
           this.platform.log.debug(
             'Indoor and Outdoor temperature are not available - setting default temperature');
@@ -171,7 +172,7 @@ export default class IndoorUnitAccessory {
         } else {
           // Update the value of the connected outdoor unit
           this.connectedOutdoorUnit.setOutdoorTemperature(deviceStatus.outTemperature);
-          this.platform.log.info(`${this.accessory.displayName} outdoor temperature ${deviceStatus.outTemperature}`);
+          logOutput += `Outdoor Temp. ${deviceStatus.outTemperature}, `;
         }
       }
 
@@ -183,6 +184,7 @@ export default class IndoorUnitAccessory {
       switch (deviceStatus.operationMode) {
         // Auto
         case 0:
+          logOutput += 'Mode Auto, ';
           // Set target state and current state (based on current temperature)
           this.service.updateCharacteristic(
             this.platform.Characteristic.TargetHeaterCoolerState,
@@ -203,6 +205,7 @@ export default class IndoorUnitAccessory {
 
         // Heat
         case 3:
+          logOutput += 'Mode Heat, ';
           this.service.updateCharacteristic(
             this.platform.Characteristic.TargetHeaterCoolerState,
             this.platform.Characteristic.TargetHeaterCoolerState.HEAT,
@@ -219,6 +222,7 @@ export default class IndoorUnitAccessory {
 
         // Cool
         case 2:
+          logOutput += 'Mode Cool, ';
           this.service.updateCharacteristic(
             this.platform.Characteristic.TargetHeaterCoolerState,
             this.platform.Characteristic.TargetHeaterCoolerState.COOL,
@@ -235,6 +239,7 @@ export default class IndoorUnitAccessory {
 
         // Dry (Dehumidifier)
         case 1:
+          logOutput += 'Mode Dry, ';
           // TODO - improvement: Can we reflect this better/properly in Homebridge?
           // Could add a https://developers.homebridge.io/#/service/HumidifierDehumidifier service
           // to the accessory, but need to check what this implies for the UI.
@@ -249,6 +254,7 @@ export default class IndoorUnitAccessory {
 
         // Fan
         case 4:
+          logOutput += 'Mode Fan, ';
           // TODO - improvement: Same as above, related to:
           // https://developers.homebridge.io/#/service/Fan
           this.service.getCharacteristic(this.platform.Characteristic.CurrentHeaterCoolerState)
@@ -284,27 +290,35 @@ export default class IndoorUnitAccessory {
 
       if (deviceStatus.ecoMode === ComfortCloudEcoMode.Quiet) {
         sliderValue = 1;
+        logOutput += 'Speed 1 (Quiet Mode), ';
       } else if (deviceStatus.ecoMode === ComfortCloudEcoMode.Powerful) {
         sliderValue = 7;
+        logOutput += 'Speed 5 (Powerful Mode), ';
       } else if (deviceStatus.ecoMode === ComfortCloudEcoMode.AutoOrManual) {
         switch (deviceStatus.fanSpeed) {
           case ComfortCloudFanSpeed.One:
             sliderValue = 2;
+            logOutput += 'Speed 1, ';
             break;
           case ComfortCloudFanSpeed.Two:
             sliderValue = 3;
+            logOutput += 'Speed 2, ';
             break;
           case ComfortCloudFanSpeed.Three:
             sliderValue = 4;
+            logOutput += 'Speed 3, ';
             break;
           case ComfortCloudFanSpeed.Four:
             sliderValue = 5;
+            logOutput += 'Speed 4, ';
             break;
           case ComfortCloudFanSpeed.Five:
             sliderValue = 6;
+            logOutput += 'Speed 5, ';
             break;
           case ComfortCloudFanSpeed.Auto:
             sliderValue = 8;
+            logOutput += 'Speed Auto, ';
             break;
         }
       }
@@ -316,25 +330,31 @@ export default class IndoorUnitAccessory {
         if (deviceStatus.nanoe === 2) {
           this.service.getCharacteristic(this.platform.Characteristic.SwingMode)
             .updateValue(this.platform.Characteristic.SwingMode.SWING_ENABLED);
+          logOutput += 'Nanoe On';
         } else {
           this.service.getCharacteristic(this.platform.Characteristic.SwingMode)
             .updateValue(this.platform.Characteristic.SwingMode.SWING_DISABLED);
+          logOutput += 'Nanoe Off';
         }
       } else if (this.platform.platformConfig.oscilateSwitch === 'ecoNavi') {
         if (deviceStatus.ecoNavi === 2 || deviceStatus.ecoFunctionData === 2) {
           this.service.getCharacteristic(this.platform.Characteristic.SwingMode)
             .updateValue(this.platform.Characteristic.SwingMode.SWING_ENABLED);
+          logOutput += 'Eco Navi On';
         } else {
           this.service.getCharacteristic(this.platform.Characteristic.SwingMode)
             .updateValue(this.platform.Characteristic.SwingMode.SWING_DISABLED);
+          logOutput += 'Eco Navi Off';
         }
       } else if (this.platform.platformConfig.oscilateSwitch === 'insideCleaning') {
         if (deviceStatus.insideCleaning === 2) {
           this.service.getCharacteristic(this.platform.Characteristic.SwingMode)
             .updateValue(this.platform.Characteristic.SwingMode.SWING_ENABLED);
+          logOutput += 'Inside Cleaning On';
         } else {
           this.service.getCharacteristic(this.platform.Characteristic.SwingMode)
             .updateValue(this.platform.Characteristic.SwingMode.SWING_DISABLED);
+          logOutput += 'Inside Cleaning Off';
         }
       } else if ((deviceStatus.fanAutoMode === ComfortCloudFanAutoMode.AirSwingAuto
         && this.platform.platformConfig.swingModeDirections
@@ -345,9 +365,11 @@ export default class IndoorUnitAccessory {
           && this.platform.platformConfig.swingModeDirections === SwingModeDirection.UpDownOnly)) {
         this.service.getCharacteristic(this.platform.Characteristic.SwingMode)
           .updateValue(this.platform.Characteristic.SwingMode.SWING_ENABLED);
+        logOutput += 'Swing Mode On';
       } else {
         this.service.getCharacteristic(this.platform.Characteristic.SwingMode)
           .updateValue(this.platform.Characteristic.SwingMode.SWING_DISABLED);
+        logOutput += 'Swing Mode Off';
       }
 
       // Cooling Threshold Temperature (optional)
@@ -356,6 +378,11 @@ export default class IndoorUnitAccessory {
         .updateValue(setTemperature);
       this.service.getCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature)
         .updateValue(setTemperature);
+
+      // log
+      if (this.platform.platformConfig.logsLevel >= 1) {
+        this.platform.log.info(`${this.accessory.displayName}: ${logOutput}.`);
+      }
     } catch (error) {
       this.platform.log.error('An error occurred while refreshing the device status. '
         + 'Turn on debug mode for more information.');
@@ -401,8 +428,13 @@ export default class IndoorUnitAccessory {
     const parameters: ComfortCloudDeviceUpdatePayload = {
       operate: value === this.platform.Characteristic.Active.ACTIVE ? 1 : 0,
     };
-    this.platform.log.info(
-      `${this.accessory.displayName}: ${value === this.platform.Characteristic.Active.ACTIVE ? 'set On' : 'set Off'}`);
+    if (this.platform.platformConfig.logsLevel >= 1) {
+      this.platform.log.info(
+        `${this.accessory.displayName}: ${value === this.platform.Characteristic.Active.ACTIVE ? 'set On' : 'set Off'}`);
+    } else {
+      this.platform.log.debug(
+        `${this.accessory.displayName}: ${value === this.platform.Characteristic.Active.ACTIVE ? 'set On' : 'set Off'}`);
+    }
 
     // Swing Mode
     if (this.platform.platformConfig.startSwing === 'on') {

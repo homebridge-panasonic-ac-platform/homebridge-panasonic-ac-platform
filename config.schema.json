@@ -184,8 +184,8 @@
 				"type": "integer",
 				"default": "1",
 				"oneOf": [
-					{ "title": "Disabled", "enum": [0] },
-					{ "title": "Info", "enum": [1] },
+					{ "title": "Only errors and important info", "enum": [0] },
+					{ "title": "Standard", "enum": [1] },
 					{ "title": "All (including debug)", "enum": [2] }
 				],
 				"required": true

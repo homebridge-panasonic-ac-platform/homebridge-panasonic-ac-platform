@@ -20,10 +20,8 @@ export default class PanasonicPlatformLogger {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   info(...messages: any[]) {
-    if (this.logsLevel >= 1) {
-      for (let i = 0; i < messages.length; i++) {
-        this.logger.info(messages[i]);
-      }
+    for (let i = 0; i < messages.length; i++) {
+      this.logger.info(messages[i]);
     }
   }
 
