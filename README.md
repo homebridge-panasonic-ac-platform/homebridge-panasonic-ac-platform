@@ -73,7 +73,7 @@ The Home app offers no extra buttons for the Quiet and Powerful Modes. All setti
 
 - If the plugin does not work correctly:
    - Log in to the Panasonic Comfort Cloud application and make sure that you accept all terms, conditions, etc. and you can successfully log in and control each device via app.
-   - Disconnect the AC from the power and turn it on again (or restart WiFi in AC), restart routers, restart Homebridge. 
+   - Disconnect each Comfort Cloud device (like AC) from the power and turn it on again (or restart WiFi in them), restart routers, restart Homebridge. 
    - Set Logs Level to all (in plugin config) and enable debug mode (in Homebridge settings) and restart Homebridge / child bridge. This will include more detailed information in the log.
 - It's recommended you run this plugin as a [child bridge](https://github.com/homebridge/homebridge/wiki/Child-Bridges).
 
