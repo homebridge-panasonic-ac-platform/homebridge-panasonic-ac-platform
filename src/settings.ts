@@ -5,7 +5,7 @@ export const PLUGIN_NAME = 'homebridge-panasonic-ac-platform';
 export const PLATFORM_NAME = 'Panasonic AC Platform';
 
 export const COMFORT_CLOUD_USER_AGENT = 'G-RAC';
-export const APP_VERSION = '1.20.0';
+export const APP_VERSION = '1.20.1';
 
 // Used to renew the token periodically. Only a safety measure, since we are handling
 // network errors dynamically and re-issuing a login upon a 401 Unauthorized error.
