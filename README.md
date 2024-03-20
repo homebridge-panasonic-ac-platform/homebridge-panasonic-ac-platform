@@ -72,7 +72,7 @@ The Home app offers no extra buttons for the Quiet and Powerful Modes. All setti
 ## Troubleshooting
 
 - If the plugin does not work correctly:
-   - Make sure that you can successfully log in and control each device via Panasonic Comfort Cloud application
+   - Make sure that you can successfully log in and control each device via Panasonic Comfort Cloud application.
    - Make  sure that you accept all terms, conditions, etc in Panasonic Comfort Cloud app.
    - Make sure you have newest plugin version.
    - Make sure that field Comfort Cloud app version (in plugin settings) is empty or have newest Comfort Cloud app version (same as in Apple App Store).
@@ -87,6 +87,7 @@ The Home app offers no extra buttons for the Quiet and Powerful Modes. All setti
 - See more: [contributing-collaborators.md](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/blob/master/docs/contributing-collaborators.md). 
 
 ## Acknowledgements
+- Thanks to [embee8](https://github.com/embee8) for creating this plugin.
 - Thanks to [codyc1515](https://github.com/codyc1515) for creating and maintaining [homebridge-panasonic-air-conditioner](https://github.com/codyc1515/homebridge-panasonic-air-conditioner), which served as motivation for this platform plugin and proved particularly helpful in determining API request/response payloads.
 - Thanks to the team behind Homebridge. Your efforts do not go unnoticed.
 
