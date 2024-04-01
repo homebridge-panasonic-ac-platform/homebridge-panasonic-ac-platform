@@ -512,8 +512,16 @@ export default class IndoorUnitAccessory {
     };
     switch (value) {
       case this.platform.Characteristic.TargetHeaterCoolerState.AUTO:
-        parameters.operationMode = 0;
-        this.platform.log.debug(`${this.accessory.displayName}: Mode Auto`);
+        if (this.platform.platformConfig.autoMode === 'fan') {
+          parameters.operationMode = 4;
+          this.platform.log.debug(`${this.accessory.displayName}: Fan Mode`);
+        } else if (this.platform.platformConfig.autoMode === 'dry') {
+          parameters.operationMode = 1;
+          this.platform.log.debug(`${this.accessory.displayName}: Dry mode`);
+        } else {
+          parameters.operationMode = 0;
+          this.platform.log.debug(`${this.accessory.displayName}: Auto mode`);
+        }
         break;
 
       case this.platform.Characteristic.TargetHeaterCoolerState.COOL:
