@@ -196,9 +196,9 @@
 				"type": "string",
 				"default": "auto",
 				"oneOf": [
-					{ "title": "Only errors and important info", "enum": ["auto"] },
-					{ "title": "Standard", "enum": ["fan"] },
-					{ "title": "All (including debug)", "enum": ["dry"] }
+					{ "title": "Auto mode", "enum": ["auto"] },
+					{ "title": "Fan mode", "enum": ["fan"] },
+					{ "title": "Dry mode", "enum": ["dry"] }
 				],
 				"required": true
 			}
