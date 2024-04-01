@@ -238,7 +238,7 @@
 			"title": "More control: Fan, Dry, Swing, Nanoe, Eco Navi, Inside Cleaning",
 			"expandable": true,
 			"expanded": false,
-			"description": "HomeKit has only one 'Oscillate' switch, but most Panasonic ACs have more options: Nanoe, Eco Navi, Inside Cleaning and Swing mode have two swing directions.",
+			"description": "HomeKit has only 3 modes: Auto, Cool, Heat but Panasonic additionally has Fan and Dry. HomeKit has only one 'Oscillate' switch, but most Panasonic ACs have more options: Nanoe, Eco Navi, Inside Cleaning and Swing mode have two swing directions.",
 			"items": [
 				"autoMode",
 				"oscilateSwitch",
