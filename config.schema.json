@@ -189,6 +189,18 @@
 					{ "title": "All (including debug)", "enum": [2] }
 				],
 				"required": true
+			},
+			"autoMode" : {
+				"title": "Auto Mode",
+				"description": "Choose what mode to be turned on after selecting the Auto mode in HomeKit: Fan mode, Dry mode or Auto mode (by default).",
+				"type": "string",
+				"default": "auto",
+				"oneOf": [
+					{ "title": "Only errors and important info", "enum": ["auto"] },
+					{ "title": "Standard", "enum": ["fan"] },
+					{ "title": "All (including debug)", "enum": ["dry"] }
+				],
+				"required": true
 			}
 		}
 	},
@@ -228,6 +240,7 @@
 			"expanded": false,
 			"description": "HomeKit has only one 'Oscillate' switch, but most Panasonic ACs have more options: Nanoe, Eco Navi, Inside Cleaning and Swing mode have two swing directions.",
 			"items": [
+				"autoMode",
 				"oscilateSwitch",
 				"startSwing",
 				"startNanoe",
