@@ -12,6 +12,7 @@ Example:
         "email": "mail@example.com",
         "password": "********",
         "key2fa": "GVZCKT2LLBLV2QBXMFAWFXKFKU5EWL2H",
+        "autoMode": "auto",
         "oscilateSwitch": "swing",
         "startSwing": false,
         "startNanoe": false,
@@ -47,6 +48,9 @@ Optional:
 
 * `key2fa` (string): 
 2FA key received from Panasonic (32 characters). Example: GVZCKT2LLBLV2QBXMFAWFXKFKU5EWL2H. Note: This field is currently not required to make this plugin work, but Panasonic already requires 2FA (code or SMS, recommended code) to log in to Comfort Cloud, so it may be required soon.
+
+* `autoMode` (string):
+Choose what mode to be turned on after selecting the Auto mode in HomeKit: Fan mode, Dry mode or Auto mode (by default).
 
 * `oscilateSwitch` (string):
 Decide what the switch should control: Swing Mode, Nanoe, Eco Navi or Inside Cleaning.
