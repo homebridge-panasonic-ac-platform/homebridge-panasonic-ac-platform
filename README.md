@@ -51,7 +51,17 @@ Basic settings (required):
 
 See: [advanced config](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/blob/master/docs/config.md).
 
+## Mode (Heat, Cool etc.)
 
+HomeKit has only 3 modes: Auto, Cool, Heat but Panasonic additionally has Fan and Dry. Choose what mode to be turned on after selecting the Auto mode in HomeKit: Fan mode, Dry mode or Auto mode (by default). Everytime When a mode other than Heat or Cool is selected in the Panasonic application or using the remote control, the Auto mode will be enabled in HomeKit.
+
+## Oscillate Switch
+
+Decide what the switch should control: Swing Mode, Nanoe, Eco Navi or Inside Cleaning.
+
+## Default values
+
+Value with each state change made with Homekit (e.g. activation) separate for: Swing Mode, Nanoe, Eco Navi or Inside Cleaning. Available options: do nothing, set on, set off.
 
 ## Fan speed, Quiet Mode, Powerful Mode
 
@@ -68,6 +78,16 @@ The Home app offers no extra buttons for the Quiet and Powerful Modes. All setti
 | 6                         | Fan speed: 5          |
 | 7                         | Powerful mode         |
 | (rightmost) 8             | Auto                  |
+
+## Swing modes
+
+Homekit doesn't have so many switches to support all Swing modes. That's why here you can choose how it works.
+
+* The setting `Swing Directions` (`swingModeDirections` in the JSON config) controls which swing direction(s) will be activated when 'Oscillate' is switched on.
+
+* The setting `Swing Mode Default Position (Left-Right)` (`swingModeDefaultPositionLeftRight` in the JSON config) controls the desired position of the Left-Right flaps when 'Oscillate' is switched off or the swing directions setting (see above) is "Up-Down only".
+
+* The setting `Swing Mode Default Position (Up-Down)` (`swingModeDefaultPositionUpDown` in the JSON config) controls the desired position of the Up-Down flaps when 'Oscillate' is switched off or the swing directions setting (see above) is "Left-Right only".
 
 ## Troubleshooting
 
