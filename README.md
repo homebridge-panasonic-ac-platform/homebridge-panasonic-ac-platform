@@ -159,9 +159,9 @@ Homekit doesn't have so many switches to support all Swing modes. That's why her
 
 * The setting `Swing Mode Default Position (Up-Down)` (`swingModeDefaultPositionUpDown` in the JSON config) controls the desired position of the Up-Down flaps when 'Oscillate' is switched off or the swing directions setting (see above) is "Left-Right only".
 
-## Default values
+## Override values
 
-Value with each state change made with Homekit (e.g. activation) separate for: Swing Mode, Nanoe, Eco Navi or Inside Cleaning. Available options: do nothing, set on, set off.
+Values with each state change made with Homekit (e.g. activation). For Swing Mode, Nanoe, Eco Navi and Inside Cleaning. Available options: do nothing, set on, set off.
 
 ## Troubleshooting
 
