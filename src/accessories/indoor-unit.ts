@@ -105,10 +105,12 @@ export default class IndoorUnitAccessory {
       .onSet(this.setThresholdTemperature.bind(this));
 
     // Heating Threshold Temperature (optional)
+    const item = this.platform.platformConfig.devices.find((item) => item.name === _d.deviceName) ||
+        this.platform.platformConfig.devices.find((item) => item.name === _c.deviceGuid) || {};
     this.service
       .getCharacteristic(this.platform.Characteristic.HeatingThresholdTemperature)
       .setProps({
-        minValue: this.platform.platformConfig.minHeatingTemperature || 16,
+        minValue: item.minHeatingTemperature || 16,
         maxValue: 30,
         minStep: 0.5,
       })
