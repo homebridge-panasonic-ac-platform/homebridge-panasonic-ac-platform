@@ -26,8 +26,10 @@ This plugin can be easily installed and configured through Homebridge UI or via 
 
     npm install -g homebridge-panasonic-ac-platform
 
-## Homebridge setup
-Configure the plugin through the settings UI or directly in the JSON editor.
+## Configure plugin
+Configure the plugin through the settings UI or directly in the JSON editor. 
+
+Settings apply to all units, there are no separate settings for each unit individually, the only exception is the excludeDevices field where you can choose which units are to be excluded.
 
 Basic settings (required):
 
