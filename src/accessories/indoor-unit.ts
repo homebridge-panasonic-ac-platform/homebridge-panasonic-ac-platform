@@ -127,6 +127,9 @@ export default class IndoorUnitAccessory {
     let logOutput = '';
     this.platform.log.debug(`${this.accessory.displayName}: refresh status`);
 
+    const item = this.platform.platformConfig.devices.find((item) => item.name === this.accessory.displayName)
+      || this.platform.platformConfig.devices.find((item) => item.name === this.accessory.context.device.deviceGuid) || {};
+
     try {
       const deviceStatus = await this.platform.comfortCloud.getDeviceStatus(
         this.accessory.context.device.deviceGuid);
@@ -328,7 +331,7 @@ export default class IndoorUnitAccessory {
         .updateValue(sliderValue);
 
       // Swing Mode
-      if (this.platform.platformConfig.oscilateSwitch === 'nanoe') {
+      if (item.oscilateSwitch === 'nanoe') {
         if (deviceStatus.nanoe === 2) {
           this.service.getCharacteristic(this.platform.Characteristic.SwingMode)
             .updateValue(this.platform.Characteristic.SwingMode.SWING_ENABLED);
@@ -338,7 +341,7 @@ export default class IndoorUnitAccessory {
             .updateValue(this.platform.Characteristic.SwingMode.SWING_DISABLED);
           logOutput += 'Nanoe Off';
         }
-      } else if (this.platform.platformConfig.oscilateSwitch === 'ecoNavi') {
+      } else if (item.oscilateSwitch === 'ecoNavi') {
         if (deviceStatus.ecoNavi === 2 || deviceStatus.ecoFunctionData === 2) {
           this.service.getCharacteristic(this.platform.Characteristic.SwingMode)
             .updateValue(this.platform.Characteristic.SwingMode.SWING_ENABLED);
@@ -348,7 +351,7 @@ export default class IndoorUnitAccessory {
             .updateValue(this.platform.Characteristic.SwingMode.SWING_DISABLED);
           logOutput += 'Eco Navi Off';
         }
-      } else if (this.platform.platformConfig.oscilateSwitch === 'insideCleaning') {
+      } else if (item.oscilateSwitch === 'insideCleaning') {
         if (deviceStatus.insideCleaning === 2) {
           this.service.getCharacteristic(this.platform.Characteristic.SwingMode)
             .updateValue(this.platform.Characteristic.SwingMode.SWING_ENABLED);
@@ -359,12 +362,12 @@ export default class IndoorUnitAccessory {
           logOutput += 'Inside Cleaning Off';
         }
       } else if ((deviceStatus.fanAutoMode === ComfortCloudFanAutoMode.AirSwingAuto
-        && this.platform.platformConfig.swingModeDirections
+        && item.swingModeDirections
         === SwingModeDirection.LeftRightAndUpDown)
         || (deviceStatus.fanAutoMode === ComfortCloudFanAutoMode.AirSwingLR
-          && this.platform.platformConfig.swingModeDirections === SwingModeDirection.LeftRightOnly)
+          && item.swingModeDirections === SwingModeDirection.LeftRightOnly)
         || (deviceStatus.fanAutoMode === ComfortCloudFanAutoMode.AirSwingUD
-          && this.platform.platformConfig.swingModeDirections === SwingModeDirection.UpDownOnly)) {
+          && item.swingModeDirections === SwingModeDirection.UpDownOnly)) {
         this.service.getCharacteristic(this.platform.Characteristic.SwingMode)
           .updateValue(this.platform.Characteristic.SwingMode.SWING_ENABLED);
         logOutput += 'Swing Mode On';
