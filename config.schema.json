@@ -4,15 +4,7 @@
 	"singular": true,
 	"schema": {
 		"type": "object",
-		"properties": {
-			"name": {
-				"title": "Plugin Name",
-				"description": "This name will be displayed in the Homebridge log.",
-				"type": "string",
-				"default": "Homebridge Panasonic AC Platform",
-				"placeholder": "Homebridge Panasonic AC Platform",
-				"required": true
-			},
+		"properties": {		
 			"email": {
 				"title": "Email",
 				"type": "string",
@@ -32,157 +24,12 @@
 				"description": "2FA key received from Panasonic (32 characters). Note: This field is currently not required to make this plugin work, but Panasonic already requires 2FA (code or SMS, recommended code) to log in to Comfort Cloud, so it may be required soon.",
 				"required": false
 			},
-			"excludeDevices": {
-				"title": "Exclude Devices",
+			"name": {
+				"title": "Plugin Name",
+				"description": "This name will be displayed in the Homebridge log.",
 				"type": "string",
-				"description": "By default this plugin will add all devices from Comfort Cloud. To exclude one or more, put comma separated names or serial numbers of devices, E.G.: 'CS-Z50VKEW+4962605183,Bedroom AC,CS-Z50VKEW+4962605184,My AC unit'.",
-				"required": false
-			},
-			"exposeOutdoorUnit": {
-				"title": "Expose Outdoor Unit",
-				"description": "When enabled, the plugin will create a separate accessory for your outdoor unit which will display the (outdoor) temperature it measures. This can be used for monitoring and automation purposes.",
-				"type": "boolean",
-				"default": false
-			},
-			"startSwing": {
-				"title": "Override Swing",
-				"description": "Swing value with each state change made with HomeKit (e.g. activation): do nothing, set on, set off.",
-				"type": "string",
-				"default": "false",
-				"required": true,
-				"oneOf": [
-					{
-						"title": "Do nothing",
-						"enum": [
-							"false"
-						]
-					},
-					{
-						"title": "Set on",
-						"enum": [
-							"on"
-						]
-					},
-					{
-						"title": "Set off",
-						"enum": [
-							"off"
-						]
-					}
-				]
-			},
-			"startNanoe": {
-				"title": "Override Nanoe",
-				"description": "Nanoe value with each state change made with HomeKit (e.g. activation): do nothing, set on, set off.",
-				"type": "string",
-				"default": "false",
-				"oneOf": [
-					{
-						"title": "Do nothing",
-						"enum": [
-							"false"
-						]
-					},
-					{
-						"title": "Set on",
-						"enum": [
-							"on"
-						]
-					},
-					{
-						"title": "Set off",
-						"enum": [
-							"off"
-						]
-					}
-				],
-				"required": true
-			},
-			"startEcoNavi": {
-				"title": "Override Eco Navi",
-				"description": "Eco Navi value with each state change made with HomeKit (e.g. activation): do nothing, set on, set off.",
-				"type": "string",
-				"default": "false",
-				"oneOf": [
-					{
-						"title": "Do nothing",
-						"enum": [
-							"false"
-						]
-					},
-					{
-						"title": "Set on",
-						"enum": [
-							"on"
-						]
-					},
-					{
-						"title": "Set off",
-						"enum": [
-							"off"
-						]
-					}
-				],
-				"required": true
-			},
-			"startInsideCleaning": {
-				"title": "Override Inside Cleaning",
-				"description": "Inside Cleaning value with each state change made with HomeKit (e.g. activation): do nothing, set on, set off.",
-				"type": "string",
-				"default": "false",
-				"oneOf": [
-					{
-						"title": "Do nothing",
-						"enum": [
-							"false"
-						]
-					},
-					{
-						"title": "Set on",
-						"enum": [
-							"on"
-						]
-					},
-					{
-						"title": "Set off",
-						"enum": [
-							"off"
-						]
-					}
-				],
-				"required": true
-			},
-			"oscilateSwitch": {
-				"title": "Oscilate Switch",
-				"description": "Decide what the switch should control: Swing Mode, Nanoe, Eco Navi or Inside Cleaning.",
-				"type": "string",
-				"default": "swing",
-				"oneOf": [
-					{
-						"title": "Swing Mode",
-						"enum": [
-							"swing"
-						]
-					},
-					{
-						"title": "Nanoe",
-						"enum": [
-							"nanoe"
-						]
-					},
-					{
-						"title": "Eco Navi",
-						"enum": [
-							"ecoNavi"
-						]
-					},
-					{
-						"title": "Inside Cleaning",
-						"enum": [
-							"insideCleaning"
-						]
-					}
-				],
+				"default": "Homebridge Panasonic AC Platform",
+				"placeholder": "Homebridge Panasonic AC Platform",
 				"required": true
 			},
 			"refreshInterval": {
@@ -236,115 +83,11 @@
 					}
 				]
 			},
-			"swingModeDirections": {
-				"title": "Swing Mode Directions",
-				"description": "Swing direction(s) when activated via HomeKit (by 'Oscillate switch' or by 'Override Swing').",
+			"excludeDevices": {
+				"title": "Exclude Devices",
 				"type": "string",
-				"default": "LEFT-RIGHT-UP-DOWN",
-				"oneOf": [
-					{
-						"title": "Left-Right and Up-Down",
-						"enum": [
-							"LEFT-RIGHT-UP-DOWN"
-						]
-					},
-					{
-						"title": "Left-Right only",
-						"enum": [
-							"LEFT-RIGHT"
-						]
-					},
-					{
-						"title": "Up-Down only",
-						"enum": [
-							"UP-DOWN"
-						]
-					}
-				],
-				"required": true
-			},
-			"swingModeDefaultPositionLeftRight": {
-				"title": "Swing Mode Default Position (Left-Right)",
-				"description": "Position of the Left-Right flaps when Swing Mode is deactivated via HomeKit (by 'Oscillate switch' or 'Override Swing').",
-				"type": "string",
-				"default": "CENTER",
-				"oneOf": [
-					{
-						"title": "Left",
-						"enum": [
-							"LEFT"
-						]
-					},
-					{
-						"title": "Center-Left",
-						"enum": [
-							"CENTER-LEFT"
-						]
-					},
-					{
-						"title": "Center",
-						"enum": [
-							"CENTER"
-						]
-					},
-					{
-						"title": "Center-Right",
-						"enum": [
-							"CENTER-RIGHT"
-						]
-					},
-					{
-						"title": "Right",
-						"enum": [
-							"RIGHT"
-						]
-					}
-				],
-				"required": true
-			},
-			"swingModeDefaultPositionUpDown": {
-				"title": "Swing Mode Default Position (Up-Down)",
-				"description": "Position of the Up-Down flaps when Swing Mode is deactivated via HomeKit (by 'Oscillate switch' or 'Override Swing').",
-				"type": "string",
-				"default": "CENTER",
-				"oneOf": [
-					{
-						"title": "Up",
-						"enum": [
-							"UP"
-						]
-					},
-					{
-						"title": "Center-Up",
-						"enum": [
-							"CENTER-UP"
-						]
-					},
-					{
-						"title": "Center",
-						"enum": [
-							"CENTER"
-						]
-					},
-					{
-						"title": "Center-Down",
-						"enum": [
-							"CENTER-DOWN"
-						]
-					},
-					{
-						"title": "Down",
-						"enum": [
-							"DOWN"
-						]
-					}
-				],
-				"required": true
-			},
-			"suppressOutgoingUpdates": {
-				"title": "Suppress outgoing device updates",
-				"description": "When enabled, changes in the Home app will not be sent to Comfort Cloud. Useful for testing your installation without constantly switching the state of your AC to minimise wear and tear.",
-				"type": "boolean"
+				"description": "By default this plugin will add all devices from Comfort Cloud. To exclude one or more, put comma separated names or serial numbers of devices, E.G.: 'CS-Z50VKEW+4962605183,Bedroom AC,CS-Z50VKEW+4962605184,My AC unit'.",
+				"required": false
 			},
 			"appVersionOverride": {
 				"title": "Comfort Cloud app version (override)",
@@ -352,11 +95,10 @@
 				"type": "string",
 				"placeholder": "App version, E.G.: 1.19.0"
 			},
-			"minHeatingTemperature": {
-				"title": "Minimum heating temperature (override)",
-				"description": "The default heating temperature range is 16-30°C. Some Panasonic ACs have an additional heating mode for the range of 8-15°C. If you own such a model, you can use this setting to adjust the minimum value. Leave it empty or undefined to use the default value.",
-				"type": "integer",
-				"placeholder": "16"
+			"suppressOutgoingUpdates": {
+				"title": "Suppress outgoing devices updates",
+				"description": "When enabled, changes in the Home app will not be sent to Comfort Cloud. Useful for testing your installation without constantly switching the state of your AC.",
+				"type": "boolean"
 			},
 			"logsLevel": {
 				"title": "Logs Level",
@@ -385,54 +127,25 @@
 				],
 				"required": true
 			},
-			"autoMode": {
-				"title": "Auto Mode",
-				"description": "Choose what mode to be turned on after selecting the Auto mode in HomeKit: Fan mode, Dry mode or Auto mode (by default).",
-				"type": "string",
-				"default": "auto",
-				"oneOf": [
-					{
-						"title": "Auto mode",
-						"enum": [
-							"auto"
-						]
-					},
-					{
-						"title": "Fan mode",
-						"enum": [
-							"fan"
-						]
-					},
-					{
-						"title": "Dry mode",
-						"enum": [
-							"dry"
-						]
-					}
-				],
-				"required": true
-			},
 			"devices": {
 				"type": "array",
 				"items": {
 					"type": "object",
 					"properties": {
 						"name": {
+							"title": "Name or serial number",
 							"type": "string",
 							"required": true,
-							"description": "Device name or serial (E.G.: CS-Z50VKEW+2462503161)."
+							"description": "Device name (as it is in Comfort Cloud account) or serial (E.G.: CS-Z50VKEW+2462503161)."
 						},
-						"mess": {
-							"type": "string",
-							"required": false
-						},
-						"disabled": {
+						"exclude": {
+							"title": "Exclude device",
 							"type": "boolean",
-							"description": "Exclude this device."
+							"description": "Exclude this device from Homebridge and HomeKit. This will not remove device from Comfort Cloud."
 						},
 						"exposeOutdoorUnit": {
 							"title": "Expose Outdoor Unit",
-							"description": "When enabled, the plugin will create a separate accessory for your outdoor unit which will display the (outdoor) temperature it measures. This can be used for monitoring and automation purposes.",
+							"description": "When enabled, the plugin will create a dummy temperature accessory which will display the (outdoor) temperature it measures. This can be used for monitoring and automation purposes.",
 							"type": "boolean",
 							"default": false
 						},
@@ -546,7 +259,7 @@
 						},
 						"oscilateSwitch": {
 							"title": "Oscilate Switch",
-							"description": "Decide what the switch should control: Swing Mode, Nanoe, Eco Navi or Inside Cleaning.",
+							"description": "HomeKit has only one 'Oscillate' switch, but most Panasonic ACs have more options: Nanoe, Eco Navi, Inside Cleaning and Swing mode have two swing directions. Decide what the switch should control: Swing Mode, Nanoe, Eco Navi or Inside Cleaning.",
 							"type": "string",
 							"default": "swing",
 							"oneOf": [
@@ -682,20 +395,15 @@
 							],
 							"required": true
 						},
-						"suppressOutgoingUpdates": {
-							"title": "Suppress outgoing device updates",
-							"description": "When enabled, changes in the Home app will not be sent to Comfort Cloud. Useful for testing your installation without constantly switching the state of your AC to minimise wear and tear.",
-							"type": "boolean"
-						},
 						"minHeatingTemperature": {
 							"title": "Minimum heating temperature (override)",
-							"description": "The default heating temperature range is 16-30°C. Some Panasonic ACs have an additional heating mode for the range of 8-15°C. If you own such a model, you can use this setting to adjust the minimum value. Leave it empty or undefined to use the default value.",
+							"description": "The default heating temperature range is 16-30°C. Some Panasonic ACs have an additional heating mode for the range of 8-15°C. You can use this setting to adjust the minimum value. Leave it empty to use the default value.",
 							"type": "integer",
 							"placeholder": "16"
 						},
 						"autoMode": {
 							"title": "Auto Mode",
-							"description": "Choose what mode to be turned on after selecting the Auto mode in HomeKit: Fan mode, Dry mode or Auto mode (by default).",
+							"description": "HomeKit has only 3 modes: Auto, Cool, Heat but Panasonic additionally has Fan and Dry. Choose what mode to be turned on after selecting the Auto mode in HomeKit: Fan mode, Dry mode or Auto mode (by default).",
 							"type": "string",
 							"default": "auto",
 							"oneOf": [
@@ -728,63 +436,26 @@
 	"layout": [
 		{
 			"type": "fieldset",
-			"title": "Basic settings",
-			"description": "Enter your Panasonic Comfort Cloud login details. It is recommended to set up a separate account for Homebridge and share the devices from your main account.",
+			"title": "Account",
+			"description": "Enter your Panasonic Comfort Cloud login details.",
 			"expandable": true,
 			"expanded": true,
 			"items": [
-				{
-					"type": "flex",
-					"flex-flow": "row wrap",
-					"items": [
-						{
-							"key": "email",
-							"type": "email"
-						},
-						{
-							"key": "password",
-							"type": "password"
-						}
-					]
-				},
-				{
-					"type": "flex",
-					"flex-flow": "row wrap",
-					"items": [
-						"key2fa"
-					]
-				}
+				"email",
+				"password",
+				"key2fa"
 			]
 		},
+		
 		{
 			"type": "fieldset",
-			"title": "More control: Fan, Dry, Swing, Nanoe, Eco Navi, Inside Cleaning",
-			"expandable": true,
-			"expanded": false,
-			"description": "HomeKit has only 3 modes: Auto, Cool, Heat but Panasonic additionally has Fan and Dry. HomeKit has only one 'Oscillate' switch, but most Panasonic ACs have more options: Nanoe, Eco Navi, Inside Cleaning and Swing mode have two swing directions.",
-			"items": [
-				"autoMode",
-				"oscilateSwitch",
-				"startSwing",
-				"startNanoe",
-				"startEcoNavi",
-				"startInsideCleaning",
-				"swingModeDirections",
-				"swingModeDefaultPositionLeftRight",
-				"swingModeDefaultPositionUpDown"
-			]
-		},
-		{
-			"type": "fieldset",
-			"title": "Advanced settings",
+			"title": "Advanced",
 			"expandable": true,
 			"expanded": false,
 			"items": [
 				"name",
 				"refreshInterval",
 				"excludeDevices",
-				"exposeOutdoorUnit",
-				"minHeatingTemperature",
 				"appVersionOverride",
 				"suppressOutgoingUpdates",
 				"logsLevel"
@@ -800,91 +471,46 @@
 			"expanded": false,
 			"items": [
 				{
-					"type": "div",
-					"displayFlex": true,
-					"flex-flow": "row wrap",
+					"type": "fieldset",
 					"items": [
-						{
-							"key": "devices[].name",
-							"flex": "1 1 50%"
-						},
+						"devices[].name",
+						"devices[].exclude",
 						{
 							"type": "fieldset",
-							"title": "Basic settings",
+							"title": "More control",
 							"flex": "1 1 100%",
 							"expandable": true,
 							"expanded": false,
 							"items": [
-								{
-									"key": "devices[].disabled",
-									"flex": "1 1 50%"
-								},
-								{
-									"key": "devices[].mess",
-									"flex": "1 1 100%"
-								},
-								{
-									"key": "devices[].oscilateSwitch",
-									"flex": "1 1 50%"
-								},
-								{
-									"key": "devices[].autoMode",
-									"flex": "1 1 50%"
-								},
-								{
-									"key": "devices[].exposeOutdoorUnit",
-									"flex": "1 1 50%"
-								},
-								{
-									"key": "devices[].minHeatingTemperature",
-									"flex": "1 1 50%"
-								}
+								"devices[].oscilateSwitch",
+								"devices[].autoMode",
+								"devices[].forceSwing",
+								"devices[].forceNanoe",
+								"devices[].forceInsideCleaning",
+								"devices[].forceEcoNavi"
 							]
 						},
 						{
 							"type": "fieldset",
-							"title": "Force values",
+							"title": "Swing directions",
 							"flex": "1 1 100%",
 							"expandable": true,
 							"expanded": false,
 							"items": [
-								{
-									"key": "devices[].forceSwing",
-									"flex": "1 1 50%"
-								},
-								{
-									"key": "devices[].forceNanoe",
-									"flex": "1 1 50%"
-								},
-								{
-									"key": "devices[].forceInsideCleaning",
-									"flex": "1 1 50%"
-								},
-								{
-									"key": "devices[].forceEcoNavi",
-									"flex": "1 1 50%"
-								}
+								"devices[].swingModeDirections",
+								"devices[].swingModeDefaultPositionUpDown",
+								"devices[].swingModeDefaultPositionLeftRight"
 							]
 						},
 						{
 							"type": "fieldset",
-							"title": "Swing",
+							"title": "Other",
 							"flex": "1 1 100%",
 							"expandable": true,
 							"expanded": false,
 							"items": [
-								{
-									"key": "devices[].swingModeDirections",
-									"flex": "1 1 50%"
-								},
-								{
-									"key": "devices[].swingModeDefaultPositionUpDown",
-									"flex": "1 1 50%"
-								},
-								{
-									"key": "devices[].swingModeDefaultPositionLeftRight",
-									"flex": "1 1 50%"
-								}
+								"devices[].exposeOutdoorUnit",
+								"devices[].minHeatingTemperature"
 							]
 						}
 					]
