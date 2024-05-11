@@ -4,7 +4,7 @@
 	"singular": true,
 	"schema": {
 		"type": "object",
-		"properties": {		
+		"properties": {
 			"email": {
 				"title": "Email",
 				"type": "string",
@@ -446,7 +446,6 @@
 				"key2fa"
 			]
 		},
-		
 		{
 			"type": "fieldset",
 			"title": "Advanced",
