@@ -434,7 +434,7 @@
 		{
 			"type": "fieldset",
 			"title": "Account",
-			"description": "Panasonic Comfort Cloud login details.",
+			"description": "Comfort Cloud (Panasonic ID) login details.",
 			"expandable": true,
 			"expanded": true,
 			"items": [
