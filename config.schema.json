@@ -315,7 +315,7 @@
 						},
 						"swingModeDirections": {
 							"title": "Swing Mode Directions",
-							"description": "Swing direction(s) when activated via HomeKit (by 'Oscillate switch' or by 'Override Swing').",
+							"description": "Desired swing direction(s) activated when swing is switched on.",
 							"type": "string",
 							"default": "LEFT-RIGHT-UP-DOWN",
 							"oneOf": [
@@ -342,7 +342,7 @@
 						},
 						"swingModeDefaultPositionUpDown": {
 							"title": "Swing Mode Default Position (Up-Down)",
-							"description": "Position of the Up-Down flaps when Swing Mode is deactivated via HomeKit (by 'Oscillate switch' or 'Override Swing').",
+							"description": "Desired position of the Up-Down flaps when swing is switched off or the swing directions setting is Left-Right only.",
 							"type": "string",
 							"default": "CENTER",
 							"oneOf": [
@@ -381,7 +381,7 @@
 						},
 						"swingModeDefaultPositionLeftRight": {
 							"title": "Swing Mode Default Position (Left-Right)",
-							"description": "Position of the Left-Right flaps when Swing Mode is deactivated via HomeKit (by 'Oscillate switch' or 'Override Swing').",
+							"description": "Desired position of the Left-Right flaps when swing is switched off or the swing directions setting is Up-Down only.",
 							"type": "string",
 							"default": "CENTER",
 							"oneOf": [
