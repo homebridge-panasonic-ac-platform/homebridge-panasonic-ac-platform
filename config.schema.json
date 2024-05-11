@@ -10,13 +10,15 @@
 				"type": "string",
 				"placeholder": "Email",
 				"required": true,
-				"format": "email"
+				"format": "email",
+				"description": "The username of your Comfort Cloud (Panasonic ID) account."
 			},
 			"password": {
 				"title": "Password",
 				"type": "string",
 				"placeholder": "Password",
-				"required": true
+				"required": true,
+				"description": "The password of your Comfort Cloud (Panasonic ID) account."
 			},
 			"key2fa": {
 				"title": "2FA key",
@@ -26,7 +28,7 @@
 			},
 			"name": {
 				"title": "Plugin Name",
-				"description": "This name will be displayed in the Homebridge log.",
+				"description": "Name of the plugin in Homebridge log.",
 				"type": "string",
 				"default": "Homebridge Panasonic AC Platform",
 				"placeholder": "Homebridge Panasonic AC Platform",
@@ -143,115 +145,28 @@
 							"type": "boolean",
 							"description": "Exclude this device from Homebridge and HomeKit. This will not remove device from Comfort Cloud."
 						},
-						"exposeOutdoorUnit": {
-							"title": "Expose Outdoor Unit",
-							"description": "When enabled, the plugin will create a dummy temperature accessory which will display the (outdoor) temperature it measures. This can be used for monitoring and automation purposes.",
-							"type": "boolean",
-							"default": false
-						},
-						"forceSwing": {
-							"title": "Force Swing",
-							"description": "Swing value with each state change made with HomeKit (e.g. activation): do nothing, set on, set off.",
+						"autoMode": {
+							"title": "Auto Mode",
+							"description": "HomeKit has only 3 modes: Auto, Cool, Heat but Panasonic additionally has Fan and Dry. Choose what mode to be turned on after selecting the Auto mode in HomeKit: Fan mode, Dry mode or Auto mode (by default).",
 							"type": "string",
-							"default": "false",
-							"required": true,
+							"default": "auto",
 							"oneOf": [
 								{
-									"title": "Do nothing",
+									"title": "Auto mode",
 									"enum": [
-										"false"
+										"auto"
 									]
 								},
 								{
-									"title": "Set on",
+									"title": "Fan mode",
 									"enum": [
-										"on"
+										"fan"
 									]
 								},
 								{
-									"title": "Set off",
+									"title": "Dry mode",
 									"enum": [
-										"off"
-									]
-								}
-							]
-						},
-						"forceNanoe": {
-							"title": "Force Nanoe",
-							"description": "Nanoe value with each state change made with HomeKit (e.g. activation): do nothing, set on, set off.",
-							"type": "string",
-							"default": "false",
-							"oneOf": [
-								{
-									"title": "Do nothing",
-									"enum": [
-										"false"
-									]
-								},
-								{
-									"title": "Set on",
-									"enum": [
-										"on"
-									]
-								},
-								{
-									"title": "Set off",
-									"enum": [
-										"off"
-									]
-								}
-							],
-							"required": true
-						},
-						"forceEcoNavi": {
-							"title": "Force Eco Navi",
-							"description": "Eco Navi value with each state change made with HomeKit (e.g. activation): do nothing, set on, set off.",
-							"type": "string",
-							"default": "false",
-							"oneOf": [
-								{
-									"title": "Do nothing",
-									"enum": [
-										"false"
-									]
-								},
-								{
-									"title": "Set on",
-									"enum": [
-										"on"
-									]
-								},
-								{
-									"title": "Set off",
-									"enum": [
-										"off"
-									]
-								}
-							],
-							"required": true
-						},
-						"forceInsideCleaning": {
-							"title": "Force Inside Cleaning",
-							"description": "Inside Cleaning value with each state change made with HomeKit (e.g. activation): do nothing, set on, set off.",
-							"type": "string",
-							"default": "false",
-							"oneOf": [
-								{
-									"title": "Do nothing",
-									"enum": [
-										"false"
-									]
-								},
-								{
-									"title": "Set on",
-									"enum": [
-										"on"
-									]
-								},
-								{
-									"title": "Set off",
-									"enum": [
-										"off"
+										"dry"
 									]
 								}
 							],
@@ -290,6 +205,114 @@
 							],
 							"required": true
 						},
+						"forceSwing": {
+							"title": "Force Swing",
+							"description": "Swing value with each state change made with HomeKit (e.g. activation).",
+							"type": "string",
+							"default": "false",
+							"required": true,
+							"oneOf": [
+								{
+									"title": "Do nothing",
+									"enum": [
+										"false"
+									]
+								},
+								{
+									"title": "Set on",
+									"enum": [
+										"on"
+									]
+								},
+								{
+									"title": "Set off",
+									"enum": [
+										"off"
+									]
+								}
+							]
+						},
+						"forceNanoe": {
+							"title": "Force Nanoe",
+							"description": "Nanoe value with each state change made with HomeKit (e.g. activation).",
+							"type": "string",
+							"default": "false",
+							"oneOf": [
+								{
+									"title": "Do nothing",
+									"enum": [
+										"false"
+									]
+								},
+								{
+									"title": "Set on",
+									"enum": [
+										"on"
+									]
+								},
+								{
+									"title": "Set off",
+									"enum": [
+										"off"
+									]
+								}
+							],
+							"required": true
+						},
+						"forceEcoNavi": {
+							"title": "Force Eco Navi",
+							"description": "Eco Navi value with each state change made with HomeKit (e.g. activation).",
+							"type": "string",
+							"default": "false",
+							"oneOf": [
+								{
+									"title": "Do nothing",
+									"enum": [
+										"false"
+									]
+								},
+								{
+									"title": "Set on",
+									"enum": [
+										"on"
+									]
+								},
+								{
+									"title": "Set off",
+									"enum": [
+										"off"
+									]
+								}
+							],
+							"required": true
+						},
+						"forceInsideCleaning": {
+							"title": "Force Inside Cleaning",
+							"description": "Inside Cleaning value with each state change made with HomeKit (e.g. activation).",
+							"type": "string",
+							"default": "false",
+							"oneOf": [
+								{
+									"title": "Do nothing",
+									"enum": [
+										"false"
+									]
+								},
+								{
+									"title": "Set on",
+									"enum": [
+										"on"
+									]
+								},
+								{
+									"title": "Set off",
+									"enum": [
+										"off"
+									]
+								}
+							],
+							"required": true
+						},
 						"swingModeDirections": {
 							"title": "Swing Mode Directions",
 							"description": "Swing direction(s) when activated via HomeKit (by 'Oscillate switch' or by 'Override Swing').",
@@ -312,45 +335,6 @@
 									"title": "Up-Down only",
 									"enum": [
 										"UP-DOWN"
-									]
-								}
-							],
-							"required": true
-						},
-						"swingModeDefaultPositionLeftRight": {
-							"title": "Swing Mode Default Position (Left-Right)",
-							"description": "Position of the Left-Right flaps when Swing Mode is deactivated via HomeKit (by 'Oscillate switch' or 'Override Swing').",
-							"type": "string",
-							"default": "CENTER",
-							"oneOf": [
-								{
-									"title": "Left",
-									"enum": [
-										"LEFT"
-									]
-								},
-								{
-									"title": "Center-Left",
-									"enum": [
-										"CENTER-LEFT"
-									]
-								},
-								{
-									"title": "Center",
-									"enum": [
-										"CENTER"
-									]
-								},
-								{
-									"title": "Center-Right",
-									"enum": [
-										"CENTER-RIGHT"
-									]
-								},
-								{
-									"title": "Right",
-									"enum": [
-										"RIGHT"
 									]
 								}
 							],
@@ -395,38 +379,56 @@
 							],
 							"required": true
 						},
+						"swingModeDefaultPositionLeftRight": {
+							"title": "Swing Mode Default Position (Left-Right)",
+							"description": "Position of the Left-Right flaps when Swing Mode is deactivated via HomeKit (by 'Oscillate switch' or 'Override Swing').",
+							"type": "string",
+							"default": "CENTER",
+							"oneOf": [
+								{
+									"title": "Left",
+									"enum": [
+										"LEFT"
+									]
+								},
+								{
+									"title": "Center-Left",
+									"enum": [
+										"CENTER-LEFT"
+									]
+								},
+								{
+									"title": "Center",
+									"enum": [
+										"CENTER"
+									]
+								},
+								{
+									"title": "Center-Right",
+									"enum": [
+										"CENTER-RIGHT"
+									]
+								},
+								{
+									"title": "Right",
+									"enum": [
+										"RIGHT"
+									]
+								}
+							],
+							"required": true
+						},
+						"exposeOutdoorUnit": {
+							"title": "Expose Outdoor Unit",
+							"description": "When enabled, the plugin will create a dummy temperature accessory which will display the (outdoor) temperature it measures. This can be used for monitoring and automation purposes.",
+							"type": "boolean",
+							"default": false
+						},
 						"minHeatingTemperature": {
 							"title": "Minimum heating temperature (override)",
 							"description": "The default heating temperature range is 16-30°C. Some Panasonic ACs have an additional heating mode for the range of 8-15°C. You can use this setting to adjust the minimum value. Leave it empty to use the default value.",
 							"type": "integer",
 							"placeholder": "16"
-						},
-						"autoMode": {
-							"title": "Auto Mode",
-							"description": "HomeKit has only 3 modes: Auto, Cool, Heat but Panasonic additionally has Fan and Dry. Choose what mode to be turned on after selecting the Auto mode in HomeKit: Fan mode, Dry mode or Auto mode (by default).",
-							"type": "string",
-							"default": "auto",
-							"oneOf": [
-								{
-									"title": "Auto mode",
-									"enum": [
-										"auto"
-									]
-								},
-								{
-									"title": "Fan mode",
-									"enum": [
-										"fan"
-									]
-								},
-								{
-									"title": "Dry mode",
-									"enum": [
-										"dry"
-									]
-								}
-							],
-							"required": true
 						}
 					}
 				}
