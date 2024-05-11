@@ -434,7 +434,7 @@
 		{
 			"type": "fieldset",
 			"title": "Account",
-			"description": "Enter your Panasonic Comfort Cloud login details.",
+			"description": "Panasonic Comfort Cloud login details.",
 			"expandable": true,
 			"expanded": true,
 			"items": [
