@@ -140,11 +140,6 @@
 							"required": true,
 							"description": "Device name (as it is in Comfort Cloud account) or serial (E.G.: CS-Z50VKEW+2462503161)."
 						},
-						"exclude": {
-							"title": "Exclude device",
-							"type": "boolean",
-							"description": "Exclude this device from Homebridge and HomeKit. This will not remove device from Comfort Cloud."
-						},
 						"autoMode": {
 							"title": "Auto Mode",
 							"description": "HomeKit has only 3 modes: Auto, Cool, Heat but Panasonic additionally has Fan and Dry. Choose what mode to be turned on after selecting the Auto mode in HomeKit: Fan mode, Dry mode or Auto mode (by default).",
