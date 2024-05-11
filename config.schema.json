@@ -420,7 +420,7 @@
 						},
 						"exposeOutdoorUnit": {
 							"title": "Expose Outdoor Unit",
-							"description": "When enabled, the plugin will create a dummy temperature accessory which will display the (outdoor) temperature it measures. This can be used for monitoring and automation purposes.",
+							"description": "When enabled it will create a dummy temperature sensor which will display the temperature from outdoor unit. This can be used for monitoring or automation purposes.",
 							"type": "boolean",
 							"default": false
 						},
