@@ -128,7 +128,7 @@ Logs level. 0 - only errors and important info, 1 - standard,2 - all (including 
 Exclude this device from Homebridge and HomeKit. This will not remove device from Comfort Cloud.
 
 * `autoMode` (string):
-Choose what mode to be turned on after selecting the Auto mode in HomeKit: Fan mode, Dry mode or Auto mode (by default).
+HomeKit has only 3 modes: Auto, Cool, Heat but Panasonic additionally has Fan and Dry. Choose what mode to be turned on after selecting the Auto mode in HomeKit: Fan mode, Dry mode or Auto mode (by default).
 
 * `oscilateSwitch` (string):
 HomeKit has only one 'Oscillate' switch, but most Panasonic ACs have more options: Nanoe, Eco Navi, Inside Cleaning and Swing mode have two swing directions. Decide what the switch should control: Swing Mode, Nanoe, Eco Navi or Inside Cleaning.
@@ -145,6 +145,15 @@ Eco Navi value with each state change made with Homekit (e.g. activation): do no
 * `forceInsideCleaning` (string):
 InsideCleaning value with each state change made with Homekit (e.g. activation): do nothing, set on, set off.
 
+* `swingModeDirections`
+Desired swing direction(s) activated when swing is switched on.
+
+* `swingModeDefaultPositionUpDown`
+Desired position of the Up-Down flaps when swing is switched off or the swing directions setting is Left-Right only.
+
+* `swingModeDefaultPositionLeftRight`
+Desired position of the Left-Right flaps when swing is switched off or the swing directions setting is Up-Down only.
+
 * `exposeOutdoorUnit` (boolean):
 When enabled, the plugin will create a dummy temperature accessory which will display the (outdoor) temperature it measures. This can be used for monitoring and automation purposes.
 
@@ -154,9 +163,7 @@ The default heating temperature range is 16-30°C. Some Panasonic ACs have an ad
 
 </details>
 
-## Mode (Heat, Cool etc.)
 
-HomeKit has only 3 modes: Auto, Cool, Heat but Panasonic additionally has Fan and Dry. Choose what mode to be turned on after selecting the Auto mode in HomeKit: Fan mode, Dry mode or Auto mode (by default). Everytime When a mode other than Heat or Cool is selected in the Panasonic application or using the remote control, the Auto mode will be enabled in HomeKit.
 
 ## Rotation speed (including Quiet Mode, Powerful Mode)
 
@@ -174,23 +181,9 @@ The Home app offers no extra buttons for the Quiet and Powerful Modes. All setti
 | 7                         | Powerful mode         |
 | (rightmost) 8             | Auto                  |
 
-## Oscillate Switch
 
-HomeKit has only one 'Oscillate' switch, but most Panasonic ACs have more options: Nanoe, Eco Navi, Inside Cleaning and Swing mode have two swing directions. Decide what the switch should control.
 
-## Swing modes
 
-Homekit doesn't have so many switches to support all Swing modes. That's why here you can choose how it works.
-
-* The setting `Swing Directions` (`swingModeDirections` in the JSON config) controls which swing direction(s) will be activated when 'Oscillate' is switched on.
-
-* The setting `Swing Mode Default Position (Left-Right)` (`swingModeDefaultPositionLeftRight` in the JSON config) controls the desired position of the Left-Right flaps when 'Oscillate' is switched off or the swing directions setting (see above) is "Up-Down only".
-
-* The setting `Swing Mode Default Position (Up-Down)` (`swingModeDefaultPositionUpDown` in the JSON config) controls the desired position of the Up-Down flaps when 'Oscillate' is switched off or the swing directions setting (see above) is "Left-Right only".
-
-## Override values
-
-Values with each state change made with Homekit (e.g. activation). For Swing Mode, Nanoe, Eco Navi and Inside Cleaning. Available options: do nothing, set on, set off.
 
 ## Troubleshooting
 
