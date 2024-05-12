@@ -281,10 +281,10 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
 
       // Exclude by individual device config
       if (this.platformConfig.devices) {
-        const devConfigExcludeList = this.platformConfig.devices;
-        devConfigExcludeList = devConfigExcludeList.filter(el => (el.disabled === true));
+        let devConfigExcludeList = this.platformConfig.devices;
+        devConfigExcludeList = devConfigExcludeList.filter(el => (el.excludeDevice === true));
         devConfigExcludeList = devConfigExcludeList.map(item => item.name);
-        
+
         // exclude by serial number
         comfortCloudDevices = comfortCloudDevices.filter(el => !devConfigExcludeList.includes(el.deviceGuid));
         //exclude by name
