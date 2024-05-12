@@ -105,8 +105,11 @@ export default class IndoorUnitAccessory {
       .onSet(this.setThresholdTemperature.bind(this));
 
     // Heating Threshold Temperature (optional)
+    
+    // Individual config for each device (if exists).
     const devConfig = this.platform.platformConfig.devices.find((item) => item.name === accessory.context.device?.deviceName)
       || this.platform.platformConfig.devices.find((item) => item.name === accessory.context.device?.deviceGuid) || {};
+    
     this.service
       .getCharacteristic(this.platform.Characteristic.HeatingThresholdTemperature)
       .setProps({
@@ -127,7 +130,8 @@ export default class IndoorUnitAccessory {
     let logOutput = '';
     this.platform.log.debug(`${this.accessory.displayName}: refresh status`);
 
-    const devConfig = this.platform.platformConfig.devices.find((item) => item.name === this.accessory.displayName)
+    // Individual config for each device (if exists).
+    const devConfig = this.platform.platformConfig.devices.find((item) => item.name === this.accessory.context.device.deviceName)
       || this.platform.platformConfig.devices.find((item) => item.name === this.accessory.context.device.deviceGuid) || {};
 
     try {
@@ -430,6 +434,7 @@ export default class IndoorUnitAccessory {
    * for example, turning on a Light bulb.
    */
   async setActive(value: CharacteristicValue) {
+    // Individual config for each device (if exists).
     const devConfig = this.platform.platformConfig.devices.find((item) => item.name === this.accessory.context.device.deviceName)
       || this.platform.platformConfig.devices.find((item) => item.name === this.accessory.context.device.deviceGuid) || {};
 
@@ -608,10 +613,10 @@ export default class IndoorUnitAccessory {
 
   async setSwingMode(value: CharacteristicValue) {
 
-    // Individual confog for device (if exists).
+    // Individual config for each device (if exists).
     const devConfig = this.platform.platformConfig.devices.find((item) => item.name === this.accessory.context.device.deviceName)
       || this.platform.platformConfig.devices.find((item) => item.name === this.accessory.context.device.deviceGuid) || {};
-    
+
     this.platform.log.debug(
       `Accessory: setSwingMode() for device '${this.accessory.displayName}'`);
 
