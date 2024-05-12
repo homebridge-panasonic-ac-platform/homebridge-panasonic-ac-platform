@@ -71,6 +71,7 @@ Example:
         "devices": [
                 {
                     "name": "CS-Z50VKEW+4942673181",
+                    "excludeDevice": true,
                     "exposeOutdoorUnit": false,
                     "forceSwing": "false",
                     "forceNanoe": "false",
@@ -84,6 +85,7 @@ Example:
                 },
                 {
                     "name": "Bedroom AC",
+                    "excludeDevice": false,
                     "exposeOutdoorUnit": false,
                     "forceSwing": "false",
                     "forceNanoe": "false",
@@ -121,6 +123,9 @@ When enabled, changes in the Home app will not be sent to Comfort Cloud. Useful 
 Logs level. 0 - only errors and important info, 1 - standard,2 - all (including debug).
 
 ## Inividual for each device
+
+* `excludeDevice` (boolean):
+Exclude device from Homebridge and HomeKit (it will stay in Comfort Cloud).
 
 * `autoMode` (string):
 HomeKit has only 3 modes: Auto, Cool, Heat but Panasonic additionally has Fan and Dry. Choose what mode to be turned on after selecting the Auto mode in HomeKit: Fan mode, Dry mode or Auto mode (by default).
