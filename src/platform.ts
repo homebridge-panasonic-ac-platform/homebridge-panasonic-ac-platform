@@ -264,6 +264,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
     try {
       let comfortCloudDevices = await this.comfortCloud.getDevices();
 
+      // Exclude by config field (comma separated list).
       if (this.platformConfig.excludeDevices !== undefined
           && this.platformConfig.excludeDevices !== ''){
         let excludeArray = this.platformConfig.excludeDevices.split(',');
@@ -278,15 +279,27 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
         comfortCloudDevices = comfortCloudDevices.filter(el => !excludeArray.includes(el.deviceName));
       }
 
+      // Exclude by individual device config
+      if (this.platformConfig.devices) {
+        const devConfigExcludeList = this.platformConfig.devices;
+        devConfigExcludeList = devConfigExcludeList.filter(el => (el.disabled === true));
+        devConfigExcludeList = devConfigExcludeList.map(item => item.name);
+        
+        // exclude by serial number
+        comfortCloudDevices = comfortCloudDevices.filter(el => !devConfigExcludeList.includes(el.deviceGuid));
+        //exclude by name
+        comfortCloudDevices = comfortCloudDevices.filter(el => !devConfigExcludeList.includes(el.deviceName));
+      }
+
       // Loop over the discovered (indoor) devices and register each
       // one if it has not been registered before.
       for (const device of comfortCloudDevices) {
 
         // Check if for this device in plugin config option to show dummy outdoor unit is enabled.
-        const deviceConfig = this.platformConfig.devices.find((item) => item.name === device.deviceName)
+        const devConfig = this.platformConfig.devices.find((item) => item.name === device.deviceName)
           || this.platformConfig.devices.find((item) => item.name === device.deviceGuid) || {};
         // Configure outdoor unit - add or remove, debend on deviceConfig.exposeOutdoorUnit value.
-        this.configureOutdoorUnit(device.deviceName, device.deviceGuid, deviceConfig.exposeOutdoorUnit);
+        this.configureOutdoorUnit(device.deviceName, device.deviceGuid, devConfig.exposeOutdoorUnit);
 
         // Generate a unique id for the accessory.
         // This should be generated from something globally unique,
