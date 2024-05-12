@@ -170,10 +170,10 @@ export default class IndoorUnitAccessory {
       }
 
       // Outdoor temperature
-      // Only check and set if the user wants to display the outdoor unit as separate device.
+      // Only check and set if the user wants to display the dummy sensor showing temp from outdoor unit.
       if (this.connectedOutdoorUnit) {
         if (deviceStatus.outTemperature >= 126) {
-          this.platform.log.error('Outdoor temperature is not available');
+          this.platform.log.info('Outdoor temperature is not available');
         } else {
           // Update the value of the connected outdoor unit
           this.connectedOutdoorUnit.setOutdoorTemperature(deviceStatus.outTemperature);
@@ -607,6 +607,11 @@ export default class IndoorUnitAccessory {
   }
 
   async setSwingMode(value: CharacteristicValue) {
+
+    // Individual confog for device (if exists).
+    const devConfig = this.platform.platformConfig.devices.find((item) => item.name === this.accessory.context.device.deviceName)
+      || this.platform.platformConfig.devices.find((item) => item.name === this.accessory.context.device.deviceGuid) || {};
+    
     this.platform.log.debug(
       `Accessory: setSwingMode() for device '${this.accessory.displayName}'`);
 
@@ -615,18 +620,18 @@ export default class IndoorUnitAccessory {
     if (value === this.platform.Characteristic.SwingMode.SWING_ENABLED) {
       // Activate swing mode
       // and (if needed) reset one set of fins to their default position.
-      if (this.platform.platformConfig.oscilateSwitch === 'nanoe') {
+      if (devConfig.oscilateSwitch === 'nanoe') {
         parameters.nanoe = 2;
         this.platform.log.debug(`${this.accessory.displayName}: Nanoe On`);
-      } else if (this.platform.platformConfig.oscilateSwitch === 'ecoNavi') {
+      } else if (devConfig.oscilateSwitch === 'ecoNavi') {
         parameters.ecoNavi = 2;
         parameters.ecoFunctionData = 2;
         this.platform.log.debug(`${this.accessory.displayName}: Eco Navi On`);
-      } else if (this.platform.platformConfig.oscilateSwitch === 'insideCleaning') {
+      } else if (devConfig.oscilateSwitch === 'insideCleaning') {
         parameters.insideCleaning = 2;
         this.platform.log.debug(`${this.accessory.displayName}: Inside Cleaning On`);
       } else {
-        switch (this.platform.platformConfig.swingModeDirections) {
+        switch (devConfig.swingModeDirections) {
           case SwingModeDirection.LeftRightAndUpDown:
             parameters.fanAutoMode = ComfortCloudFanAutoMode.AirSwingAuto;
             this.platform.log.debug(
@@ -652,14 +657,14 @@ export default class IndoorUnitAccessory {
       }
 
     } else if (value === this.platform.Characteristic.SwingMode.SWING_DISABLED) {
-      if (this.platform.platformConfig.oscilateSwitch === 'nanoe') {
+      if (devConfig.oscilateSwitch === 'nanoe') {
         parameters.nanoe = 1;
         this.platform.log.debug(`${this.accessory.displayName}: Nanoe Off`);
-      } else if (this.platform.platformConfig.oscilateSwitch === 'ecoNavi') {
+      } else if (devConfig.oscilateSwitch === 'ecoNavi') {
         parameters.ecoNavi = 1;
         parameters.ecoFunctionData = 1;
         this.platform.log.debug(`${this.accessory.displayName}: Eco Navi Off`);
-      } else if (this.platform.platformConfig.oscilateSwitch === 'insideCleaning') {
+      } else if (devConfig.oscilateSwitch === 'insideCleaning') {
         parameters.insideCleaning = 0;
         this.platform.log.debug(`${this.accessory.displayName}: Inside Cleaning Off`);
       } else {
