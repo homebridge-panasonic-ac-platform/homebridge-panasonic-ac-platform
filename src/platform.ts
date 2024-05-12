@@ -212,22 +212,21 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
   }
 
   /**
-   * Adds or removes the outdoor unit as separate accessory,
-   * depending on the user's configuration.
+   * Adds or removes the dummy outdoor unit depending on the user's configuration.
    */
-  configureOutdoorUnit() {
+  configureOutdoorUnit(deviceName, deviceGuid, exposeOutdoorUnit) {
     try {
       // We'll use a dummy identifier because the Comfort Cloud API
       // doesn't expose the outdoor unit as separate device.
-      const outdoorUnitUUID = this.api.hap.uuid.generate('Panasonic-AC-Outdoor-Unit');
-      const outdoorUnitName = 'Panasonic AC Outdoor Unit';
+      const outdoorUnitUUID = this.api.hap.uuid.generate(`${deviceName}+${deviceGuid}`);
+      const outdoorUnitName = `${deviceName} - Outdoor Unit`;
 
       const existingAccessory = this.accessories.find(
         accessory => accessory.UUID === outdoorUnitUUID);
 
       // Create an accessory for the outdoor unit if enabled.
       // The outdoor unit reports the outdoor temperature via its own sensor.
-      if (this.platformConfig.exposeOutdoorUnit) {
+      if (exposeOutdoorUnit) {
         if (existingAccessory !== undefined) {
           // The accessory already exists, we only need to set up its handlers.
           this.log.info(`Restoring outdoor unit '${existingAccessory.displayName}' `
@@ -284,6 +283,12 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
       // one if it has not been registered before.
       for (const device of comfortCloudDevices) {
 
+        // Check if for this device in plugin config option to show dummy outdoor unit is enabled.
+        const deviceConfig = this.platformConfig.devices.find((item) => item.name === device.deviceName) 
+          || this.platformConfig.devices.find((item) => item.name === device.deviceGuid) || {};
+        // Configure outdoor unit - add or remove, debend on deviceConfig.exposeOutdoorUnit value.
+        this.configureOutdoorUnit(device.deviceName, device.deviceGuid, deviceConfig.exposeOutdoorUnit);
+
         // Generate a unique id for the accessory.
         // This should be generated from something globally unique,
         // but constant, for example, the device serial number or MAC address
@@ -327,14 +332,15 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
       // At this point, we set up all devices from Comfort Cloud, but we did not unregister
       // cached devices that do not exist on the Comfort Cloud account anymore.
       for (const cachedAccessory of this.accessories) {
-        // Only indoor units have context.device set and we don't
-        // want to delete the outdoor unit here which is managed above.
+        // Only indoor units have context.device set and we don't want to delete the outdoor unit here.
         if (cachedAccessory.context.device) {
           const guid = cachedAccessory.context.device.deviceGuid;
           const comfortCloudDevice = comfortCloudDevices.find(device => device.deviceGuid === guid);
 
           if (comfortCloudDevice === undefined) {
             // This cached devices does not exist on the Comfort Cloud account (anymore).
+            this.configureOutdoorUnit(device.deviceName, device.deviceGuid, false);
+            
             this.log.info(`Removing accessory '${cachedAccessory.displayName}' (${guid}) `
               + 'because it does not exist on the Comfort Cloud account or has been excluded in plugin config.');
 
