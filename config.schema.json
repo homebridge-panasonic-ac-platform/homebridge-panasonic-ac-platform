@@ -470,7 +470,6 @@
 					"type": "fieldset",
 					"items": [
 						"devices[].name",
-						"devices[].exclude",
 						{
 							"type": "fieldset",
 							"title": "More control",
