@@ -440,7 +440,7 @@
 		{
 			"type": "fieldset",
 			"title": "Account",
-			"description": "Comfort Cloud (Panasonic ID) login details.",
+			"description": "Comfort Cloud (Panasonic ID) account details.",
 			"expandable": true,
 			"expanded": true,
 			"items": [
@@ -475,8 +475,17 @@
 				{
 					"type": "fieldset",
 					"items": [
-						"devices[].name",
-						"devices[].excludeDevice",
+						{
+							"type": "fieldset",
+							"title": "Device",
+							"flex": "1 1 100%",
+							"expandable": true,
+							"expanded": true,
+							"items": [
+								"devices[].name",
+								"devices[].excludeDevice"
+							]
+						},
 						{
 							"type": "fieldset",
 							"title": "More control",
@@ -485,7 +494,16 @@
 							"expanded": false,
 							"items": [
 								"devices[].oscilateSwitch",
-								"devices[].autoMode",
+								"devices[].autoMode"
+							]
+						},
+						{
+							"type": "fieldset",
+							"title": "Force values",
+							"flex": "1 1 100%",
+							"expandable": true,
+							"expanded": false,
+							"items": [
 								"devices[].forceSwing",
 								"devices[].forceNanoe",
 								"devices[].forceInsideCleaning",
