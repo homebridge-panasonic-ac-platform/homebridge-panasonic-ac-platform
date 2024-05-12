@@ -72,31 +72,32 @@ Example:
                 {
                     "name": "CS-Z50VKEW+4942673181",
                     "excludeDevice": true,
-                    "exposeOutdoorUnit": false,
+                    "autoMode": "auto",
+                    "oscilateSwitch": "swing",
                     "forceSwing": "false",
                     "forceNanoe": "false",
-                    "forceEcoNavi": "false",
                     "forceInsideCleaning": "false",
-                    "oscilateSwitch": "swing",
+                    "forceEcoNavi": "false",
                     "swingModeDirections": "LEFT-RIGHT-UP-DOWN",
-                    "swingModeDefaultPositionLeftRight": "CENTER",
                     "swingModeDefaultPositionUpDown": "CENTER",
-                    "autoMode": "auto"
+                    "swingModeDefaultPositionLeftRight": "CENTER",
+                    "exposeOutdoorUnit": false
                 },
-                {
+                 {
                     "name": "Bedroom AC",
                     "excludeDevice": false,
-                    "exposeOutdoorUnit": false,
+                    "autoMode": "auto",
+                    "oscilateSwitch": "nanoe",
                     "forceSwing": "false",
-                    "forceNanoe": "false",
-                    "forceEcoNavi": "false",
+                    "forceNanoe": "true",
                     "forceInsideCleaning": "false",
-                    "oscilateSwitch": "swing",
+                    "forceEcoNavi": "false",
                     "swingModeDirections": "LEFT-RIGHT-UP-DOWN",
-                    "swingModeDefaultPositionLeftRight": "CENTER",
                     "swingModeDefaultPositionUpDown": "CENTER",
-                    "autoMode": "auto"
-                }
+                    "swingModeDefaultPositionLeftRight": "CENTER",
+                    "exposeOutdoorUnit": true,
+                    "minHeatingTemperature": 8
+                },
             ]
     }
   ]
@@ -139,11 +140,11 @@ Swing value with each state change made with Homekit (e.g. activation): do nothi
 * `forceNanoe` (string):
 Nanoe value with each state change made with Homekit (e.g. activation): do nothing, set on, set off.
 
-* `forceEcoNavi` (string):
-Eco Navi value with each state change made with Homekit (e.g. activation): do nothing, set on, set off.
-
 * `forceInsideCleaning` (string):
 InsideCleaning value with each state change made with Homekit (e.g. activation): do nothing, set on, set off.
+
+* `forceEcoNavi` (string):
+Eco Navi value with each state change made with Homekit (e.g. activation): do nothing, set on, set off.
 
 * `swingModeDirections`
 Desired swing direction(s) activated when swing is switched on.
