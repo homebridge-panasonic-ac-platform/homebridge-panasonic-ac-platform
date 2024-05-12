@@ -141,7 +141,7 @@
 							"description": "Device name (as it is in Comfort Cloud account) or serial (E.G.: CS-Z50VKEW+2462503161)."
 						},
 						"excludeDevice": {
-							"title": "ExcludeDevice",
+							"title": "Exclude device",
 							"description": "Exclude device from Homebridge and HomeKit (it will stay in Comfort Cloud).",
 							"type": "boolean",
 							"default": false
