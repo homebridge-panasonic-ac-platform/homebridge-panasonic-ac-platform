@@ -430,9 +430,9 @@ export default class IndoorUnitAccessory {
    * for example, turning on a Light bulb.
    */
   async setActive(value: CharacteristicValue) {
-    const devConfig = this.platform.platformConfig.devices.find((item) => item.name === this.accessory.context.device.deviceName) ||
-        this.platform.platformConfig.devices.find((item) => item.name === this.accessory.context.device.deviceGuid) || {};
-    
+    const devConfig = this.platform.platformConfig.devices.find((item) => item.name === this.accessory.context.device.deviceName)
+      || this.platform.platformConfig.devices.find((item) => item.name === this.accessory.context.device.deviceGuid) || {};
+
     this.platform.log.debug(`Accessory: setActive() for device '${this.accessory.displayName}'`);
     const parameters: ComfortCloudDeviceUpdatePayload = {
       operate: value === this.platform.Characteristic.Active.ACTIVE ? 1 : 0,
