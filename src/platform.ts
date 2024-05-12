@@ -133,7 +133,6 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
       .then(() => {
         this.log.info('Successfully logged in to Comfort Cloud.');
         this.noOfFailedLoginAttempts = 0;
-        this.configureOutdoorUnit();
         this.discoverDevices();
       })
       .catch((error) => {
@@ -284,7 +283,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
       for (const device of comfortCloudDevices) {
 
         // Check if for this device in plugin config option to show dummy outdoor unit is enabled.
-        const deviceConfig = this.platformConfig.devices.find((item) => item.name === device.deviceName) 
+        const deviceConfig = this.platformConfig.devices.find((item) => item.name === device.deviceName)
           || this.platformConfig.devices.find((item) => item.name === device.deviceGuid) || {};
         // Configure outdoor unit - add or remove, debend on deviceConfig.exposeOutdoorUnit value.
         this.configureOutdoorUnit(device.deviceName, device.deviceGuid, deviceConfig.exposeOutdoorUnit);
@@ -340,7 +339,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
           if (comfortCloudDevice === undefined) {
             // This cached devices does not exist on the Comfort Cloud account (anymore).
             this.configureOutdoorUnit(device.deviceName, device.deviceGuid, false);
-            
+
             this.log.info(`Removing accessory '${cachedAccessory.displayName}' (${guid}) `
               + 'because it does not exist on the Comfort Cloud account or has been excluded in plugin config.');
 
