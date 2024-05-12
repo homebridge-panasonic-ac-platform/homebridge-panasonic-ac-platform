@@ -467,7 +467,7 @@
 			"type": "array",
 			"key": "devices",
 			"title": "Devices",
-			"description": "All devices are automatically added from Comfort Cloud. Here add only those devices for which you want to apply separate settings.",
+			"description": "All devices are automatically added from Comfort Cloud. Here add only those devices for which you want to apply individual settings.",
 			"buttonText": "Add device",
 			"expandable": true,
 			"expanded": false,
