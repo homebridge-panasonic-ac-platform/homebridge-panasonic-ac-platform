@@ -138,7 +138,7 @@
 							"title": "Name or serial number",
 							"type": "string",
 							"required": true,
-							"description": "Device name (as it is in Comfort Cloud account) or serial (E.G.: CS-Z50VKEW+2462503161)."
+							"description": "Device name (as it is in Comfort Cloud account) or serial (E.G.: CS-Z50VKEW+2462503161). Devices names and serial numbers are displayed in Homebridge log after restart, names can be also found in Panasonic Comfort Cloud app, serial numbers can be also found on the stickers on the devices."
 						},
 						"excludeDevice": {
 							"title": "Exclude device",
