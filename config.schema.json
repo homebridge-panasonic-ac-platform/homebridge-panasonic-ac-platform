@@ -28,7 +28,7 @@
 			},
 			"name": {
 				"title": "Plugin Name",
-				"description": "Name of the plugin in Homebridge log.",
+				"description": "Name of the plugin displayed in Homebridge log and as plugin bridge name.",
 				"type": "string",
 				"default": "Homebridge Panasonic AC Platform",
 				"placeholder": "Homebridge Panasonic AC Platform",
