@@ -121,7 +121,7 @@ Leave this field empty to automatically fetch the latest version from the App St
 When enabled, changes in the Home app will not be sent to Comfort Cloud. Useful for testing your installation without constantly switching the state of your AC.
 
 * `logsLevel` (integer):
-Logs level. 0 - only errors and important info, 1 - standard,2 - all (including debug).
+Logs level. 0 - only errors and important info, 1 - standard, 2 - all (including debug).
 
 ## Inividual for each device
 
