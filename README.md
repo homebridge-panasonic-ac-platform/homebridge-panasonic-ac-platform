@@ -149,13 +149,13 @@ InsideCleaning value with each state change made with Homekit (e.g. activation):
 * `forceEcoNavi` (string):
 Eco Navi value with each state change made with Homekit (e.g. activation): do nothing, set on, set off.
 
-* `swingModeDirections`
+* `swingModeDirections` (string):
 Desired swing direction(s) activated when swing is switched on.
 
-* `swingModeDefaultPositionUpDown`
+* `swingModeDefaultPositionUpDown` (string):
 Desired position of the Up-Down flaps when swing is switched off or the swing directions setting is Left-Right only.
 
-* `swingModeDefaultPositionLeftRight`
+* `swingModeDefaultPositionLeftRight` (string):
 Desired position of the Left-Right flaps when swing is switched off or the swing directions setting is Up-Down only.
 
 * `exposeOutdoorUnit` (boolean):
