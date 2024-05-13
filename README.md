@@ -156,7 +156,7 @@ Desired position of the Up-Down flaps when swing is switched off or the swing di
 Desired position of the Left-Right flaps when swing is switched off or the swing directions setting is Up-Down only.
 
 * `exposeOutdoorUnit` (boolean):
-When enabled it will create a dummy temperature sensor which will display the temperature from outdoor unit. This can be used for monitoring or automation purposes.
+When enabled it will create a dummy temperature sensor which will display the temperature from outdoor unit. This can be used for monitoring or automation purposes. Note: It may be required for the device to be turned on to retrieve the current temperature from the outdoor unit.
 
 * `minHeatingTemperature` (integer):
 The default heating temperature range is 16-30°C. Some Panasonic ACs have an additional heating mode for the range of 8-15°C. You can use this setting to adjust the minimum value. Leave it empty to use the default value.
