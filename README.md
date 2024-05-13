@@ -45,7 +45,7 @@ Basic settings (required):
 ```
 
 - `platform` (string): Tells Homebridge which platform this config belongs to. Leave as is.
-- `name` (string): Name of the plugin in Homebridge log.
+- `name` (string): Name of the plugin displayed in Homebridge log and as plugin bridge name. 
 - `email` (string): The username of your Comfort Cloud (Panasonic ID) account.
 - `password` (string): The password of your Comfort Cloud (Panasonic ID) account.
 
