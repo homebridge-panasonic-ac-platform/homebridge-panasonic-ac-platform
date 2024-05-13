@@ -45,7 +45,7 @@ Basic settings (required):
 ```
 
 - `platform` (string): Tells Homebridge which platform this config belongs to. Leave as is.
-- `name` (string): Name of the plugin in Homebridge log.
+- `name` (string): Name of the plugin displayed in Homebridge log and as plugin bridge name. 
 - `email` (string): The username of your Comfort Cloud (Panasonic ID) account.
 - `password` (string): The password of your Comfort Cloud (Panasonic ID) account.
 
@@ -72,31 +72,32 @@ Example:
                 {
                     "name": "CS-Z50VKEW+4942673181",
                     "excludeDevice": true,
-                    "exposeOutdoorUnit": false,
+                    "autoMode": "auto",
+                    "oscilateSwitch": "swing",
                     "forceSwing": "false",
                     "forceNanoe": "false",
-                    "forceEcoNavi": "false",
                     "forceInsideCleaning": "false",
-                    "oscilateSwitch": "swing",
+                    "forceEcoNavi": "false",
                     "swingModeDirections": "LEFT-RIGHT-UP-DOWN",
-                    "swingModeDefaultPositionLeftRight": "CENTER",
                     "swingModeDefaultPositionUpDown": "CENTER",
-                    "autoMode": "auto"
+                    "swingModeDefaultPositionLeftRight": "CENTER",
+                    "exposeOutdoorUnit": false
                 },
-                {
+                 {
                     "name": "Bedroom AC",
                     "excludeDevice": false,
-                    "exposeOutdoorUnit": false,
+                    "autoMode": "auto",
+                    "oscilateSwitch": "nanoe",
                     "forceSwing": "false",
-                    "forceNanoe": "false",
-                    "forceEcoNavi": "false",
+                    "forceNanoe": "true",
                     "forceInsideCleaning": "false",
-                    "oscilateSwitch": "swing",
+                    "forceEcoNavi": "false",
                     "swingModeDirections": "LEFT-RIGHT-UP-DOWN",
-                    "swingModeDefaultPositionLeftRight": "CENTER",
                     "swingModeDefaultPositionUpDown": "CENTER",
-                    "autoMode": "auto"
-                }
+                    "swingModeDefaultPositionLeftRight": "CENTER",
+                    "exposeOutdoorUnit": true,
+                    "minHeatingTemperature": 8
+                },
             ]
     }
   ]
@@ -108,7 +109,7 @@ Example:
 2FA key received from Panasonic (32 characters). Example: GVZCKT2LLBLV2QBXMFAWFXKFKU5EWL2H. Note: This field is currently not required to make this plugin work, but Panasonic already requires 2FA (code or SMS, recommended code) to log in to Comfort Cloud, so it may be required soon.
 
 * `refreshInterval` (integer):
-Note: More frequent refresh would result in too much daily number of requests to the Panasonic server, which could result in an account lock for 24 hours, or even a complete API lock.
+Interval of data refresh from Panasonic Comfort Cloud. Useful for example for updating the temperature from the sensor or when the state of the device changes not using HomeKit (E.G.: by Panasonic app or via remote control). Note: More frequent refresh would result in too much daily number of requests to the Panasonic server, which could result in an account lock for 24 hours, or even a complete API lock.
 
 * `excludeDevices` (string): 
 By default this plugin will add all devices from Comfort Cloud. To exclude one or more, put comma separated names or serial numbers of devices, E.G.: 'CS-Z50VKEW+4962605183,Bedroom AC,CS-Z50VKEW+4962605184,My AC unit'.
@@ -120,9 +121,12 @@ Leave this field empty to automatically fetch the latest version from the App St
 When enabled, changes in the Home app will not be sent to Comfort Cloud. Useful for testing your installation without constantly switching the state of your AC.
 
 * `logsLevel` (integer):
-Logs level. 0 - only errors and important info, 1 - standard,2 - all (including debug).
+Logs level. 0 - only errors and important info, 1 - standard, 2 - all (including debug). Note: to see debug messages in logs it is also required to enable Debug in Homebridge Settings.
 
 ## Inividual for each device
+
+* `name` (string):
+Device name (as it is in Comfort Cloud account) or serial (E.G.: CS-Z50VKEW+2462503161). Devices names and serial numbers are displayed in Homebridge log after restart, names can be also found in Panasonic Comfort Cloud app, serial numbers can be also found on the stickers on the devices.
 
 * `excludeDevice` (boolean):
 Exclude device from Homebridge and HomeKit (it will stay in Comfort Cloud).
@@ -139,23 +143,23 @@ Swing value with each state change made with Homekit (e.g. activation): do nothi
 * `forceNanoe` (string):
 Nanoe value with each state change made with Homekit (e.g. activation): do nothing, set on, set off.
 
-* `forceEcoNavi` (string):
-Eco Navi value with each state change made with Homekit (e.g. activation): do nothing, set on, set off.
-
 * `forceInsideCleaning` (string):
 InsideCleaning value with each state change made with Homekit (e.g. activation): do nothing, set on, set off.
 
-* `swingModeDirections`
+* `forceEcoNavi` (string):
+Eco Navi value with each state change made with Homekit (e.g. activation): do nothing, set on, set off.
+
+* `swingModeDirections` (string):
 Desired swing direction(s) activated when swing is switched on.
 
-* `swingModeDefaultPositionUpDown`
+* `swingModeDefaultPositionUpDown` (string):
 Desired position of the Up-Down flaps when swing is switched off or the swing directions setting is Left-Right only.
 
-* `swingModeDefaultPositionLeftRight`
+* `swingModeDefaultPositionLeftRight` (string):
 Desired position of the Left-Right flaps when swing is switched off or the swing directions setting is Up-Down only.
 
 * `exposeOutdoorUnit` (boolean):
-When enabled it will create a dummy temperature sensor which will display the temperature from outdoor unit. This can be used for monitoring or automation purposes.
+When enabled it will create a dummy temperature sensor which will display the temperature from outdoor unit. This can be used for monitoring or automation purposes. Note: It may be required for the device to be turned on to retrieve the current temperature from the outdoor unit.
 
 * `minHeatingTemperature` (integer):
 The default heating temperature range is 16-30°C. Some Panasonic ACs have an additional heating mode for the range of 8-15°C. You can use this setting to adjust the minimum value. Leave it empty to use the default value.

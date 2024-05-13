@@ -28,7 +28,7 @@
 			},
 			"name": {
 				"title": "Plugin Name",
-				"description": "Name of the plugin in Homebridge log.",
+				"description": "Name of the plugin displayed in Homebridge log and as plugin bridge name.",
 				"type": "string",
 				"default": "Homebridge Panasonic AC Platform",
 				"placeholder": "Homebridge Panasonic AC Platform",
@@ -37,7 +37,7 @@
 			"refreshInterval": {
 				"title": "Refresh interval",
 				"type": "integer",
-				"description": "Note: More frequent refresh would result in too much daily number of requests to the Panasonic server, which could result in an account lock for 24 hours, or even a complete API lock.",
+				"description": "Interval of data refresh from Panasonic Comfort Cloud. Useful for example for updating the temperature from the sensor or when the state of the device changes not using HomeKit (E.G.: by Panasonic app or via remote control). Note: More frequent refresh would result in too much daily number of requests to the Panasonic server, which could result in an account lock for 24 hours, or even a complete API lock.",
 				"required": true,
 				"default": 60,
 				"oneOf": [
@@ -104,7 +104,7 @@
 			},
 			"logsLevel": {
 				"title": "Logs Level",
-				"description": "Logs level. Note: to see debug messages in logs it is also required to enable Debug in Homebridge Settings.",
+				"description": "Logs level. 0 - only errors and important info, 1 - standard, 2 - all (including debug). Note: to see debug messages in logs it is also required to enable Debug in Homebridge Settings.",
 				"type": "integer",
 				"default": "1",
 				"oneOf": [
@@ -138,10 +138,10 @@
 							"title": "Name or serial number",
 							"type": "string",
 							"required": true,
-							"description": "Device name (as it is in Comfort Cloud account) or serial (E.G.: CS-Z50VKEW+2462503161)."
+							"description": "Device name (as it is in Comfort Cloud account) or serial (E.G.: CS-Z50VKEW+2462503161). Devices names and serial numbers are displayed in Homebridge log after restart, names can be also found in Panasonic Comfort Cloud app, serial numbers can be also found on the stickers on the devices."
 						},
 						"excludeDevice": {
-							"title": "ExcludeDevice",
+							"title": "Exclude device",
 							"description": "Exclude device from Homebridge and HomeKit (it will stay in Comfort Cloud).",
 							"type": "boolean",
 							"default": false
@@ -421,7 +421,7 @@
 						},
 						"exposeOutdoorUnit": {
 							"title": "Expose Outdoor Unit",
-							"description": "When enabled it will create a dummy temperature sensor which will display the temperature from outdoor unit. This can be used for monitoring or automation purposes.",
+							"description": "When enabled it will create a dummy temperature sensor which will display the temperature from outdoor unit. This can be used for monitoring or automation purposes. Note: It may be required for the device to be turned on to retrieve the current temperature from the outdoor unit.",
 							"type": "boolean",
 							"default": false
 						},
@@ -440,7 +440,7 @@
 		{
 			"type": "fieldset",
 			"title": "Account",
-			"description": "Comfort Cloud (Panasonic ID) login details.",
+			"description": "Comfort Cloud (Panasonic ID) account details.",
 			"expandable": true,
 			"expanded": true,
 			"items": [
@@ -467,7 +467,7 @@
 			"type": "array",
 			"key": "devices",
 			"title": "Devices",
-			"description": "All devices are automatically added from Comfort Cloud. Here add only those devices for which you want to apply separate settings.",
+			"description": "All devices are automatically added from Comfort Cloud. Here add only those devices for which you want to apply individual settings.",
 			"buttonText": "Add device",
 			"expandable": true,
 			"expanded": false,
@@ -475,8 +475,17 @@
 				{
 					"type": "fieldset",
 					"items": [
-						"devices[].name",
-						"devices[].excludeDevice",
+						{
+							"type": "fieldset",
+							"title": "Device",
+							"flex": "1 1 100%",
+							"expandable": true,
+							"expanded": true,
+							"items": [
+								"devices[].name",
+								"devices[].excludeDevice"
+							]
+						},
 						{
 							"type": "fieldset",
 							"title": "More control",
@@ -485,7 +494,16 @@
 							"expanded": false,
 							"items": [
 								"devices[].oscilateSwitch",
-								"devices[].autoMode",
+								"devices[].autoMode"
+							]
+						},
+						{
+							"type": "fieldset",
+							"title": "Force values",
+							"flex": "1 1 100%",
+							"expandable": true,
+							"expanded": false,
+							"items": [
 								"devices[].forceSwing",
 								"devices[].forceNanoe",
 								"devices[].forceInsideCleaning",
