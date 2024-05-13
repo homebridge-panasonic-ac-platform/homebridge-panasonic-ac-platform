@@ -177,7 +177,9 @@ export default class IndoorUnitAccessory {
       // Only check and set if the user wants to display the dummy sensor showing temp from outdoor unit.
       if (this.connectedOutdoorUnit) {
         if (deviceStatus.outTemperature >= 126) {
-          this.platform.log.debug('Outdoor temperature is not available (likely device is turned off).');
+          this.platform.log.debug('Outdoor temperature is not available. '
+                                  + 'Note: It may be required for the device to be turned on '
+                                  + 'to retrieve the current temperature from the outdoor unit.');
         } else {
           // Update the value of the connected outdoor unit
           this.connectedOutdoorUnit.setOutdoorTemperature(deviceStatus.outTemperature);
