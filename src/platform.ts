@@ -263,6 +263,9 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
 
     try {
       let comfortCloudDevices = await this.comfortCloud.getDevices();
+      const comfortCloudDevicesCount = Object.keys(comfortCloudDevices).length;
+      this.log.info(`Comfort Cloud total devices: ${comfortCloudDevicesCount}.`);
+      this.log.debug(`Comfort Cloud devices: ${JSON.stringify(comfortCloudDevices)}`);
 
       // Exclude by config field (comma separated list).
       if (this.platformConfig.excludeDevices !== undefined
@@ -289,6 +292,12 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
         comfortCloudDevices = comfortCloudDevices.filter(el => !devConfigExcludeList.includes(el.deviceGuid));
         //exclude by name
         comfortCloudDevices = comfortCloudDevices.filter(el => !devConfigExcludeList.includes(el.deviceName));
+      }
+
+      const comfortCloudDevicesAfterExclude = Object.keys(comfortCloudDevices).length;
+      const excludedDevicesCount = comfortCloudDevicesCount - comfortCloudDevicesAfterExclude;
+      if (excludedDevicesCount > 0) {
+        this.log.info(`Excluded devices: ${excludedDevicesCount}.`);
       }
 
       // Loop over the discovered (indoor) devices and register each
