@@ -267,6 +267,25 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
       this.log.info(`Comfort Cloud total devices: ${comfortCloudDevicesCount}.`);
       this.log.debug(`Comfort Cloud devices: ${JSON.stringify(comfortCloudDevices)}`);
 
+      // Check if there is at lease one device added to plugin config
+      if (Object.keys(this.platformConfig.devices).length > 0) {
+        this.log.info(`Plugin config total devices: ${Object.keys(this.platformConfig.devices).length}.`);
+        this.log.debug(`Plugin config devices: ${JSON.stringify(this.platformConfig.devices)}.`);
+
+        const devicesConfig = this.platformConfig.devices;
+        // List all devices added to config but not finded in Comfort Cloud.
+        let devicesConfigFiltered = devicesConfig.filter(array => comfortCloudDevices.every(
+          filter => (!(filter.deviceName === array.name || filter.deviceGuid === array.name))));
+        // Make array
+        devicesConfigFiltered = devicesConfigFiltered.map(el => el.name);
+        // Count array
+        const devicesConfigCount = Object.keys(devicesConfigFiltered).length;
+        // Show information if there is at least one device that was not found in Comfort Cloud.
+        if (devicesConfigCount > 0) {
+          this.log.info(`Devices added to config but not finded in Comfort Cloud: ${devicesConfigCount}. Details: ${devicesConfigFiltered}.`);
+        }
+      }
+
       // Exclude by config field (comma separated list).
       if (this.platformConfig.excludeDevices !== undefined
           && this.platformConfig.excludeDevices !== ''){
