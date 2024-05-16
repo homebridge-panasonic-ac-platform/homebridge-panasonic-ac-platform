@@ -10,18 +10,20 @@ export default class OutdoorUnitAccessory {
   ) {
     // Accessory Information
     // https://developers.homebridge.io/#/service/AccessoryInformation
+    let uniqueId = (Date.now().toString(9) + Math.floor(Math.random()).toString(9)).substring(1,11);
+    
     this.accessory.getService(this.platform.Service.AccessoryInformation)
       ?.setCharacteristic(
         this.platform.Characteristic.Manufacturer,
-        'Panasonic',
+        'Panasonic Comfort Cloud',
       )
       .setCharacteristic(
         this.platform.Characteristic.Model,
-        'Generic Outdoor Unit',
+        'Virtual Outdoor Unit',
       )
       .setCharacteristic(
         this.platform.Characteristic.SerialNumber,
-        accessory.UUID,
+        uniqueId,
       );
 
     // Temperature Sensor
@@ -31,7 +33,7 @@ export default class OutdoorUnitAccessory {
 
     this.service.setCharacteristic(
       this.platform.Characteristic.Name,
-      'Panasonic AC Outdoor Unit',
+      'Panasonic Outdoor Unit',
     );
   }
 
