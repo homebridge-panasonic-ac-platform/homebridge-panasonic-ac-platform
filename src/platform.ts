@@ -211,29 +211,27 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
   }
 
   /**
-   * Adds or removes the dummy outdoor unit depending on the user's configuration.
-   */
+  * Adds or removes the virtual outdoor unit depending on the user's configuration.
+  * Comfort Cloud API doesn't expose the outdoor unit as separate device.
+  */
   configureOutdoorUnit(deviceName, deviceGuid, exposeOutdoorUnit) {
     try {
-      // We'll use a dummy identifier because the Comfort Cloud API
-      // doesn't expose the outdoor unit as separate device.
       const outdoorUnitUUID = this.api.hap.uuid.generate(`${deviceName}+${deviceGuid}`);
-      const outdoorUnitName = `${deviceName} - Outdoor Unit`;
+      const outdoorUnitName = `${deviceName} (outdoor)`;
 
       const existingAccessory = this.accessories.find(
         accessory => accessory.UUID === outdoorUnitUUID);
 
       // Create an accessory for the outdoor unit if enabled.
-      // The outdoor unit reports the outdoor temperature via its own sensor.
       if (exposeOutdoorUnit) {
         if (existingAccessory !== undefined) {
           // The accessory already exists, we only need to set up its handlers.
-          this.log.info(`Restoring outdoor unit '${existingAccessory.displayName}' `
+          this.log.info(`Restoring virtual sensor '${existingAccessory.displayName}' `
             + `(${existingAccessory.UUID}) from cache.`);
           this.outdoorUnit = new OutdoorUnitAccessory(this, existingAccessory);
         } else {
           // The accessory does not yet exist, so we need to create it.
-          this.log.info(`Adding outdoor unit '${outdoorUnitName}' (${outdoorUnitUUID}).`);
+          this.log.info(`Adding virtual sensor '${outdoorUnitName}' (${outdoorUnitUUID}).`);
           const accessory = new this.api.platformAccessory(outdoorUnitName, outdoorUnitUUID);
           this.outdoorUnit = new OutdoorUnitAccessory(this, accessory);
           this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
@@ -241,7 +239,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
       } else {
         if (existingAccessory !== undefined) {
           // This accessory is no longer needed.
-          this.log.info(`Removing outdoor unit '${existingAccessory.displayName}' `
+          this.log.info(`Removing virtual sensor '${existingAccessory.displayName}' `
             + `(${existingAccessory.UUID}) `);
           this.api.unregisterPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [existingAccessory]);
         }
@@ -340,7 +338,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
 
         if (existingAccessory !== undefined) {
           // The accessory already exists
-          this.log.info(`Restoring accessory '${existingAccessory.displayName}' `
+          this.log.info(`Restoring device '${existingAccessory.displayName}' `
             + `(${device.deviceGuid})(${uuid}) from cache.`);
 
           // If you need to update the accessory.context then you should run
@@ -351,7 +349,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
           // Create the accessory handler for the restored accessory
           new IndoorUnitAccessory(this, existingAccessory, this.outdoorUnit);
         } else {
-          this.log.info(`Adding accessory '${device.deviceName}' (${device.deviceGuid})(${uuid}).`);
+          this.log.info(`Adding device '${device.deviceName}' (${device.deviceGuid})(${uuid}).`);
           // The accessory does not yet exist, so we need to create it
           const accessory = new this.api.platformAccessory<PanasonicAccessoryContext>(
             device.deviceName, uuid);
@@ -361,7 +359,6 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
           accessory.context.device = device;
 
           // Create the accessory handler for the newly create accessory
-          // this is imported from `platformAccessory.ts`
           new IndoorUnitAccessory(this, accessory, this.outdoorUnit);
 
           // Link the accessory to your platform
@@ -372,16 +369,18 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
       // At this point, we set up all devices from Comfort Cloud, but we did not unregister
       // cached devices that do not exist on the Comfort Cloud account anymore.
       for (const cachedAccessory of this.accessories) {
-        // Only indoor units have context.device set and we don't want to delete the outdoor unit here.
+
         if (cachedAccessory.context.device) {
           const guid = cachedAccessory.context.device.deviceGuid;
           const comfortCloudDevice = comfortCloudDevices.find(device => device.deviceGuid === guid);
 
           if (comfortCloudDevice === undefined) {
             // This cached devices does not exist on the Comfort Cloud account (anymore).
+
+            // Remove virtual sensor for this device
             this.configureOutdoorUnit(cachedAccessory.context.device.deviceName, cachedAccessory.context.device.deviceGuid, false);
 
-            this.log.info(`Removing accessory '${cachedAccessory.displayName}' (${guid}) `
+            this.log.info(`Removing device '${cachedAccessory.displayName}' (${guid}) `
               + 'because it does not exist on the Comfort Cloud account or has been excluded in plugin config.');
 
             this.api.unregisterPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [cachedAccessory]);
