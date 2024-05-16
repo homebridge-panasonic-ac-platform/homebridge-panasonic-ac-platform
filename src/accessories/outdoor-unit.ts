@@ -13,7 +13,7 @@ export default class OutdoorUnitAccessory {
 
     // Generate random number for virtual serial number
     const uniqueId = (Date.now().toString(9) + Math.floor(Math.random()).toString(9)).substring(1, 11);
-    
+
     this.accessory.getService(this.platform.Service.AccessoryInformation)
       ?.setCharacteristic(
         this.platform.Characteristic.Manufacturer,
