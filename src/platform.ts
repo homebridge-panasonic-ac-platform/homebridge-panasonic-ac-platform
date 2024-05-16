@@ -369,7 +369,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
       // At this point, we set up all devices from Comfort Cloud, but we did not unregister
       // cached devices that do not exist on the Comfort Cloud account anymore.
       for (const cachedAccessory of this.accessories) {
-        
+
         if (cachedAccessory.context.device) {
           const guid = cachedAccessory.context.device.deviceGuid;
           const comfortCloudDevice = comfortCloudDevices.find(device => device.deviceGuid === guid);
