@@ -341,7 +341,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
         if (existingAccessory !== undefined) {
           // The accessory already exists
           this.log.info(`Restoring accessory '${existingAccessory.displayName}' `
-            + `(${device.deviceGuid}) from cache.`);
+            + `(${device.deviceGuid})(${uuid}) from cache.`);
 
           // If you need to update the accessory.context then you should run
           // `api.updatePlatformAccessories`. eg.:
@@ -351,7 +351,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
           // Create the accessory handler for the restored accessory
           new IndoorUnitAccessory(this, existingAccessory, this.outdoorUnit);
         } else {
-          this.log.info(`Adding accessory '${device.deviceName}' (${device.deviceGuid}).`);
+          this.log.info(`Adding accessory '${device.deviceName}' (${device.deviceGuid})(${uuid}).`);
           // The accessory does not yet exist, so we need to create it
           const accessory = new this.api.platformAccessory<PanasonicAccessoryContext>(
             device.deviceName, uuid);
