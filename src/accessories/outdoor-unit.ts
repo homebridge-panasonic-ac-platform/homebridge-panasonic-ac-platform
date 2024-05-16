@@ -21,7 +21,7 @@ export default class OutdoorUnitAccessory {
       )
       .setCharacteristic(
         this.platform.Characteristic.SerialNumber,
-        'HB-PACP-OutdoorUnitDummySerialNumber',
+        accessory.UUID,
       );
 
     // Temperature Sensor
