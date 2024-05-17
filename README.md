@@ -193,7 +193,7 @@ The Home app offers no extra buttons for the Quiet and Powerful Modes. All setti
 
 - Make sure that you can successfully log in and control each device via Panasonic Comfort Cloud application.
 - Accept all terms, conditions, etc in Panasonic Comfort Cloud app.
-- Install newest plugin version.
+- Update plugin, Homebridge and all its components to the newest versions.
 - Field Comfort Cloud app version (in plugin settings) should be empty or have newest Comfort Cloud app version (same as in Apple App Store).
 - Disconnect each Comfort Cloud device (like AC) from the power and turn it on again (or restart WiFi in them).
 - Restart Internet routers.
