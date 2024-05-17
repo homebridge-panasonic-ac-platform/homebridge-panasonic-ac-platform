@@ -173,6 +173,14 @@ export default class IndoorUnitAccessory {
         }
       }
 
+      // Outdoor temperature for log
+      if (deviceStatus.outTemperature < 126) {
+        logOutput += `Outdoor Temp. ${deviceStatus.outTemperature}, `;
+      } else {
+        logOutput += `Outdoor Temp. not available, `;
+        }
+      }
+
       // Outdoor temperature for virtual sensor
       // Only check and set if the user wants to display the dummy sensor showing temp from outdoor unit.
       if (this.connectedOutdoorUnit) {
