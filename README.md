@@ -167,11 +167,14 @@ The default heating temperature range is 16-30°C. Some Panasonic ACs have an ad
 
 </details>
 
+## Device control
 
+HomeKit has a limited number of switches, which is much less than the number of available options in Panasonic Comfort Cloud. Therefore, in the settings you can choose what controls what. You can apply individual settings for each device.
 
-## Rotation speed (including Quiet Mode, Powerful Mode)
+<details>
+<summary><b>Rotation speed (including Quiet Mode, Powerful Mode)</b></summary>
 
-The Home app offers no extra buttons for the Quiet and Powerful Modes. All settings related to a unit's fan speed are controlled through the fan speed slider. The following mapping applies:
+HomeKit offers no extra switches for the Quiet and Powerful Modes. All settings related to a unit's fan speed are controlled through the fan speed slider. The following mapping applies:
 
 | Home app slider position  | Comfort Cloud setting |
 | ------------------------: | --------------------- |
@@ -185,8 +188,27 @@ The Home app offers no extra buttons for the Quiet and Powerful Modes. All setti
 | 7                         | Powerful mode         |
 | (rightmost) 8             | Auto                  |
 
+</details>
 
+<details>
+<summary><b>Oscilate Switch</b></summary>
+HomeKit has only one 'Oscillate' switch, but most Panasonic ACs have more options: Nanoe, Eco Navi, Inside Cleaning. Decide what the switch should control.
+</details>
 
+<details>
+<summary><b>Swing Mode</b></summary>
+HomeKit has only one 'Oscillate' switch, but most Panasonic ACs have two swing directions. In plugin settings you can set horizontal and vertical desired positions.
+</details>
+
+<details>
+<summary><b>Dry, Fan mode</b></summary>
+HomeKit has only 3 modes: Auto, Cool, Heat but Panasonic additionally has Fan and Dry. Choose what mode to be turned on after selecting the Auto mode in HomeKit: Fan mode, Dry mode or Auto mode (by default).
+</details>
+
+<details>
+<summary><b>Force: Swing, Nanoe, Inside cleaning, Eco Navi</b></summary>
+HomeKit does not offer additional switches, so in the plug-in settings you can choose Force Swing, Force Nanoe, Force Inside Cleaning, Force Eco Navi, i.e. forced value: on or off.
+</details>
 
 
 ## Troubleshooting
