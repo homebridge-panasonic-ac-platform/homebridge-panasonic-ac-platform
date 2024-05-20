@@ -777,6 +777,8 @@ export default class IndoorUnitAccessory {
       if (Object.keys(payload).length > 0) {
         this.platform.comfortCloud.setDeviceStatus(guid, payload);
       }
+      // Refresh device status
+      setTimeout(this.refreshDeviceStatus.bind(this), 5000);
     } catch (error) {
       this.platform.log.error('An error occurred while sending a device update. '
         + 'Turn on debug mode for more information.');
