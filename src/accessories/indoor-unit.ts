@@ -20,6 +20,7 @@ import {
 export default class IndoorUnitAccessory {
   private service: Service;
   _refreshInterval: NodeJS.Timer | undefined;
+  refreshTimer: NodeJS.Timer | undefined;
 
   constructor(
     private readonly platform: PanasonicPlatform,
@@ -778,7 +779,9 @@ export default class IndoorUnitAccessory {
         this.platform.comfortCloud.setDeviceStatus(guid, payload);
       }
       // Refresh device status
-      setTimeout(this.refreshDeviceStatus.bind(this), 3000);
+      if (!this.refreshTimer){
+        setTimeout(this.refreshDeviceStatus.bind(this), 3000);
+      }
     } catch (error) {
       this.platform.log.error('An error occurred while sending a device update. '
         + 'Turn on debug mode for more information.');
