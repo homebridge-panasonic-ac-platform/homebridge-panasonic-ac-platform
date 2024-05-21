@@ -780,7 +780,7 @@ export default class IndoorUnitAccessory {
       }
       // Refresh device status
       if (!this.refreshTimer){
-        setTimeout(this.refreshDeviceStatus.bind(this), 3000);
+        setTimeout(this.refreshDeviceStatus.bind(this), 5000);
       }
     } catch (error) {
       this.platform.log.error('An error occurred while sending a device update. '
