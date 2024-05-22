@@ -215,7 +215,7 @@ HomeKit does not offer additional switches, so in the plug-in settings you can c
 
 - Make sure that you can successfully log in and control each device via Panasonic Comfort Cloud application.
 - Accept all terms, conditions, etc in Panasonic Comfort Cloud app.
-- Update plugin, Homebridge and all its components to the newest versions.
+- Update plugin, Homebridge and all its components and Apple hubs to the newest versions.
 - Field Comfort Cloud app version (in plugin settings) should be empty or have newest Comfort Cloud app version (same as in Apple App Store).
 - Disconnect each Comfort Cloud device (like AC) from the power and turn it on again (or restart WiFi in them).
 - Restart Internet routers.
@@ -223,6 +223,13 @@ HomeKit does not offer additional switches, so in the plug-in settings you can c
 - Remove one or move device from Homebridge cache (Homebridge settings > remove one device from cache).
 - Set Logs Level to all (in plugin config) and enable debug mode (in Homebridge settings). This will include more detailed information in the log.
 - It's recommended you run this plugin as a [child bridge](https://github.com/homebridge/homebridge/wiki/Child-Bridges).
+
+<details>
+<summary>Wrong temperature</summary>
+As the manufacturer himself gives - the built-in temperature sensors (in the internal and external unit) give only approximate values. Values from sensors are updated only when the device is turned on. For these two reasons, it is not recommended to use these sensors for automation. instead, it is advisable to use an external sensor.
+
+So what are these sensors for? Air conditioning has two simple built-in automations: for cooling mode, turn off cooling when the room temperature (internal sensor) is equal to or lower than the set, and for heating mode when it is equal or higher.
+</details>
 
 ## Contributing and support
 
