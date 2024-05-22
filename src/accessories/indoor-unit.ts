@@ -413,6 +413,9 @@ export default class IndoorUnitAccessory {
         this.platform.log.debug(error);
       }
 
+      // if you need to return an error to show the device as "Not Responding" in the Home app:
+      // throw new this.platform.api.hap.HapStatusError(this.platform.api.hap.HAPStatus.SERVICE_COMMUNICATION_FAILURE);
+
       /**
        * We should be able to pass an error object to the function to mark a service/accessory
        * as 'Not Responding' in the Home App.
