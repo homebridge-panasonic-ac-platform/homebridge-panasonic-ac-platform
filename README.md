@@ -244,6 +244,19 @@ HomeKit does not offer additional switches, so in the plug-in settings you can c
 - So what are these sensors for? Air conditioning has two simple built-in automations: for cooling mode, turn off cooling when the room temperature (internal sensor) is equal to or lower than the set, and for heating mode when it is equal or higher.
 </details>
 
+<details>
+<summary>Siri</summary>
+
+If everything works properly and you can control devices using the Apple Home application, you can also control it using Siri. Commands fully depend on Apple.
+
+Examples of commands:
+- Hey Siri, turn on [device name] 
+- Hey Siri, [device name] , turn off
+- Hey Siri, [device name] , set [auto, heat, cool] mode
+- Hey Siri, [device name] , set rotation speed , [value from 1 to 8]
+
+</details>
+
 ## Contributing and support
 
 - Test/use the plugin and [report issues and share feedback](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/issues).
