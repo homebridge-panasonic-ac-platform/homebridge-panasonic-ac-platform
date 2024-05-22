@@ -238,9 +238,9 @@ HomeKit does not offer additional switches, so in the plug-in settings you can c
 <details>
 <summary>Wrong temperature</summary>
     
-- As the manufacturer himself gives - the built-in temperature sensors (in the internal and external unit) give only approximate values.
+- Built-in temperature sensors (in the internal and external unit) give only approximate values (As the manufacturer himself indicates).
 - Values from sensors are updated only when the device is turned on.
-- For these two reasons, it is not recommended to use these sensors for automation. instead, it is advisable to use an external sensor.
+- For these reasons, it is not recommended to use these sensors for automation. Instead, it is advisable to use an external sensor.
 - So what are these sensors for? Air conditioning has two simple built-in automations: for cooling mode, turn off cooling when the room temperature (internal sensor) is equal to or lower than the set, and for heating mode when it is equal or higher.
 </details>
 
