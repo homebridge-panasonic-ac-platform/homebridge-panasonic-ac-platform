@@ -239,10 +239,10 @@ HomeKit does not offer additional switches, so in the plug-in settings you can c
 <summary>Wrong temperature</summary>
     
 - Built-in temperature sensors (in the internal and external unit) give only approximate values (As the manufacturer himself indicates).
-- Values from sensors are updated only when the device is turned on.
-- Comfort Cloud updates data only from time to time, the same plugin, which is why the temperature in the Panasonic Comfort Cloud application may be different than in HomeKit / Apple Home.
-- For these reasons, it is not recommended to use these sensors for automation. Instead, it is advisable to use an external sensor.
-- So what are these sensors for? Air conditioning has two simple built-in automations: for cooling mode turn off cooling when the room temperature (internal sensor) is equal to or lower than the set, and for heating mode when it is equal or higher.
+- Values from outdoor sensors are shown and updated only when the device is turned on.
+- Comfort Cloud updates data only from time to time, the same plugin, which is why the temperature in the Panasonic Comfort Cloud application may be different than in HomeKit / Apple Home. You can force refresh in Panasonic app by pulling down the screen. 
+- For these reasons, it is not recommended to use built-in sensors for automation. Instead, it is advisable to use an external sensor.
+- So what are these built-in sensors for? Internal sensor is for two simple automations that every AC have built-in: for cooling mode turn off cooling when the room temperature (internal sensor) is equal to or lower than the set, and for heating mode when it is equal or higher. Outdoor sensor is for detecting when AC should run defrost. 
 </details>
 
 <details>
