@@ -12,7 +12,7 @@
 ## How it works
 The plugin communicates with your devices through the Comfort Cloud service. This means you must have a Comfort Cloud account (Panasonic ID) and your units must be registered and set up there before you can use this plugin.
 
-All devices that are set up on your Comfort Cloud account will appear in Homebridge and via HomeKit in your Home app (or other HomeKit app). If you remove a device from your Comfort Cloud account, it will also disappear from your Homebridge and HomeKit app after you restart Homebridge (unless you have the option to 'keep accessories of uninstalled plugins' selected in Homebridge settings). 
+All devices that are set up on your Comfort Cloud account will automaticaly appear in Homebridge and via HomeKit in your Home app (or other HomeKit app). If you remove a device from your Comfort Cloud account, it will also disappear from your Homebridge and HomeKit app after you restart Homebridge (unless you have the option to 'keep accessories of uninstalled plugins' selected in Homebridge settings). You can also exclude one or more devices. For each device you can apply individual settings. 
 
 ## Comfort Cloud account (Panasonic ID)
 
@@ -270,15 +270,13 @@ Examples of commands:
 - Thanks to the team behind Homebridge. Your efforts do not go unnoticed.
 
 ## Disclaimer
-- All product and company names are trademarks™ or registered® trademarks of their respective holders. Use of them does not imply any affiliation with or endorsement by them.
-- This is not the official Panasonic plugin.
-- The plugin uses the official Panasonic API used to support official applications for iOS and Android.
-- Panasonic has not provided an official API to support external plugins, so this method may stop working at any time.
+- This is not the official Panasonic plugin. It uses the official Panasonic API used to support official applications for iOS and Android. Panasonic has not provided an official API to support external plugins, so this method may stop working at any time.
 - Homebridge connect via Internet with Comfort Cloud (Panasonic platform), this solution does not work locally.
 - Despite the efforts made, the operation of the plugin is without any guarantees and at your own risk.
+- All product and company names are trademarks™ or registered® trademarks of their respective holders. Use of them does not imply any affiliation with or endorsement by them.
 
 <details>
-<summary><b>Alternatives</b></summary>
+<summary><b>Alternatives to this plugin</b></summary>
 
 - Local access, but this requires reworking of the equipment, which will lose the warranty, so rather not recommended.
     
