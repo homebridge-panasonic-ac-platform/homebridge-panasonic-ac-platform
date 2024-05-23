@@ -241,7 +241,7 @@ The data is refreshed automatically: every 10 minutes when the device is turned 
 <details>
 <summary>Wrong temperature</summary>
     
-- Built-in temperature sensors (in the internal and external unit) give only approximate values (As the manufacturer himself indicates).
+- Built-in temperature sensors (in the internal and external unit) give only approximate values (as the manufacturer himself indicates).
 - Values from outdoor sensors are shown and updated only when the device is turned on.
 - Comfort Cloud updates data only from time to time, the same plugin, which is why the temperature in the Panasonic Comfort Cloud application may be different than in HomeKit / Apple Home. You can force refresh in Panasonic app by pulling down the screen. 
 - For these reasons, it is not recommended to use built-in sensors for automation. Instead, it is advisable to use an external sensor.
@@ -249,7 +249,7 @@ The data is refreshed automatically: every 10 minutes when the device is turned 
 </details>
 
 <details>
-<summary>Siri</summary>
+<summary>Siri and voice commands</summary>
 
 If everything works properly and you can control devices using the Apple Home application, you can also control it using Siri. Commands fully depend on Apple.
 
@@ -257,7 +257,10 @@ Examples of commands:
 - Hey Siri, turn on [device name] 
 - Hey Siri, [device name] , turn off
 - Hey Siri, [device name] , set [auto, heat, cool] mode
-- Hey Siri, [device name] , set rotation speed , [value from 1 to 8]
+- Hey Siri, [device name] , set rotation speed to [value from 1 to 8]
+
+You can also combine several commands into one:
+- Hey Siri, [device name] , set [auto, heat, cool] mode and rotation speed to [value from 1 to 8]
 
 </details>
 
