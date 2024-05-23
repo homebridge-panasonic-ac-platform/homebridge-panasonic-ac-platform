@@ -34,57 +34,6 @@
 				"placeholder": "Homebridge Panasonic AC Platform",
 				"required": true
 			},
-			"refreshInterval": {
-				"title": "Refresh interval",
-				"type": "integer",
-				"description": "Interval of data refresh from Panasonic Comfort Cloud. Useful for example for updating the temperature from the sensor or when the state of the device changes not using HomeKit (E.G.: by Panasonic app or via remote control). Note: More frequent refresh would result in too much daily number of requests to the Panasonic server, which could result in an account lock for 24 hours, or even a complete API lock.",
-				"required": true,
-				"default": 60,
-				"oneOf": [
-					{
-						"title": "Disabled",
-						"enum": [
-							0
-						]
-					},
-					{
-						"title": "10 minutes",
-						"enum": [
-							10
-						]
-					},
-					{
-						"title": "30 minutes",
-						"enum": [
-							30
-						]
-					},
-					{
-						"title": "1 hour",
-						"enum": [
-							60
-						]
-					},
-					{
-						"title": "6 hours",
-						"enum": [
-							360
-						]
-					},
-					{
-						"title": "12 hours",
-						"enum": [
-							720
-						]
-					},
-					{
-						"title": "1 day",
-						"enum": [
-							1440
-						]
-					}
-				]
-			},
 			"excludeDevices": {
 				"title": "Exclude Devices",
 				"type": "string",
