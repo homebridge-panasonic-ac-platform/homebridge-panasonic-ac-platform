@@ -405,7 +405,6 @@
 			"expanded": false,
 			"items": [
 				"name",
-				"refreshInterval",
 				"excludeDevices",
 				"appVersionOverride",
 				"suppressOutgoingUpdates",
