@@ -432,11 +432,10 @@ export default class IndoorUnitAccessory {
 
     // Schedule continuous device updates on the first run
     // 10 minutes when device is on, 60 minutes device is off
-    if (!this._refreshInterval) {
-      this._refreshInterval = setInterval(
-        this.refreshDeviceStatus.bind(this),
-        (this.service.getCharacteristic(this.platform.Characteristic.Active).value === 1) ? 10 * 60 * 1000 : 60 * 60 * 1000);
-    }
+    clearTimeout(this._refreshInterval);
+    this._refreshInterval = setTimeout(
+      this.refreshDeviceStatus.bind(this),
+      (this.service.getCharacteristic(this.platform.Characteristic.Active).value === 1) ? 10 * 60 * 1000 : 60 * 60 * 1000);
   }
 
   /**
@@ -780,9 +779,9 @@ export default class IndoorUnitAccessory {
         this.platform.comfortCloud.setDeviceStatus(guid, payload);
       }
       // Refresh device status
-      if (!this.refreshTimer){
-        setTimeout(this.refreshDeviceStatus.bind(this), 5000);
-      }
+      clearTimeout(refreshTimer);
+      this.refreshTimer = setTimeout(this.refreshDeviceStatus.bind(this), 5000);
+
     } catch (error) {
       this.platform.log.error('An error occurred while sending a device update. '
         + 'Turn on debug mode for more information.');
