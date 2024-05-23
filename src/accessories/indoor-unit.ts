@@ -431,10 +431,10 @@ export default class IndoorUnitAccessory {
     }
 
     // Schedule continuous device updates on the first run
-    if (!this._refreshInterval && this.platform.platformConfig.refreshInterval >= 10) {
+    if (!this._refreshInterval) {
       this._refreshInterval = setInterval(
         this.refreshDeviceStatus.bind(this),
-        this.platform.platformConfig.refreshInterval * 60 * 1000 || 360000);
+        (deviceStatus.operate === 1) ? 10 * 60 * 1000 : 60 * 60 * 1000);
     }
   }
 
