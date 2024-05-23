@@ -19,8 +19,8 @@ import {
  */
 export default class IndoorUnitAccessory {
   private service: Service;
-  _refreshInterval: NodeJS.Timer | undefined;
-  refreshTimer: NodeJS.Timer | undefined;
+  _refreshInterval;
+  refreshTimer;
 
   constructor(
     private readonly platform: PanasonicPlatform,
@@ -779,7 +779,7 @@ export default class IndoorUnitAccessory {
         this.platform.comfortCloud.setDeviceStatus(guid, payload);
       }
       // Refresh device status
-      clearTimeout(refreshTimer);
+      clearTimeout(this.refreshTimer);
       this.refreshTimer = setTimeout(this.refreshDeviceStatus.bind(this), 5000);
 
     } catch (error) {
