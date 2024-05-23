@@ -206,8 +206,8 @@ HomeKit has only 3 modes: Auto, Cool, Heat but Panasonic additionally has Fan an
 </details>
 
 <details>
-<summary><b>Force: Swing, Nanoe, Inside cleaning, Eco Navi</b></summary>
-HomeKit does not offer additional switches, so in the plug-in settings you can choose Force Swing, Force Nanoe, Force Inside Cleaning, Force Eco Navi, i.e. forced value: on or off.
+<summary><b>Force values: Swing, Nanoe, Inside cleaning, Eco Navi</b></summary>
+HomeKit does not offer additional switches, so in the plugin settings you can choose Force Swing, Force Nanoe, Force Inside Cleaning, Force Eco Navi, i.e. forced value: on or off.
 </details>
 
 
