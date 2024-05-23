@@ -12,7 +12,7 @@
 ## How it works
 The plugin communicates with your devices through the Comfort Cloud service. This means you must have a Comfort Cloud account (Panasonic ID) and your units must be registered and set up there before you can use this plugin.
 
-All devices that are set up on your Comfort Cloud account will appear in Homebridge and via HomeKit in your Home app (or other HomeKit app). If you remove a device from your Comfort Cloud account, it will also disappear from your Homebridge and HomeKit app after you restart Homebridge (unless you have the option to 'keep accessories of uninstalled plugins' selected in Homebridge settings). 
+All devices that are set up on your Comfort Cloud account will automaticaly appear in Homebridge and via HomeKit in your Home app (or other HomeKit app). If you remove a device from your Comfort Cloud account, it will also disappear from your Homebridge and HomeKit app after you restart Homebridge (unless you have the option to 'keep accessories of uninstalled plugins' selected in Homebridge settings). You can also exclude one or more devices. For each device you can apply individual settings. 
 
 ## Comfort Cloud account (Panasonic ID)
 
@@ -202,23 +202,57 @@ HomeKit has only 3 modes: Auto, Cool, Heat but Panasonic additionally has Fan an
 </details>
 
 <details>
-<summary><b>Force: Swing, Nanoe, Inside cleaning, Eco Navi</b></summary>
-HomeKit does not offer additional switches, so in the plug-in settings you can choose Force Swing, Force Nanoe, Force Inside Cleaning, Force Eco Navi, i.e. forced value: on or off.
+<summary><b>Force values: Swing, Nanoe, Inside cleaning, Eco Navi</b></summary>
+HomeKit does not offer additional switches, so in the plugin settings you can choose Force Swing, Force Nanoe, Force Inside Cleaning, Force Eco Navi, i.e. forced value: on or off.
 </details>
 
 
 ## Troubleshooting
 
+<details>
+<summary>General</summary>
+
 - Make sure that you can successfully log in and control each device via Panasonic Comfort Cloud application.
 - Accept all terms, conditions, etc in Panasonic Comfort Cloud app.
-- Update plugin, Homebridge and all its components to the newest versions.
+- Update plugin, Homebridge and all its components and Apple hubs to the newest versions.
 - Field Comfort Cloud app version (in plugin settings) should be empty or have newest Comfort Cloud app version (same as in Apple App Store).
 - Disconnect each Comfort Cloud device (like AC) from the power and turn it on again (or restart WiFi in them).
 - Restart Internet routers.
 - Restart Homebridge or plugin bridge.
 - Remove one or move device from Homebridge cache (Homebridge settings > remove one device from cache).
 - Set Logs Level to all (in plugin config) and enable debug mode (in Homebridge settings). This will include more detailed information in the log.
+
+</details>
+
+<details>
+<summary>Child bridge</summary>
+    
 - It's recommended you run this plugin as a [child bridge](https://github.com/homebridge/homebridge/wiki/Child-Bridges).
+
+</details>
+
+<details>
+<summary>Wrong temperature</summary>
+    
+- Built-in temperature sensors (in the internal and external unit) give only approximate values (As the manufacturer himself indicates).
+- Values from outdoor sensors are shown and updated only when the device is turned on.
+- Comfort Cloud updates data only from time to time, the same plugin, which is why the temperature in the Panasonic Comfort Cloud application may be different than in HomeKit / Apple Home. You can force refresh in Panasonic app by pulling down the screen. 
+- For these reasons, it is not recommended to use built-in sensors for automation. Instead, it is advisable to use an external sensor.
+- So what are these built-in sensors for? Internal sensor is for two simple automations that every AC have built-in: for cooling mode turn off cooling when the room temperature (internal sensor) is equal to or lower than the set, and for heating mode when it is equal or higher. Outdoor sensor is for detecting when AC should run defrost. 
+</details>
+
+<details>
+<summary>Siri</summary>
+
+If everything works properly and you can control devices using the Apple Home application, you can also control it using Siri. Commands fully depend on Apple.
+
+Examples of commands:
+- Hey Siri, turn on [device name] 
+- Hey Siri, [device name] , turn off
+- Hey Siri, [device name] , set [auto, heat, cool] mode
+- Hey Siri, [device name] , set rotation speed , [value from 1 to 8]
+
+</details>
 
 ## Contributing and support
 
@@ -232,15 +266,13 @@ HomeKit does not offer additional switches, so in the plug-in settings you can c
 - Thanks to the team behind Homebridge. Your efforts do not go unnoticed.
 
 ## Disclaimer
-- All product and company names are trademarks™ or registered® trademarks of their respective holders. Use of them does not imply any affiliation with or endorsement by them.
-- This is not the official Panasonic plugin.
-- The plugin uses the official Panasonic API used to support official applications for iOS and Android.
-- Panasonic has not provided an official API to support external plugins, so this method may stop working at any time.
+- This is not the official Panasonic plugin. It uses the official Panasonic API used to support official applications for iOS and Android. Panasonic has not provided an official API to support external plugins, so this method may stop working at any time.
 - Homebridge connect via Internet with Comfort Cloud (Panasonic platform), this solution does not work locally.
 - Despite the efforts made, the operation of the plugin is without any guarantees and at your own risk.
+- All product and company names are trademarks™ or registered® trademarks of their respective holders. Use of them does not imply any affiliation with or endorsement by them.
 
 <details>
-<summary><b>Alternatives</b></summary>
+<summary><b>Alternatives to this plugin</b></summary>
 
 - Local access, but this requires reworking of the equipment, which will lose the warranty, so rather not recommended.
     
