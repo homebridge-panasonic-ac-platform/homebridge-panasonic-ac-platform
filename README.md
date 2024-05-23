@@ -63,7 +63,6 @@ Example:
         "email": "mail@example.com",
         "password": "********",
         "key2fa": "GVZCKT2LLBLV2QBXMFAWFXKFKU5EWL2H",
-        "refreshInterval": 60,
         "excludeDevices": "",
         "appVersionOverride": "1.21.0",
         "suppressOutgoingUpdates": false, 
@@ -107,9 +106,6 @@ Example:
 
 * `key2fa` (string): 
 2FA key received from Panasonic (32 characters). Example: GVZCKT2LLBLV2QBXMFAWFXKFKU5EWL2H. Note: This field is currently not required to make this plugin work, but Panasonic already requires 2FA (code or SMS, recommended code) to log in to Comfort Cloud, so it may be required soon.
-
-* `refreshInterval` (integer):
-Interval of data refresh from Panasonic Comfort Cloud. Useful for example for updating the temperature from the sensor or when the state of the device changes not using HomeKit (E.G.: by Panasonic app or via remote control). Note: More frequent refresh would result in too much daily number of requests to the Panasonic server, which could result in an account lock for 24 hours, or even a complete API lock.
 
 * `excludeDevices` (string): 
 By default this plugin will add all devices from Comfort Cloud. To exclude one or more, put comma separated names or serial numbers of devices, E.G.: 'CS-Z50VKEW+4962605183,Bedroom AC,CS-Z50VKEW+4962605184,My AC unit'.
