@@ -206,6 +206,13 @@ HomeKit has only 3 modes: Auto, Cool, Heat but Panasonic additionally has Fan an
 HomeKit does not offer additional switches, so in the plugin settings you can choose Force Swing, Force Nanoe, Force Inside Cleaning, Force Eco Navi, i.e. forced value: on or off.
 </details>
 
+<details>
+<summary><b>Refreshing data of devices</b></summary>
+
+The data is refreshed automatically: every 10 minutes when the device is turned on and every 60 minutes when it is turned off. Data is also refreshed every time the state of the device is changed using HomeKit / Apple Home.
+
+</details>
+
 
 ## Troubleshooting
 
