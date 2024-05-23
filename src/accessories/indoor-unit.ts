@@ -434,7 +434,7 @@ export default class IndoorUnitAccessory {
     if (!this._refreshInterval) {
       this._refreshInterval = setInterval(
         this.refreshDeviceStatus.bind(this),
-        (deviceStatus.operate === 1) ? 10 * 60 * 1000 : 60 * 60 * 1000);
+        (this.service.getCharacteristic(this.platform.Characteristic.Active).value === 1) ? 10 * 60 * 1000 : 60 * 60 * 1000);
     }
   }
 
