@@ -431,6 +431,7 @@ export default class IndoorUnitAccessory {
     }
 
     // Schedule continuous device updates on the first run
+    // 10 minutes when device is on, 60 minutes device is off
     if (!this._refreshInterval) {
       this._refreshInterval = setInterval(
         this.refreshDeviceStatus.bind(this),
