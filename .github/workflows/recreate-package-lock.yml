@@ -1,5 +1,4 @@
 # Remove package-lock.json and recreate it from package.json
-# Bump version - patch
 
 name: Recreate package-lock.json
 
