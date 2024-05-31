@@ -36,14 +36,13 @@ jobs:
           rm package-lock.json
           npm cache clean --force
           npm install
-        # npm version patch --force
 
       # Commit changes
       - name: Commit
         run: |
           git add "package.json"
           git add "package-lock.json"
-          git commit -m "recreate package-lock.json" --allow-empty
+          git commit -m "recreate package-lock.json"
 
       # Push git repository changes
       - name: Push changes to repository
