@@ -46,8 +46,12 @@ jobs:
         run: |
           git add package.json -f
           git add package-lock.json -f
-          git diff --staged
           git commit -m "recreate package-lock.json"
+
+      # Git - show differences
+      - name: Git - show differences
+        run: |
+          git diff --staged
 
       # Git - push changes to repository
       - name: Git - push changes to repository
