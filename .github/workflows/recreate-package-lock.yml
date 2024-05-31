@@ -18,7 +18,7 @@ jobs:
           token: ${{ secrets.PAT }}
 
       - name: Set up Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '20.x'
           registry-url: 'https://registry.npmjs.org'
@@ -44,7 +44,7 @@ jobs:
         run: |
           git add "package.json"
           git add "package-lock.json"
-          git commit -m "recreate package-lock.json"
+          git commit -m "recreate package-lock.json" --allow-empty
 
       # Push git repository changes
       - name: Push changes to repository
