@@ -22,7 +22,7 @@ All devices that are set up on your Comfort Cloud account will automaticaly appe
 
 ## Install plugin
 
-This plugin can be easily installed and configured through Homebridge UI or via [NPM](https://www.npmjs.com/package/homebridge-panasonic-ac-platform) "globally" by typing:
+This plugin can be easily installed through Homebridge UI or via [NPM](https://www.npmjs.com/package/homebridge-panasonic-ac-platform) "globally" by typing:
 
     npm install -g homebridge-panasonic-ac-platform
 
