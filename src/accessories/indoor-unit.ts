@@ -383,7 +383,7 @@ export default class IndoorUnitAccessory {
             logOutput += 'Inside Cleaning Off';
           }
         } else {
-          
+
           if ((!devConfig.swingModeDirections)
                    || (deviceStatus.fanAutoMode === ComfortCloudFanAutoMode.AirSwingAuto
           && devConfig.swingModeDirections
@@ -392,14 +392,14 @@ export default class IndoorUnitAccessory {
             && devConfig.swingModeDirections === SwingModeDirection.LeftRightOnly)
           || (deviceStatus.fanAutoMode === ComfortCloudFanAutoMode.AirSwingUD
             && devConfig.swingModeDirections === SwingModeDirection.UpDownOnly)) {
-          this.service.getCharacteristic(this.platform.Characteristic.SwingMode)
-            .updateValue(this.platform.Characteristic.SwingMode.SWING_ENABLED);
-          logOutput += 'Swing Mode On';
+            this.service.getCharacteristic(this.platform.Characteristic.SwingMode)
+              .updateValue(this.platform.Characteristic.SwingMode.SWING_ENABLED);
+            logOutput += 'Swing Mode On';
           } else {
             this.service.getCharacteristic(this.platform.Characteristic.SwingMode)
               .updateValue(this.platform.Characteristic.SwingMode.SWING_ENABLED);
             logOutput += 'Swing Mode On';
-          }   
+          }
         }
       } else {
         this.service.getCharacteristic(this.platform.Characteristic.SwingMode)
@@ -515,7 +515,7 @@ export default class IndoorUnitAccessory {
           this.platform.platformConfig.swingModeDefaultPositionUpDown);
         this.platform.log.debug(`${this.accessory.displayName}: Swing mode Off`);
       }
-  
+
       // Force Nanoe
       if (devConfig.forceNanoe === 'on') {
         parameters.nanoe = 2;
@@ -524,7 +524,7 @@ export default class IndoorUnitAccessory {
         parameters.nanoe = 1;
         this.platform.log.debug('Nanoe off');
       }
-  
+
       // Force Eco Navi
       if (devConfig.forceEcoNavi === 'on') {
         parameters.ecoNavi = 2;
@@ -535,7 +535,7 @@ export default class IndoorUnitAccessory {
         parameters.ecoFunctionData = 1;
         this.platform.log.debug('Eco Navi off');
       }
-  
+
       // Force Inside Cleaning
       if (devConfig.forceInsideCleaning === 'on') {
         parameters.insideCleaning = 2;
@@ -660,7 +660,6 @@ export default class IndoorUnitAccessory {
       // and (if needed) reset one set of fins to their default position.
 
       if (devConfig) {
-        
         if (devConfig.oscilateSwitch === 'nanoe') {
           parameters.nanoe = 2;
           this.platform.log.debug(`${this.accessory.displayName}: Nanoe On`);
@@ -702,7 +701,7 @@ export default class IndoorUnitAccessory {
       }
 
     } else if (value === this.platform.Characteristic.SwingMode.SWING_DISABLED) {
-      
+
       if (devConfig) {
         if (devConfig.oscilateSwitch === 'nanoe') {
           parameters.nanoe = 1;
