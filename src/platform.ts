@@ -266,7 +266,12 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
       this.log.debug(`Comfort Cloud devices: ${JSON.stringify(comfortCloudDevices)}`);
 
       const devicesConfig = this.platformConfig.devices;
-      const devicesConfigCount = Object.keys(devicesConfig).length;
+
+      let devicesConfigCount = 0;
+      if (devicesConfig) {
+        devicesConfigCount = Object.keys(devicesConfig).length;
+      }
+
       // Check if there is at least one device added to plugin config
       if (devicesConfigCount > 0) {
         this.log.info(`Plugin config total devices: ${devicesConfigCount}.`);
@@ -323,10 +328,17 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
       for (const device of comfortCloudDevices) {
 
         // Check if for this device in plugin config option to show dummy outdoor unit is enabled.
-        const devConfig = this.platformConfig.devices.find((item) => item.name === device.deviceName)
-          || this.platformConfig.devices.find((item) => item.name === device.deviceGuid) || {};
+        let devConfig;
+        if (this.platformConfig.devices) {
+          devConfig = this.platformConfig.devices.find((item) => item.name === device.deviceName)
+            || this.platformConfig.devices.find((item) => item.name === device.deviceGuid);
+        }
         // Configure outdoor unit - add or remove, debend on deviceConfig.exposeOutdoorUnit value.
-        this.configureOutdoorUnit(device.deviceName, device.deviceGuid, devConfig.exposeOutdoorUnit);
+        if (devConfig) {
+          this.configureOutdoorUnit(device.deviceName, device.deviceGuid, devConfig.exposeOutdoorUnit);
+        } else {
+          this.configureOutdoorUnit(device.deviceName, device.deviceGuid, false);
+        }
 
         // Generate a unique id for the accessory.
         // This should be generated from something globally unique,
