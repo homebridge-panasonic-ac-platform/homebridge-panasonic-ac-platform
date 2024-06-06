@@ -28,7 +28,7 @@ export default class IndoorUnitAccessory {
     private readonly accessory: PlatformAccessory<PanasonicAccessoryContext>,
     private readonly connectedOutdoorUnit?: OutdoorUnitAccessory,
   ) {
-    let devConfig = this.accessory.context.device.devConfig;
+    devConfig = this.accessory.context.device.devConfig;
     // Accessory Information
     // https://developers.homebridge.io/#/service/AccessoryInformation
     this.accessory.getService(this.platform.Service.AccessoryInformation)
