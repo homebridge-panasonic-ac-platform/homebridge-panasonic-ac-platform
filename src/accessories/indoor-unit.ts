@@ -347,7 +347,7 @@ export default class IndoorUnitAccessory {
       // Swing Mode
       if (this.devConfig) {
         if (this.devConfig.oscilateSwitch === 'nanoe') {
-          if (this.deviceStatus.nanoe === 2) {
+          if (deviceStatus.nanoe === 2) {
             this.service.getCharacteristic(this.platform.Characteristic.SwingMode)
               .updateValue(this.platform.Characteristic.SwingMode.SWING_ENABLED);
             logOutput += 'Nanoe On';
