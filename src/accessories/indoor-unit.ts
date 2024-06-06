@@ -456,13 +456,7 @@ export default class IndoorUnitAccessory {
    * for example, turning on a Light bulb.
    */
   async setActive(value: CharacteristicValue) {
-    // Individual config for each device (if exists).
-    let devConfig;
-    if (this.platform.platformConfig.devices) {
-      devConfig = this.platform.platformConfig.devices.find((item) => item.name === this.accessory.context.device.deviceName)
-      || this.platform.platformConfig.devices.find((item) => item.name === this.accessory.context.device.deviceGuid);
-    }
-
+    
     this.platform.log.debug(`Accessory: setActive() for device '${this.accessory.displayName}'`);
     const parameters: ComfortCloudDeviceUpdatePayload = {
       operate: value === this.platform.Characteristic.Active.ACTIVE ? 1 : 0,
@@ -475,10 +469,10 @@ export default class IndoorUnitAccessory {
         `${this.accessory.displayName}: ${value === this.platform.Characteristic.Active.ACTIVE ? 'set On' : 'set Off'}`);
     }
 
-    if (devConfig) {
+    if (this.devConfig) {
       // Force Swing Mode
-      if (devConfig.forceSwing === 'on') {
-        switch (devConfig.swingModeDirections) {
+      if (this.devConfig.forceSwing === 'on') {
+        switch (this.devConfig.swingModeDirections) {
           case SwingModeDirection.LeftRightAndUpDown:
             parameters.fanAutoMode = ComfortCloudFanAutoMode.AirSwingAuto;
             this.platform.log.debug(
@@ -501,7 +495,7 @@ export default class IndoorUnitAccessory {
             this.platform.log.debug(`${this.accessory.displayName}: Swing mode Auto`);
             break;
         }
-      } else if (devConfig.forceSwing === 'off') {
+      } else if (this.devConfig.forceSwing === 'off') {
         parameters.fanAutoMode = ComfortCloudFanAutoMode.Disabled;
         parameters.airSwingLR = this.swingModeLeftRightToComfortCloudPayloadValue(
           this.platform.platformConfig.swingModeDefaultPositionLeftRight);
@@ -511,30 +505,30 @@ export default class IndoorUnitAccessory {
       }
 
       // Force Nanoe
-      if (devConfig.forceNanoe === 'on') {
+      if (this.devConfig.forceNanoe === 'on') {
         parameters.nanoe = 2;
         this.platform.log.debug('Nanoe on');
-      } else if (devConfig.forceNanoe === 'off') {
+      } else if (this.devConfig.forceNanoe === 'off') {
         parameters.nanoe = 1;
         this.platform.log.debug('Nanoe off');
       }
 
       // Force Eco Navi
-      if (devConfig.forceEcoNavi === 'on') {
+      if (this.devConfig.forceEcoNavi === 'on') {
         parameters.ecoNavi = 2;
         parameters.ecoFunctionData = 2;
         this.platform.log.debug('Eco Navi on');
-      } else if (devConfig.forceEcoNavi === 'off') {
+      } else if (this.devConfig.forceEcoNavi === 'off') {
         parameters.ecoNavi = 1;
         parameters.ecoFunctionData = 1;
         this.platform.log.debug('Eco Navi off');
       }
 
       // Force Inside Cleaning
-      if (devConfig.forceInsideCleaning === 'on') {
+      if (this.devConfig.forceInsideCleaning === 'on') {
         parameters.insideCleaning = 2;
         this.platform.log.debug('Inside cleaning on');
-      } else if (devConfig.forceInsideCleaning === 'off') {
+      } else if (this.devConfig.forceInsideCleaning === 'off') {
         parameters.insideCleaning = 1;
         this.platform.log.debug('Inside cleaning off');
       }
