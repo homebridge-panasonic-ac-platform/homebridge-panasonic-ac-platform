@@ -687,7 +687,7 @@ export default class IndoorUnitAccessory {
     } else if (value === this.platform.Characteristic.SwingMode.SWING_DISABLED) {
 
       if (this.devConfig) {
-        if (devConfig.oscilateSwitch === 'nanoe') {
+        if (this.devConfig.oscilateSwitch === 'nanoe') {
           parameters.nanoe = 1;
           this.platform.log.debug(`${this.accessory.displayName}: Nanoe Off`);
         } else if (this.devConfig.oscilateSwitch === 'ecoNavi') {
