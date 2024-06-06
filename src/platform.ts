@@ -370,7 +370,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
           // Store a copy of the device object in the `accessory.context` property,
           // which can be used to store any data about the accessory you may need.
           accessory.context.device = device;
-          accessory.context.device.devConfig = devConfig?;
+          accessory.context.device.devConfig = devConfig;
 
           // Create the accessory handler for the newly create accessory
           new IndoorUnitAccessory(this, accessory, this.outdoorUnit);
