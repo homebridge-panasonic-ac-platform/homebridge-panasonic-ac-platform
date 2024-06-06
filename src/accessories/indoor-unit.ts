@@ -21,6 +21,7 @@ export default class IndoorUnitAccessory {
   private service: Service;
   _refreshInterval;
   refreshTimer;
+  devConfig = this.accessory.contex.device.devConfig;
 
   constructor(
     private readonly platform: PanasonicPlatform,
@@ -107,17 +108,12 @@ export default class IndoorUnitAccessory {
 
     // Heating Threshold Temperature (optional)
 
-    // Individual config for each device (if exists).
-    let devConfig;
-    if (this.platform.platformConfig.devices) {
-      devConfig = this.platform.platformConfig.devices.find((item) => item.name === accessory.context.device?.deviceName)
-      || this.platform.platformConfig.devices.find((item) => item.name === accessory.context.device?.deviceGuid);
-    }
+
 
     this.service
       .getCharacteristic(this.platform.Characteristic.HeatingThresholdTemperature)
       .setProps({
-        minValue: (devConfig) ? devConfig.minHeatingTemperature : 16,
+        minValue: (this.devConfig) ? this.devConfig.minHeatingTemperature : 16,
         maxValue: 30,
         minStep: 0.5,
       })
@@ -134,12 +130,7 @@ export default class IndoorUnitAccessory {
     let logOutput = '';
     this.platform.log.debug(`${this.accessory.displayName}: refresh status`);
 
-    // Individual config for each device (if exists).
-    let devConfig;
-    if (this.platform.platformConfig.devices) {
-      devConfig = this.platform.platformConfig.devices.find((item) => item.name === this.accessory.context.device.deviceName)
-      || this.platform.platformConfig.devices.find((item) => item.name === this.accessory.context.device.deviceGuid);
-    }
+    
 
     try {
       const deviceStatus = await this.platform.comfortCloud.getDeviceStatus(
@@ -351,8 +342,8 @@ export default class IndoorUnitAccessory {
         .updateValue(sliderValue);
 
       // Swing Mode
-      if (devConfig) {
-        if (devConfig.oscilateSwitch === 'nanoe') {
+      if (this.devConfig) {
+        if (this.devConfig.oscilateSwitch === 'nanoe') {
           if (deviceStatus.nanoe === 2) {
             this.service.getCharacteristic(this.platform.Characteristic.SwingMode)
               .updateValue(this.platform.Characteristic.SwingMode.SWING_ENABLED);
@@ -362,7 +353,7 @@ export default class IndoorUnitAccessory {
               .updateValue(this.platform.Characteristic.SwingMode.SWING_DISABLED);
             logOutput += 'Nanoe Off';
           }
-        } else if (devConfig.oscilateSwitch === 'ecoNavi') {
+        } else if (this.devConfig.oscilateSwitch === 'ecoNavi') {
           if (deviceStatus.ecoNavi === 2 || deviceStatus.ecoFunctionData === 2) {
             this.service.getCharacteristic(this.platform.Characteristic.SwingMode)
               .updateValue(this.platform.Characteristic.SwingMode.SWING_ENABLED);
@@ -372,7 +363,7 @@ export default class IndoorUnitAccessory {
               .updateValue(this.platform.Characteristic.SwingMode.SWING_DISABLED);
             logOutput += 'Eco Navi Off';
           }
-        } else if (devConfig.oscilateSwitch === 'insideCleaning') {
+        } else if (this.devConfig.oscilateSwitch === 'insideCleaning') {
           if (deviceStatus.insideCleaning === 2) {
             this.service.getCharacteristic(this.platform.Characteristic.SwingMode)
               .updateValue(this.platform.Characteristic.SwingMode.SWING_ENABLED);
@@ -384,14 +375,14 @@ export default class IndoorUnitAccessory {
           }
         } else {
 
-          if ((!devConfig.swingModeDirections)
+          if ((!this.devConfig.swingModeDirections)
                    || (deviceStatus.fanAutoMode === ComfortCloudFanAutoMode.AirSwingAuto
-          && devConfig.swingModeDirections
+          && this.devConfig.swingModeDirections
           === SwingModeDirection.LeftRightAndUpDown)
           || (deviceStatus.fanAutoMode === ComfortCloudFanAutoMode.AirSwingLR
-            && devConfig.swingModeDirections === SwingModeDirection.LeftRightOnly)
+            && this.devConfig.swingModeDirections === SwingModeDirection.LeftRightOnly)
           || (deviceStatus.fanAutoMode === ComfortCloudFanAutoMode.AirSwingUD
-            && devConfig.swingModeDirections === SwingModeDirection.UpDownOnly)) {
+            && this.devConfig.swingModeDirections === SwingModeDirection.UpDownOnly)) {
             this.service.getCharacteristic(this.platform.Characteristic.SwingMode)
               .updateValue(this.platform.Characteristic.SwingMode.SWING_ENABLED);
             logOutput += 'Swing Mode On';
@@ -462,12 +453,7 @@ export default class IndoorUnitAccessory {
    * for example, turning on a Light bulb.
    */
   async setActive(value: CharacteristicValue) {
-    // Individual config for each device (if exists).
-    let devConfig;
-    if (this.platform.platformConfig.devices) {
-      devConfig = this.platform.platformConfig.devices.find((item) => item.name === this.accessory.context.device.deviceName)
-      || this.platform.platformConfig.devices.find((item) => item.name === this.accessory.context.device.deviceGuid);
-    }
+    
 
     this.platform.log.debug(`Accessory: setActive() for device '${this.accessory.displayName}'`);
     const parameters: ComfortCloudDeviceUpdatePayload = {
@@ -481,9 +467,9 @@ export default class IndoorUnitAccessory {
         `${this.accessory.displayName}: ${value === this.platform.Characteristic.Active.ACTIVE ? 'set On' : 'set Off'}`);
     }
 
-    if (devConfig) {
+    if (this.devConfig) {
       // Force Swing Mode
-      if (devConfig.forceSwing === 'on') {
+      if (this.devConfig.forceSwing === 'on') {
         switch (devConfig.swingModeDirections) {
           case SwingModeDirection.LeftRightAndUpDown:
             parameters.fanAutoMode = ComfortCloudFanAutoMode.AirSwingAuto;
@@ -507,7 +493,7 @@ export default class IndoorUnitAccessory {
             this.platform.log.debug(`${this.accessory.displayName}: Swing mode Auto`);
             break;
         }
-      } else if (devConfig.forceSwing === 'off') {
+      } else if (this.devConfig.forceSwing === 'off') {
         parameters.fanAutoMode = ComfortCloudFanAutoMode.Disabled;
         parameters.airSwingLR = this.swingModeLeftRightToComfortCloudPayloadValue(
           this.platform.platformConfig.swingModeDefaultPositionLeftRight);
@@ -517,7 +503,7 @@ export default class IndoorUnitAccessory {
       }
 
       // Force Nanoe
-      if (devConfig.forceNanoe === 'on') {
+      if (this.devConfig.forceNanoe === 'on') {
         parameters.nanoe = 2;
         this.platform.log.debug('Nanoe on');
       } else if (devConfig.forceNanoe === 'off') {
@@ -526,7 +512,7 @@ export default class IndoorUnitAccessory {
       }
 
       // Force Eco Navi
-      if (devConfig.forceEcoNavi === 'on') {
+      if (this.devConfig.forceEcoNavi === 'on') {
         parameters.ecoNavi = 2;
         parameters.ecoFunctionData = 2;
         this.platform.log.debug('Eco Navi on');
@@ -537,7 +523,7 @@ export default class IndoorUnitAccessory {
       }
 
       // Force Inside Cleaning
-      if (devConfig.forceInsideCleaning === 'on') {
+      if (this.devConfig.forceInsideCleaning === 'on') {
         parameters.insideCleaning = 2;
         this.platform.log.debug('Inside cleaning on');
       } else if (devConfig.forceInsideCleaning === 'off') {
@@ -646,10 +632,7 @@ export default class IndoorUnitAccessory {
 
   async setSwingMode(value: CharacteristicValue) {
 
-    // Individual config for each device (if exists).
-    const devConfig = this.platform.platformConfig.devices.find((item) => item.name === this.accessory.context.device.deviceName)
-      || this.platform.platformConfig.devices.find((item) => item.name === this.accessory.context.device.deviceGuid) || {};
-
+    
     this.platform.log.debug(
       `Accessory: setSwingMode() for device '${this.accessory.displayName}'`);
 
@@ -659,19 +642,19 @@ export default class IndoorUnitAccessory {
       // Activate swing mode
       // and (if needed) reset one set of fins to their default position.
 
-      if (devConfig) {
-        if (devConfig.oscilateSwitch === 'nanoe') {
+      if (this.devConfig) {
+        if (this.devConfig.oscilateSwitch === 'nanoe') {
           parameters.nanoe = 2;
           this.platform.log.debug(`${this.accessory.displayName}: Nanoe On`);
-        } else if (devConfig.oscilateSwitch === 'ecoNavi') {
+        } else if (this.devConfig.oscilateSwitch === 'ecoNavi') {
           parameters.ecoNavi = 2;
           parameters.ecoFunctionData = 2;
           this.platform.log.debug(`${this.accessory.displayName}: Eco Navi On`);
-        } else if (devConfig.oscilateSwitch === 'insideCleaning') {
+        } else if (this.devConfig.oscilateSwitch === 'insideCleaning') {
           parameters.insideCleaning = 2;
           this.platform.log.debug(`${this.accessory.displayName}: Inside Cleaning On`);
         } else {
-          switch (devConfig.swingModeDirections) {
+          switch (this.devConfig.swingModeDirections) {
             case SwingModeDirection.LeftRightAndUpDown:
               parameters.fanAutoMode = ComfortCloudFanAutoMode.AirSwingAuto;
               this.platform.log.debug(
@@ -702,15 +685,15 @@ export default class IndoorUnitAccessory {
 
     } else if (value === this.platform.Characteristic.SwingMode.SWING_DISABLED) {
 
-      if (devConfig) {
+      if (this.devConfig) {
         if (devConfig.oscilateSwitch === 'nanoe') {
           parameters.nanoe = 1;
           this.platform.log.debug(`${this.accessory.displayName}: Nanoe Off`);
-        } else if (devConfig.oscilateSwitch === 'ecoNavi') {
+        } else if (this.devConfig.oscilateSwitch === 'ecoNavi') {
           parameters.ecoNavi = 1;
           parameters.ecoFunctionData = 1;
           this.platform.log.debug(`${this.accessory.displayName}: Eco Navi Off`);
-        } else if (devConfig.oscilateSwitch === 'insideCleaning') {
+        } else if (this.devConfig.oscilateSwitch === 'insideCleaning') {
           parameters.insideCleaning = 0;
           this.platform.log.debug(`${this.accessory.displayName}: Inside Cleaning Off`);
         } else {
