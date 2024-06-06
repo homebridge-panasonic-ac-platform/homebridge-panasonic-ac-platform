@@ -35,7 +35,7 @@ export default class IndoorUnitAccessory {
       devConfig = this.platform.platformConfig.devices.find((item) => item.name === accessory.context.device?.deviceName)
       || this.platform.platformConfig.devices.find((item) => item.name === accessory.context.device?.deviceGuid);
     }
-    
+
     // Accessory Information
     // https://developers.homebridge.io/#/service/AccessoryInformation
     this.accessory.getService(this.platform.Service.AccessoryInformation)
