@@ -21,7 +21,7 @@ export default class IndoorUnitAccessory {
   private service: Service;
   _refreshInterval;
   refreshTimer;
-  devConfig = this.accessory.contex.device.devConfig;
+  devConfig = this.accessory.context.device.devConfig;
 
   constructor(
     private readonly platform: PanasonicPlatform,
