@@ -21,14 +21,17 @@ export default class IndoorUnitAccessory {
   private service: Service;
   _refreshInterval;
   refreshTimer;
-  devConfig;
 
   constructor(
     private readonly platform: PanasonicPlatform,
     private readonly accessory: PlatformAccessory<PanasonicAccessoryContext>,
     private readonly connectedOutdoorUnit?: OutdoorUnitAccessory,
   ) {
-    this.devConfig = this.accessory.context.device.devConfig;
+    let devConfig;
+    if (this.platform.platformConfig.devices) {
+      devConfig = this.platformConfig.devices.find((item) => item.name === accessory.context.device?.deviceName)
+        || this.platformConfig.devices.find((item) => item.name === accessory.context.device?.deviceGuid);
+    }
     // Accessory Information
     // https://developers.homebridge.io/#/service/AccessoryInformation
     this.accessory.getService(this.platform.Service.AccessoryInformation)
@@ -683,7 +686,7 @@ export default class IndoorUnitAccessory {
     } else if (value === this.platform.Characteristic.SwingMode.SWING_DISABLED) {
 
       if (this.devConfig) {
-        if (devConfig.oscilateSwitch === 'nanoe') {
+        if (this.devConfig.oscilateSwitch === 'nanoe') {
           parameters.nanoe = 1;
           this.platform.log.debug(`${this.accessory.displayName}: Nanoe Off`);
         } else if (this.devConfig.oscilateSwitch === 'ecoNavi') {
