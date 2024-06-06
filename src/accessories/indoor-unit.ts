@@ -27,11 +27,7 @@ export default class IndoorUnitAccessory {
     private readonly accessory: PlatformAccessory<PanasonicAccessoryContext>,
     private readonly connectedOutdoorUnit?: OutdoorUnitAccessory,
   ) {
-    let devConfig;
-    if (this.platform.platformConfig.devices) {
-      devConfig = this.platformConfig.devices.find((item) => item.name === accessory.context.device?.deviceName)
-        || this.platformConfig.devices.find((item) => item.name === accessory.context.device?.deviceGuid);
-    }
+
     // Accessory Information
     // https://developers.homebridge.io/#/service/AccessoryInformation
     this.accessory.getService(this.platform.Service.AccessoryInformation)
@@ -122,6 +118,12 @@ export default class IndoorUnitAccessory {
         minStep: 0.5,
       })
       .onSet(this.setThresholdTemperature.bind(this));
+
+    let devConfig;
+    if (this.platform.platformConfig.devices) {
+      devConfig = this.platformConfig.devices.find((item) => item.name === accessory.context.device?.deviceName)
+        || this.platformConfig.devices.find((item) => item.name === accessory.context.device?.deviceGuid);
+    }
 
     // Update characteristic values asynchronously instead of using onGet handlers
     this.refreshDeviceStatus();
