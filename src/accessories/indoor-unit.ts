@@ -21,12 +21,21 @@ export default class IndoorUnitAccessory {
   private service: Service;
   _refreshInterval;
   refreshTimer;
+  devConfig;
 
   constructor(
     private readonly platform: PanasonicPlatform,
     private readonly accessory: PlatformAccessory<PanasonicAccessoryContext>,
     private readonly connectedOutdoorUnit?: OutdoorUnitAccessory,
   ) {
+
+    // Individual config for each device (if exists).
+    let devConfig;
+    if (this.platform.platformConfig.devices) {
+      devConfig = this.platform.platformConfig.devices.find((item) => item.name === accessory.context.device?.deviceName)
+      || this.platform.platformConfig.devices.find((item) => item.name === accessory.context.device?.deviceGuid);
+    }
+    
     // Accessory Information
     // https://developers.homebridge.io/#/service/AccessoryInformation
     this.accessory.getService(this.platform.Service.AccessoryInformation)
@@ -107,12 +116,7 @@ export default class IndoorUnitAccessory {
 
     // Heating Threshold Temperature (optional)
 
-    // Individual config for each device (if exists).
-    let devConfig;
-    if (this.platform.platformConfig.devices) {
-      devConfig = this.platform.platformConfig.devices.find((item) => item.name === accessory.context.device?.deviceName)
-      || this.platform.platformConfig.devices.find((item) => item.name === accessory.context.device?.deviceGuid);
-    }
+    
 
     this.service
       .getCharacteristic(this.platform.Characteristic.HeatingThresholdTemperature)
