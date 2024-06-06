@@ -30,9 +30,8 @@ export default class IndoorUnitAccessory {
   ) {
 
     // Individual config for each device (if exists).
-    let devConfig;
     if (this.platform.platformConfig.devices) {
-      devConfig = this.platform.platformConfig.devices.find((item) => item.name === accessory.context.device?.deviceName)
+      this.devConfig = this.platform.platformConfig.devices.find((item) => item.name === accessory.context.device?.deviceName)
       || this.platform.platformConfig.devices.find((item) => item.name === accessory.context.device?.deviceGuid);
     }
 
