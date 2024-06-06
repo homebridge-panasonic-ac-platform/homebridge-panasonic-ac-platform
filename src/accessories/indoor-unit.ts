@@ -131,8 +131,6 @@ export default class IndoorUnitAccessory {
     let logOutput = '';
     this.platform.log.debug(`${this.accessory.displayName}: refresh status`);
 
-    
-
     try {
       const deviceStatus = await this.platform.comfortCloud.getDeviceStatus(
         this.accessory.context.device.deviceGuid);
@@ -454,7 +452,6 @@ export default class IndoorUnitAccessory {
    * for example, turning on a Light bulb.
    */
   async setActive(value: CharacteristicValue) {
-    
 
     this.platform.log.debug(`Accessory: setActive() for device '${this.accessory.displayName}'`);
     const parameters: ComfortCloudDeviceUpdatePayload = {
@@ -633,7 +630,6 @@ export default class IndoorUnitAccessory {
 
   async setSwingMode(value: CharacteristicValue) {
 
-    
     this.platform.log.debug(
       `Accessory: setSwingMode() for device '${this.accessory.displayName}'`);
 
