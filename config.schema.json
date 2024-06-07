@@ -2,6 +2,8 @@
 	"pluginAlias": "Panasonic AC Platform",
 	"pluginType": "platform",
 	"singular": true,
+	"headerDisplay": "Homebridge plugin for Panasonic Comfort Cloud.",
+        "footerDisplay": "For additonal information visit [Plugin Homepage](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform).",
 	"schema": {
 		"type": "object",
 		"properties": {
@@ -30,15 +32,9 @@
 				"title": "Plugin Name",
 				"description": "Name of the plugin displayed in Homebridge log and as plugin bridge name.",
 				"type": "string",
-				"default": "Homebridge Panasonic AC Platform",
-				"placeholder": "Homebridge Panasonic AC Platform",
+				"default": "Panasonic AC Platform",
+				"placeholder": "Panasonic AC Platform",
 				"required": true
-			},
-			"excludeDevices": {
-				"title": "Exclude Devices",
-				"type": "string",
-				"description": "By default this plugin will add all devices from Comfort Cloud. To exclude one or more, put comma separated names or serial numbers of devices, E.G.: 'CS-Z50VKEW+4962605183,Bedroom AC,CS-Z50VKEW+4962605184,My AC unit'.",
-				"required": false
 			},
 			"appVersionOverride": {
 				"title": "Comfort Cloud app version (override)",
@@ -95,174 +91,7 @@
 							"type": "boolean",
 							"default": false
 						},
-						"autoMode": {
-							"title": "Auto Mode",
-							"description": "HomeKit has only 3 modes: Auto, Cool, Heat but Panasonic additionally has Fan and Dry. Choose what mode to be turned on after selecting the Auto mode in HomeKit: Fan mode, Dry mode or Auto mode (by default).",
-							"type": "string",
-							"default": "auto",
-							"oneOf": [
-								{
-									"title": "Auto mode",
-									"enum": [
-										"auto"
-									]
-								},
-								{
-									"title": "Fan mode",
-									"enum": [
-										"fan"
-									]
-								},
-								{
-									"title": "Dry mode",
-									"enum": [
-										"dry"
-									]
-								}
-							],
-							"required": true
-						},
-						"oscilateSwitch": {
-							"title": "Oscilate Switch",
-							"description": "HomeKit has only one 'Oscillate' switch, but most Panasonic ACs have more options: Nanoe, Eco Navi, Inside Cleaning and Swing mode have two swing directions. Decide what the switch should control: Swing Mode, Nanoe, Eco Navi or Inside Cleaning.",
-							"type": "string",
-							"default": "swing",
-							"oneOf": [
-								{
-									"title": "Swing Mode",
-									"enum": [
-										"swing"
-									]
-								},
-								{
-									"title": "Nanoe",
-									"enum": [
-										"nanoe"
-									]
-								},
-								{
-									"title": "Eco Navi",
-									"enum": [
-										"ecoNavi"
-									]
-								},
-								{
-									"title": "Inside Cleaning",
-									"enum": [
-										"insideCleaning"
-									]
-								}
-							],
-							"required": true
-						},
-						"forceSwing": {
-							"title": "Force Swing",
-							"description": "Swing value with each state change made with HomeKit (e.g. activation).",
-							"type": "string",
-							"default": "false",
-							"required": true,
-							"oneOf": [
-								{
-									"title": "Do nothing",
-									"enum": [
-										"false"
-									]
-								},
-								{
-									"title": "Set on",
-									"enum": [
-										"on"
-									]
-								},
-								{
-									"title": "Set off",
-									"enum": [
-										"off"
-									]
-								}
-							]
-						},
-						"forceNanoe": {
-							"title": "Force Nanoe",
-							"description": "Nanoe value with each state change made with HomeKit (e.g. activation).",
-							"type": "string",
-							"default": "false",
-							"oneOf": [
-								{
-									"title": "Do nothing",
-									"enum": [
-										"false"
-									]
-								},
-								{
-									"title": "Set on",
-									"enum": [
-										"on"
-									]
-								},
-								{
-									"title": "Set off",
-									"enum": [
-										"off"
-									]
-								}
-							],
-							"required": true
-						},
-						"forceEcoNavi": {
-							"title": "Force Eco Navi",
-							"description": "Eco Navi value with each state change made with HomeKit (e.g. activation).",
-							"type": "string",
-							"default": "false",
-							"oneOf": [
-								{
-									"title": "Do nothing",
-									"enum": [
-										"false"
-									]
-								},
-								{
-									"title": "Set on",
-									"enum": [
-										"on"
-									]
-								},
-								{
-									"title": "Set off",
-									"enum": [
-										"off"
-									]
-								}
-							],
-							"required": true
-						},
-						"forceInsideCleaning": {
-							"title": "Force Inside Cleaning",
-							"description": "Inside Cleaning value with each state change made with HomeKit (e.g. activation).",
-							"type": "string",
-							"default": "false",
-							"oneOf": [
-								{
-									"title": "Do nothing",
-									"enum": [
-										"false"
-									]
-								},
-								{
-									"title": "Set on",
-									"enum": [
-										"on"
-									]
-								},
-								{
-									"title": "Set off",
-									"enum": [
-										"off"
-									]
-								}
-							],
-							"required": true
-						},
+						
 						"swingModeDirections": {
 							"title": "Swing Mode Directions",
 							"description": "Desired swing direction(s) activated when swing is switched on.",
@@ -368,17 +197,59 @@
 							],
 							"required": true
 						},
-						"exposeOutdoorUnit": {
-							"title": "Expose Outdoor Unit",
-							"description": "When enabled it will create a dummy temperature sensor which will display the temperature from outdoor unit. This can be used for monitoring or automation purposes. Note: It may be required for the device to be turned on to retrieve the current temperature from the outdoor unit.",
-							"type": "boolean",
-							"default": false
-						},
 						"minHeatingTemperature": {
 							"title": "Minimum heating temperature (override)",
 							"description": "The default heating temperature range is 16-30°C. Some Panasonic ACs have an additional heating mode for the range of 8-15°C. You can use this setting to adjust the minimum value. Leave it empty to use the default value.",
 							"type": "integer",
 							"placeholder": "16"
+						},
+						"exposeOutdoorTemp": {
+							"title": "Expose Outdoor Temp",
+							"description": "When enabled it will create a dummy temperature sensor which will display the temperature from outdoor unit. This can be used for monitoring or automation purposes. Note: It may be required for the device to be turned on to retrieve the current temperature from the outdoor unit.",
+							"type": "boolean",
+							"default": false
+						},
+						"exposeNanoe": {
+							"title": "Expose Nanoe",
+							"description": "When enabled it will create a switch to control Nanoe.",
+							"type": "boolean",
+							"default": false
+						},
+						"exposeInsideCleaning": {
+							"title": "Expose Inside Cleaning",
+							"description": "When enabled it will create a switch to control Inside Cleaning.",
+							"type": "boolean",
+							"default": false
+						},
+						"exposeEcoNavi": {
+							"title": "Expose Eco Navi",
+							"description": "When enabled it will create a switch to control Eco Navi.",
+							"type": "boolean",
+							"default": false
+						},
+						"exposeDryMode": {
+							"title": "Expose Nanoe",
+							"description": "When enabled it will create a switch to control Dry Mode.",
+							"type": "boolean",
+							"default": false
+						},
+						"exposeFanMode": {
+							"title": "Expose Fan Mode",
+							"description": "When enabled it will create a switch to control Fan Mode.",
+							"type": "boolean",
+							"default": false
+						},
+						"exposeQuietMode": {
+							"title": "Expose Quiet Mode",
+							"description": "When enabled it will create a switch to control Quiet Mode. You can also enable this feature by setting the speed slider to 1.",
+							"type": "boolean",
+							"default": false
+						},
+						"exposePowerfulMode": {
+							"title": "Expose Powerful Mode",
+							"description": "When enabled it will create a switch to control Powerful Mode. You can also enable this feature by setting the speed slider to 7.",
+							"type": "boolean",
+							"default": false
 						}
 					}
 				}
@@ -405,7 +276,6 @@
 			"expanded": false,
 			"items": [
 				"name",
-				"excludeDevices",
 				"appVersionOverride",
 				"suppressOutgoingUpdates",
 				"logsLevel"
@@ -431,31 +301,25 @@
 							"expanded": true,
 							"items": [
 								"devices[].name",
-								"devices[].excludeDevice"
+								"devices[].excludeDevice",
+								"devices[].minHeatingTemperature"
 							]
 						},
 						{
 							"type": "fieldset",
-							"title": "More control",
+							"title": "Add sensors and switches",
 							"flex": "1 1 100%",
 							"expandable": true,
 							"expanded": false,
 							"items": [
-								"devices[].oscilateSwitch",
-								"devices[].autoMode"
-							]
-						},
-						{
-							"type": "fieldset",
-							"title": "Force values",
-							"flex": "1 1 100%",
-							"expandable": true,
-							"expanded": false,
-							"items": [
-								"devices[].forceSwing",
-								"devices[].forceNanoe",
-								"devices[].forceInsideCleaning",
-								"devices[].forceEcoNavi"
+								"devices[].exposeOutdoorTemp",
+								"devices[].exposeNanoe",
+								"devices[].exposeInsideCleaning",
+								"devices[].exposeEcoNavi",
+								"devices[].exposeDryMode",
+								"devices[].exposeFanMode",
+								"devices[].exposeQuietMode",
+								"devices[].exposePowerfulMode"
 							]
 						},
 						{
@@ -468,17 +332,6 @@
 								"devices[].swingModeDirections",
 								"devices[].swingModeDefaultPositionUpDown",
 								"devices[].swingModeDefaultPositionLeftRight"
-							]
-						},
-						{
-							"type": "fieldset",
-							"title": "Other",
-							"flex": "1 1 100%",
-							"expandable": true,
-							"expanded": false,
-							"items": [
-								"devices[].exposeOutdoorUnit",
-								"devices[].minHeatingTemperature"
 							]
 						}
 					]

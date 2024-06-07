@@ -27,32 +27,11 @@ This plugin can be easily installed through Homebridge UI or via [NPM](https://w
     npm install -g homebridge-panasonic-ac-platform
 
 ## Configure plugin
-Configure the plugin through the settings UI or directly in the JSON editor.
+Configure the plugin through the settings UI or in the JSON editor.
 
-Basic settings (required):
-
-```json
-{
-  "platforms": [
-    {
-        "platform": "Panasonic AC Platform",
-        "name": "Homebridge Panasonic AC Platform",
-        "email": "mail@example.com",
-        "password": "********"
-    }
-  ]
-}
-```
-
-- `platform` (string): Tells Homebridge which platform this config belongs to. Leave as is.
-- `name` (string): Name of the plugin displayed in Homebridge log and as plugin bridge name. 
-- `email` (string): The username of your Comfort Cloud (Panasonic ID) account.
-- `password` (string): The password of your Comfort Cloud (Panasonic ID) account.
 
 <details>
-<summary><b>Advanced configuration and individual device settings</b></summary>
-
-Example:
+<summary><b>config.json example</b></summary>
 
 ```json
 {
@@ -63,7 +42,6 @@ Example:
         "email": "mail@example.com",
         "password": "********",
         "key2fa": "GVZCKT2LLBLV2QBXMFAWFXKFKU5EWL2H",
-        "excludeDevices": "",
         "appVersionOverride": "1.21.0",
         "suppressOutgoingUpdates": false, 
         "logsLevel": 1,
@@ -71,44 +49,42 @@ Example:
                 {
                     "name": "CS-Z50VKEW+4942673181",
                     "excludeDevice": true,
-                    "autoMode": "auto",
-                    "oscilateSwitch": "swing",
-                    "forceSwing": "false",
-                    "forceNanoe": "false",
-                    "forceInsideCleaning": "false",
-                    "forceEcoNavi": "false",
+                    "minHeatingTemperature": 8,
+                    "exposeOutdoorTemp": false,
+                    "exposeNanoe": true,
+                    "exposeInsideCleaning": false,
+                    "exposeEcoNavi": false,
+                    "exposeDryMode": false,
+                    "exposeQuietMode": true,
+                    "exposePowerfulMode": false,
                     "swingModeDirections": "LEFT-RIGHT-UP-DOWN",
                     "swingModeDefaultPositionUpDown": "CENTER",
-                    "swingModeDefaultPositionLeftRight": "CENTER",
-                    "exposeOutdoorUnit": false
+                    "swingModeDefaultPositionLeftRight": "CENTER"
                 },
                  {
                     "name": "Bedroom AC",
                     "excludeDevice": false,
-                    "autoMode": "auto",
-                    "oscilateSwitch": "nanoe",
-                    "forceSwing": "false",
-                    "forceNanoe": "true",
-                    "forceInsideCleaning": "false",
-                    "forceEcoNavi": "false",
-                    "swingModeDirections": "LEFT-RIGHT-UP-DOWN",
-                    "swingModeDefaultPositionUpDown": "CENTER",
-                    "swingModeDefaultPositionLeftRight": "CENTER",
-                    "exposeOutdoorUnit": true,
-                    "minHeatingTemperature": 8
+                    "exposeOutdoorTemp": true,
+                    "exposeNanoe": false,
+                    "exposeInsideCleaning": true,
                 },
             ]
     }
   ]
 }
 ```
-## Advanced fields
+#### General
+
+- `platform` (string): Tells Homebridge which platform this config belongs to. Leave as is.
+
+- `name` (string): Name of the plugin displayed in Homebridge log and as plugin bridge name.
+
+- `email` (string): The username of your Comfort Cloud (Panasonic ID) account.
+
+- `password` (string): The password of your Comfort Cloud (Panasonic ID) account.
 
 * `key2fa` (string): 
 2FA key received from Panasonic (32 characters). Example: GVZCKT2LLBLV2QBXMFAWFXKFKU5EWL2H. Note: This field is currently not required to make this plugin work, but Panasonic already requires 2FA (code or SMS, recommended code) to log in to Comfort Cloud, so it may be required soon.
-
-* `excludeDevices` (string): 
-By default this plugin will add all devices from Comfort Cloud. To exclude one or more, put comma separated names or serial numbers of devices, E.G.: 'CS-Z50VKEW+4962605183,Bedroom AC,CS-Z50VKEW+4962605184,My AC unit'.
 
 * `appVersionOverride` (string):
 Leave this field empty to automatically fetch the latest version from the App Store and if that fails, it will use the last known working value which is hard-coded. Filling in this field will make the entered version used (automatic overwriting of versions from the App Store will not work).
@@ -119,7 +95,7 @@ When enabled, changes in the Home app will not be sent to Comfort Cloud. Useful 
 * `logsLevel` (integer):
 Logs level. 0 - only errors and important info, 1 - standard, 2 - all (including debug). Note: to see debug messages in logs it is also required to enable Debug in Homebridge Settings.
 
-## Inividual for each device
+#### Individual for each device
 
 * `name` (string):
 Device name (as it is in Comfort Cloud account) or serial (E.G.: CS-Z50VKEW+2462503161). Devices names and serial numbers are displayed in Homebridge log after restart, names can be also found in Panasonic Comfort Cloud app, serial numbers can be also found on the stickers on the devices.
@@ -127,23 +103,25 @@ Device name (as it is in Comfort Cloud account) or serial (E.G.: CS-Z50VKEW+2462
 * `excludeDevice` (boolean):
 Exclude device from Homebridge and HomeKit (it will stay in Comfort Cloud).
 
-* `autoMode` (string):
-HomeKit has only 3 modes: Auto, Cool, Heat but Panasonic additionally has Fan and Dry. Choose what mode to be turned on after selecting the Auto mode in HomeKit: Fan mode, Dry mode or Auto mode (by default).
+* `minHeatingTemperature` (integer):
+The default heating temperature range is 16-30°C. Some Panasonic ACs have an additional heating mode for the range of 8-15°C. You can use this setting to adjust the minimum value. Leave it empty to use the default value.
 
-* `oscilateSwitch` (string):
-HomeKit has only one 'Oscillate' switch, but most Panasonic ACs have more options: Nanoe, Eco Navi, Inside Cleaning and Swing mode have two swing directions. Decide what the switch should control: Swing Mode, Nanoe, Eco Navi or Inside Cleaning.
+* `exposeOutdoorTemp` (boolean):
+When enabled it will create a dummy temperature sensor which will display the temperature from outdoor unit. This can be used for monitoring or automation purposes. Note: It may be required for the device to be turned on to retrieve the current temperature from the outdoor unit.
 
-* `forceSwing` (string):
-Swing value with each state change made with Homekit (e.g. activation): do nothing, set on, set off.
+* `exposeNanoe` (boolean): When enabled it will create a switch to control Nanoe.
 
-* `forceNanoe` (string):
-Nanoe value with each state change made with Homekit (e.g. activation): do nothing, set on, set off.
+* `exposeInsideCleaning` (boolean): When enabled it will create a switch to control Inside Cleaning.
 
-* `forceInsideCleaning` (string):
-InsideCleaning value with each state change made with Homekit (e.g. activation): do nothing, set on, set off.
+* `exposeEcoNavi` (boolean): When enabled it will create a switch to control Eco Navi.
+ 
+* `exposeDryMode` (boolean): When enabled it will create a switch to control Dry Mode.
 
-* `forceEcoNavi` (string):
-Eco Navi value with each state change made with Homekit (e.g. activation): do nothing, set on, set off.
+* `exposeFanMode` (boolean): When enabled it will create a switch to control Fan Mode.
+
+* `exposeQuietMode` (boolean): When enabled it will create a switch to control Quiet Mode. You can also enable this feature by setting the speed slider to 1.
+
+* `exposePowerfulMode` (boolean): When enabled it will create a switch to control Powerful Mode. You can also enable this feature by setting the speed slider to 7.
 
 * `swingModeDirections` (string):
 Desired swing direction(s) activated when swing is switched on.
@@ -154,23 +132,22 @@ Desired position of the Up-Down flaps when swing is switched off or the swing di
 * `swingModeDefaultPositionLeftRight` (string):
 Desired position of the Left-Right flaps when swing is switched off or the swing directions setting is Up-Down only.
 
-* `exposeOutdoorUnit` (boolean):
-When enabled it will create a dummy temperature sensor which will display the temperature from outdoor unit. This can be used for monitoring or automation purposes. Note: It may be required for the device to be turned on to retrieve the current temperature from the outdoor unit.
-
-* `minHeatingTemperature` (integer):
-The default heating temperature range is 16-30°C. Some Panasonic ACs have an additional heating mode for the range of 8-15°C. You can use this setting to adjust the minimum value. Leave it empty to use the default value.
-
 
 </details>
 
 ## Device control
 
-HomeKit has a limited number of switches, which is much less than the number of available options in Panasonic Comfort Cloud. Therefore, in the settings you can choose what controls what. You can apply individual settings for each device.
+HomeKit has a limited number of switches, which is much less than the number of available options in Panasonic Comfort Cloud. Therefore, in the plugin settings you can choose what controls what and add additional sensors and switches. You can apply individual settings for each device.
+
+<details>
+<summary><b>Additional sensors and switches (Nanoe, Inside cleaning, etc.)</b></summary>
+Enable additional sensor for outdoor temp. and switches for Nanoe, Inside Cleaning, Eco Navi, Dry Mode, Fan mode, Quiet Mode and Powerful Mode. These switches will be available in HomeKit / device / settings wheel / other accessories.
+</details>
 
 <details>
 <summary><b>Rotation speed (including Quiet Mode, Powerful Mode)</b></summary>
 
-HomeKit offers no extra switches for the Quiet and Powerful Modes. All settings related to a unit's fan speed are controlled through the fan speed slider. The following mapping applies:
+All settings related to a unit's fan speed are controlled through the fan speed slider. The following mapping applies:
 
 | Home app slider position  | Comfort Cloud setting |
 | ------------------------: | --------------------- |
@@ -187,23 +164,8 @@ HomeKit offers no extra switches for the Quiet and Powerful Modes. All settings 
 </details>
 
 <details>
-<summary><b>Oscilate Switch</b></summary>
-HomeKit has only one 'Oscillate' switch, but most Panasonic ACs have more options: Nanoe, Eco Navi, Inside Cleaning. Decide what the switch should control.
-</details>
-
-<details>
 <summary><b>Swing Mode</b></summary>
 HomeKit has only one 'Oscillate' switch, but most Panasonic ACs have two swing directions. In plugin settings you can set horizontal and vertical desired positions.
-</details>
-
-<details>
-<summary><b>Dry, Fan mode</b></summary>
-HomeKit has only 3 modes: Auto, Cool, Heat but Panasonic additionally has Fan and Dry. Choose what mode to be turned on after selecting the Auto mode in HomeKit: Fan mode, Dry mode or Auto mode (by default).
-</details>
-
-<details>
-<summary><b>Force values: Swing, Nanoe, Inside cleaning, Eco Navi</b></summary>
-HomeKit does not offer additional switches, so in the plugin settings you can choose Force Swing, Force Nanoe, Force Inside Cleaning, Force Eco Navi, i.e. forced value: on or off.
 </details>
 
 <details>
@@ -217,7 +179,7 @@ The data is refreshed automatically: every 10 minutes when the device is turned 
 ## Troubleshooting
 
 <details>
-<summary>General</summary>
+<summary><b>General</b></summary>
 
 - Make sure that you can successfully log in and control each device via Panasonic Comfort Cloud application.
 - Accept all terms, conditions, etc in Panasonic Comfort Cloud app.
@@ -232,14 +194,14 @@ The data is refreshed automatically: every 10 minutes when the device is turned 
 </details>
 
 <details>
-<summary>Child bridge</summary>
+<summary><b>Child bridge</b></summary>
     
 - It's recommended you run this plugin as a [child bridge](https://github.com/homebridge/homebridge/wiki/Child-Bridges).
 
 </details>
 
 <details>
-<summary>Wrong temperature</summary>
+<summary><b>Wrong temperature</b></summary>
     
 - Built-in temperature sensors (in the internal and external unit) give only approximate values (as the manufacturer himself indicates).
 - Values from outdoor sensors are shown and updated only when the device is turned on.
@@ -249,7 +211,7 @@ The data is refreshed automatically: every 10 minutes when the device is turned 
 </details>
 
 <details>
-<summary>Siri and voice commands</summary>
+<summary><b>Siri and voice commands</b></summary>
 
 If everything works properly and you can control devices using the Apple Home application, you can also control it using Siri. Commands fully depend on Apple.
 
@@ -295,4 +257,14 @@ You can also combine several commands into one:
   - Any Zigbee IR blaster. You can easily add Zigbee support to Homebridge. Just connect the Conbee stick, enable the support in hb-config (Extra packages / deCONZ), install the appropriate plugin (E.G.: [homebridge-deconz](https://github.com/ebaauw/homebridge-deconz)) and add the selected IR blaster.
 
 </details>
+
+## Changelog
+
+#### Version 4.0.0
+
+Warning! Read carefully before updating!
+
+- Option to add additional switches to control Nanoe, Inside cleaning, Eco Navi, Dry Mode, Fan mode, Quiet Mode and Powerful Mode.
+- Removed field 'Exclude devices', use exclude from individual device config instead.
+- Removed options: Force values, Oscilate switch (now it always control swing), Auto Mode (you can add switches to control Dry and Fan mode) - now you can add additional switches to control these options. 
 
