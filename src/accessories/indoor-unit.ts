@@ -39,7 +39,7 @@ export default class IndoorUnitAccessory {
       this.devConfig = this.platform.platformConfig.devices.find((item) => item.name === accessory.context.device?.deviceName)
       || this.platform.platformConfig.devices.find((item) => item.name === accessory.context.device?.deviceGuid);
     }
-    
+
     // Accessory Information
     // https://developers.homebridge.io/#/service/AccessoryInformation
     this.accessory.getService(this.platform.Service.AccessoryInformation)
@@ -132,7 +132,7 @@ export default class IndoorUnitAccessory {
 
     // Additional sensors and switches
     // Outdoor temp.
-    if (devConfig?.exposeOutdoorTemp) {
+    if (this.devConfig?.exposeOutdoorTemp) {
       this.exposeOutdoorTemp = this.accessory.getService('exposeOutdoorTemp')
         || this.accessory.addService(this.platform.Service.TemperatureSensor, 'exposeOutdoorTemp', 'exposeOutdoorTemp');
 
@@ -145,7 +145,7 @@ export default class IndoorUnitAccessory {
     }
 
     // Nanoe
-    if (devConfig?.exposeNanoe) {
+    if (this.devConfig?.exposeNanoe) {
       this.exposeNanoe = this.accessory.getService('exposeNanoe')
         || this.accessory.addService(this.platform.Service.TemperatureSensor, 'exposeNanoe', 'exposeNanoe');
 
@@ -163,7 +163,7 @@ export default class IndoorUnitAccessory {
     }
 
     // Inside cleaning
-    if (devConfig?.exposeInsideCleaning) {
+    if (this.devConfig?.exposeInsideCleaning) {
       this.exposeInsideCleaning = this.accessory.getService('exposeInsideCleaning')
         || this.accessory.addService(this.platform.Service.TemperatureSensor, 'exposeInsideCleaning', 'exposeInsideCleaning');
 
@@ -181,7 +181,7 @@ export default class IndoorUnitAccessory {
     }
 
     // Eco Navi
-    if (devConfig?.exposeEcoNavi) {
+    if (this.devConfig?.exposeEcoNavi) {
       this.exposeEcoNavi = this.accessory.getService('exposeEcoNavi')
         || this.accessory.addService(this.platform.Service.TemperatureSensor, 'exposeEcoNavi', 'exposeEcoNavi');
 
@@ -199,7 +199,7 @@ export default class IndoorUnitAccessory {
     }
 
     // Dry mode
-    if (devConfig?.exposeDryMode) {
+    if (this.devConfig?.exposeDryMode) {
       this.exposeDryMode = this.accessory.getService('exposeDryMode')
         || this.accessory.addService(this.platform.Service.TemperatureSensor, 'exposeDryMode', 'exposeDryMode');
 
@@ -217,7 +217,7 @@ export default class IndoorUnitAccessory {
     }
 
     // Fan Mode
-    if (devConfig?.exposeFanMode) {
+    if (this.devConfig?.exposeFanMode) {
       this.exposeFanMode = this.accessory.getService('exposeFanMode')
         || this.accessory.addService(this.platform.Service.TemperatureSensor, 'exposeFanMode', 'exposeFanMode');
 
@@ -235,7 +235,7 @@ export default class IndoorUnitAccessory {
     }
 
     // Quiet Mode
-    if (devConfig?.exposeQuietMode) {
+    if (this.devConfig?.exposeQuietMode) {
       this.exposeQuietMode = this.accessory.getService('exposeQuietMode')
         || this.accessory.addService(this.platform.Service.TemperatureSensor, 'exposeQuietMode', 'exposeQuietMode');
 
@@ -253,7 +253,7 @@ export default class IndoorUnitAccessory {
     }
 
     // Powerful mode
-    if (devConfig?.exposePowerfulMode) {
+    if (this.devConfig?.exposePowerfulMode) {
       this.exposePowerfulMode = this.accessory.getService('exposePowerfulMode')
         || this.accessory.addService(this.platform.Service.TemperatureSensor, 'exposePowerfulMode', 'exposePowerfulMode');
 
@@ -311,7 +311,6 @@ export default class IndoorUnitAccessory {
           (deviceStatus.operationMode === 3) ? 30 : 8,
         );
       }
-    
 
       // Outdoor temperature for logs
       if (deviceStatus.outTemperature >= 126) {
@@ -322,8 +321,8 @@ export default class IndoorUnitAccessory {
 
       // Outdoor temperature for virtual sensor
       // Only check and set if the user wants to display the dummy sensor showing temp from outdoor unit.
-      
-      if (this.exposedOutdoorUnit) {
+
+      if (this.exposeOutdoorTemp) {
         if (deviceStatus.outTemperature >= 126) {
           this.platform.log.info(`${this.accessory.displayName} (outdoor): not available. `);
           this.platform.log.debug('Note: It may be required for the device to be turned on '
@@ -634,7 +633,7 @@ export default class IndoorUnitAccessory {
    * for example, turning on a Light bulb.
    */
   async setActive(value: CharacteristicValue) {
-    
+
     this.platform.log.debug(`Accessory: setActive() for device '${this.accessory.displayName}'`);
     const parameters: ComfortCloudDeviceUpdatePayload = {
       operate: value === this.platform.Characteristic.Active.ACTIVE ? 1 : 0,
@@ -781,14 +780,12 @@ export default class IndoorUnitAccessory {
       }
 
     } else if (value === this.platform.Characteristic.SwingMode.SWING_DISABLED) {
-
-          parameters.fanAutoMode = ComfortCloudFanAutoMode.Disabled;
-          parameters.airSwingLR = this.swingModeLeftRightToComfortCloudPayloadValue(
-            this.platform.platformConfig.swingModeDefaultPositionLeftRight);
-          parameters.airSwingUD = this.swingModeUpDownToComfortCloudPayloadValue(
-            this.platform.platformConfig.swingModeDefaultPositionUpDown);
-          this.platform.log.debug(`${this.accessory.displayName}: Swing mode Off`);
-        
+      parameters.fanAutoMode = ComfortCloudFanAutoMode.Disabled;
+      parameters.airSwingLR = this.swingModeLeftRightToComfortCloudPayloadValue(
+        this.platform.platformConfig.swingModeDefaultPositionLeftRight);
+      parameters.airSwingUD = this.swingModeUpDownToComfortCloudPayloadValue(
+        this.platform.platformConfig.swingModeDefaultPositionUpDown);
+      this.platform.log.debug(`${this.accessory.displayName}: Swing mode Off`);  
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
