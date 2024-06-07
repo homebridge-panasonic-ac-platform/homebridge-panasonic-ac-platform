@@ -137,10 +137,12 @@ export default class IndoorUnitAccessory {
         || this.accessory.addService(this.platform.Service.TemperatureSensor, 'exposeOutdoorTemp', 'exposeOutdoorTemp');
 
       this.exposeOutdoorTemp.displayName = this.accessory.displayName + ' (out temp)';
+      this.platform.log.debug(`${this.accessory.displayName}: add outdoor temp sensor`);
     } else {
       const removeOutdoorTemp = this.accessory.getService('exposeOutdoorTemp');
       if (removeOutdoorTemp) {
         this.accessory.removeService(removeOutdoorTemp);
+        this.platform.log.debug(`${this.accessory.displayName}: remove outdoor temp sensor`);
       }
     }
 
@@ -155,10 +157,13 @@ export default class IndoorUnitAccessory {
         .getCharacteristic(this.platform.Characteristic.On)
         .onSet(this.setNanoe.bind(this));
 
+      this.platform.log.debug(`${this.accessory.displayName}: add nanoe switch`);
+
     } else {
       const removeNanoe = this.accessory.getService('exposeNanoe');
       if (removeNanoe) {
         this.accessory.removeService(removeNanoe);
+        this.platform.log.debug(`${this.accessory.displayName}: remove nanoe switch`);
       }
     }
 
