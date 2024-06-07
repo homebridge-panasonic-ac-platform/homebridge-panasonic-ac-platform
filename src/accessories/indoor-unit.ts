@@ -296,7 +296,7 @@ export default class IndoorUnitAccessory {
           ? this.platform.Characteristic.Active.ACTIVE
           : this.platform.Characteristic.Active.INACTIVE;
         this.service.updateCharacteristic(this.platform.Characteristic.Active, active);
-        logOutput += `${(active === 1) ? 'On, ' : 'Off, '}`;
+        logOutput += `${(active === 1) ? 'On' : 'Off'}`;
       }
 
       // Current Temperature
@@ -308,7 +308,7 @@ export default class IndoorUnitAccessory {
       if (deviceStatus.insideTemperature < 126) {
         this.service.updateCharacteristic(
           this.platform.Characteristic.CurrentTemperature, deviceStatus.insideTemperature);
-        logOutput += `Indoor Temp. ${deviceStatus.insideTemperature}, `;
+        logOutput += `, Indoor Temp. ${deviceStatus.insideTemperature}`;
       } else {
         this.platform.log.debug('Indoor temperature is not available - setting default temperature');
         this.service.updateCharacteristic(
@@ -319,9 +319,9 @@ export default class IndoorUnitAccessory {
 
       // Outdoor temperature for logs
       if (deviceStatus.outTemperature >= 126) {
-        logOutput += 'Outdoor Temp. not available, ';
+        logOutput += ', Outdoor Temp. not available';
       } else {
-        logOutput += `Outdoor Temp. ${deviceStatus.outTemperature}, `;
+        logOutput += `, Outdoor Temp. ${deviceStatus.outTemperature}`;
       }
 
       // Outdoor temperature for virtual sensor
@@ -347,7 +347,7 @@ export default class IndoorUnitAccessory {
       switch (deviceStatus.operationMode) {
         // Auto
         case 0:
-          logOutput += 'Mode Auto, ';
+          logOutput += ', Auto Mode';
           // Set target state and current state (based on current temperature)
           this.service.updateCharacteristic(
             this.platform.Characteristic.TargetHeaterCoolerState,
@@ -368,7 +368,7 @@ export default class IndoorUnitAccessory {
 
         // Heat
         case 3:
-          logOutput += 'Mode Heat, ';
+          logOutput += ', Heat Mode';
           this.service.updateCharacteristic(
             this.platform.Characteristic.TargetHeaterCoolerState,
             this.platform.Characteristic.TargetHeaterCoolerState.HEAT,
@@ -385,7 +385,7 @@ export default class IndoorUnitAccessory {
 
         // Cool
         case 2:
-          logOutput += 'Mode Cool, ';
+          logOutput += ', Cool Mode';
           this.service.updateCharacteristic(
             this.platform.Characteristic.TargetHeaterCoolerState,
             this.platform.Characteristic.TargetHeaterCoolerState.COOL,
@@ -402,7 +402,7 @@ export default class IndoorUnitAccessory {
 
         // Dry (Dehumidifier)
         case 1:
-          logOutput += 'Mode Dry, ';
+          logOutput += ', Dry Mode';
           // TODO - improvement: Can we reflect this better/properly in Homebridge?
           // Could add a https://developers.homebridge.io/#/service/HumidifierDehumidifier service
           // to the accessory, but need to check what this implies for the UI.
@@ -417,7 +417,7 @@ export default class IndoorUnitAccessory {
 
         // Fan
         case 4:
-          logOutput += 'Mode Fan, ';
+          logOutput += ', Fan Mode';
           // TODO - improvement: Same as above, related to:
           // https://developers.homebridge.io/#/service/Fan
           this.service.getCharacteristic(this.platform.Characteristic.CurrentHeaterCoolerState)
@@ -453,35 +453,35 @@ export default class IndoorUnitAccessory {
 
       if (deviceStatus.ecoMode === ComfortCloudEcoMode.Quiet) {
         sliderValue = 1;
-        logOutput += 'Speed 1 (Quiet Mode), ';
+        logOutput += ', Speed 1 (Quiet Mode)';
       } else if (deviceStatus.ecoMode === ComfortCloudEcoMode.Powerful) {
         sliderValue = 7;
-        logOutput += 'Speed 5 (Powerful Mode), ';
+        logOutput += ', Speed 5 (Powerful Mode)';
       } else if (deviceStatus.ecoMode === ComfortCloudEcoMode.AutoOrManual) {
         switch (deviceStatus.fanSpeed) {
           case ComfortCloudFanSpeed.One:
             sliderValue = 2;
-            logOutput += 'Speed 1, ';
+            logOutput += ', Speed 1';
             break;
           case ComfortCloudFanSpeed.Two:
             sliderValue = 3;
-            logOutput += 'Speed 2, ';
+            logOutput += ', Speed 2';
             break;
           case ComfortCloudFanSpeed.Three:
             sliderValue = 4;
-            logOutput += 'Speed 3, ';
+            logOutput += ', Speed 3';
             break;
           case ComfortCloudFanSpeed.Four:
             sliderValue = 5;
-            logOutput += 'Speed 4, ';
+            logOutput += ', Speed 4';
             break;
           case ComfortCloudFanSpeed.Five:
             sliderValue = 6;
-            logOutput += 'Speed 5, ';
+            logOutput += ', Speed 5';
             break;
           case ComfortCloudFanSpeed.Auto:
             sliderValue = 8;
-            logOutput += 'Speed Auto, ';
+            logOutput += ', Speed Auto';
             break;
         }
       }
@@ -498,21 +498,21 @@ export default class IndoorUnitAccessory {
               && this.devConfig?.swingModeDirections === SwingModeDirection.UpDownOnly)) {
         this.service.getCharacteristic(this.platform.Characteristic.SwingMode)
           .updateValue(this.platform.Characteristic.SwingMode.SWING_ENABLED);
-        logOutput += 'Swing Mode On';
+        logOutput += ', Swing Mode On';
       } else {
         this.service.getCharacteristic(this.platform.Characteristic.SwingMode)
           .updateValue(this.platform.Characteristic.SwingMode.SWING_ENABLED);
-        logOutput += 'Swing Mode On';
+        logOutput += ', Swing Mode On';
       }
 
       // Nanoe
       if (this.exposeNanoe) {
         if (deviceStatus.nanoe === 2) {
           this.exposeNanoe.updateCharacteristic(this.platform.Characteristic.On, true);
-          logOutput += 'Nanoe On';
+          logOutput += ', Nanoe On';
         } else {
           this.exposeNanoe.updateCharacteristic(this.platform.Characteristic.On, false);
-          logOutput += 'Nanoe Off';
+          logOutput += ', Nanoe Off';
         }
       }
 
@@ -520,10 +520,10 @@ export default class IndoorUnitAccessory {
       if (this.exposeInsideCleaning) {
         if (deviceStatus.insideCleaning === 2) {
           this.exposeInsideCleaning.updateCharacteristic(this.platform.Characteristic.On, true);
-          logOutput += 'Inside Cleaning On';
+          logOutput += ', Inside Cleaning On';
         } else {
           this.exposeInsideCleaning.updateCharacteristic(this.platform.Characteristic.On, false);
-          logOutput += 'Inside Cleaning Off';
+          logOutput += ', Inside Cleaning Off';
         }
       }
 
@@ -531,10 +531,10 @@ export default class IndoorUnitAccessory {
       if (this.exposeEcoNavi) {
         if (deviceStatus.ecoNavi === 2) {
           this.exposeEcoNavi.updateCharacteristic(this.platform.Characteristic.On, true);
-          logOutput += 'Eco Navi On';
+          logOutput += ', Eco Navi On';
         } else {
           this.exposeEcoNavi.updateCharacteristic(this.platform.Characteristic.On, false);
-          logOutput += 'Eco Navi Off';
+          logOutput += ', Eco Navi Off';
         }
       }
 
@@ -542,10 +542,10 @@ export default class IndoorUnitAccessory {
       if (this.exposeDryMode) {
         if (deviceStatus.operationMode === 1) {
           this.exposeDryMode.updateCharacteristic(this.platform.Characteristic.On, true);
-          logOutput += 'Dry Mode On';
+          logOutput += ', Dry Mode On';
         } else {
           this.exposeDryMode.updateCharacteristic(this.platform.Characteristic.On, false);
-          logOutput += 'Dry Mode Off';
+          logOutput += ', Dry Mode Off';
         }
       }
 
@@ -553,10 +553,10 @@ export default class IndoorUnitAccessory {
       if (this.exposeFanMode) {
         if (deviceStatus.operationMode === 4) {
           this.exposeFanMode.updateCharacteristic(this.platform.Characteristic.On, true);
-          logOutput += 'Fan Mode On';
+          logOutput += ', Fan Mode On';
         } else {
           this.exposeFanMode.updateCharacteristic(this.platform.Characteristic.On, false);
-          logOutput += 'Fan Mode Off';
+          logOutput += ', Fan Mode Off';
         }
       }
 
@@ -564,10 +564,10 @@ export default class IndoorUnitAccessory {
       if (this.exposeQuietMode) {
         if (deviceStatus.ecoMode === ComfortCloudEcoMode.Quiet) {
           this.exposeQuietMode.updateCharacteristic(this.platform.Characteristic.On, true);
-          logOutput += 'Quiet Mode On';
+          logOutput += ', Quiet Mode On';
         } else {
           this.exposeQuietMode.updateCharacteristic(this.platform.Characteristic.On, false);
-          logOutput += 'Quiet Mode Off';
+          logOutput += ', Quiet Mode Off';
         }
       }
 
@@ -575,13 +575,14 @@ export default class IndoorUnitAccessory {
       if (this.exposePowerfulMode) {
         if (deviceStatus.ecoMode === ComfortCloudEcoMode.Powerful) {
           this.exposePowerfulMode.updateCharacteristic(this.platform.Characteristic.On, true);
-          logOutput += 'Powerful Mode On';
+          logOutput += ', Powerful Mode On';
         } else {
           this.exposePowerfulMode.updateCharacteristic(this.platform.Characteristic.On, false);
-          logOutput += 'Powerful Mode Off';
+          logOutput += ', Powerful Mode Off';
         }
       }
 
+      logOutput += '.';
 
       // Cooling Threshold Temperature (optional)
       // Heating Threshold Temperature (optional)
