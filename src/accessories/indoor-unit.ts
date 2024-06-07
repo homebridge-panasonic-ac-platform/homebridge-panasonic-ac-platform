@@ -147,7 +147,7 @@ export default class IndoorUnitAccessory {
     // Nanoe
     if (this.devConfig?.exposeNanoe) {
       this.exposeNanoe = this.accessory.getService('exposeNanoe')
-        || this.accessory.addService(this.platform.Service.TemperatureSensor, 'exposeNanoe', 'exposeNanoe');
+        || this.accessory.addService(this.platform.Service.Switch, 'exposeNanoe', 'exposeNanoe');
 
       this.exposeNanoe.displayName = this.accessory.displayName + ' (nanoe)';
 
@@ -165,7 +165,7 @@ export default class IndoorUnitAccessory {
     // Inside cleaning
     if (this.devConfig?.exposeInsideCleaning) {
       this.exposeInsideCleaning = this.accessory.getService('exposeInsideCleaning')
-        || this.accessory.addService(this.platform.Service.TemperatureSensor, 'exposeInsideCleaning', 'exposeInsideCleaning');
+        || this.accessory.addService(this.platform.Service.Switch, 'exposeInsideCleaning', 'exposeInsideCleaning');
 
       this.exposeInsideCleaning.displayName = this.accessory.displayName + ' (inside cleaning)';
 
@@ -183,7 +183,7 @@ export default class IndoorUnitAccessory {
     // Eco Navi
     if (this.devConfig?.exposeEcoNavi) {
       this.exposeEcoNavi = this.accessory.getService('exposeEcoNavi')
-        || this.accessory.addService(this.platform.Service.TemperatureSensor, 'exposeEcoNavi', 'exposeEcoNavi');
+        || this.accessory.addService(this.platform.Service.Switch, 'exposeEcoNavi', 'exposeEcoNavi');
 
       this.exposeEcoNavi.displayName = this.accessory.displayName + ' (eco navi)';
 
@@ -201,7 +201,7 @@ export default class IndoorUnitAccessory {
     // Dry mode
     if (this.devConfig?.exposeDryMode) {
       this.exposeDryMode = this.accessory.getService('exposeDryMode')
-        || this.accessory.addService(this.platform.Service.TemperatureSensor, 'exposeDryMode', 'exposeDryMode');
+        || this.accessory.addService(this.platform.Service.Switch, 'exposeDryMode', 'exposeDryMode');
 
       this.exposeDryMode.displayName = this.accessory.displayName + ' (dry mode)';
 
@@ -219,7 +219,7 @@ export default class IndoorUnitAccessory {
     // Fan Mode
     if (this.devConfig?.exposeFanMode) {
       this.exposeFanMode = this.accessory.getService('exposeFanMode')
-        || this.accessory.addService(this.platform.Service.TemperatureSensor, 'exposeFanMode', 'exposeFanMode');
+        || this.accessory.addService(this.platform.Service.Switch, 'exposeFanMode', 'exposeFanMode');
 
       this.exposeFanMode.displayName = this.accessory.displayName + ' (fan mode)';
 
@@ -237,7 +237,7 @@ export default class IndoorUnitAccessory {
     // Quiet Mode
     if (this.devConfig?.exposeQuietMode) {
       this.exposeQuietMode = this.accessory.getService('exposeQuietMode')
-        || this.accessory.addService(this.platform.Service.TemperatureSensor, 'exposeQuietMode', 'exposeQuietMode');
+        || this.accessory.addService(this.platform.Service.Switch, 'exposeQuietMode', 'exposeQuietMode');
 
       this.exposeQuietMode.displayName = this.accessory.displayName + ' (quiet mode)';
 
@@ -255,7 +255,7 @@ export default class IndoorUnitAccessory {
     // Powerful mode
     if (this.devConfig?.exposePowerfulMode) {
       this.exposePowerfulMode = this.accessory.getService('exposePowerfulMode')
-        || this.accessory.addService(this.platform.Service.TemperatureSensor, 'exposePowerfulMode', 'exposePowerfulMode');
+        || this.accessory.addService(this.platform.Service.Switch, 'exposePowerfulMode', 'exposePowerfulMode');
 
       this.exposePowerfulMode.displayName = this.accessory.displayName + ' (powerful mode)';
 
