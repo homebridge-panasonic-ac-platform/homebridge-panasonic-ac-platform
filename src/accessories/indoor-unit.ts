@@ -513,7 +513,7 @@ export default class IndoorUnitAccessory {
           .updateValue(this.platform.Characteristic.SwingMode.SWING_ENABLED);
         logOutput += 'Swing Mode On';
       }
-  
+
       // Nanoe
       if (this.exposeNanoe) {
         if (deviceStatus.nanoe === 2) {
@@ -580,7 +580,7 @@ export default class IndoorUnitAccessory {
         }
       }
 
-       // Powerful Mode (speed)
+      // Powerful Mode (speed)
       if (this.exposePowerfulMode) {
         if (deviceStatus.ecoMode === ComfortCloudEcoMode.Powerful) {
           this.exposePowerfulMode.updateCharacteristic(this.platform.Characteristic.On, true);
