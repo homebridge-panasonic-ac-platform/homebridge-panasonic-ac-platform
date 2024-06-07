@@ -136,8 +136,9 @@ export default class IndoorUnitAccessory {
       
       this.exposeOutdoorTemp.displayName = this.accessory.displayName + ' (out temp)';
     } else {
-      if (this.accessory.getService('exposeOutdoorTemp')) {
-        this.accessory.removeService(this.accessory.getService('exposeOutdoorTemp'));
+      const removeOutdoorTemp = this.accessory.getService('exposeOutdoorTemp');
+      if (removeOutdoorTemp) {
+        this.accessory.removeService(removeOutdoorTemp);
       }
     }
     
@@ -153,8 +154,9 @@ export default class IndoorUnitAccessory {
         .onSet(this.setNanoe.bind(this));
 
     } else {
-      if (this.accessory.getService('exposeNanoe')) {
-        this.accessory.removeService(this.accessory.getService('exposeNanoe'));
+      const removeNanoe = this.accessory.getService('exposeNanoe');
+      if (removeNanoe) {
+        this.accessory.removeService(removeNanoe);
       }
     }
     
