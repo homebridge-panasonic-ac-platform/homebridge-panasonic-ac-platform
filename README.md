@@ -95,7 +95,7 @@ When enabled, changes in the Home app will not be sent to Comfort Cloud. Useful 
 * `logsLevel` (integer):
 Logs level. 0 - only errors and important info, 1 - standard, 2 - all (including debug). Note: to see debug messages in logs it is also required to enable Debug in Homebridge Settings.
 
-#### Inividual for each device
+#### Individual for each device
 
 * `name` (string):
 Device name (as it is in Comfort Cloud account) or serial (E.G.: CS-Z50VKEW+2462503161). Devices names and serial numbers are displayed in Homebridge log after restart, names can be also found in Panasonic Comfort Cloud app, serial numbers can be also found on the stickers on the devices.
