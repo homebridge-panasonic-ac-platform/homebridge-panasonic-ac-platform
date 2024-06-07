@@ -2,6 +2,8 @@
 	"pluginAlias": "Panasonic AC Platform",
 	"pluginType": "platform",
 	"singular": true,
+	"headerDisplay": "Homebridge plugin for Panasonic Comfort Cloud.",
+        "footerDisplay": "For additonal information visit [Plugin Homepage](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform).",
 	"schema": {
 		"type": "object",
 		"properties": {
@@ -30,8 +32,8 @@
 				"title": "Plugin Name",
 				"description": "Name of the plugin displayed in Homebridge log and as plugin bridge name.",
 				"type": "string",
-				"default": "Homebridge Panasonic AC Platform",
-				"placeholder": "Homebridge Panasonic AC Platform",
+				"default": "Panasonic AC Platform",
+				"placeholder": "Panasonic AC Platform",
 				"required": true
 			},
 			"appVersionOverride": {
