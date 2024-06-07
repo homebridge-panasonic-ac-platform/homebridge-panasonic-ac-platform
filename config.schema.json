@@ -241,13 +241,13 @@
 						},
 						"exposeQuietMode": {
 							"title": "Expose Quiet Mode",
-							"description": "When enabled it will create a switch to control Quiet Mode.",
+							"description": "When enabled it will create a switch to control Quiet Mode. You can also enable this feature by setting the speed slider to 1.",
 							"type": "boolean",
 							"default": false
 						},
 						"exposePowerfulMode": {
 							"title": "Expose Powerful Mode",
-							"description": "When enabled it will create a switch to control Powerful Mode.",
+							"description": "When enabled it will create a switch to control Powerful Mode. You can also enable this feature by setting the speed slider to 7.",
 							"type": "boolean",
 							"default": false
 						}
