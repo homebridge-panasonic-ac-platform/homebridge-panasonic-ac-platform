@@ -49,10 +49,14 @@ Configure the plugin through the settings UI or in the JSON editor.
                 {
                     "name": "CS-Z50VKEW+4942673181",
                     "excludeDevice": true,
-
-"minHeatingTemperature": 8,
-
-"exposeOutdoorTemp": false,
+                    "minHeatingTemperature": 8,
+                    "exposeOutdoorTemp": false,
+                    "exposeNanoe": true,
+                    "exposeInsideCleaning": false,
+                    "exposeEcoNavi": false,
+                    "exposeDryMode": false,
+                    "exposeQuietMode": true,
+                    "exposePowerfulMode": false,
                     "swingModeDirections": "LEFT-RIGHT-UP-DOWN",
                     "swingModeDefaultPositionUpDown": "CENTER",
                     "swingModeDefaultPositionLeftRight": "CENTER"
@@ -60,9 +64,9 @@ Configure the plugin through the settings UI or in the JSON editor.
                  {
                     "name": "Bedroom AC",
                     "excludeDevice": false,
-                    "swingModeDirections": "LEFT-RIGHT-UP-DOWN",
-                    "swingModeDefaultPositionUpDown": "CENTER",
-                    "swingModeDefaultPositionLeftRight": "CENTER"
+                    "exposeOutdoorTemp": true,
+                    "exposeNanoe": false,
+                    "exposeInsideCleaning": true,
                 },
             ]
     }
@@ -105,6 +109,20 @@ The default heating temperature range is 16-30°C. Some Panasonic ACs have an ad
 * `exposeOutdoorTemp` (boolean):
 When enabled it will create a dummy temperature sensor which will display the temperature from outdoor unit. This can be used for monitoring or automation purposes. Note: It may be required for the device to be turned on to retrieve the current temperature from the outdoor unit.
 
+* `exposeNanoe` (boolean): When enabled it will create a switch to control Nanoe.
+
+* `exposeInsideCleaning` (boolean): When enabled it will create a switch to control Inside Cleaning.
+
+* `exposeEcoNavi` (boolean): When enabled it will create a switch to control Eco Navi.
+ 
+* `exposeDryMode` (boolean): When enabled it will create a switch to control Dry Mode.
+
+* `exposeFanMode` (boolean): When enabled it will create a switch to control Fan Mode.
+
+* `exposeQuietMode` (boolean): When enabled it will create a switch to control Quiet Mode. You can also enable this feature by setting the speed slider to 1.
+
+* `exposePowerfulMode` (boolean): When enabled it will create a switch to control Powerful Mode. You can also enable this feature by setting the speed slider to 7.
+
 * `swingModeDirections` (string):
 Desired swing direction(s) activated when swing is switched on.
 
@@ -123,7 +141,7 @@ HomeKit has a limited number of switches, which is much less than the number of 
 
 <details>
 <summary><b>Additional sensors and switches (Nanoe, Inside cleaning, etc.)</b></summary>
-Enable additional sensor for outdoor temp. and switches for Nanoe, Inside Cleaning, Eco Navi, Dry Mode, Fan mode. These switches will be available in HomeKit / device / settings wheel / other accessories.
+Enable additional sensor for outdoor temp. and switches for Nanoe, Inside Cleaning, Eco Navi, Dry Mode, Fan mode, Quiet Mode and Powerful Mode. These switches will be available in HomeKit / device / settings wheel / other accessories.
 </details>
 
 <details>
