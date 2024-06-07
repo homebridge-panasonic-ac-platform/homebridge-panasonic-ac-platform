@@ -1,6 +1,5 @@
 import { Service, PlatformAccessory, CharacteristicValue } from 'homebridge';
 import PanasonicPlatform from '../platform';
-import OutdoorUnitAccessory from './outdoor-unit';
 import { ComfortCloudDeviceUpdatePayload, PanasonicAccessoryContext } from '../types';
 import {
   ComfortCloudAirSwingLR,
@@ -24,8 +23,7 @@ export default class IndoorUnitAccessory {
 
   constructor(
     private readonly platform: PanasonicPlatform,
-    private readonly accessory: PlatformAccessory<PanasonicAccessoryContext>,
-    private readonly connectedOutdoorUnit?: OutdoorUnitAccessory,
+    private readonly accessory: PlatformAccessory<PanasonicAccessoryContext>
   ) {
     // Accessory Information
     // https://developers.homebridge.io/#/service/AccessoryInformation
@@ -189,17 +187,17 @@ export default class IndoorUnitAccessory {
 
       // Outdoor temperature for virtual sensor
       // Only check and set if the user wants to display the dummy sensor showing temp from outdoor unit.
-      if (this.connectedOutdoorUnit) {
-        if (deviceStatus.outTemperature >= 126) {
-          this.platform.log.info(`${this.accessory.displayName} (outdoor): not available. `);
-          this.platform.log.debug('Note: It may be required for the device to be turned on '
-                                  + 'to retrieve the current temperature from the outdoor unit.');
-        } else {
-          // Update the value of the connected outdoor unit
-          this.connectedOutdoorUnit.setOutdoorTemperature(deviceStatus.outTemperature);
-          this.platform.log.info(`${this.accessory.displayName} (outdoor): ${deviceStatus.outTemperature}.`);
-        }
-      }
+      // if (this.connectedOutdoorUnit) {
+      //   if (deviceStatus.outTemperature >= 126) {
+      //     this.platform.log.info(`${this.accessory.displayName} (outdoor): not available. `);
+      //     this.platform.log.debug('Note: It may be required for the device to be turned on '
+      //                             + 'to retrieve the current temperature from the outdoor unit.');
+      //   } else {
+      //     // Update the value of the connected outdoor unit
+      //     this.connectedOutdoorUnit.setOutdoorTemperature(deviceStatus.outTemperature);
+      //     this.platform.log.info(`${this.accessory.displayName} (outdoor): ${deviceStatus.outTemperature}.`);
+      //   }
+      // }
 
       // Current Heater-Cooler State and Target Heater-Cooler State
       const currentTemperature = this.service.getCharacteristic(
