@@ -27,32 +27,11 @@ This plugin can be easily installed through Homebridge UI or via [NPM](https://w
     npm install -g homebridge-panasonic-ac-platform
 
 ## Configure plugin
-Configure the plugin through the settings UI or directly in the JSON editor.
+Configure the plugin through the settings UI or in the JSON editor.
 
-Basic settings (required):
-
-```json
-{
-  "platforms": [
-    {
-        "platform": "Panasonic AC Platform",
-        "name": "Homebridge Panasonic AC Platform",
-        "email": "mail@example.com",
-        "password": "********"
-    }
-  ]
-}
-```
-
-- `platform` (string): Tells Homebridge which platform this config belongs to. Leave as is.
-- `name` (string): Name of the plugin displayed in Homebridge log and as plugin bridge name. 
-- `email` (string): The username of your Comfort Cloud (Panasonic ID) account.
-- `password` (string): The password of your Comfort Cloud (Panasonic ID) account.
 
 <details>
-<summary><b>Advanced configuration and individual device settings</b></summary>
-
-Example:
+<summary><b>config.json example</b></summary>
 
 ```json
 {
@@ -90,7 +69,15 @@ Example:
   ]
 }
 ```
-## Advanced fields
+#### General
+
+- `platform` (string): Tells Homebridge which platform this config belongs to. Leave as is.
+
+- `name` (string): Name of the plugin displayed in Homebridge log and as plugin bridge name.
+
+- `email` (string): The username of your Comfort Cloud (Panasonic ID) account.
+
+- `password` (string): The password of your Comfort Cloud (Panasonic ID) account.
 
 * `key2fa` (string): 
 2FA key received from Panasonic (32 characters). Example: GVZCKT2LLBLV2QBXMFAWFXKFKU5EWL2H. Note: This field is currently not required to make this plugin work, but Panasonic already requires 2FA (code or SMS, recommended code) to log in to Comfort Cloud, so it may be required soon.
@@ -104,7 +91,7 @@ When enabled, changes in the Home app will not be sent to Comfort Cloud. Useful 
 * `logsLevel` (integer):
 Logs level. 0 - only errors and important info, 1 - standard, 2 - all (including debug). Note: to see debug messages in logs it is also required to enable Debug in Homebridge Settings.
 
-## Inividual for each device
+#### Inividual for each device
 
 * `name` (string):
 Device name (as it is in Comfort Cloud account) or serial (E.G.: CS-Z50VKEW+2462503161). Devices names and serial numbers are displayed in Homebridge log after restart, names can be also found in Panasonic Comfort Cloud app, serial numbers can be also found on the stickers on the devices.
@@ -135,9 +122,14 @@ Desired position of the Left-Right flaps when swing is switched off or the swing
 HomeKit has a limited number of switches, which is much less than the number of available options in Panasonic Comfort Cloud. Therefore, in the plugin settings you can choose what controls what and add additional sensors and switches. You can apply individual settings for each device.
 
 <details>
+<summary><b>Additional sensors and switches (Nanoe, Inside cleaning, etc.)</b></summary>
+Enable additional sensor for outdoor temp. and switches for Nanoe, Inside Cleaning, Eco Navi, Dry Mode, Fan mode. These switches will be available in HomeKit / device / settings wheel / other accessories.
+</details>
+
+<details>
 <summary><b>Rotation speed (including Quiet Mode, Powerful Mode)</b></summary>
 
-HomeKit offers no extra switches for the Quiet and Powerful Modes. All settings related to a unit's fan speed are controlled through the fan speed slider. The following mapping applies:
+All settings related to a unit's fan speed are controlled through the fan speed slider. The following mapping applies:
 
 | Home app slider position  | Comfort Cloud setting |
 | ------------------------: | --------------------- |
@@ -151,11 +143,6 @@ HomeKit offers no extra switches for the Quiet and Powerful Modes. All settings 
 | 7                         | Powerful mode         |
 | (rightmost) 8             | Auto                  |
 
-</details>
-
-<details>
-<summary><b>Additional sensors and switches (Nanoe, Inside cleaning, etc.)</b></summary>
-Enable additional sensor for outdoor temp. and switches for Nanoe, Inside Cleaning, Eco Navi, Dry Mode, Fan mode. These switches will be available in HomeKit / device / settings wheel / other accessories.
 </details>
 
 <details>
@@ -174,7 +161,7 @@ The data is refreshed automatically: every 10 minutes when the device is turned 
 ## Troubleshooting
 
 <details>
-<summary>General</summary>
+<summary><b>General</b></summary>
 
 - Make sure that you can successfully log in and control each device via Panasonic Comfort Cloud application.
 - Accept all terms, conditions, etc in Panasonic Comfort Cloud app.
@@ -189,14 +176,14 @@ The data is refreshed automatically: every 10 minutes when the device is turned 
 </details>
 
 <details>
-<summary>Child bridge</summary>
+<summary><b>Child bridge</b></summary>
     
 - It's recommended you run this plugin as a [child bridge](https://github.com/homebridge/homebridge/wiki/Child-Bridges).
 
 </details>
 
 <details>
-<summary>Wrong temperature</summary>
+<summary><b>Wrong temperature</b></summary>
     
 - Built-in temperature sensors (in the internal and external unit) give only approximate values (as the manufacturer himself indicates).
 - Values from outdoor sensors are shown and updated only when the device is turned on.
@@ -206,7 +193,7 @@ The data is refreshed automatically: every 10 minutes when the device is turned 
 </details>
 
 <details>
-<summary>Siri and voice commands</summary>
+<summary><b>Siri and voice commands</b></summary>
 
 If everything works properly and you can control devices using the Apple Home application, you can also control it using Siri. Commands fully depend on Apple.
 
@@ -256,7 +243,10 @@ You can also combine several commands into one:
 ## Changelog
 
 #### Version 4.0.0
+
+Warning! Read carefully before updating!
+
 - Option to add additional switches to control Nanoe, Inside cleaning, Eco Navi, Dry Mode, Fan mode. 
 - Removed field 'Exclude devices', use exclude from individual device config instead.
-- removed options: Force values, Oscilate switch (now it always control swing), auto mode (you can add switches to control Dry and Fan mode) - now you can add additional switches to control these options. 
+- Removed options: Force values, Oscilate switch (now it always control swing), auto mode (you can add switches to control Dry and Fan mode) - now you can add additional switches to control these options. 
 
