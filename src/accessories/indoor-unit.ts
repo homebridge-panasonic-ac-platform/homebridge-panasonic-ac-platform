@@ -329,7 +329,7 @@ export default class IndoorUnitAccessory {
                                   + 'to retrieve the current temperature from the outdoor unit.');
         } else {
           // Update the value of the connected outdoor unit
-          this.exposeOutdoorUnit.updateCharacteristic(this.platform.Characteristic.CurrentTemperature, deviceStatus.outTemperature);
+          this.exposeOutdoorTemp.updateCharacteristic(this.platform.Characteristic.CurrentTemperature, deviceStatus.outTemperature);
           this.platform.log.info(`${this.accessory.displayName} (outdoor): ${deviceStatus.outTemperature}.`);
         }
       }
@@ -484,13 +484,13 @@ export default class IndoorUnitAccessory {
         .updateValue(sliderValue);
 
       // Swing Mode
-      if ((!devConfig?.swingModeDirections)
+      if ((!this.devConfig?.swingModeDirections)
           || (deviceStatus.fanAutoMode === ComfortCloudFanAutoMode.AirSwingAuto
-              && devConfig?.swingModeDirections === SwingModeDirection.LeftRightAndUpDown)
+              && this.devConfig?.swingModeDirections === SwingModeDirection.LeftRightAndUpDown)
           || (deviceStatus.fanAutoMode === ComfortCloudFanAutoMode.AirSwingLR
-              && devConfig?.swingModeDirections === SwingModeDirection.LeftRightOnly)
+              && this.devConfig?.swingModeDirections === SwingModeDirection.LeftRightOnly)
           || (deviceStatus.fanAutoMode === ComfortCloudFanAutoMode.AirSwingUD
-              && devConfig?.swingModeDirections === SwingModeDirection.UpDownOnly)) {
+              && this.devConfig?.swingModeDirections === SwingModeDirection.UpDownOnly)) {
         this.service.getCharacteristic(this.platform.Characteristic.SwingMode)
           .updateValue(this.platform.Characteristic.SwingMode.SWING_ENABLED);
         logOutput += 'Swing Mode On';
@@ -785,7 +785,7 @@ export default class IndoorUnitAccessory {
         this.platform.platformConfig.swingModeDefaultPositionLeftRight);
       parameters.airSwingUD = this.swingModeUpDownToComfortCloudPayloadValue(
         this.platform.platformConfig.swingModeDefaultPositionUpDown);
-      this.platform.log.debug(`${this.accessory.displayName}: Swing mode Off`);  
+      this.platform.log.debug(`${this.accessory.displayName}: Swing mode Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
