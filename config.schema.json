@@ -228,7 +228,7 @@
 							"default": false
 						},
 						"exposeDryMode": {
-							"title": "Expose Nanoe",
+							"title": "Expose Dry Mode",
 							"description": "When enabled it will create a switch to control Dry Mode.",
 							"type": "boolean",
 							"default": false
