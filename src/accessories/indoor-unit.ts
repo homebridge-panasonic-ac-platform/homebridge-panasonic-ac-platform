@@ -20,6 +20,7 @@ export default class IndoorUnitAccessory {
   private service: Service;
   _refreshInterval;
   refreshTimer;
+  exposeOutdoorTemp;
   exposeNanoe;
   exposeInsideCleaning;
   exposeEcoNavi;
