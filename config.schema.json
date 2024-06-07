@@ -213,7 +213,7 @@
 							"type": "boolean",
 							"default": false
 						},
-						"exposeInsideCleanin": {
+						"exposeInsideCleaning": {
 							"title": "Expose Inside Cleaning",
 							"description": "When enabled it will create a switch to control Inside Cleaning.",
 							"type": "boolean",
@@ -234,6 +234,18 @@
 						"exposeFanMode": {
 							"title": "Expose Fan Mode",
 							"description": "When enabled it will create a switch to control Fan Mode.",
+							"type": "boolean",
+							"default": false
+						},
+						"exposeQuietMode": {
+							"title": "Expose Quiet Mode",
+							"description": "When enabled it will create a switch to control Quiet Mode.",
+							"type": "boolean",
+							"default": false
+						},
+						"exposePowerfulMode": {
+							"title": "Expose Powerful Mode",
+							"description": "When enabled it will create a switch to control Powerful Mode.",
 							"type": "boolean",
 							"default": false
 						}
@@ -303,7 +315,9 @@
 								"devices[].exposeInsideCleaning",
 								"devices[].exposeEcoNavi",
 								"devices[].exposeDryMode",
-								"devices[].exposeFanMode"
+								"devices[].exposeFanMode",
+								"devices[].exposeQuietMode",
+								"devices[].exposePowerfulMode"
 							]
 						},
 						{
