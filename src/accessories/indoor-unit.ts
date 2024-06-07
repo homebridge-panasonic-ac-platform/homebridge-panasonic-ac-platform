@@ -20,6 +20,11 @@ export default class IndoorUnitAccessory {
   private service: Service;
   _refreshInterval;
   refreshTimer;
+  exposeNanoe;
+  exposeInsideCleaning;
+  exposeEcoNavi;
+  exposeDryMode;
+  exposeFanMode;
 
   constructor(
     private readonly platform: PanasonicPlatform,
@@ -121,6 +126,37 @@ export default class IndoorUnitAccessory {
       })
       .onSet(this.setThresholdTemperature.bind(this));
 
+
+    // Additional sensors and switches
+    // Outdoor temp.
+    if (devConfig.exposeOutdoorTemp) {
+      this.exposeOutdoorTemp = this.accessory.getService('exposeOutdoorTemp') ||
+        this.accessory.addService(this.platform.Service.TemperatureSensor, 'exposeOutdoorTemp', 'exposeOutdoorTemp');
+      
+      this.exposeOutdoorTemp.displayName = this.accessory.displayName + ' (out temp);
+    } else {
+      if (this.accessory.getService('exposeOutdoorTemp')) {
+        this.accessory.removeService(this.accessory.getService('exposeOutdoorTemp'));
+      }
+    }
+    
+    // Nanoe
+    if (devConfig.exposeNanoe) {
+      this.exposeNanoe = this.accessory.getService('exposeNanoe') ||
+        this.accessory.addService(this.platform.Service.TemperatureSensor, 'exposeNanoe', 'exposeNanoe');
+
+      this.exposeNanoe.displayName = this.accessory.displayName + ' (nanoe);
+
+      this.exposeNanoe
+        .getCharacteristic(this.platform.Characteristic.On)
+        .onSet(this.setNanoe.bind(this));
+
+    } else {
+      if (this.accessory.getService('exposeNanoe')) {
+        this.accessory.removeService(this.accessory.getService('exposeNanoe'));
+      }
+    }
+    
     // Update characteristic values asynchronously instead of using onGet handlers
     this.refreshDeviceStatus();
   }
@@ -403,6 +439,18 @@ export default class IndoorUnitAccessory {
         this.service.getCharacteristic(this.platform.Characteristic.SwingMode)
           .updateValue(this.platform.Characteristic.SwingMode.SWING_ENABLED);
         logOutput += 'Swing Mode On';
+      }
+
+      // Nanoe
+      if (this.exposeNanoe) {
+        if (deviceStatus.nanoe === 2) {
+          this.exposeNanoe.updateCharacteristic(this.platform.Characteristic.On, true);
+          logOutput += 'Nanoe On';
+        }
+        else {
+          this.exposeNanoe.updateCharacteristic(this.platform.Characteristic.On, false);
+          logOutput += 'Nanoe Off';
+        }
       }
 
       // Cooling Threshold Temperature (optional)
@@ -723,6 +771,19 @@ export default class IndoorUnitAccessory {
         parameters.fanAutoMode = ComfortCloudFanAutoMode.Disabled;
         this.platform.log.debug(`${this.accessory.displayName}: Swing mode Off`);
       }
+    }
+    this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
+  }
+
+  // set Nanoe
+  async setNanoe(value) {
+    const parameters = {};
+    if (value) {
+      parameters.nanoe = 2;
+      this.platform.log.debug(`${this.accessory.displayName}: Nanoe On`);
+    } else {
+      parameters.nanoe = 0;
+      this.platform.log.debug(`${this.accessory.displayName}: Nanoe Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
