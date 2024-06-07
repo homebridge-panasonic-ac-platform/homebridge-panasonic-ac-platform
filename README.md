@@ -264,7 +264,7 @@ You can also combine several commands into one:
 
 Warning! Read carefully before updating!
 
-- Option to add additional switches to control Nanoe, Inside cleaning, Eco Navi, Dry Mode, Fan mode. 
+- Option to add additional switches to control Nanoe, Inside cleaning, Eco Navi, Dry Mode, Fan mode, Quiet Mode and Powerful Mode.
 - Removed field 'Exclude devices', use exclude from individual device config instead.
-- Removed options: Force values, Oscilate switch (now it always control swing), auto mode (you can add switches to control Dry and Fan mode) - now you can add additional switches to control these options. 
+- Removed options: Force values, Oscilate switch (now it always control swing), Auto Mode (you can add switches to control Dry and Fan mode) - now you can add additional switches to control these options. 
 
