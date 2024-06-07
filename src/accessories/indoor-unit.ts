@@ -133,7 +133,7 @@ export default class IndoorUnitAccessory {
       this.exposeOutdoorTemp = this.accessory.getService('exposeOutdoorTemp') ||
         this.accessory.addService(this.platform.Service.TemperatureSensor, 'exposeOutdoorTemp', 'exposeOutdoorTemp');
       
-      this.exposeOutdoorTemp.displayName = this.accessory.displayName + ' (out temp);
+      this.exposeOutdoorTemp.displayName = this.accessory.displayName + ' (out temp)';
     } else {
       if (this.accessory.getService('exposeOutdoorTemp')) {
         this.accessory.removeService(this.accessory.getService('exposeOutdoorTemp'));
@@ -145,7 +145,7 @@ export default class IndoorUnitAccessory {
       this.exposeNanoe = this.accessory.getService('exposeNanoe') ||
         this.accessory.addService(this.platform.Service.TemperatureSensor, 'exposeNanoe', 'exposeNanoe');
 
-      this.exposeNanoe.displayName = this.accessory.displayName + ' (nanoe);
+      this.exposeNanoe.displayName = this.accessory.displayName + ' (nanoe)';
 
       this.exposeNanoe
         .getCharacteristic(this.platform.Characteristic.On)
