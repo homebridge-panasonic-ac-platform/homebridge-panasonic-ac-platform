@@ -70,19 +70,20 @@ Example:
                 {
                     "name": "CS-Z50VKEW+4942673181",
                     "excludeDevice": true,
+
+"minHeatingTemperature": 8,
+
+"exposeOutdoorTemp": false,
                     "swingModeDirections": "LEFT-RIGHT-UP-DOWN",
                     "swingModeDefaultPositionUpDown": "CENTER",
-                    "swingModeDefaultPositionLeftRight": "CENTER",
-                    "exposeOutdoorTemp": false
+                    "swingModeDefaultPositionLeftRight": "CENTER"
                 },
                  {
                     "name": "Bedroom AC",
                     "excludeDevice": false,
                     "swingModeDirections": "LEFT-RIGHT-UP-DOWN",
                     "swingModeDefaultPositionUpDown": "CENTER",
-                    "swingModeDefaultPositionLeftRight": "CENTER",
-                    "exposeOutdoorTemp": true,
-                    "minHeatingTemperature": 8
+                    "swingModeDefaultPositionLeftRight": "CENTER"
                 },
             ]
     }
@@ -251,4 +252,11 @@ You can also combine several commands into one:
   - Any Zigbee IR blaster. You can easily add Zigbee support to Homebridge. Just connect the Conbee stick, enable the support in hb-config (Extra packages / deCONZ), install the appropriate plugin (E.G.: [homebridge-deconz](https://github.com/ebaauw/homebridge-deconz)) and add the selected IR blaster.
 
 </details>
+
+## Changelog
+
+#### Version 4.0.0
+- Option to add additional switches to control Nanoe, Inside cleaning, Eco Navi, Dry Mode, Fan mode. 
+- Removed field 'Exclude devices', use exclude from individual device config instead.
+- removed options: Force values, Oscilate switch (now it always control swing), auto mode (you can add switches to control Dry and Fan mode) - now you can add additional switches to control these options. 
 
