@@ -208,7 +208,6 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
     this.accessories.push(accessory);
   }
 
-  
 
   /**
    * Fetches all of the user's devices from Comfort Cloud and sets up handlers.
