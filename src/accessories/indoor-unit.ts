@@ -23,7 +23,7 @@ export default class IndoorUnitAccessory {
 
   constructor(
     private readonly platform: PanasonicPlatform,
-    private readonly accessory: PlatformAccessory<PanasonicAccessoryContext>
+    private readonly accessory: PlatformAccessory<PanasonicAccessoryContext>,
   ) {
     // Accessory Information
     // https://developers.homebridge.io/#/service/AccessoryInformation
