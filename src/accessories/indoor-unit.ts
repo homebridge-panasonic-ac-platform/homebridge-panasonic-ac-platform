@@ -131,9 +131,9 @@ export default class IndoorUnitAccessory {
     // Additional sensors and switches
     // Outdoor temp.
     if (devConfig.exposeOutdoorTemp) {
-      this.exposeOutdoorTemp = this.accessory.getService('exposeOutdoorTemp') ||
-        this.accessory.addService(this.platform.Service.TemperatureSensor, 'exposeOutdoorTemp', 'exposeOutdoorTemp');
-      
+      this.exposeOutdoorTemp = this.accessory.getService('exposeOutdoorTemp')
+        || this.accessory.addService(this.platform.Service.TemperatureSensor, 'exposeOutdoorTemp', 'exposeOutdoorTemp');
+
       this.exposeOutdoorTemp.displayName = this.accessory.displayName + ' (out temp)';
     } else {
       const removeOutdoorTemp = this.accessory.getService('exposeOutdoorTemp');
@@ -141,11 +141,11 @@ export default class IndoorUnitAccessory {
         this.accessory.removeService(removeOutdoorTemp);
       }
     }
-    
+
     // Nanoe
     if (devConfig.exposeNanoe) {
-      this.exposeNanoe = this.accessory.getService('exposeNanoe') ||
-        this.accessory.addService(this.platform.Service.TemperatureSensor, 'exposeNanoe', 'exposeNanoe');
+      this.exposeNanoe = this.accessory.getService('exposeNanoe')
+        || this.accessory.addService(this.platform.Service.TemperatureSensor, 'exposeNanoe', 'exposeNanoe');
 
       this.exposeNanoe.displayName = this.accessory.displayName + ' (nanoe)';
 
@@ -159,7 +159,7 @@ export default class IndoorUnitAccessory {
         this.accessory.removeService(removeNanoe);
       }
     }
-    
+
     // Update characteristic values asynchronously instead of using onGet handlers
     this.refreshDeviceStatus();
   }
@@ -449,8 +449,7 @@ export default class IndoorUnitAccessory {
         if (deviceStatus.nanoe === 2) {
           this.exposeNanoe.updateCharacteristic(this.platform.Characteristic.On, true);
           logOutput += 'Nanoe On';
-        }
-        else {
+        } else {
           this.exposeNanoe.updateCharacteristic(this.platform.Characteristic.On, false);
           logOutput += 'Nanoe Off';
         }
@@ -780,7 +779,7 @@ export default class IndoorUnitAccessory {
 
   // set Nanoe
   async setNanoe(value) {
-    const parameters = {};
+    const parameters: ComfortCloudDeviceUpdatePayload = {};
     if (value) {
       parameters.nanoe = 2;
       this.platform.log.debug(`${this.accessory.displayName}: Nanoe On`);
