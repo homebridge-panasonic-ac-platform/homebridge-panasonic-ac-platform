@@ -591,7 +591,7 @@ export default class IndoorUnitAccessory {
 
       // Swing Up Down
       if (this.exposeSwingUpDown) {
-        if (this.deviceStatus.fanAutoMode === 0 || deviceStatus.fanAutoMode === 2 ) {
+        if (this.deviceStatus.fanAutoMode === 0 || this.deviceStatus.fanAutoMode === 2 ) {
           this.exposeSwingUpDown.updateCharacteristic(this.platform.Characteristic.On, true);
         } else {
           this.exposeSwingUpDown.updateCharacteristic(this.platform.Characteristic.On, false);
@@ -600,7 +600,7 @@ export default class IndoorUnitAccessory {
 
       // Swing Up Down
       if (this.exposeSwingUpDown) {
-        if (this.deviceStatus.fanAutoMode === 0 || deviceStatus.fanAutoMode === 3 ) {
+        if (this.deviceStatus.fanAutoMode === 0 || this.deviceStatus.fanAutoMode === 3 ) {
           this.exposeSwingUpDown.updateCharacteristic(this.platform.Characteristic.On, true);
         } else {
           this.exposeSwingUpDown.updateCharacteristic(this.platform.Characteristic.On, false);
