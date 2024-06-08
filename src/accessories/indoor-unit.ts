@@ -29,6 +29,9 @@ export default class IndoorUnitAccessory {
   exposeFanMode;
   exposeQuietMode;
   exposePowerfulMode;
+  exposeSwingUpDown;
+  exposeSwingLeftRight;
+  exposeRotation1;
 
   constructor(
     private readonly platform: PanasonicPlatform,
@@ -261,6 +264,40 @@ export default class IndoorUnitAccessory {
       if (removePowerfulMode) {
         this.accessory.removeService(removePowerfulMode);
         this.platform.log.debug(`${this.accessory.displayName}: remove powerful mode switch`);
+      }
+    }
+
+    // Swing Up Down
+    if (this.devConfig?.exposeSwingUpDown) {
+      this.exposeSwingUpDown = this.accessory.getService(this.accessory.displayName + ' (swing up down)')
+        || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (swing up down)', 'exposeSwingUpDown');
+      this.exposeSwingUpDown.addCharacteristic(this.platform.Characteristic.ConfiguredName);
+      this.exposeSwingUpDown
+        .getCharacteristic(this.platform.Characteristic.On)
+        .onSet(this.setSwingUpDown.bind(this));
+      this.platform.log.debug(`${this.accessory.displayName}: add swing up down switch`);
+    } else {
+      const removeSwingUpDown = this.accessory.getService(this.accessory.displayName + ' (swing up down)');
+      if (removeSwingUpDown) {
+        this.accessory.removeService(removeSwingUpDown);
+        this.platform.log.debug(`${this.accessory.displayName}: remove swing up down switch`);
+      }
+    }
+
+    // Swing Up Down
+    if (this.devConfig?.exposeSwingLeftRight) {
+      this.exposeSwingLeftRight = this.accessory.getService(this.accessory.displayName + ' (swing left right)')
+        || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (swing left right)', 'exposeSwingLeftRight');
+      this.exposeSwingLeftRight.addCharacteristic(this.platform.Characteristic.ConfiguredName);
+      this.exposeSwingLeftRight
+        .getCharacteristic(this.platform.Characteristic.On)
+        .onSet(this.setSwingUpDown.bind(this));
+      this.platform.log.debug(`${this.accessory.displayName}: add swing left right switch`);
+    } else {
+      const removeSwingLeftRight = this.accessory.getService(this.accessory.displayName + ' (swing left right)');
+      if (removeSwingLeftRight) {
+        this.accessory.removeService(removeSwingLeftRight);
+        this.platform.log.debug(`${this.accessory.displayName}: remove swing left right switch`);
       }
     }
 
@@ -548,6 +585,24 @@ export default class IndoorUnitAccessory {
           this.exposePowerfulMode.updateCharacteristic(this.platform.Characteristic.On, true);
         } else {
           this.exposePowerfulMode.updateCharacteristic(this.platform.Characteristic.On, false);
+        }
+      }
+
+      // Swing Up Down
+      if (this.exposeSwingUpDown) {
+        if (deviceStatus.fanAutoMode === 0 || deviceStatus.fanAutoMode === 2 ) {
+          this.exposeSwingUpDown.updateCharacteristic(this.platform.Characteristic.On, true);
+        } else {
+          this.exposeSwingUpDown.updateCharacteristic(this.platform.Characteristic.On, false);
+        }
+      }
+
+      // Swing Up Down
+      if (this.exposeSwingUpDown) {
+        if (deviceStatus.fanAutoMode === 0 || deviceStatus.fanAutoMode === 3 ) {
+          this.exposeSwingUpDown.updateCharacteristic(this.platform.Characteristic.On, true);
+        } else {
+          this.exposeSwingUpDown.updateCharacteristic(this.platform.Characteristic.On, false);
         }
       }
 
@@ -852,6 +907,42 @@ export default class IndoorUnitAccessory {
     } else {
       parameters.ecoMode = 0;
       this.platform.log.debug(`${this.accessory.displayName}: Powerful Mode Off`);
+    }
+    this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
+  }
+
+  // set Swing Up Down
+  async setSwingUpDown(value) {
+    const parameters: ComfortCloudDeviceUpdatePayload = {};
+    if (value) {
+      // if Swing Left Right is enabled than set Swing Auto (Up Down and Left Right)
+      if (deviceStatus.fanAutoMode === 3) {
+        parameters.fanAutoMode = 0;
+      } else {
+        parameters.fanAutoMode = 2;
+      }
+      this.platform.log.debug(`${this.accessory.displayName}: Swing Up Down On`);
+    } else {
+      parameters.fanAutoMode = 1;
+      this.platform.log.debug(`${this.accessory.displayName}: Swing Up Down Off`);
+    }
+    this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
+  }
+
+  // set Swing Left Right
+  async setSwingLeftRight(value) {
+    const parameters: ComfortCloudDeviceUpdatePayload = {};
+    if (value) {
+      // if Swing Up Down is enabled than set Swing Auto (Up Down and Left Right)
+      if (deviceStatus.fanAutoMode === 2) {
+        parameters.fanAutoMode = 0;
+      } else {
+        parameters.fanAutoMode = 3;
+      }
+      this.platform.log.debug(`${this.accessory.displayName}: Swing Left Right On`);
+    } else {
+      parameters.fanAutoMode = 1;
+      this.platform.log.debug(`${this.accessory.displayName}: Swing Left Right Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
