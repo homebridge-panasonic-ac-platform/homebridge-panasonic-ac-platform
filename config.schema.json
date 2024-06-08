@@ -229,25 +229,25 @@
 						},
 						"exposeDryMode": {
 							"title": "Expose Dry Mode",
-							"description": "When enabled it will create a switch to control Dry Mode.",
+							"description": "When enabled it will create a switch to control Dry Mode. Note: disabling this switch will set Auto Mode.",
 							"type": "boolean",
 							"default": false
 						},
 						"exposeFanMode": {
 							"title": "Expose Fan Mode",
-							"description": "When enabled it will create a switch to control Fan Mode.",
+							"description": "When enabled it will create a switch to control Fan Mode. Note: disabling this switch will set Auto Mode.",
 							"type": "boolean",
 							"default": false
 						},
 						"exposeQuietMode": {
 							"title": "Expose Quiet Mode",
-							"description": "When enabled it will create a switch to control Quiet Mode. You can also enable this feature by setting the speed slider to 1.",
+							"description": "When enabled it will create a switch to control Quiet Mode. Quiet Mode can also be enabled by setting the speed slider (rotation) to 1.",
 							"type": "boolean",
 							"default": false
 						},
 						"exposePowerfulMode": {
 							"title": "Expose Powerful Mode",
-							"description": "When enabled it will create a switch to control Powerful Mode. You can also enable this feature by setting the speed slider to 7.",
+							"description": "When enabled it will create a switch to control Powerful Mode. Powerful Mode can also be enabled by setting the speed slider (rotation) to 7.",
 							"type": "boolean",
 							"default": false
 						}
@@ -307,7 +307,7 @@
 						},
 						{
 							"type": "fieldset",
-							"title": "Add sensors and switches",
+							"title": "Sensors and switches",
 							"flex": "1 1 100%",
 							"expandable": true,
 							"expanded": false,
