@@ -249,21 +249,6 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
         }
       }
 
-      // Exclude by config field (comma separated list).
-      if (this.platformConfig.excludeDevices !== undefined
-          && this.platformConfig.excludeDevices !== ''){
-        let excludeArray = this.platformConfig.excludeDevices.split(',');
-        // remove whitespaces from each element
-        excludeArray = excludeArray.map(s => s.trim());
-        // remove empty elements
-        excludeArray = excludeArray.filter(e => e);
-
-        // exclude by serial number
-        comfortCloudDevices = comfortCloudDevices.filter(el => !excludeArray.includes(el.deviceGuid));
-        //exclude by name
-        comfortCloudDevices = comfortCloudDevices.filter(el => !excludeArray.includes(el.deviceName));
-      }
-
       // Exclude by individual device config
       if (this.platformConfig.devices) {
         let devConfigExcludeList = this.platformConfig.devices;
