@@ -250,6 +250,18 @@
 							"description": "When enabled it will create a switch to control Powerful Mode. Powerful Mode can also be enabled by setting the speed slider (rotation) to 7.",
 							"type": "boolean",
 							"default": false
+						},
+						"exposeSwingUpDown": {
+							"title": "Expose Swing Up Down",
+							"description": "When enabled it will create a switch to control Swing Up Down.",
+							"type": "boolean",
+							"default": false
+						},
+						"exposeSwingLeftRight": {
+							"title": "Expose Swing Left Right",
+							"description": "When enabled it will create a switch to control Swing Left Right.",
+							"type": "boolean",
+							"default": false
 						}
 					}
 				}
