@@ -320,8 +320,8 @@ export default class IndoorUnitAccessory {
         this.accessory.context.device.deviceGuid);
 
       // Active
-      if (deviceStatus.operate !== undefined) {
-        const active = deviceStatus.operate === 1
+      if (this.deviceStatus.operate !== undefined) {
+        const active = this.deviceStatus.operate === 1
           ? this.platform.Characteristic.Active.ACTIVE
           : this.platform.Characteristic.Active.INACTIVE;
         this.service.updateCharacteristic(this.platform.Characteristic.Active, active);
@@ -334,40 +334,40 @@ export default class IndoorUnitAccessory {
       // be used: 8°C for heating and 30°C for cooling.
       // Temperature of 126 from the API = null/failure
 
-      if (deviceStatus.insideTemperature < 126) {
+      if (this.deviceStatus.insideTemperature < 126) {
         this.service.updateCharacteristic(
-          this.platform.Characteristic.CurrentTemperature, deviceStatus.insideTemperature);
+          this.platform.Characteristic.CurrentTemperature, this.deviceStatus.insideTemperature);
         logOutput += `, Indoor Temp. ${deviceStatus.insideTemperature}`;
       } else {
         logOutput += ', Indoor Temp. not available';
         this.platform.log.debug('Indoor temperature is not available - setting default temperature');
         this.service.updateCharacteristic(
           this.platform.Characteristic.CurrentTemperature,
-          (deviceStatus.operationMode === 3) ? 30 : 8,
+          (this.deviceStatus.operationMode === 3) ? 30 : 8,
         );
       }
 
       // Outdoor temperature for logs
-      if (deviceStatus.outTemperature >= 126) {
+      if (this.deviceStatus.outTemperature >= 126) {
         logOutput += ', Outdoor Temp. not available';
         this.platform.log.debug('Outdoor temp. not available: It may be required for the device to be turned on '
                                 + 'to retrieve the current temperature from the outdoor unit.');
       } else {
-        logOutput += `, Outdoor Temp. ${deviceStatus.outTemperature}`;
+        logOutput += `, Outdoor Temp. ${this.deviceStatus.outTemperature}`;
       }
 
       // Outdoor temperature for virtual sensor
       // Only check and set if the user wants to display the virtual sensor showing temp from outdoor unit.
-      if (this.exposeOutdoorTemp && deviceStatus.outTemperature < 126) {
-        this.exposeOutdoorTemp.updateCharacteristic(this.platform.Characteristic.CurrentTemperature, deviceStatus.outTemperature);
+      if (this.exposeOutdoorTemp && this.deviceStatus.outTemperature < 126) {
+        this.exposeOutdoorTemp.updateCharacteristic(this.platform.Characteristic.CurrentTemperature, this.deviceStatus.outTemperature);
       }
 
       // Current Heater-Cooler State and Target Heater-Cooler State
       const currentTemperature = this.service.getCharacteristic(
         this.platform.Characteristic.CurrentTemperature).value as number;
-      const setTemperature = deviceStatus.temperatureSet;
+      const setTemperature = this.deviceStatus.temperatureSet;
 
-      switch (deviceStatus.operationMode) {
+      switch (this.deviceStatus.operationMode) {
         // Auto
         case 0:
           logOutput += ', Auto Mode';
@@ -474,14 +474,14 @@ export default class IndoorUnitAccessory {
       // Default to AUTO mode
       let sliderValue = 8;
 
-      if (deviceStatus.ecoMode === ComfortCloudEcoMode.Quiet) {
+      if (this.deviceStatus.ecoMode === ComfortCloudEcoMode.Quiet) {
         sliderValue = 1;
         logOutput += ', Speed 1 (Quiet Mode)';
-      } else if (deviceStatus.ecoMode === ComfortCloudEcoMode.Powerful) {
+      } else if (this.deviceStatus.ecoMode === ComfortCloudEcoMode.Powerful) {
         sliderValue = 7;
         logOutput += ', Speed 5 (Powerful Mode)';
-      } else if (deviceStatus.ecoMode === ComfortCloudEcoMode.AutoOrManual) {
-        switch (deviceStatus.fanSpeed) {
+      } else if (this.deviceStatus.ecoMode === ComfortCloudEcoMode.AutoOrManual) {
+        switch (this.deviceStatus.fanSpeed) {
           case ComfortCloudFanSpeed.One:
             sliderValue = 2;
             logOutput += ', Speed 1';
@@ -513,11 +513,11 @@ export default class IndoorUnitAccessory {
 
       // Swing Mode
       if ((!this.devConfig?.swingModeDirections)
-          || (deviceStatus.fanAutoMode === ComfortCloudFanAutoMode.AirSwingAuto
+          || (this.deviceStatus.fanAutoMode === ComfortCloudFanAutoMode.AirSwingAuto
               && this.devConfig?.swingModeDirections === SwingModeDirection.LeftRightAndUpDown)
-          || (deviceStatus.fanAutoMode === ComfortCloudFanAutoMode.AirSwingLR
+          || (this.deviceStatus.fanAutoMode === ComfortCloudFanAutoMode.AirSwingLR
               && this.devConfig?.swingModeDirections === SwingModeDirection.LeftRightOnly)
-          || (deviceStatus.fanAutoMode === ComfortCloudFanAutoMode.AirSwingUD
+          || (this.deviceStatus.fanAutoMode === ComfortCloudFanAutoMode.AirSwingUD
               && this.devConfig?.swingModeDirections === SwingModeDirection.UpDownOnly)) {
         this.service.getCharacteristic(this.platform.Characteristic.SwingMode)
           .updateValue(this.platform.Characteristic.SwingMode.SWING_ENABLED);
@@ -528,7 +528,7 @@ export default class IndoorUnitAccessory {
 
       // Nanoe
       if (this.exposeNanoe) {
-        if (deviceStatus.nanoe === 2) {
+        if (this.deviceStatus.nanoe === 2) {
           this.exposeNanoe.updateCharacteristic(this.platform.Characteristic.On, true);
         } else {
           this.exposeNanoe.updateCharacteristic(this.platform.Characteristic.On, false);
@@ -537,7 +537,7 @@ export default class IndoorUnitAccessory {
 
       // Inside Cleaning
       if (this.exposeInsideCleaning) {
-        if (deviceStatus.insideCleaning === 2) {
+        if (this.deviceStatus.insideCleaning === 2) {
           this.exposeInsideCleaning.updateCharacteristic(this.platform.Characteristic.On, true);
         } else {
           this.exposeInsideCleaning.updateCharacteristic(this.platform.Characteristic.On, false);
@@ -546,7 +546,7 @@ export default class IndoorUnitAccessory {
 
       // Eco Navi
       if (this.exposeEcoNavi) {
-        if (deviceStatus.ecoNavi === 2) {
+        if (this.deviceStatus.ecoNavi === 2) {
           this.exposeEcoNavi.updateCharacteristic(this.platform.Characteristic.On, true);
         } else {
           this.exposeEcoNavi.updateCharacteristic(this.platform.Characteristic.On, false);
@@ -555,7 +555,7 @@ export default class IndoorUnitAccessory {
 
       // Dry Mode
       if (this.exposeDryMode) {
-        if (deviceStatus.operationMode === 1) {
+        if (this.deviceStatus.operationMode === 1) {
           this.exposeDryMode.updateCharacteristic(this.platform.Characteristic.On, true);
         } else {
           this.exposeDryMode.updateCharacteristic(this.platform.Characteristic.On, false);
@@ -564,7 +564,7 @@ export default class IndoorUnitAccessory {
 
       // Fan Mode
       if (this.exposeFanMode) {
-        if (deviceStatus.operationMode === 4) {
+        if (this.deviceStatus.operationMode === 4) {
           this.exposeFanMode.updateCharacteristic(this.platform.Characteristic.On, true);
         } else {
           this.exposeFanMode.updateCharacteristic(this.platform.Characteristic.On, false);
@@ -573,7 +573,7 @@ export default class IndoorUnitAccessory {
 
       // Quiet Mode (speed)
       if (this.exposeQuietMode) {
-        if (deviceStatus.ecoMode === ComfortCloudEcoMode.Quiet) {
+        if (this.deviceStatus.ecoMode === ComfortCloudEcoMode.Quiet) {
           this.exposeQuietMode.updateCharacteristic(this.platform.Characteristic.On, true);
         } else {
           this.exposeQuietMode.updateCharacteristic(this.platform.Characteristic.On, false);
@@ -582,7 +582,7 @@ export default class IndoorUnitAccessory {
 
       // Powerful Mode (speed)
       if (this.exposePowerfulMode) {
-        if (deviceStatus.ecoMode === ComfortCloudEcoMode.Powerful) {
+        if (this.deviceStatus.ecoMode === ComfortCloudEcoMode.Powerful) {
           this.exposePowerfulMode.updateCharacteristic(this.platform.Characteristic.On, true);
         } else {
           this.exposePowerfulMode.updateCharacteristic(this.platform.Characteristic.On, false);
@@ -591,7 +591,7 @@ export default class IndoorUnitAccessory {
 
       // Swing Up Down
       if (this.exposeSwingUpDown) {
-        if (deviceStatus.fanAutoMode === 0 || deviceStatus.fanAutoMode === 2 ) {
+        if (this.deviceStatus.fanAutoMode === 0 || deviceStatus.fanAutoMode === 2 ) {
           this.exposeSwingUpDown.updateCharacteristic(this.platform.Characteristic.On, true);
         } else {
           this.exposeSwingUpDown.updateCharacteristic(this.platform.Characteristic.On, false);
@@ -600,7 +600,7 @@ export default class IndoorUnitAccessory {
 
       // Swing Up Down
       if (this.exposeSwingUpDown) {
-        if (deviceStatus.fanAutoMode === 0 || deviceStatus.fanAutoMode === 3 ) {
+        if (this.deviceStatus.fanAutoMode === 0 || deviceStatus.fanAutoMode === 3 ) {
           this.exposeSwingUpDown.updateCharacteristic(this.platform.Characteristic.On, true);
         } else {
           this.exposeSwingUpDown.updateCharacteristic(this.platform.Characteristic.On, false);
