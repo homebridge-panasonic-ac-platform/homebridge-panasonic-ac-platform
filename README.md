@@ -115,13 +115,13 @@ When enabled it will create a dummy temperature sensor which will display the te
 
 * `exposeEcoNavi` (boolean): When enabled it will create a switch to control Eco Navi.
  
-* `exposeDryMode` (boolean): When enabled it will create a switch to control Dry Mode.
+* `exposeDryMode` (boolean): When enabled it will create a switch to control Dry Mode. Note: disabling this switch will set Auto Mode.",
 
-* `exposeFanMode` (boolean): When enabled it will create a switch to control Fan Mode.
+* `exposeFanMode` (boolean): When enabled it will create a switch to control Fan Mode. Note: disabling this switch will set Auto Mode.",
 
-* `exposeQuietMode` (boolean): When enabled it will create a switch to control Quiet Mode. You can also enable this feature by setting the speed slider to 1.
+* `exposeQuietMode` (boolean): When enabled it will create a switch to control Quiet Mode. Quiet Mode can also be enabled by setting the speed slider (rotation) to 1.",
 
-* `exposePowerfulMode` (boolean): When enabled it will create a switch to control Powerful Mode. You can also enable this feature by setting the speed slider to 7.
+* `exposePowerfulMode` (boolean): When enabled it will create a switch to control Powerful Mode. Powerful Mode can also be enabled by setting the speed slider (rotation) to 7.",
 
 * `swingModeDirections` (string):
 Desired swing direction(s) activated when swing is switched on.
