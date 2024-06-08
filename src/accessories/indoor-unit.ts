@@ -21,6 +21,7 @@ export default class IndoorUnitAccessory {
   _refreshInterval;
   refreshTimer;
   devConfig;
+  deviceStatus;
   exposeOutdoorTemp;
   exposeNanoe;
   exposeInsideCleaning;
@@ -315,7 +316,7 @@ export default class IndoorUnitAccessory {
     this.platform.log.debug(`${this.accessory.displayName}: refresh status`);
 
     try {
-      const deviceStatus = await this.platform.comfortCloud.getDeviceStatus(
+      this.deviceStatus = await this.platform.comfortCloud.getDeviceStatus(
         this.accessory.context.device.deviceGuid);
 
       // Active
