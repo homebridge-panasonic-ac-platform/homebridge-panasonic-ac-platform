@@ -240,7 +240,7 @@ export default class IndoorUnitAccessory {
         .onSet(this.setQuietMode.bind(this));
       this.platform.log.debug(`${this.accessory.displayName}: add quiet mode switch`);
     } else {
-      const removeQuietMode = this.accessory.getService(this.accessory.displayName + ' (quiet mode)'');
+      const removeQuietMode = this.accessory.getService(this.accessory.displayName + ' (quiet mode)');
       if (removeQuietMode) {
         this.accessory.removeService(removeQuietMode);
         this.platform.log.debug(`${this.accessory.displayName}: remove quiet mode switch`);
