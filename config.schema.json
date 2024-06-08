@@ -333,7 +333,7 @@
 								"devices[].exposeQuietMode",
 								"devices[].exposePowerfulMode",
 								"devices[].exposeSwingUpDown",
-								"devices[].exposeSwingLefRight"
+								"devices[].exposeSwingLeftRight"
 							]
 						},
 						{
