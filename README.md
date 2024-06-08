@@ -142,9 +142,10 @@ HomeKit has a limited number of switches, which is much less than the number of 
 <details>
 <summary><b>Additional sensors and switches (Nanoe, Inside cleaning, etc.)</b></summary>
     
-- Enable additional sensor for outdoor temp. and switches for Nanoe, Inside Cleaning, Eco Navi, Dry Mode, Fan mode, Quiet Mode and Powerful Mode. 
-- These switches will be available directly in your main device or in device / settings (wheel icon) / accessories. 
-- If you add at least one sensor or switch, the appearance of the air conditioning will change - rotation speed and swing will not be available in the main view, only after entering the device / settings (wheel icon) / accessories / device / settings (wheel icon) (it's not a mistake, Apple solved it like that).
+- Enable additional sensor for outdoor temp.
+- Enable additional switches for: Nanoe, Inside Cleaning, Eco Navi, Dry Mode, Fan mode, Quiet Mode, Powerful Mode, Swing Up Down, Swing Left Right.
+- These switches will be available in HomeKit, directly in your main device or in device / settings (wheel icon) / accessories. 
+- If you add at least one sensor or switch, the appearance of the air conditioning will change - rotation speed and swing will not be available in the main view, only after entering the device / settings (wheel icon) / accessories / device / settings (wheel icon).
 - You can also use the option 'show as separate tiles' to separate the accessories.
 
 </details>
@@ -269,7 +270,7 @@ You can also combine several commands into one:
 
 Warning! Read carefully before updating!
 
-- Option to add additional switches to control Nanoe, Inside cleaning, Eco Navi, Dry Mode, Fan mode, Quiet Mode and Powerful Mode.
+- Option to add additional switches to control Nanoe, Inside cleaning, Eco Navi, Dry Mode, Fan mode, Quiet Mode, Powerful Mode, Swing Up Down, Swing Left Right.
 - Removed field 'Exclude devices', use exclude from individual device config instead.
 - Removed options: Force values, Oscilate switch (now it always control swing), Auto Mode (you can add switches to control Dry and Fan mode) - now you can add additional switches to control these options. 
 
