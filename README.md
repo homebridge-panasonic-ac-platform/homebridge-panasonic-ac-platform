@@ -141,7 +141,11 @@ HomeKit has a limited number of switches, which is much less than the number of 
 
 <details>
 <summary><b>Additional sensors and switches (Nanoe, Inside cleaning, etc.)</b></summary>
-Enable additional sensor for outdoor temp. and switches for Nanoe, Inside Cleaning, Eco Navi, Dry Mode, Fan mode, Quiet Mode and Powerful Mode. These switches will be available in HomeKit / device / settings wheel / other accessories.
+    
+- Enable additional sensor for outdoor temp. and switches for Nanoe, Inside Cleaning, Eco Navi, Dry Mode, Fan mode, Quiet Mode and Powerful Mode. 
+- These switches will be available in HomeKit / device / settings (wheel icon) / accessories, and in the case of automation directly. 
+- If you add at least one sensor or switch, the appearance of the air conditioning will change - rotation speed and swing will not be available in the main view, only after entering the settings (wheel icon) / accessories / air conditioning. You can also use the option 'show as separate tiles' to separate the accessories.
+
 </details>
 
 <details>
