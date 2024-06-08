@@ -337,7 +337,7 @@ export default class IndoorUnitAccessory {
       if (this.deviceStatus.insideTemperature < 126) {
         this.service.updateCharacteristic(
           this.platform.Characteristic.CurrentTemperature, this.deviceStatus.insideTemperature);
-        logOutput += `, Indoor Temp. ${deviceStatus.insideTemperature}`;
+        logOutput += `, Indoor Temp. ${this.deviceStatus.insideTemperature}`;
       } else {
         logOutput += ', Indoor Temp. not available';
         this.platform.log.debug('Indoor temperature is not available - setting default temperature');
@@ -454,7 +454,7 @@ export default class IndoorUnitAccessory {
 
         default:
           this.platform.log.error(
-            `Unknown TargetHeaterCoolerState state: '${deviceStatus.operationMode}'`);
+            `Unknown TargetHeaterCoolerState state: '${this.deviceStatus.operationMode}'`);
           break;
       }
 
@@ -917,7 +917,7 @@ export default class IndoorUnitAccessory {
     const parameters: ComfortCloudDeviceUpdatePayload = {};
     if (value) {
       // if Swing Left Right is enabled than set Swing Auto (Up Down and Left Right)
-      if (deviceStatus.fanAutoMode === 3) {
+      if (this.deviceStatus.fanAutoMode === 3) {
         parameters.fanAutoMode = 0;
       } else {
         parameters.fanAutoMode = 2;
@@ -935,7 +935,7 @@ export default class IndoorUnitAccessory {
     const parameters: ComfortCloudDeviceUpdatePayload = {};
     if (value) {
       // if Swing Up Down is enabled than set Swing Auto (Up Down and Left Right)
-      if (deviceStatus.fanAutoMode === 2) {
+      if (this.deviceStatus.fanAutoMode === 2) {
         parameters.fanAutoMode = 0;
       } else {
         parameters.fanAutoMode = 3;
