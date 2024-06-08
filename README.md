@@ -115,13 +115,13 @@ When enabled it will create a dummy temperature sensor which will display the te
 
 * `exposeEcoNavi` (boolean): When enabled it will create a switch to control Eco Navi.
  
-* `exposeDryMode` (boolean): When enabled it will create a switch to control Dry Mode.
+* `exposeDryMode` (boolean): When enabled it will create a switch to control Dry Mode. Note: disabling this switch will set Auto Mode.",
 
-* `exposeFanMode` (boolean): When enabled it will create a switch to control Fan Mode.
+* `exposeFanMode` (boolean): When enabled it will create a switch to control Fan Mode. Note: disabling this switch will set Auto Mode.",
 
-* `exposeQuietMode` (boolean): When enabled it will create a switch to control Quiet Mode. You can also enable this feature by setting the speed slider to 1.
+* `exposeQuietMode` (boolean): When enabled it will create a switch to control Quiet Mode. Quiet Mode can also be enabled by setting the speed slider (rotation) to 1.",
 
-* `exposePowerfulMode` (boolean): When enabled it will create a switch to control Powerful Mode. You can also enable this feature by setting the speed slider to 7.
+* `exposePowerfulMode` (boolean): When enabled it will create a switch to control Powerful Mode. Powerful Mode can also be enabled by setting the speed slider (rotation) to 7.",
 
 * `swingModeDirections` (string):
 Desired swing direction(s) activated when swing is switched on.
@@ -141,7 +141,13 @@ HomeKit has a limited number of switches, which is much less than the number of 
 
 <details>
 <summary><b>Additional sensors and switches (Nanoe, Inside cleaning, etc.)</b></summary>
-Enable additional sensor for outdoor temp. and switches for Nanoe, Inside Cleaning, Eco Navi, Dry Mode, Fan mode, Quiet Mode and Powerful Mode. These switches will be available in HomeKit / device / settings wheel / other accessories.
+    
+- Enable additional sensor for outdoor temp.
+- Enable additional switches for: Nanoe, Inside Cleaning, Eco Navi, Dry Mode, Fan mode, Quiet Mode, Powerful Mode, Swing Up Down, Swing Left Right.
+- These switches will be available in HomeKit, directly in your main device or in device / settings (wheel icon) / accessories. 
+- If you add at least one sensor or switch, the appearance of the air conditioning will change - rotation speed and swing will not be available in the main view, only after entering the device / settings (wheel icon) / accessories / device / settings (wheel icon).
+- You can also use the option 'show as separate tiles' to separate the accessories.
+
 </details>
 
 <details>
@@ -264,7 +270,7 @@ You can also combine several commands into one:
 
 Warning! Read carefully before updating!
 
-- Option to add additional switches to control Nanoe, Inside cleaning, Eco Navi, Dry Mode, Fan mode, Quiet Mode and Powerful Mode.
+- Option to add additional switches to control Nanoe, Inside cleaning, Eco Navi, Dry Mode, Fan mode, Quiet Mode, Powerful Mode, Swing Up Down, Swing Left Right.
 - Removed field 'Exclude devices', use exclude from individual device config instead.
 - Removed options: Force values, Oscilate switch (now it always control swing), Auto Mode (you can add switches to control Dry and Fan mode) - now you can add additional switches to control these options. 
 
