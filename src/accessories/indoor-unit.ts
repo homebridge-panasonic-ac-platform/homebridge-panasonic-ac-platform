@@ -44,6 +44,20 @@ export default class IndoorUnitAccessory {
       || this.platform.platformConfig.devices.find((item) => item.name === accessory.context.device?.deviceGuid);
     }
 
+    try {
+      this.deviceStatusFull = await this.platform.comfortCloud.getDeviceStatus(
+        this.accessory.context.device.deviceGuid);
+    } catch (error) {
+      this.platform.log.error('An error occurred while refreshing the device status. '
+                              + 'Turn on debug mode for more information.');
+
+      // Only log if a Promise rejection reason was provided.
+      // Some errors are already logged at source.
+      if (error) {
+        this.platform.log.debug(error);
+      }
+    }
+
     // Accessory Information
     // https://developers.homebridge.io/#/service/AccessoryInformation
     this.accessory.getService(this.platform.Service.AccessoryInformation)
@@ -150,7 +164,7 @@ export default class IndoorUnitAccessory {
     }
 
     // Nanoe
-    if (this.devConfig?.exposeNanoe) {
+    if (this.deviceStatusFull?.nanoe && this.devConfig?.exposeNanoe) {
       this.exposeNanoe = this.accessory.getService(this.accessory.displayName + ' (nanoe)')
         || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (nanoe)', 'exposeNanoe');
       this.exposeNanoe.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (nanoe)');
@@ -167,7 +181,7 @@ export default class IndoorUnitAccessory {
     }
 
     // Inside cleaning
-    if (this.devConfig?.exposeInsideCleaning) {
+    if (this.deviceStatusFull?.insideCleaning && this.devConfig?.exposeInsideCleaning) {
       this.exposeInsideCleaning = this.accessory.getService(this.accessory.displayName + ' (inside cleaning)')
         || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (inside cleaning)', 'exposeInsideCleaning');
       this.exposeInsideCleaning.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (inside cleaning)');
@@ -184,7 +198,7 @@ export default class IndoorUnitAccessory {
     }
 
     // Eco Navi
-    if (this.devConfig?.exposeEcoNavi) {
+    if (this.deviceStatusFull?.ecoNavi && this.devConfig?.exposeEcoNavi) {
       this.exposeEcoNavi = this.accessory.getService(this.accessory.displayName + ' (eco navi)')
         || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (eco navi)', 'exposeEcoNavi');
       this.exposeEcoNavi.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (eco navi)');
@@ -201,7 +215,7 @@ export default class IndoorUnitAccessory {
     }
 
     // Dry mode
-    if (this.devConfig?.exposeDryMode) {
+    if (this.deviceStatusFull?.dryMode && this.devConfig?.exposeDryMode) {
       this.exposeDryMode = this.accessory.getService(this.accessory.displayName + ' (dry mode)')
         || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (dry mode)', 'exposeDryMode');
       this.exposeDryMode.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (dry mode)');
@@ -218,7 +232,7 @@ export default class IndoorUnitAccessory {
     }
 
     // Fan Mode
-    if (this.devConfig?.exposeFanMode) {
+    if (this.deviceStatusFull?.fanMode && this.devConfig?.exposeFanMode) {
       this.exposeFanMode = this.accessory.getService(this.accessory.displayName + ' (fan mode)')
         || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (fan mode)', 'exposeFanMode');
       this.exposeFanMode.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (fan mode)');
@@ -235,7 +249,7 @@ export default class IndoorUnitAccessory {
     }
 
     // Quiet Mode
-    if (this.devConfig?.exposeQuietMode) {
+    if (this.deviceStatusFull?.quietMode && this.devConfig?.exposeQuietMode) {
       this.exposeQuietMode = this.accessory.getService(this.accessory.displayName + ' (quiet mode)')
         || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (quiet mode)', 'exposeQuietMode');
       this.exposeQuietMode.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (quiet mode)');
