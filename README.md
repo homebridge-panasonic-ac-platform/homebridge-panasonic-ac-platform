@@ -115,13 +115,17 @@ When enabled it will create a dummy temperature sensor which will display the te
 
 * `exposeEcoNavi` (boolean): When enabled it will create a switch to control Eco Navi.
  
-* `exposeDryMode` (boolean): When enabled it will create a switch to control Dry Mode. Note: disabling this switch will set Auto Mode.",
+* `exposeDryMode` (boolean): When enabled it will create a switch to control Dry Mode. Note: disabling this switch will set Auto Mode.
 
-* `exposeFanMode` (boolean): When enabled it will create a switch to control Fan Mode. Note: disabling this switch will set Auto Mode.",
+* `exposeFanMode` (boolean): When enabled it will create a switch to control Fan Mode. Note: disabling this switch will set Auto Mode.
 
-* `exposeQuietMode` (boolean): When enabled it will create a switch to control Quiet Mode. Quiet Mode can also be enabled by setting the speed slider (rotation) to 1.",
+* `exposeQuietMode` (boolean): When enabled it will create a switch to control Quiet Mode. Quiet Mode can also be enabled by setting the speed slider (rotation) to 1.
 
-* `exposePowerfulMode` (boolean): When enabled it will create a switch to control Powerful Mode. Powerful Mode can also be enabled by setting the speed slider (rotation) to 7.",
+* `exposePowerfulMode` (boolean): When enabled it will create a switch to control Powerful Mode. Powerful Mode can also be enabled by setting the speed slider (rotation) to 7.
+
+* `exposeSwingUpDown` (boolean): When enabled it will create a switch to control Swing Up Down.
+
+* `exposeSwingLeftRight` (boolean): When enabled it will create a switch to control Swing Left Right. 
 
 * `swingModeDirections` (string):
 Desired swing direction(s) activated when swing is switched on.
@@ -140,10 +144,11 @@ Desired position of the Left-Right flaps when swing is switched off or the swing
 HomeKit has a limited number of switches, which is much less than the number of available options in Panasonic Comfort Cloud. Therefore, in the plugin settings you can choose what controls what and add additional sensors and switches. You can apply individual settings for each device.
 
 <details>
-<summary><b>Additional sensors and switches (Nanoe, Inside cleaning, etc.)</b></summary>
+<summary><b>Additional sensors (Outdoor Unit Temp.) and switches (Nanoe, Inside Cleaning, Eco Navi, Quiet Mode, Powerful Mode, Dry Mode, Fan Mode, Swing Up Down, Swing Left Right)</b></summary>
     
-- Enable additional sensor for outdoor temp.
-- Enable additional switches for: Nanoe, Inside Cleaning, Eco Navi, Dry Mode, Fan mode, Quiet Mode, Powerful Mode, Swing Up Down, Swing Left Right.
+- Enable additional sensor for outdoor temp. and/or switches for: Nanoe, Inside Cleaning, Eco Navi, Dry Mode, Fan mode, Quiet Mode, Powerful Mode, Swing Up Down, Swing Left Right.
+- Sensor / Switch will be added only if device support this function.
+- Some values can be save only when device is on (E.G.: Quiet and Powerful mode).
 - These switches will be available in HomeKit, directly in your main device or in device / settings (wheel icon) / accessories. 
 - If you add at least one sensor or switch, the appearance of the air conditioning will change - rotation speed and swing will not be available in the main view, only after entering the device / settings (wheel icon) / accessories / device / settings (wheel icon).
 - You can also use the option 'show as separate tiles' to separate the accessories.
@@ -171,13 +176,14 @@ All settings related to a unit's fan speed are controlled through the fan speed 
 
 <details>
 <summary><b>Swing Mode</b></summary>
-HomeKit has only one 'Oscillate' switch, but most Panasonic ACs have two swing directions. In plugin settings you can set horizontal and vertical desired positions.
+HomeKit has only one 'Oscillate' switch, but most Panasonic ACs have two swing directions. In plugin settings you can set horizontal (left right) and vertical (up down) desired positions.
 </details>
 
 <details>
 <summary><b>Refreshing data of devices</b></summary>
 
-The data is refreshed automatically: every 10 minutes when the device is turned on and every 60 minutes when it is turned off. Data is also refreshed every time the state of the device is changed using HomeKit / Apple Home.
+- The data is refreshed automatically: every 10 minutes when the device is turned on and every 60 minutes when it is turned off. Data is also refreshed every time the state of the device is changed using HomeKit / Apple Home.
+- Temperature from outdoor unit is only available when device is on. 
 
 </details>
 
