@@ -64,6 +64,8 @@ export default class IndoorUnitAccessory {
     this.service = this.accessory.getService(this.platform.Service.HeaterCooler)
       || this.accessory.addService(this.platform.Service.HeaterCooler);
 
+    this.service.addCharacteristic(this.platform.Characteristic.ConfiguredName);
+
     // Characteristics configuration
     // Each service must implement at-minimum the "required characteristics"
     // See https://developers.homebridge.io/#/service/HeaterCooler
@@ -138,7 +140,6 @@ export default class IndoorUnitAccessory {
     if (this.devConfig?.exposeOutdoorTemp) {
       this.exposeOutdoorTemp = this.accessory.getService(this.accessory.displayName + ' (out temp)')
         || this.accessory.addService(this.platform.Service.TemperatureSensor, this.accessory.displayName + ' (out temp)', 'exposeOutdoorTemp');
-      this.exposeOutdoorTemp.addCharacteristic(this.platform.Characteristic.ConfiguredName);
       this.exposeOutdoorTemp.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (out temp)');
       this.platform.log.debug(`${this.accessory.displayName}: add outdoor temp sensor`);
     } else {
@@ -153,7 +154,6 @@ export default class IndoorUnitAccessory {
     if (this.devConfig?.exposeNanoe) {
       this.exposeNanoe = this.accessory.getService(this.accessory.displayName + ' (nanoe)')
         || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (nanoe)', 'exposeNanoe');
-      this.exposeNanoe.addCharacteristic(this.platform.Characteristic.ConfiguredName);
       this.exposeNanoe.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (nanoe)');
       this.exposeNanoe
         .getCharacteristic(this.platform.Characteristic.On)
@@ -171,7 +171,6 @@ export default class IndoorUnitAccessory {
     if (this.devConfig?.exposeInsideCleaning) {
       this.exposeInsideCleaning = this.accessory.getService(this.accessory.displayName + ' (inside cleaning)')
         || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (inside cleaning)', 'exposeInsideCleaning');
-      this.exposeInsideCleaning.addCharacteristic(this.platform.Characteristic.ConfiguredName);
       this.exposeInsideCleaning.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (inside cleaning)');
       this.exposeInsideCleaning
         .getCharacteristic(this.platform.Characteristic.On)
@@ -189,7 +188,6 @@ export default class IndoorUnitAccessory {
     if (this.devConfig?.exposeEcoNavi) {
       this.exposeEcoNavi = this.accessory.getService(this.accessory.displayName + ' (eco navi)')
         || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (eco navi)', 'exposeEcoNavi');
-      this.exposeEcoNavi.addCharacteristic(this.platform.Characteristic.ConfiguredName);
       this.exposeEcoNavi.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (eco navi)');
       this.exposeEcoNavi
         .getCharacteristic(this.platform.Characteristic.On)
@@ -207,7 +205,6 @@ export default class IndoorUnitAccessory {
     if (this.devConfig?.exposeDryMode) {
       this.exposeDryMode = this.accessory.getService(this.accessory.displayName + ' (dry mode)')
         || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (dry mode)', 'exposeDryMode');
-      this.exposeDryMode.addCharacteristic(this.platform.Characteristic.ConfiguredName);
       this.exposeDryMode.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (dry mode)');
       this.exposeDryMode
         .getCharacteristic(this.platform.Characteristic.On)
@@ -225,7 +222,6 @@ export default class IndoorUnitAccessory {
     if (this.devConfig?.exposeFanMode) {
       this.exposeFanMode = this.accessory.getService(this.accessory.displayName + ' (fan mode)')
         || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (fan mode)', 'exposeFanMode');
-      this.exposeFanMode.addCharacteristic(this.platform.Characteristic.ConfiguredName);
       this.exposeFanMode.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (fan mode)');
       this.exposeFanMode
         .getCharacteristic(this.platform.Characteristic.On)
@@ -243,7 +239,6 @@ export default class IndoorUnitAccessory {
     if (this.devConfig?.exposeQuietMode) {
       this.exposeQuietMode = this.accessory.getService(this.accessory.displayName + ' (quiet mode)')
         || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (quiet mode)', 'exposeQuietMode');
-      this.exposeQuietMode.addCharacteristic(this.platform.Characteristic.ConfiguredName);
       this.exposeQuietMode.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (quiet mode)');
       this.exposeQuietMode
         .getCharacteristic(this.platform.Characteristic.On)
@@ -261,7 +256,6 @@ export default class IndoorUnitAccessory {
     if (this.devConfig?.exposePowerfulMode) {
       this.exposePowerfulMode = this.accessory.getService(this.accessory.displayName + ' (powerful mode)')
         || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (powerful mode)', 'exposePowerfulMode');
-      this.exposePowerfulMode.addCharacteristic(this.platform.Characteristic.ConfiguredName);
       this.exposePowerfulMode.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (powerful mode)');
       this.exposePowerfulMode
         .getCharacteristic(this.platform.Characteristic.On)
@@ -279,7 +273,6 @@ export default class IndoorUnitAccessory {
     if (this.devConfig?.exposeSwingUpDown) {
       this.exposeSwingUpDown = this.accessory.getService(this.accessory.displayName + ' (swing up down)')
         || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (swing up down)', 'exposeSwingUpDown');
-      this.exposeSwingUpDown.addCharacteristic(this.platform.Characteristic.ConfiguredName);
       this.exposeSwingUpDown.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (swing up down)');
       this.exposeSwingUpDown
         .getCharacteristic(this.platform.Characteristic.On)
@@ -293,11 +286,10 @@ export default class IndoorUnitAccessory {
       }
     }
 
-    // Swing Up Down
+    // Swing Left Right
     if (this.devConfig?.exposeSwingLeftRight) {
       this.exposeSwingLeftRight = this.accessory.getService(this.accessory.displayName + ' (swing left right)')
         || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (swing left right)', 'exposeSwingLeftRight');
-      this.exposeSwingLeftRight.addCharacteristic(this.platform.Characteristic.ConfiguredName);
       this.exposeSwingLeftRight.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (swing left right)');
       this.exposeSwingLeftRight
         .getCharacteristic(this.platform.Characteristic.On)
@@ -607,12 +599,12 @@ export default class IndoorUnitAccessory {
         }
       }
 
-      // Swing Up Down
-      if (this.exposeSwingUpDown) {
+      // Swing Left Right
+      if (this.exposeSwingLeftRight) {
         if (this.deviceStatus.fanAutoMode === 0 || this.deviceStatus.fanAutoMode === 3 ) {
-          this.exposeSwingUpDown.updateCharacteristic(this.platform.Characteristic.On, true);
+          this.exposeSwingLeftRight.updateCharacteristic(this.platform.Characteristic.On, true);
         } else {
-          this.exposeSwingUpDown.updateCharacteristic(this.platform.Characteristic.On, false);
+          this.exposeSwingLeftRight.updateCharacteristic(this.platform.Characteristic.On, false);
         }
       }
 
