@@ -877,7 +877,7 @@ export default class IndoorUnitAccessory {
         this.platform.log.debug(`${this.accessory.displayName}: Dry Mode Off`);
       }
       this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
-    } 
+    }
   }
 
   // set Fan Mode
