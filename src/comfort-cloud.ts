@@ -150,7 +150,7 @@ export default class ComfortCloudApi {
       return Promise.reject('Cannot get device status for undefined deviceGuid.');
     }
 
-    return axios.request<ComfortCloudDeviceStatusResponse>({
+    return axios.request<ComfortCloudDeviceStatus>({
       method: 'get',
       url: `https://accsmart.panasonic.com/deviceStatus/now/${deviceGuid}`,
       headers: {
