@@ -64,8 +64,6 @@ export default class IndoorUnitAccessory {
     this.service = this.accessory.getService(this.platform.Service.HeaterCooler)
       || this.accessory.addService(this.platform.Service.HeaterCooler);
 
-    this.service.addCharacteristic(this.platform.Characteristic.ConfiguredName);
-
     // Characteristics configuration
     // Each service must implement at-minimum the "required characteristics"
     // See https://developers.homebridge.io/#/service/HeaterCooler
@@ -293,7 +291,7 @@ export default class IndoorUnitAccessory {
       this.exposeSwingLeftRight.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (swing left right)');
       this.exposeSwingLeftRight
         .getCharacteristic(this.platform.Characteristic.On)
-        .onSet(this.setSwingUpDown.bind(this));
+        .onSet(this.setSwingLeftRight.bind(this));
       this.platform.log.debug(`${this.accessory.displayName}: add swing left right switch`);
     } else {
       const removeSwingLeftRight = this.accessory.getService(this.accessory.displayName + ' (swing left right)');
@@ -829,7 +827,7 @@ export default class IndoorUnitAccessory {
       parameters.nanoe = 2;
       this.platform.log.debug(`${this.accessory.displayName}: Nanoe On`);
     } else {
-      parameters.nanoe = 0;
+      parameters.nanoe = 1;
       this.platform.log.debug(`${this.accessory.displayName}: Nanoe Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
@@ -842,7 +840,7 @@ export default class IndoorUnitAccessory {
       parameters.insideCleaning = 2;
       this.platform.log.debug(`${this.accessory.displayName}: Inside Cleaning On`);
     } else {
-      parameters.insideCleaning = 0;
+      parameters.insideCleaning = 1;
       this.platform.log.debug(`${this.accessory.displayName}: Inside Cleaning Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
@@ -855,7 +853,7 @@ export default class IndoorUnitAccessory {
       parameters.ecoNavi = 2;
       this.platform.log.debug(`${this.accessory.displayName}: Eco Navi On`);
     } else {
-      parameters.ecoNavi = 0;
+      parameters.ecoNavi = 1;
       this.platform.log.debug(`${this.accessory.displayName}: Eco Navi Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
@@ -925,7 +923,11 @@ export default class IndoorUnitAccessory {
       }
       this.platform.log.debug(`${this.accessory.displayName}: Swing Up Down On`);
     } else {
-      parameters.fanAutoMode = 1;
+      if (this.deviceStatus.fanAutoMode === 0) {
+        parameters.fanAutoMode = 3;
+      } else {
+        parameters.fanAutoMode = 1;
+      }
       this.platform.log.debug(`${this.accessory.displayName}: Swing Up Down Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
@@ -943,7 +945,11 @@ export default class IndoorUnitAccessory {
       }
       this.platform.log.debug(`${this.accessory.displayName}: Swing Left Right On`);
     } else {
-      parameters.fanAutoMode = 1;
+      if (this.deviceStatus.fanAutoMode === 0) {
+        parameters.fanAutoMode = 2;
+      } else {
+        parameters.fanAutoMode = 1;
+      }
       this.platform.log.debug(`${this.accessory.displayName}: Swing Left Right Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
