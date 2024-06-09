@@ -159,9 +159,9 @@ export default class ComfortCloudApi {
       },
     })
       .then((response) => {
-        this.log.debug(`Comfort Cloud - getDeviceStatus() for GUID '${deviceGuid}':  Success`);
+        this.log.debug(`Comfort Cloud - getDeviceStatus() for GUID '${deviceGuid}': Success`);
         this.log.debug(response.data);
-        return response.data.parameters;
+        return response.data;
       })
       .catch((error: AxiosError) => {
         this.log.error(`Comfort Cloud - getDeviceStatus() for GUID '${deviceGuid}': Error`);
