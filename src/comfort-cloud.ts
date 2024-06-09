@@ -9,7 +9,6 @@ import {
   ComfortCloudAuthResponse,
   ComfortCloudDevice,
   ComfortCloudDeviceStatus,
-  ComfortCloudDeviceStatusResponse,
   ComfortCloudDeviceUpdatePayload,
   ComfortCloudGroupResponse,
   PanasonicPlatformConfig,
