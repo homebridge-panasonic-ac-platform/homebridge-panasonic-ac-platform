@@ -147,7 +147,7 @@ HomeKit has a limited number of switches, which is much less than the number of 
 <summary><b>Additional sensors (Outdoor Unit Temp.) and switches (Nanoe, Inside Cleaning, Eco Navi, Quiet Mode, Powerful Mode, Dry Mode, Fan Mode, Swing Up Down, Swing Left Right)</b></summary>
     
 - Enable additional sensor for outdoor temp. and/or switches for: Nanoe, Inside Cleaning, Eco Navi, Dry Mode, Fan mode, Quiet Mode, Powerful Mode, Swing Up Down, Swing Left Right.
-- Sensor / Switch will be added only if device support this function.
+- Sensor / Switch will work only if device support this function.
 - Some values can be changed only when device is on (E.G.: Quiet Mode, Powerful mode, Swing Up Down, Swing Left Right).
 - These switches will be available in HomeKit, directly in your main device or in device / settings (wheel icon) / accessories. 
 - If you add at least one sensor or switch, the appearance of the air conditioning will change - rotation speed and swing will not be available in the main view, only after entering the device / settings (wheel icon) / accessories / device / settings (wheel icon).
@@ -209,6 +209,13 @@ HomeKit has only one 'Oscillate' switch, but most Panasonic ACs have two swing d
 <summary><b>Child bridge</b></summary>
     
 - It's recommended you run this plugin as a [child bridge](https://github.com/homebridge/homebridge/wiki/Child-Bridges).
+
+</details>
+
+<details>
+<summary><b>Wrong device, sensor or switch name</b></summary>
+    
+Remove device from Homebridge cache (Homebridge settings > remove one device from cache).
 
 </details>
 
