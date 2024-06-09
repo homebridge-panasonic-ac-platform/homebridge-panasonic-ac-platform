@@ -45,7 +45,7 @@ export default class IndoorUnitAccessory {
     }
 
     try {
-      this.deviceStatusFull = await this.platform.comfortCloud.getDeviceStatus(
+      this.deviceStatusFull = this.platform.comfortCloud.getDeviceStatus(
         this.accessory.context.device.deviceGuid);
     } catch (error) {
       this.platform.log.error('An error occurred while refreshing the device status. '
