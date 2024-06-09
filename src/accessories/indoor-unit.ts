@@ -365,8 +365,6 @@ export default class IndoorUnitAccessory {
       // Outdoor temperature for logs
       if (this.deviceStatus.outTemperature >= 126) {
         logOutput += ', Outdoor Temp. not available';
-        this.platform.log.debug('Outdoor temp. not available: It may be required for the device to be turned on '
-                                + 'to retrieve the current temperature from the outdoor unit.');
       } else {
         logOutput += `, Outdoor Temp. ${this.deviceStatus.outTemperature}`;
       }
