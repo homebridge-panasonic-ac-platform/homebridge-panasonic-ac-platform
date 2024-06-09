@@ -318,7 +318,7 @@ export default class IndoorUnitAccessory {
     try {
       this.deviceStatusFull = await this.platform.comfortCloud.getDeviceStatus(
         this.accessory.context.device.deviceGuid);
-      this.deviceStatus = deviceStatusFull.parameters;
+      this.deviceStatus = this.deviceStatusFull.parameters;
 
       // Active
       if (this.deviceStatus.operate !== undefined) {
