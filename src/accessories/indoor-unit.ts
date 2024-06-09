@@ -21,6 +21,7 @@ export default class IndoorUnitAccessory {
   _refreshInterval;
   refreshTimer;
   devConfig;
+  deviceStatusFull;
   deviceStatus;
   exposeOutdoorTemp;
   exposeNanoe;
@@ -41,6 +42,20 @@ export default class IndoorUnitAccessory {
     if (this.platform.platformConfig.devices) {
       this.devConfig = this.platform.platformConfig.devices.find((item) => item.name === accessory.context.device?.deviceName)
       || this.platform.platformConfig.devices.find((item) => item.name === accessory.context.device?.deviceGuid);
+    }
+
+    try {
+      this.deviceStatusFull = this.platform.comfortCloud.getDeviceStatus(
+        this.accessory.context.device.deviceGuid);
+    } catch (error) {
+      this.platform.log.error('An error occurred while refreshing the device status. '
+                              + 'Turn on debug mode for more information.');
+
+      // Only log if a Promise rejection reason was provided.
+      // Some errors are already logged at source.
+      if (error) {
+        this.platform.log.debug(error);
+      }
     }
 
     // Accessory Information
@@ -138,7 +153,6 @@ export default class IndoorUnitAccessory {
     if (this.devConfig?.exposeOutdoorTemp) {
       this.exposeOutdoorTemp = this.accessory.getService(this.accessory.displayName + ' (out temp)')
         || this.accessory.addService(this.platform.Service.TemperatureSensor, this.accessory.displayName + ' (out temp)', 'exposeOutdoorTemp');
-      this.exposeOutdoorTemp.addCharacteristic(this.platform.Characteristic.ConfiguredName);
       this.exposeOutdoorTemp.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (out temp)');
       this.platform.log.debug(`${this.accessory.displayName}: add outdoor temp sensor`);
     } else {
@@ -150,10 +164,9 @@ export default class IndoorUnitAccessory {
     }
 
     // Nanoe
-    if (this.devConfig?.exposeNanoe) {
+    if (this.deviceStatusFull?.nanoe && this.devConfig?.exposeNanoe) {
       this.exposeNanoe = this.accessory.getService(this.accessory.displayName + ' (nanoe)')
         || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (nanoe)', 'exposeNanoe');
-      this.exposeNanoe.addCharacteristic(this.platform.Characteristic.ConfiguredName);
       this.exposeNanoe.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (nanoe)');
       this.exposeNanoe
         .getCharacteristic(this.platform.Characteristic.On)
@@ -168,10 +181,9 @@ export default class IndoorUnitAccessory {
     }
 
     // Inside cleaning
-    if (this.devConfig?.exposeInsideCleaning) {
+    if (this.deviceStatusFull?.insideCleaning && this.devConfig?.exposeInsideCleaning) {
       this.exposeInsideCleaning = this.accessory.getService(this.accessory.displayName + ' (inside cleaning)')
         || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (inside cleaning)', 'exposeInsideCleaning');
-      this.exposeInsideCleaning.addCharacteristic(this.platform.Characteristic.ConfiguredName);
       this.exposeInsideCleaning.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (inside cleaning)');
       this.exposeInsideCleaning
         .getCharacteristic(this.platform.Characteristic.On)
@@ -186,10 +198,9 @@ export default class IndoorUnitAccessory {
     }
 
     // Eco Navi
-    if (this.devConfig?.exposeEcoNavi) {
+    if (this.deviceStatusFull?.ecoNavi && this.devConfig?.exposeEcoNavi) {
       this.exposeEcoNavi = this.accessory.getService(this.accessory.displayName + ' (eco navi)')
         || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (eco navi)', 'exposeEcoNavi');
-      this.exposeEcoNavi.addCharacteristic(this.platform.Characteristic.ConfiguredName);
       this.exposeEcoNavi.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (eco navi)');
       this.exposeEcoNavi
         .getCharacteristic(this.platform.Characteristic.On)
@@ -204,10 +215,9 @@ export default class IndoorUnitAccessory {
     }
 
     // Dry mode
-    if (this.devConfig?.exposeDryMode) {
+    if (this.deviceStatusFull?.dryMode && this.devConfig?.exposeDryMode) {
       this.exposeDryMode = this.accessory.getService(this.accessory.displayName + ' (dry mode)')
         || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (dry mode)', 'exposeDryMode');
-      this.exposeDryMode.addCharacteristic(this.platform.Characteristic.ConfiguredName);
       this.exposeDryMode.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (dry mode)');
       this.exposeDryMode
         .getCharacteristic(this.platform.Characteristic.On)
@@ -222,10 +232,9 @@ export default class IndoorUnitAccessory {
     }
 
     // Fan Mode
-    if (this.devConfig?.exposeFanMode) {
+    if (this.deviceStatusFull?.fanMode && this.devConfig?.exposeFanMode) {
       this.exposeFanMode = this.accessory.getService(this.accessory.displayName + ' (fan mode)')
         || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (fan mode)', 'exposeFanMode');
-      this.exposeFanMode.addCharacteristic(this.platform.Characteristic.ConfiguredName);
       this.exposeFanMode.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (fan mode)');
       this.exposeFanMode
         .getCharacteristic(this.platform.Characteristic.On)
@@ -240,10 +249,9 @@ export default class IndoorUnitAccessory {
     }
 
     // Quiet Mode
-    if (this.devConfig?.exposeQuietMode) {
+    if (this.deviceStatusFull?.quietMode && this.devConfig?.exposeQuietMode) {
       this.exposeQuietMode = this.accessory.getService(this.accessory.displayName + ' (quiet mode)')
         || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (quiet mode)', 'exposeQuietMode');
-      this.exposeQuietMode.addCharacteristic(this.platform.Characteristic.ConfiguredName);
       this.exposeQuietMode.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (quiet mode)');
       this.exposeQuietMode
         .getCharacteristic(this.platform.Characteristic.On)
@@ -261,7 +269,6 @@ export default class IndoorUnitAccessory {
     if (this.devConfig?.exposePowerfulMode) {
       this.exposePowerfulMode = this.accessory.getService(this.accessory.displayName + ' (powerful mode)')
         || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (powerful mode)', 'exposePowerfulMode');
-      this.exposePowerfulMode.addCharacteristic(this.platform.Characteristic.ConfiguredName);
       this.exposePowerfulMode.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (powerful mode)');
       this.exposePowerfulMode
         .getCharacteristic(this.platform.Characteristic.On)
@@ -279,7 +286,6 @@ export default class IndoorUnitAccessory {
     if (this.devConfig?.exposeSwingUpDown) {
       this.exposeSwingUpDown = this.accessory.getService(this.accessory.displayName + ' (swing up down)')
         || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (swing up down)', 'exposeSwingUpDown');
-      this.exposeSwingUpDown.addCharacteristic(this.platform.Characteristic.ConfiguredName);
       this.exposeSwingUpDown.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (swing up down)');
       this.exposeSwingUpDown
         .getCharacteristic(this.platform.Characteristic.On)
@@ -293,15 +299,14 @@ export default class IndoorUnitAccessory {
       }
     }
 
-    // Swing Up Down
+    // Swing Left Right
     if (this.devConfig?.exposeSwingLeftRight) {
       this.exposeSwingLeftRight = this.accessory.getService(this.accessory.displayName + ' (swing left right)')
         || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (swing left right)', 'exposeSwingLeftRight');
-      this.exposeSwingLeftRight.addCharacteristic(this.platform.Characteristic.ConfiguredName);
       this.exposeSwingLeftRight.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (swing left right)');
       this.exposeSwingLeftRight
         .getCharacteristic(this.platform.Characteristic.On)
-        .onSet(this.setSwingUpDown.bind(this));
+        .onSet(this.setSwingLeftRight.bind(this));
       this.platform.log.debug(`${this.accessory.displayName}: add swing left right switch`);
     } else {
       const removeSwingLeftRight = this.accessory.getService(this.accessory.displayName + ' (swing left right)');
@@ -325,8 +330,9 @@ export default class IndoorUnitAccessory {
     this.platform.log.debug(`${this.accessory.displayName}: refresh status`);
 
     try {
-      this.deviceStatus = await this.platform.comfortCloud.getDeviceStatus(
+      this.deviceStatusFull = await this.platform.comfortCloud.getDeviceStatus(
         this.accessory.context.device.deviceGuid);
+      this.deviceStatus = this.deviceStatusFull.parameters;
 
       // Active
       if (this.deviceStatus.operate !== undefined) {
@@ -359,8 +365,6 @@ export default class IndoorUnitAccessory {
       // Outdoor temperature for logs
       if (this.deviceStatus.outTemperature >= 126) {
         logOutput += ', Outdoor Temp. not available';
-        this.platform.log.debug('Outdoor temp. not available: It may be required for the device to be turned on '
-                                + 'to retrieve the current temperature from the outdoor unit.');
       } else {
         logOutput += `, Outdoor Temp. ${this.deviceStatus.outTemperature}`;
       }
@@ -607,12 +611,12 @@ export default class IndoorUnitAccessory {
         }
       }
 
-      // Swing Up Down
-      if (this.exposeSwingUpDown) {
+      // Swing Left Right
+      if (this.exposeSwingLeftRight) {
         if (this.deviceStatus.fanAutoMode === 0 || this.deviceStatus.fanAutoMode === 3 ) {
-          this.exposeSwingUpDown.updateCharacteristic(this.platform.Characteristic.On, true);
+          this.exposeSwingLeftRight.updateCharacteristic(this.platform.Characteristic.On, true);
         } else {
-          this.exposeSwingUpDown.updateCharacteristic(this.platform.Characteristic.On, false);
+          this.exposeSwingLeftRight.updateCharacteristic(this.platform.Characteristic.On, false);
         }
       }
 
@@ -837,7 +841,7 @@ export default class IndoorUnitAccessory {
       parameters.nanoe = 2;
       this.platform.log.debug(`${this.accessory.displayName}: Nanoe On`);
     } else {
-      parameters.nanoe = 0;
+      parameters.nanoe = 1;
       this.platform.log.debug(`${this.accessory.displayName}: Nanoe Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
@@ -850,7 +854,7 @@ export default class IndoorUnitAccessory {
       parameters.insideCleaning = 2;
       this.platform.log.debug(`${this.accessory.displayName}: Inside Cleaning On`);
     } else {
-      parameters.insideCleaning = 0;
+      parameters.insideCleaning = 1;
       this.platform.log.debug(`${this.accessory.displayName}: Inside Cleaning Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
@@ -863,7 +867,7 @@ export default class IndoorUnitAccessory {
       parameters.ecoNavi = 2;
       this.platform.log.debug(`${this.accessory.displayName}: Eco Navi On`);
     } else {
-      parameters.ecoNavi = 0;
+      parameters.ecoNavi = 1;
       this.platform.log.debug(`${this.accessory.displayName}: Eco Navi Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
@@ -933,7 +937,11 @@ export default class IndoorUnitAccessory {
       }
       this.platform.log.debug(`${this.accessory.displayName}: Swing Up Down On`);
     } else {
-      parameters.fanAutoMode = 1;
+      if (this.deviceStatus.fanAutoMode === 0) {
+        parameters.fanAutoMode = 3;
+      } else {
+        parameters.fanAutoMode = 1;
+      }
       this.platform.log.debug(`${this.accessory.displayName}: Swing Up Down Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
@@ -951,7 +959,11 @@ export default class IndoorUnitAccessory {
       }
       this.platform.log.debug(`${this.accessory.displayName}: Swing Left Right On`);
     } else {
-      parameters.fanAutoMode = 1;
+      if (this.deviceStatus.fanAutoMode === 0) {
+        parameters.fanAutoMode = 2;
+      } else {
+        parameters.fanAutoMode = 1;
+      }
       this.platform.log.debug(`${this.accessory.displayName}: Swing Left Right Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
