@@ -44,20 +44,6 @@ export default class IndoorUnitAccessory {
       || this.platform.platformConfig.devices.find((item) => item.name === accessory.context.device?.deviceGuid);
     }
 
-    try {
-      this.deviceStatusFull = this.platform.comfortCloud.getDeviceStatus(
-        this.accessory.context.device.deviceGuid);
-    } catch (error) {
-      this.platform.log.error('An error occurred while refreshing the device status. '
-                              + 'Turn on debug mode for more information.');
-
-      // Only log if a Promise rejection reason was provided.
-      // Some errors are already logged at source.
-      if (error) {
-        this.platform.log.debug(error);
-      }
-    }
-
     // Accessory Information
     // https://developers.homebridge.io/#/service/AccessoryInformation
     this.accessory.getService(this.platform.Service.AccessoryInformation)
@@ -164,7 +150,7 @@ export default class IndoorUnitAccessory {
     }
 
     // Nanoe
-    if (this.deviceStatusFull?.nanoe && this.devConfig?.exposeNanoe) {
+    if (this.devConfig?.exposeNanoe) {
       this.exposeNanoe = this.accessory.getService(this.accessory.displayName + ' (nanoe)')
         || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (nanoe)', 'exposeNanoe');
       this.exposeNanoe.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (nanoe)');
@@ -198,7 +184,7 @@ export default class IndoorUnitAccessory {
     }
 
     // Eco Navi
-    if (this.deviceStatusFull?.ecoNavi && this.devConfig?.exposeEcoNavi) {
+    if (this.devConfig?.exposeEcoNavi) {
       this.exposeEcoNavi = this.accessory.getService(this.accessory.displayName + ' (eco navi)')
         || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (eco navi)', 'exposeEcoNavi');
       this.exposeEcoNavi.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (eco navi)');
@@ -215,7 +201,7 @@ export default class IndoorUnitAccessory {
     }
 
     // Dry mode
-    if (this.deviceStatusFull?.dryMode && this.devConfig?.exposeDryMode) {
+    if (this.devConfig?.exposeDryMode) {
       this.exposeDryMode = this.accessory.getService(this.accessory.displayName + ' (dry mode)')
         || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (dry mode)', 'exposeDryMode');
       this.exposeDryMode.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (dry mode)');
@@ -232,7 +218,7 @@ export default class IndoorUnitAccessory {
     }
 
     // Fan Mode
-    if (this.deviceStatusFull?.fanMode && this.devConfig?.exposeFanMode) {
+    if (this.devConfig?.exposeFanMode) {
       this.exposeFanMode = this.accessory.getService(this.accessory.displayName + ' (fan mode)')
         || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (fan mode)', 'exposeFanMode');
       this.exposeFanMode.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (fan mode)');
@@ -249,7 +235,7 @@ export default class IndoorUnitAccessory {
     }
 
     // Quiet Mode
-    if (this.deviceStatusFull?.quietMode && this.devConfig?.exposeQuietMode) {
+    if (this.devConfig?.exposeQuietMode) {
       this.exposeQuietMode = this.accessory.getService(this.accessory.displayName + ' (quiet mode)')
         || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (quiet mode)', 'exposeQuietMode');
       this.exposeQuietMode.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (quiet mode)');
@@ -540,7 +526,7 @@ export default class IndoorUnitAccessory {
       }
 
       // Nanoe
-      if (this.exposeNanoe) {
+      if (this.exposeNanoe && this.deviceStatusFull?.nanoe) {
         if (this.deviceStatus.nanoe === 2) {
           this.exposeNanoe.updateCharacteristic(this.platform.Characteristic.On, true);
         } else {
@@ -549,7 +535,7 @@ export default class IndoorUnitAccessory {
       }
 
       // Inside Cleaning
-      if (this.exposeInsideCleaning) {
+      if (this.exposeInsideCleaning && this.deviceStatusFull?.insideCleaning) {
         if (this.deviceStatus.insideCleaning === 2) {
           this.exposeInsideCleaning.updateCharacteristic(this.platform.Characteristic.On, true);
         } else {
@@ -558,7 +544,7 @@ export default class IndoorUnitAccessory {
       }
 
       // Eco Navi
-      if (this.exposeEcoNavi) {
+      if (this.exposeEcoNavi && this.deviceStatusFull?.ecoNavi) {
         if (this.deviceStatus.ecoNavi === 2) {
           this.exposeEcoNavi.updateCharacteristic(this.platform.Characteristic.On, true);
         } else {
@@ -567,7 +553,7 @@ export default class IndoorUnitAccessory {
       }
 
       // Dry Mode
-      if (this.exposeDryMode) {
+      if (this.exposeDryMode && this.deviceStatusFull?.dryMode) {
         if (this.deviceStatus.operationMode === 1) {
           this.exposeDryMode.updateCharacteristic(this.platform.Characteristic.On, true);
         } else {
@@ -576,7 +562,7 @@ export default class IndoorUnitAccessory {
       }
 
       // Fan Mode
-      if (this.exposeFanMode) {
+      if (this.exposeFanMode && this.deviceStatusFull?.fanMode) {
         if (this.deviceStatus.operationMode === 4) {
           this.exposeFanMode.updateCharacteristic(this.platform.Characteristic.On, true);
         } else {
@@ -585,7 +571,7 @@ export default class IndoorUnitAccessory {
       }
 
       // Quiet Mode (speed)
-      if (this.exposeQuietMode) {
+      if (this.exposeQuietMode && this.deviceStatusFull?.quietMode) {
         if (this.deviceStatus.ecoMode === ComfortCloudEcoMode.Quiet) {
           this.exposeQuietMode.updateCharacteristic(this.platform.Characteristic.On, true);
         } else {
@@ -594,7 +580,7 @@ export default class IndoorUnitAccessory {
       }
 
       // Powerful Mode (speed)
-      if (this.exposePowerfulMode) {
+      if (this.exposePowerfulMode && this.deviceStatusFull?.powerfulMode) {
         if (this.deviceStatus.ecoMode === ComfortCloudEcoMode.Powerful) {
           this.exposePowerfulMode.updateCharacteristic(this.platform.Characteristic.On, true);
         } else {
@@ -612,7 +598,7 @@ export default class IndoorUnitAccessory {
       }
 
       // Swing Left Right
-      if (this.exposeSwingLeftRight) {
+      if (this.exposeSwingLeftRight && this.deviceStatusFull?.airSwingLR) {
         if (this.deviceStatus.fanAutoMode === 0 || this.deviceStatus.fanAutoMode === 3 ) {
           this.exposeSwingLeftRight.updateCharacteristic(this.platform.Characteristic.On, true);
         } else {
@@ -836,93 +822,107 @@ export default class IndoorUnitAccessory {
 
   // set Nanoe
   async setNanoe(value) {
-    const parameters: ComfortCloudDeviceUpdatePayload = {};
-    if (value) {
-      parameters.nanoe = 2;
-      this.platform.log.debug(`${this.accessory.displayName}: Nanoe On`);
-    } else {
-      parameters.nanoe = 1;
-      this.platform.log.debug(`${this.accessory.displayName}: Nanoe Off`);
+    if (this.deviceStatusFull?.nanoe) {
+      const parameters: ComfortCloudDeviceUpdatePayload = {};
+      if (value) {
+        parameters.nanoe = 2;
+        this.platform.log.debug(`${this.accessory.displayName}: Nanoe On`);
+      } else {
+        parameters.nanoe = 1;
+        this.platform.log.debug(`${this.accessory.displayName}: Nanoe Off`);
+      }
+      this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
     }
-    this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
 
   // set Inside Cleaning
   async setInsideCleaning(value) {
-    const parameters: ComfortCloudDeviceUpdatePayload = {};
-    if (value) {
-      parameters.insideCleaning = 2;
-      this.platform.log.debug(`${this.accessory.displayName}: Inside Cleaning On`);
-    } else {
-      parameters.insideCleaning = 1;
-      this.platform.log.debug(`${this.accessory.displayName}: Inside Cleaning Off`);
+    if (this.deviceStatusFull?.insideCleaning) {
+      const parameters: ComfortCloudDeviceUpdatePayload = {};
+      if (value) {
+        parameters.insideCleaning = 2;
+        this.platform.log.debug(`${this.accessory.displayName}: Inside Cleaning On`);
+      } else {
+        parameters.insideCleaning = 1;
+        this.platform.log.debug(`${this.accessory.displayName}: Inside Cleaning Off`);
+      }
+      this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
     }
-    this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
 
   // set Nanoe
   async setEcoNavi(value) {
-    const parameters: ComfortCloudDeviceUpdatePayload = {};
-    if (value) {
-      parameters.ecoNavi = 2;
-      this.platform.log.debug(`${this.accessory.displayName}: Eco Navi On`);
-    } else {
-      parameters.ecoNavi = 1;
-      this.platform.log.debug(`${this.accessory.displayName}: Eco Navi Off`);
+    if (this.deviceStatusFull?.ecoNavi) {
+      const parameters: ComfortCloudDeviceUpdatePayload = {};
+      if (value) {
+        parameters.ecoNavi = 2;
+        this.platform.log.debug(`${this.accessory.displayName}: Eco Navi On`);
+      } else {
+        parameters.ecoNavi = 1;
+        this.platform.log.debug(`${this.accessory.displayName}: Eco Navi Off`);
+      }
+      this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
     }
-    this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
 
   // set Dry Mode
   async setDryMode(value) {
-    const parameters: ComfortCloudDeviceUpdatePayload = {};
-    if (value) {
-      parameters.operationMode = 1;
-      this.platform.log.debug(`${this.accessory.displayName}: Dry Mode On`);
-    } else {
-      parameters.operationMode = 0;
-      this.platform.log.debug(`${this.accessory.displayName}: Dry Mode Off`);
+    if (this.deviceStatusFull?.dryMode) {
+      const parameters: ComfortCloudDeviceUpdatePayload = {};
+      if (value) {
+        parameters.operationMode = 1;
+        this.platform.log.debug(`${this.accessory.displayName}: Dry Mode On`);
+      } else {
+        parameters.operationMode = 0;
+        this.platform.log.debug(`${this.accessory.displayName}: Dry Mode Off`);
+      }
+      this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
     }
-    this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
 
   // set Fan Mode
   async setFanMode(value) {
-    const parameters: ComfortCloudDeviceUpdatePayload = {};
-    if (value) {
-      parameters.operationMode = 4;
-      this.platform.log.debug(`${this.accessory.displayName}: Fan Mode On`);
-    } else {
-      parameters.operationMode = 0;
-      this.platform.log.debug(`${this.accessory.displayName}: Fan Mode Off`);
+    if (this.deviceStatusFull?.fanMode) {
+      const parameters: ComfortCloudDeviceUpdatePayload = {};
+      if (value) {
+        parameters.operationMode = 4;
+        this.platform.log.debug(`${this.accessory.displayName}: Fan Mode On`);
+      } else {
+        parameters.operationMode = 0;
+        this.platform.log.debug(`${this.accessory.displayName}: Fan Mode Off`);
+      }
+      this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
     }
-    this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
 
   // set Quiet Mode
   async setQuietMode(value) {
-    const parameters: ComfortCloudDeviceUpdatePayload = {};
-    if (value) {
-      parameters.ecoMode = ComfortCloudEcoMode.Quiet;
-      this.platform.log.debug(`${this.accessory.displayName}: Quiet Mode On`);
-    } else {
-      parameters.ecoMode = 0;
-      this.platform.log.debug(`${this.accessory.displayName}: Quiet Mode Off`);
+    if (this.deviceStatusFull?.quietMode) {
+      const parameters: ComfortCloudDeviceUpdatePayload = {};
+      if (value) {
+        parameters.ecoMode = ComfortCloudEcoMode.Quiet;
+        this.platform.log.debug(`${this.accessory.displayName}: Quiet Mode On`);
+      } else {
+        parameters.ecoMode = 0;
+        this.platform.log.debug(`${this.accessory.displayName}: Quiet Mode Off`);
+      }
+      this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
     }
-    this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
 
   // set Powerful Mode
   async setPowerfulMode(value) {
-    const parameters: ComfortCloudDeviceUpdatePayload = {};
-    if (value) {
-      parameters.ecoMode = ComfortCloudEcoMode.Powerful;
-      this.platform.log.debug(`${this.accessory.displayName}: Powerful Mode On`);
-    } else {
-      parameters.ecoMode = 0;
-      this.platform.log.debug(`${this.accessory.displayName}: Powerful Mode Off`);
+    if (this.deviceStatusFull?.powerfulMode) {
+      const parameters: ComfortCloudDeviceUpdatePayload = {};
+      if (value) {
+        parameters.ecoMode = ComfortCloudEcoMode.Powerful;
+        this.platform.log.debug(`${this.accessory.displayName}: Powerful Mode On`);
+      } else {
+        parameters.ecoMode = 0;
+        this.platform.log.debug(`${this.accessory.displayName}: Powerful Mode Off`);
+      }
+      this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
     }
-    this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
 
   // set Swing Up Down
@@ -949,24 +949,26 @@ export default class IndoorUnitAccessory {
 
   // set Swing Left Right
   async setSwingLeftRight(value) {
-    const parameters: ComfortCloudDeviceUpdatePayload = {};
-    if (value) {
-      // if Swing Up Down is enabled than set Swing Auto (Up Down and Left Right)
-      if (this.deviceStatus.fanAutoMode === 2) {
-        parameters.fanAutoMode = 0;
+    if (this.deviceStatusFull?.airSwingLR) {
+      const parameters: ComfortCloudDeviceUpdatePayload = {};
+      if (value) {
+        // if Swing Up Down is enabled than set Swing Auto (Up Down and Left Right)
+        if (this.deviceStatus.fanAutoMode === 2) {
+          parameters.fanAutoMode = 0;
+        } else {
+          parameters.fanAutoMode = 3;
+        }
+        this.platform.log.debug(`${this.accessory.displayName}: Swing Left Right On`);
       } else {
-        parameters.fanAutoMode = 3;
+        if (this.deviceStatus.fanAutoMode === 0) {
+          parameters.fanAutoMode = 2;
+        } else {
+          parameters.fanAutoMode = 1;
+        }
+        this.platform.log.debug(`${this.accessory.displayName}: Swing Left Right Off`);
       }
-      this.platform.log.debug(`${this.accessory.displayName}: Swing Left Right On`);
-    } else {
-      if (this.deviceStatus.fanAutoMode === 0) {
-        parameters.fanAutoMode = 2;
-      } else {
-        parameters.fanAutoMode = 1;
-      }
-      this.platform.log.debug(`${this.accessory.displayName}: Swing Left Right Off`);
+      this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
     }
-    this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
 
   // ===============================================================================================================================================
