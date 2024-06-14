@@ -11,7 +11,7 @@ import {
 import axios from 'axios';
 import cheerio from 'cheerio';
 import ComfortCloudApi from './comfort-cloud';
-import IndoorUnitAccessory from './accessories/indoor-unit';
+import IndoorUnitAccessory from './indoor-unit';
 import PanasonicPlatformLogger from './logger';
 import { PanasonicAccessoryContext, PanasonicPlatformConfig } from './types';
 import {
