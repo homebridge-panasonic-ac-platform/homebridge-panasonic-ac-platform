@@ -1,6 +1,6 @@
 import { Service, PlatformAccessory, CharacteristicValue } from 'homebridge';
 import PanasonicPlatform from './platform';
-import { ComfortCloudDeviceUpdatePayload, PanasonicAccessoryContext } from '../types';
+import { ComfortCloudDeviceUpdatePayload, PanasonicAccessoryContext } from './types';
 import {
   ComfortCloudAirSwingLR,
   ComfortCloudAirSwingUD,
