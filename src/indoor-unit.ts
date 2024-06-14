@@ -1,5 +1,5 @@
 import { Service, PlatformAccessory, CharacteristicValue } from 'homebridge';
-import PanasonicPlatform from '../platform';
+import PanasonicPlatform from './platform';
 import { ComfortCloudDeviceUpdatePayload, PanasonicAccessoryContext } from '../types';
 import {
   ComfortCloudAirSwingLR,
@@ -10,7 +10,7 @@ import {
   SwingModeDirection,
   SwingModePositionLeftRight,
   SwingModePositionUpDown,
-} from '../enums';
+} from './enums';
 
 /**
  * An instance of this class is created for each accessory the platform registers.
