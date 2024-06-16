@@ -622,6 +622,21 @@ export default class IndoorUnitAccessory {
         }
       }
 
+      // Fan speed
+      if (this.exposeFanSpeed) {
+        if (this.deviceStatus.fanSpeed === 1) {
+          this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.RotationSpeed, 20);
+        } else if (this.deviceStatus.fanSpeed === 2) {
+          this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.RotationSpeed, 40);
+        } else if (this.deviceStatus.fanSpeed === 3) {
+          this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.RotationSpeed, 60);
+        } else if (this.deviceStatus.fanSpeed === 4) {
+          this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.RotationSpeed, 80);
+        } else if (this.deviceStatus.fanSpeed === 5) {
+          this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.RotationSpeed, 100);
+        }
+      }
+
       // Cooling Threshold Temperature (optional)
       // Heating Threshold Temperature (optional)
       this.service.getCharacteristic(this.platform.Characteristic.HeatingThresholdTemperature)
@@ -1006,19 +1021,19 @@ export default class IndoorUnitAccessory {
 
         const parameters: ComfortCloudDeviceUpdatePayload = {};
 
-        if (value < 20) {
+        if (value <= 20) {
           parameters.fanSpeed = 1;
           this.platform.log.debug(`${this.accessory.displayName}: set fan speed 1`);
-        } else if (value >= 20 && value < 40) {
+        } else if (value > 20 && value <= 40) {
           parameters.fanSpeed = 2;
           this.platform.log.debug(`${this.accessory.displayName}: set fan speed 2`);
-        } else if (value >= 40 && value < 60) {
+        } else if (value > 40 && value <= 60) {
           parameters.fanSpeed = 3;
           this.platform.log.debug(`${this.accessory.displayName}: set fan speed 3`);
-        } else if (value >= 60 && value < 80) {
+        } else if (value > 60 && value <= 80) {
           parameters.fanSpeed = 4;
           this.platform.log.debug(`${this.accessory.displayName}: set fan speed 4`);
-        } else if (value >= 80 && value < 40) {
+        } else if (value > 80 && value <= 100) {
           parameters.fanSpeed = 5;
           this.platform.log.debug(`${this.accessory.displayName}: set fan speed 5`);
         }
