@@ -625,15 +625,15 @@ export default class IndoorUnitAccessory {
       // Fan speed
       if (this.exposeFanSpeed) {
         if (this.deviceStatus.fanSpeed === 1) {
-          this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.RotationSpeed, 20);
+          this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.RotationSpeed, 10);
         } else if (this.deviceStatus.fanSpeed === 2) {
-          this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.RotationSpeed, 40);
+          this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.RotationSpeed, 30);
         } else if (this.deviceStatus.fanSpeed === 3) {
-          this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.RotationSpeed, 60);
+          this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.RotationSpeed, 50);
         } else if (this.deviceStatus.fanSpeed === 4) {
-          this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.RotationSpeed, 80);
+          this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.RotationSpeed, 70);
         } else if (this.deviceStatus.fanSpeed === 5) {
-          this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.RotationSpeed, 100);
+          this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.RotationSpeed, 90);
         }
       }
 
