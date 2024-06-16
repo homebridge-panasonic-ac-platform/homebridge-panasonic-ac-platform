@@ -20,6 +20,7 @@ export default class IndoorUnitAccessory {
   private service: Service;
   _refreshInterval;
   refreshTimer;
+  timerFanSpeed;
   devConfig;
   deviceStatusFull;
   deviceStatus;
@@ -33,6 +34,7 @@ export default class IndoorUnitAccessory {
   exposePowerfulMode;
   exposeSwingUpDown;
   exposeSwingLeftRight;
+  exposeFanSpeed;
 
   constructor(
     private readonly platform: PanasonicPlatform,
@@ -300,6 +302,20 @@ export default class IndoorUnitAccessory {
         this.accessory.removeService(removeSwingLeftRight);
         this.platform.log.debug(`${this.accessory.displayName}: remove swing left right switch`);
       }
+    }
+
+    // Fan speed
+    if (this.devConfig?.exposeFanSpeed) {
+      this.exposeFanSpeed = this.accessory.getService(this.accessory.displayName + ' (fan speed)')
+        || this.accessory.addService(this.platform.Service.Fan, this.accessory.displayName + ' (fan speed)', 'exposeFanSpeed');
+      this.exposeFanSpeed.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (fan speed)');
+      this.exposeFanSpeed
+        .getCharacteristic(this.platform.Characteristic.On)
+        .onSet(this.setFanSpeed.bind(this));
+      this.exposeFanSpeed
+        .getCharacteristic(this.platform.Characteristic.RotationSpeed)
+        .onSet(this.setFanSpeed.bind(this));
+      this.platform.log.debug(`${this.accessory.displayName}: add fan speed slider`);
     }
 
     // Update characteristic values asynchronously instead of using onGet handlers
@@ -972,6 +988,42 @@ export default class IndoorUnitAccessory {
         this.platform.log.debug(`${this.accessory.displayName}: Swing Left Right Off`);
       }
       this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
+    }
+  }
+
+  // set Fan speed
+  async setFanSpeed(value) {
+
+    // set Fan speed
+    if (value >= 0 && value <= 100) {
+
+      clearTimeout(this.timerFanSpeed);
+      this.timerFanSpeed = null;
+
+      this.timerFanSpeed = setTimeout(async () => {
+        this.platform.log.debug(`${this.accessory.displayName}: value: ${value}`);
+
+        const parameters = {};
+
+        if (value < 20) {
+            parameters.fanSpeed = 1;
+            this.platform.log.debug(`${this.accessory.displayName}: set fan speed 1`);
+        } else if (value >= 20 && value < 40) {
+            parameters.fanSpeed = 2;
+            this.platform.log.debug(`${this.accessory.displayName}: set fan speed 2`);
+        } else if (value >= 40 && value < 60) {
+            parameters.fanSpeed = 3;
+            this.platform.log.debug(`${this.accessory.displayName}: set fan speed 3`);
+        } else if (value >= 60 && value < 80) {
+            parameters.fanSpeed = 4;
+            this.platform.log.debug(`${this.accessory.displayName}: set fan speed 4`);
+        } else if (value >= 80 && value < 40) {
+            parameters.fanSpeed = 5;
+            this.platform.log.debug(`${this.accessory.displayName}: set fan speed 5`);
+        } 
+
+        this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
+      }, 1000);
     }
   }
 
