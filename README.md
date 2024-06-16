@@ -146,7 +146,7 @@ Desired position of the Left-Right flaps when swing is switched off or the swing
 HomeKit has a limited number of switches, which is much less than the number of available options in Panasonic Comfort Cloud. Therefore, in the plugin settings you can choose what controls what and add additional sensors and switches. You can apply individual settings for each device.
 
 <details>
-<summary><b>Additional sensors (Outdoor Unit Temp.) and switches (Nanoe, Inside Cleaning, Eco Navi, Quiet Mode, Powerful Mode, Dry Mode, Fan Mode, Swing Up Down, Swing Left Right)</b></summary>
+<summary><b>Additional sensors (Outdoor Unit Temp.), switches (Nanoe, Inside Cleaning, Eco Navi, Quiet Mode, Powerful Mode, Dry Mode, Fan Mode, Swing Up Down, Swing Left Right) and slider (Fan speed)</b></summary>
     
 - Enable additional sensor for outdoor temp. and/or switches for: Nanoe, Inside Cleaning, Eco Navi, Dry Mode, Fan mode, Quiet Mode, Powerful Mode, Swing Up Down, Swing Left Right.
 - Sensor / Switch will work only if device support this function.
@@ -158,9 +158,9 @@ HomeKit has a limited number of switches, which is much less than the number of 
 </details>
 
 <details>
-<summary><b>Rotation speed (including Quiet Mode, Powerful Mode)</b></summary>
+<summary><b>Fan speed built-in slider (including Quiet Mode, Powerful Mode)</b></summary>
 
-All settings related to a unit's fan speed are controlled through the fan speed slider. The following mapping applies:
+The following mapping applies:
 
 | Home app slider position  | Comfort Cloud setting |
 | ------------------------: | --------------------- |
@@ -177,7 +177,7 @@ All settings related to a unit's fan speed are controlled through the fan speed 
 </details>
 
 <details>
-<summary><b>Swing Mode</b></summary>
+<summary><b>Oscilate switch - built-in Swing mode</b></summary>
 HomeKit has only one 'Oscillate' switch, but most Panasonic ACs have two swing directions. In plugin settings you can set horizontal (left right) and vertical (up down) desired positions.
 </details>
 
