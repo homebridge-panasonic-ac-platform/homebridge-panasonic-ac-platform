@@ -18,9 +18,9 @@ import {
  */
 export default class IndoorUnitAccessory {
   private service: Service;
-  _refreshInterval;
-  refreshTimer;
-  timerFanSpeed;
+  timerRefreshDeviceStatus;
+  timerSendDeviceUpdate;
+  timerSetFanSpeed;
   devConfig;
   deviceStatusFull;
   deviceStatus;
@@ -665,8 +665,9 @@ export default class IndoorUnitAccessory {
 
     // Schedule continuous device updates on the first run
     // 10 minutes when device is on, 60 minutes device is off
-    clearTimeout(this._refreshInterval);
-    this._refreshInterval = setTimeout(
+    clearTimeout(this.timerRefreshDeviceStatus);
+    this.timerRefreshDeviceStatus = null;
+    this.timerRefreshDeviceStatus = setTimeout(
       this.refreshDeviceStatus.bind(this),
       (this.service.getCharacteristic(this.platform.Characteristic.Active).value === 1) ? 10 * 60 * 1000 : 60 * 60 * 1000);
   }
@@ -997,10 +998,10 @@ export default class IndoorUnitAccessory {
     // set Fan speed
     if (value >= 0 && value <= 100) {
 
-      clearTimeout(this.timerFanSpeed);
-      this.timerFanSpeed = null;
+      clearTimeout(this.timerSetFanSpeed);
+      this.timerSetFanSpeed = null;
 
-      this.timerFanSpeed = setTimeout(async () => {
+      this.timerSetFanSpeed = setTimeout(async () => {
         this.platform.log.debug(`${this.accessory.displayName}: value: ${value}`);
 
         const parameters: ComfortCloudDeviceUpdatePayload = {};
@@ -1020,7 +1021,7 @@ export default class IndoorUnitAccessory {
         } else if (value >= 80 && value < 40) {
           parameters.fanSpeed = 5;
           this.platform.log.debug(`${this.accessory.displayName}: set fan speed 5`);
-        } 
+        }
 
         this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
       }, 1000);
@@ -1114,8 +1115,9 @@ export default class IndoorUnitAccessory {
         this.platform.comfortCloud.setDeviceStatus(guid, payload);
       }
       // Refresh device status
-      clearTimeout(this.refreshTimer);
-      this.refreshTimer = setTimeout(this.refreshDeviceStatus.bind(this), 10000);
+      clearTimeout(this.timerSendDeviceUpdate);
+      this.timerSendDeviceUpdate = null;
+      this.timerSendDeviceUpdate = setTimeout(this.refreshDeviceStatus.bind(this), 8000);
 
     } catch (error) {
       this.platform.log.error('An error occurred while sending a device update. '
