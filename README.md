@@ -125,7 +125,9 @@ When enabled it will create a dummy temperature sensor which will display the te
 
 * `exposeSwingUpDown` (boolean): When enabled it will create a switch to control Swing Up Down.
 
-* `exposeSwingLeftRight` (boolean): When enabled it will create a switch to control Swing Left Right. 
+* `exposeSwingLeftRight` (boolean): When enabled it will create a switch to control Swing Left Right.
+
+* `exposeFanSpeed` (boolean): When enabled it will create a switch to control Fan Speed. Value from 0 to 19 = speed 1, value from 20 to 39 = speed 2, value from 40 to 59 = speed 3, value from 60 to 79 = speed 4, value from 80 to 100 = speed 5. Note: Changing value will not change Quiet / Powerful Mode - there are dedicated switches for this. 
 
 * `swingModeDirections` (string):
 Desired swing direction(s) activated when swing is switched on.
