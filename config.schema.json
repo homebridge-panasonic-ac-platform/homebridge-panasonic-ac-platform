@@ -339,7 +339,8 @@
 								"devices[].exposeQuietMode",
 								"devices[].exposePowerfulMode",
 								"devices[].exposeSwingUpDown",
-								"devices[].exposeSwingLeftRight"
+								"devices[].exposeSwingLeftRight",
+								"devices[].exposeFanSpeed"
 							]
 						},
 						{
