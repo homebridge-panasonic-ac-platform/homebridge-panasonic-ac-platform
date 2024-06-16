@@ -1003,23 +1003,23 @@ export default class IndoorUnitAccessory {
       this.timerFanSpeed = setTimeout(async () => {
         this.platform.log.debug(`${this.accessory.displayName}: value: ${value}`);
 
-        const parameters = {};
+        const parameters: ComfortCloudDeviceUpdatePayload = {};
 
         if (value < 20) {
-            parameters.fanSpeed = 1;
-            this.platform.log.debug(`${this.accessory.displayName}: set fan speed 1`);
+          parameters.fanSpeed = 1;
+          this.platform.log.debug(`${this.accessory.displayName}: set fan speed 1`);
         } else if (value >= 20 && value < 40) {
-            parameters.fanSpeed = 2;
-            this.platform.log.debug(`${this.accessory.displayName}: set fan speed 2`);
+          parameters.fanSpeed = 2;
+          this.platform.log.debug(`${this.accessory.displayName}: set fan speed 2`);
         } else if (value >= 40 && value < 60) {
-            parameters.fanSpeed = 3;
-            this.platform.log.debug(`${this.accessory.displayName}: set fan speed 3`);
+          parameters.fanSpeed = 3;
+          this.platform.log.debug(`${this.accessory.displayName}: set fan speed 3`);
         } else if (value >= 60 && value < 80) {
-            parameters.fanSpeed = 4;
-            this.platform.log.debug(`${this.accessory.displayName}: set fan speed 4`);
+          parameters.fanSpeed = 4;
+          this.platform.log.debug(`${this.accessory.displayName}: set fan speed 4`);
         } else if (value >= 80 && value < 40) {
-            parameters.fanSpeed = 5;
-            this.platform.log.debug(`${this.accessory.displayName}: set fan speed 5`);
+          parameters.fanSpeed = 5;
+          this.platform.log.debug(`${this.accessory.displayName}: set fan speed 5`);
         } 
 
         this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
