@@ -1,6 +1,6 @@
 import { Service, PlatformAccessory, CharacteristicValue } from 'homebridge';
-import PanasonicPlatform from '../platform';
-import { ComfortCloudDeviceUpdatePayload, PanasonicAccessoryContext } from '../types';
+import PanasonicPlatform from './platform';
+import { ComfortCloudDeviceUpdatePayload, PanasonicAccessoryContext } from './types';
 import {
   ComfortCloudAirSwingLR,
   ComfortCloudAirSwingUD,
@@ -10,7 +10,7 @@ import {
   SwingModeDirection,
   SwingModePositionLeftRight,
   SwingModePositionUpDown,
-} from '../enums';
+} from './enums';
 
 /**
  * An instance of this class is created for each accessory the platform registers.
@@ -18,8 +18,9 @@ import {
  */
 export default class IndoorUnitAccessory {
   private service: Service;
-  _refreshInterval;
-  refreshTimer;
+  timerRefreshDeviceStatus;
+  timerSendDeviceUpdate;
+  timerSetFanSpeed;
   devConfig;
   deviceStatusFull;
   deviceStatus;
@@ -33,6 +34,7 @@ export default class IndoorUnitAccessory {
   exposePowerfulMode;
   exposeSwingUpDown;
   exposeSwingLeftRight;
+  exposeFanSpeed;
 
   constructor(
     private readonly platform: PanasonicPlatform,
@@ -299,6 +301,26 @@ export default class IndoorUnitAccessory {
       if (removeSwingLeftRight) {
         this.accessory.removeService(removeSwingLeftRight);
         this.platform.log.debug(`${this.accessory.displayName}: remove swing left right switch`);
+      }
+    }
+
+    // Fan speed
+    if (this.devConfig?.exposeFanSpeed) {
+      this.exposeFanSpeed = this.accessory.getService(this.accessory.displayName + ' (fan speed)')
+        || this.accessory.addService(this.platform.Service.Fan, this.accessory.displayName + ' (fan speed)', 'exposeFanSpeed');
+      this.exposeFanSpeed.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (fan speed)');
+      this.exposeFanSpeed
+        .getCharacteristic(this.platform.Characteristic.On)
+        .onSet(this.setFanSpeed.bind(this));
+      this.exposeFanSpeed
+        .getCharacteristic(this.platform.Characteristic.RotationSpeed)
+        .onSet(this.setFanSpeed.bind(this));
+      this.platform.log.debug(`${this.accessory.displayName}: add fan speed slider`);
+    } else {
+      const removeFanSpeed = this.accessory.getService(this.accessory.displayName + ' (fan speed)');
+      if (removeFanSpeed) {
+        this.accessory.removeService(removeFanSpeed);
+        this.platform.log.debug(`${this.accessory.displayName}: remove fan speed slider`);
       }
     }
 
@@ -606,6 +628,24 @@ export default class IndoorUnitAccessory {
         }
       }
 
+      // Fan speed
+      if (this.exposeFanSpeed) {
+        if (this.deviceStatus.fanSpeed === 1) {
+          this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.RotationSpeed, 10);
+        } else if (this.deviceStatus.fanSpeed === 2) {
+          this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.RotationSpeed, 30);
+        } else if (this.deviceStatus.fanSpeed === 3) {
+          this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.RotationSpeed, 50);
+        } else if (this.deviceStatus.fanSpeed === 4) {
+          this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.RotationSpeed, 70);
+        } else if (this.deviceStatus.fanSpeed === 5) {
+          this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.RotationSpeed, 90);
+        } else {
+          // Auto mode
+          this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.RotationSpeed, 100);
+        }
+      }
+
       // Cooling Threshold Temperature (optional)
       // Heating Threshold Temperature (optional)
       this.service.getCharacteristic(this.platform.Characteristic.HeatingThresholdTemperature)
@@ -649,8 +689,9 @@ export default class IndoorUnitAccessory {
 
     // Schedule continuous device updates on the first run
     // 10 minutes when device is on, 60 minutes device is off
-    clearTimeout(this._refreshInterval);
-    this._refreshInterval = setTimeout(
+    clearTimeout(this.timerRefreshDeviceStatus);
+    this.timerRefreshDeviceStatus = null;
+    this.timerRefreshDeviceStatus = setTimeout(
       this.refreshDeviceStatus.bind(this),
       (this.service.getCharacteristic(this.platform.Characteristic.Active).value === 1) ? 10 * 60 * 1000 : 60 * 60 * 1000);
   }
@@ -942,6 +983,8 @@ export default class IndoorUnitAccessory {
       } else {
         parameters.fanAutoMode = 1;
       }
+      parameters.airSwingUD = this.swingModeUpDownToComfortCloudPayloadValue(
+        this.platform.platformConfig.swingModeDefaultPositionUpDown);
       this.platform.log.debug(`${this.accessory.displayName}: Swing Up Down Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
@@ -958,6 +1001,8 @@ export default class IndoorUnitAccessory {
         } else {
           parameters.fanAutoMode = 3;
         }
+        parameters.airSwingLR = this.swingModeLeftRightToComfortCloudPayloadValue(
+          this.platform.platformConfig.swingModeDefaultPositionLeftRight);
         this.platform.log.debug(`${this.accessory.displayName}: Swing Left Right On`);
       } else {
         if (this.deviceStatus.fanAutoMode === 0) {
@@ -968,6 +1013,48 @@ export default class IndoorUnitAccessory {
         this.platform.log.debug(`${this.accessory.displayName}: Swing Left Right Off`);
       }
       this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
+    }
+  }
+
+  // set Fan speed
+  async setFanSpeed(value) {
+
+    // set Fan speed
+    if (value >= 0 && value <= 100) {
+
+      // We use timer because HomeKit / Apple Home sends command when moving slider
+      // not only when finish move
+      clearTimeout(this.timerSetFanSpeed);
+      this.timerSetFanSpeed = null;
+
+      this.timerSetFanSpeed = setTimeout(async () => {
+        this.platform.log.debug(`${this.accessory.displayName}: value: ${value}`);
+
+        const parameters: ComfortCloudDeviceUpdatePayload = {};
+
+        if (value <= 20) {
+          parameters.fanSpeed = 1;
+          this.platform.log.debug(`${this.accessory.displayName}: set fan speed 1`);
+        } else if (value > 20 && value <= 40) {
+          parameters.fanSpeed = 2;
+          this.platform.log.debug(`${this.accessory.displayName}: set fan speed 2`);
+        } else if (value > 40 && value <= 60) {
+          parameters.fanSpeed = 3;
+          this.platform.log.debug(`${this.accessory.displayName}: set fan speed 3`);
+        } else if (value > 60 && value <= 80) {
+          parameters.fanSpeed = 4;
+          this.platform.log.debug(`${this.accessory.displayName}: set fan speed 4`);
+        } else if (value > 80 && value <= 99) {
+          parameters.fanSpeed = 5;
+          this.platform.log.debug(`${this.accessory.displayName}: set fan speed 5`);
+        } else {
+          // Auto mode
+          parameters.fanSpeed = 0;
+          this.platform.log.debug(`${this.accessory.displayName}: set fan speed auto`);
+        }
+
+        this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
+      }, 1000);
     }
   }
 
@@ -1058,8 +1145,9 @@ export default class IndoorUnitAccessory {
         this.platform.comfortCloud.setDeviceStatus(guid, payload);
       }
       // Refresh device status
-      clearTimeout(this.refreshTimer);
-      this.refreshTimer = setTimeout(this.refreshDeviceStatus.bind(this), 10000);
+      clearTimeout(this.timerSendDeviceUpdate);
+      this.timerSendDeviceUpdate = null;
+      this.timerSendDeviceUpdate = setTimeout(this.refreshDeviceStatus.bind(this), 8000);
 
     } catch (error) {
       this.platform.log.error('An error occurred while sending a device update. '

@@ -125,7 +125,9 @@ When enabled it will create a dummy temperature sensor which will display the te
 
 * `exposeSwingUpDown` (boolean): When enabled it will create a switch to control Swing Up Down.
 
-* `exposeSwingLeftRight` (boolean): When enabled it will create a switch to control Swing Left Right. 
+* `exposeSwingLeftRight` (boolean): When enabled it will create a switch to control Swing Left Right.
+
+* `exposeFanSpeed` (boolean): When enabled it will create a switch to control Fan Speed. Value from 0 to 20 = speed 1, value from 21 to 40 = speed 2, value from 41 to 60 = speed 3, value from 61 to 80 = speed 4, value from 81 to 99 = speed 5 and value 100 = speed auto. Note: Changing value will not change Quiet / Powerful Mode - there are dedicated switches for this.
 
 * `swingModeDirections` (string):
 Desired swing direction(s) activated when swing is switched on.
@@ -144,7 +146,7 @@ Desired position of the Left-Right flaps when swing is switched off or the swing
 HomeKit has a limited number of switches, which is much less than the number of available options in Panasonic Comfort Cloud. Therefore, in the plugin settings you can choose what controls what and add additional sensors and switches. You can apply individual settings for each device.
 
 <details>
-<summary><b>Additional sensors (Outdoor Unit Temp.) and switches (Nanoe, Inside Cleaning, Eco Navi, Quiet Mode, Powerful Mode, Dry Mode, Fan Mode, Swing Up Down, Swing Left Right)</b></summary>
+<summary><b>Additional sensors (Outdoor Unit Temp.), switches (Nanoe, Inside Cleaning, Eco Navi, Quiet Mode, Powerful Mode, Dry Mode, Fan Mode, Swing Up Down, Swing Left Right) and slider (Fan speed)</b></summary>
     
 - Enable additional sensor for outdoor temp. and/or switches for: Nanoe, Inside Cleaning, Eco Navi, Dry Mode, Fan mode, Quiet Mode, Powerful Mode, Swing Up Down, Swing Left Right.
 - Sensor / Switch will work only if device support this function.
@@ -156,9 +158,9 @@ HomeKit has a limited number of switches, which is much less than the number of 
 </details>
 
 <details>
-<summary><b>Rotation speed (including Quiet Mode, Powerful Mode)</b></summary>
+<summary><b>Fan speed, including Quiet Mode, Powerful Mode (slider built-in thermostat accessory, not additional)</b></summary>
 
-All settings related to a unit's fan speed are controlled through the fan speed slider. The following mapping applies:
+The following mapping applies:
 
 | Home app slider position  | Comfort Cloud setting |
 | ------------------------: | --------------------- |
@@ -175,7 +177,7 @@ All settings related to a unit's fan speed are controlled through the fan speed 
 </details>
 
 <details>
-<summary><b>Swing Mode</b></summary>
+<summary><b>Oscilate switch, Swing mode (switch built-in thermostat accessory, not additional)</b></summary>
 HomeKit has only one 'Oscillate' switch, but most Panasonic ACs have two swing directions. In plugin settings you can set horizontal (left right) and vertical (up down) desired positions.
 </details>
 
@@ -283,7 +285,9 @@ You can also combine several commands into one:
 
 Warning! Read carefully before updating!
 
-- Option to add additional switches to control Nanoe, Inside cleaning, Eco Navi, Dry Mode, Fan mode, Quiet Mode, Powerful Mode, Swing Up Down, Swing Left Right.
+- Option to add additional switches to control: Nanoe, Inside cleaning, Eco Navi, Dry Mode, Fan mode, Quiet Mode, Powerful Mode, Swing Up Down, Swing Left Right.
+- Option to add additional slider to control Fan speed.
+- New way to add additional sensor fot outdoor unit temperature.
 - Removed field 'Exclude devices', use exclude from individual device config instead.
-- Removed options: Force values, Oscilate switch (now it always control swing), Auto Mode (you can add switches to control Dry and Fan mode) - now you can add additional switches to control these options. 
+- Removed options: Force values, Oscilate switch (now it always control swing), Auto Mode (you can add switches to control Dry and Fan mode) - now you can add additional switches and sliders to control these options. 
 
