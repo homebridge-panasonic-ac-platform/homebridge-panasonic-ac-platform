@@ -285,7 +285,7 @@ You can also combine several commands into one:
 
 - Dedicated remote controller.
 
-- Local access, but this requires reworking of the equipment, which will lose the warranty, so rather not recommended.
+- Local access, but this requires reworking of the equipment, which will lose the warranty, so rather not recommended ([manual](https://github.com/DomiStyle/esphome-panasonic-ac)).
     
 - Control by IR (imitates an IR remote control), but it only allows you to send commands (not possible to read the state). Examples:
 
