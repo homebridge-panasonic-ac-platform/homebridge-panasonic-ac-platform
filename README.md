@@ -279,11 +279,17 @@ You can also combine several commands into one:
 
 - Link Comfort Cloud to Google Assistant ([manual](https://www.panasonic.com/global/hvac/products/comfort-cloud/how-to-set-up-comfort-cloud/link-panasonic-comfort-cloud-app-to-google-assistant.html)).
 
+- Link Comfort Cloud to Amazon Alexa ([manual](https://www.panasonic.com/global/hvac/products/comfort-cloud/how-to-set-up-comfort-cloud/link-panasonic-comfort-cloud-app-to-amazon-alexa.html)).
+
+- Official Panasonic Comfort Cloud app for iOS / Android
+
+- Dedicated remote controller.
+
 - Local access, but this requires reworking of the equipment, which will lose the warranty, so rather not recommended.
     
 - Control by IR (imitates an IR remote control), but it only allows you to send commands (not possible to read the state). Examples:
 
-  - Aqara Hub M2 or M3. This Hub will directly exposes IR to Homekit. You need to create scene in Aqara app for every IR command, for IR commands scenes are the only way to sync to HomeKit.
+  - Aqara Hub M2 or M3. This Hub will directly exposes IR to Homekit. For Hub M2 you need to create scene in Aqara app for every IR command, for IR commands scenes are the only way to sync to HomeKit.
 
   - Broadlink RM4 Mini or Pro. They work as WiFi devices. You need to install Homebridge plugin ([homebridge-broadlink-rm](https://github.com/kiwi-cam/homebridge-broadlink-rm)) to work with this. For every command there will be separate accessory in HomeKit.
         
