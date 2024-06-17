@@ -316,6 +316,12 @@ export default class IndoorUnitAccessory {
         .getCharacteristic(this.platform.Characteristic.RotationSpeed)
         .onSet(this.setFanSpeed.bind(this));
       this.platform.log.debug(`${this.accessory.displayName}: add fan speed slider`);
+    } else {
+      const removeFanSpeed = this.accessory.getService(this.accessory.displayName + ' (fan speed)');
+      if (removeFanSpeed) {
+        this.accessory.removeService(removeFanSpeed);
+        this.platform.log.debug(`${this.accessory.displayName}: remove fan speed slider`);
+      }
     }
 
     // Update characteristic values asynchronously instead of using onGet handlers
