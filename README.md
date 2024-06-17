@@ -158,7 +158,7 @@ HomeKit has a limited number of switches, which is much less than the number of 
 </details>
 
 <details>
-<summary><b>Fan speed built-in slider (including Quiet Mode, Powerful Mode)</b></summary>
+<summary><b>Fan speed, including Quiet Mode, Powerful Mode (built-in slider)</b></summary>
 
 The following mapping applies:
 
@@ -177,7 +177,7 @@ The following mapping applies:
 </details>
 
 <details>
-<summary><b>Oscilate switch - built-in Swing mode</b></summary>
+<summary><b>Oscilate switch (built-in Swing mode)</b></summary>
 HomeKit has only one 'Oscillate' switch, but most Panasonic ACs have two swing directions. In plugin settings you can set horizontal (left right) and vertical (up down) desired positions.
 </details>
 
