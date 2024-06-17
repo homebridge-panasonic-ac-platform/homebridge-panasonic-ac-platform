@@ -277,7 +277,7 @@ You can also combine several commands into one:
 <details>
 <summary><b>Alternatives to this plugin</b></summary>
 
-- Link Comfort Cloud account to Google Home ([manual](https://www.panasonic.com/global/hvac/products/comfort-cloud/how-to-set-up-comfort-cloud/link-panasonic-comfort-cloud-app-to-google-assistant.html)).
+- Link Comfort Cloud to Google Assistant ([manual](https://www.panasonic.com/global/hvac/products/comfort-cloud/how-to-set-up-comfort-cloud/link-panasonic-comfort-cloud-app-to-google-assistant.html)).
 
 - Local access, but this requires reworking of the equipment, which will lose the warranty, so rather not recommended.
     
