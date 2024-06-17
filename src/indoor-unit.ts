@@ -1022,7 +1022,6 @@ export default class IndoorUnitAccessory {
     // set Fan speed
     if (value >= 0 && value <= 100) {
 
-      
       // We use timer because HomeKit / Apple Home sends command when moving slider
       // not only when finish move
       clearTimeout(this.timerSetFanSpeed);
