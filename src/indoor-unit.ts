@@ -640,6 +640,9 @@ export default class IndoorUnitAccessory {
           this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.RotationSpeed, 70);
         } else if (this.deviceStatus.fanSpeed === 5) {
           this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.RotationSpeed, 90);
+        } else {
+          // Auto mode
+          this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.RotationSpeed, 100);
         }
       }
 
@@ -1019,6 +1022,9 @@ export default class IndoorUnitAccessory {
     // set Fan speed
     if (value >= 0 && value <= 100) {
 
+      
+      // We use timer because HomeKit / Apple Home sends command when moving slider
+      // not only when finish move
       clearTimeout(this.timerSetFanSpeed);
       this.timerSetFanSpeed = null;
 
@@ -1039,9 +1045,13 @@ export default class IndoorUnitAccessory {
         } else if (value > 60 && value <= 80) {
           parameters.fanSpeed = 4;
           this.platform.log.debug(`${this.accessory.displayName}: set fan speed 4`);
-        } else if (value > 80 && value <= 100) {
+        } else if (value > 80 && value <= 99) {
           parameters.fanSpeed = 5;
           this.platform.log.debug(`${this.accessory.displayName}: set fan speed 5`);
+        } else {
+          // Auto mode
+          parameters.fanSpeed = 0;
+          this.platform.log.debug(`${this.accessory.displayName}: set fan speed auto`);
         }
 
         this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
