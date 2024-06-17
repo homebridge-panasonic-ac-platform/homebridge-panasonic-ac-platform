@@ -1,3 +1,13 @@
+> [!CAUTION]
+> Panasonic has changed the API, so this plugin is currently not working.
+>
+> Required are changes in code, so no changes to the plugin config will help.
+>
+> The Panasonic app for iPhone / Android works. You can also use remote.
+>
+> See more: [Issue](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/issues/330)
+
+
 <img src="https://raw.githubusercontent.com/homebridge/verified/latest/icons/homebridge-panasonic-ac-platform.png" width="100px"></img>
 
 # Homebridge Panasonic AC Platform
@@ -267,11 +277,19 @@ You can also combine several commands into one:
 <details>
 <summary><b>Alternatives to this plugin</b></summary>
 
-- Local access, but this requires reworking of the equipment, which will lose the warranty, so rather not recommended.
+- Link Comfort Cloud to Google Assistant ([manual](https://www.panasonic.com/global/hvac/products/comfort-cloud/how-to-set-up-comfort-cloud/link-panasonic-comfort-cloud-app-to-google-assistant.html)).
+
+- Link Comfort Cloud to Amazon Alexa ([manual](https://www.panasonic.com/global/hvac/products/comfort-cloud/how-to-set-up-comfort-cloud/link-panasonic-comfort-cloud-app-to-amazon-alexa.html)).
+
+- Official Panasonic Comfort Cloud app for iOS / Android
+
+- Dedicated remote controller.
+
+- Local access, but this requires reworking of the equipment, which will lose the warranty, so rather not recommended ([manual](https://github.com/DomiStyle/esphome-panasonic-ac)).
     
 - Control by IR (imitates an IR remote control), but it only allows you to send commands (not possible to read the state). Examples:
 
-  - Aqara Hub M2 or M3. This Hub will directly exposes IR to Homekit. You need to create scene in Aqara app for every IR command, for IR commands scenes are the only way to sync to HomeKit.
+  - Aqara Hub M2 or M3. This Hub will directly exposes IR to Homekit. For Hub M2 you need to create scene in Aqara app for every IR command, for IR commands scenes are the only way to sync to HomeKit.
 
   - Broadlink RM4 Mini or Pro. They work as WiFi devices. You need to install Homebridge plugin ([homebridge-broadlink-rm](https://github.com/kiwi-cam/homebridge-broadlink-rm)) to work with this. For every command there will be separate accessory in HomeKit.
         
