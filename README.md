@@ -1,5 +1,9 @@
 > [!CAUTION]
-> Panasonic has changed the API, so this plug-in is currently not working. No changes in the code will work, so no changes to the settings will help. The Panasonic app for iPhone / Android works.
+> Panasonic has changed the API, so this plugin is currently not working.
+>
+> Required are changes in code, so no changes to the plugin config will help.
+>
+> The Panasonic app for iPhone / Android works. You can also use remote.
 >
 > See more: [Issue](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/issues/330)
 
