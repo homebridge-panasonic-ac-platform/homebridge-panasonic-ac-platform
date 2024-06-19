@@ -69,6 +69,8 @@ export default class ComfortCloudApi {
     this.log.info(`auth0client: ${auth0client}`);
     this.log.info(`client_id: ${client_id}`);
 
+    const crypto = require('crypto');
+
     clearInterval(this._loginRefreshInterval);
 
     return axios.request<ComfortCloudAuthResponse>({
@@ -327,4 +329,19 @@ function generate2fa(secret) {
 // show number with 2 digits - add 0 if for numbers from 0 to 9
 function pad2(number) {
   return (number < 10 ? '0' : '') + number;
+}
+
+// new functions -----------------------------------------------------------------------
+
+function randomString(length, chars) {
+    var result = '';
+    for (var i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
+    return result;
+}
+
+function base64URLEncode(str) {
+    return str.toString('base64')
+        .replace(/\+/g, '-')
+        .replace(/\//g, '_')
+        .replace(/=/g, '');
 }
