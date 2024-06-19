@@ -161,7 +161,7 @@ export default class ComfortCloudApi {
 
     this.log.debug('Comfort Cloud - login');
 
-    axios.request({
+    await axios.request({
       method: 'post',
       url: 'https://authglb.digital.panasonic.com/usernamepassword/login',
       headers: {
@@ -215,7 +215,7 @@ export default class ComfortCloudApi {
 
     this.log.debug('Comfort Cloud - login callback');
 
-    axios.request({
+    await axios.request({
       method: 'post',
       url: 'https://authglb.digital.panasonic.com/login/callback',
       headers: {
@@ -241,7 +241,7 @@ export default class ComfortCloudApi {
 
     this.log.debug('Comfort Cloud - login follow redirect');
 
-    axios.request({
+    await axios.request({
       method: 'get',
       url: 'https://authglb.digital.panasonic.com' + this.location,
       maxRedirects: 0,
@@ -262,7 +262,7 @@ export default class ComfortCloudApi {
 
     this.log.debug('Comfort Cloud - get new token');
 
-    axios.request({
+    await axios.request({
       method: 'post',
       url: 'https://accsmart.panasonic.com/auth/v2/login',
       headers: {
@@ -297,7 +297,7 @@ export default class ComfortCloudApi {
 
     this.log.debug('Comfort Cloud - get client id');
 
-    axios.request({
+    await axios.request({
       method: 'post',
       url: 'https://accsmart.panasonic.com/auth/v2/login',
       headers: {
@@ -336,7 +336,7 @@ export default class ComfortCloudApi {
 
     this.log.debug('Comfort Cloud - refreshToken()');
 
-    axios.request({
+    await axios.request({
       method: 'post',
       url: 'https://authglb.digital.panasonic.com/oauth/token',
       headers: {
