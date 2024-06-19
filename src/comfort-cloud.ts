@@ -3,7 +3,8 @@ import axios, { AxiosError } from 'axios';
 import {
   APP_VERSION,
   APP_CLIENT_ID,
-  AUTH0CLIENT,
+  AUTH_0_CLIENT,
+  REDIRECT_URI,
 } from './settings';
 import {
   //ComfortCloudAuthResponse,
@@ -24,6 +25,9 @@ export default class ComfortCloudApi {
   private tokenRefresh: string;
   private clientId: string;
   private _loginRefreshInterval;
+  state;
+  location;
+  csrf;
 
   constructor(
     private readonly config: PanasonicPlatformConfig,
@@ -69,26 +73,121 @@ export default class ComfortCloudApi {
 
     // NEW API - START ----------------------------------------------------------------------------------
 
-    // get new token -------------------------------------
-    const auth0client = AUTH0CLIENT;
+    // const -------------------------------------
+    const auth0client = AUTH_0_CLIENT;
     const app_client_id = APP_CLIENT_ID;
     this.log.info(`auth0client: ${auth0client}`);
     this.log.info(`app_client_id: ${app_client_id}`);
 
-    const code_verifier = randomString(43, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
-
-    const code_challenge = crypto.createHash('sha256')
-      .update(code_verifier, 'utf-8')
-      .digest('base64')
-      .replace(/\+/g, '-')
-      .replace(/\//g, '_')
-      .replace(/=+$/, '');
-
-    const code_challenge2 = base64URLEncode(code_verifier);
+    const code_verifier = generateRandomString(43);
+    const hash = crypto.createHash('sha256').update(code_verifier, 'utf-8').digest();
+    const base64String = Buffer.from(hash).toString('base64');
+    const code_challenge = base64String.split('=')[0];
+    const state = generateRandomString(20);
 
     this.log.info(`code_verifier: ${code_verifier}`);
     this.log.info(`code_challenge: ${code_challenge}`);
-    this.log.info(`code_challenge2: ${code_challenge2}`);
+    this.log.info(`state: ${state}`);
+
+    // authorize -------------------------------------
+
+    this.log.debug('Comfort Cloud - authorize');
+
+    return axios.request({
+      method: 'get',
+      url: 'https://authglb.digital.panasonic.com/authorize',
+      headers: {
+        'user-agent': 'okhttp/4.10.0',
+      },
+      data: {
+        'scope': 'openid offline_access comfortcloud.control a2w.control',
+        'audience': 'https://digital.panasonic.com/' + APP_CLIENT_ID +'/api/v1/',
+        'protocol': 'oauth2',
+        'response_type': 'code',
+        'code_challenge': code_challenge,
+        'code_challenge_method': 'S256',
+        'auth0Client': AUTH_0_CLIENT,
+        'client_id': APP_CLIENT_ID,
+        'redirect_uri': REDIRECT_URI,
+        'state': state,
+      },
+      maxRedirects: 0,
+    })
+      .then((response) => {
+        this.log.debug('Comfort Cloud - authorize - Success');
+        this.log.debug(response.data);
+        this.location = response.headers['Location'];
+        this.state = getQuerystringParameterFromHeaderEntryUrl(response, 'Location', 'state');
+      })
+      .catch((error: AxiosError) => {
+        this.log.error('Comfort Cloud - authorize - Error');
+        this.log.debug(JSON.stringify(error, null, 2));
+        return Promise.reject(error);
+      });
+
+    // authorize - follow redirect -------------------------------------
+
+    this.log.debug('Comfort Cloud - authorize - follow redirect');
+
+    return axios.request({
+      method: 'get',
+      url: 'https://authglb.digital.panasonic.com' + this.location,
+      maxRedirects: 0,
+    })
+      .then((response) => {
+        this.log.debug('Comfort Cloud - authorize - Success');
+        this.log.debug(response.data);
+        this.csrf = (response.headers['set-cookie'] as string[])
+          .find(cookie => cookie.includes('_csrf'))
+          ?.match(new RegExp('^_csrf=(.+?);'))
+          ?.[1];
+      })
+      .catch((error: AxiosError) => {
+        this.log.error('Comfort Cloud - authorize - Error');
+        this.log.debug(JSON.stringify(error, null, 2));
+        return Promise.reject(error);
+      });
+
+    // login -------------------------------------
+
+    this.log.debug('Comfort Cloud - login');
+
+    return axios.request({
+      method: 'post',
+      url: 'https://authglb.digital.panasonic.com/usernamepassword/login',
+      headers: {
+        'Auth0-Client': AUTH_0_CLIENT,
+        'user-agent': 'okhttp/4.10.0',
+      },
+      data: {
+        'client_id': APP_CLIENT_ID,
+        'redirect_uri': REDIRECT_URI,
+        'tenant': 'pdpauthglb-a1',
+        'response_type': 'code',
+        'scope': 'openid offline_access comfortcloud.control a2w.control',
+        'audience': 'https://digital.panasonic.com/' + APP_CLIENT_ID +'/api/v1/',
+        '_csrf': this.csrf,
+        'state': this.state,
+        '_intstate': 'deprecated',
+        'username': this.config.email,
+        'password': this.config.password,
+        'lang': 'en',
+        'connection': 'PanasonicID-Authentication',
+      },
+      maxRedirects: 0,
+    })
+      .then((response) => {
+        this.log.debug('Comfort Cloud - authorize - Success');
+        this.log.debug(response.data);
+        this.location = response.headers['Location'];
+        this.state = getQuerystringParameterFromHeaderEntryUrl(response, 'Location', 'state');
+      })
+      .catch((error: AxiosError) => {
+        this.log.error('Comfort Cloud - authorize - Error');
+        this.log.debug(JSON.stringify(error, null, 2));
+        return Promise.reject(error);
+      });
+
 
     // get client id -------------------------------------
 
@@ -137,7 +236,7 @@ export default class ComfortCloudApi {
       method: 'post',
       url: 'https://authglb.digital.panasonic.com/oauth/token',
       headers: {
-        'Auth0-Client': AUTH0CLIENT,
+        'Auth0-Client': AUTH_0_CLIENT,
         'Content-Type': 'application/json',
         'User-Agent': 'okhttp/4.10.0',
       },
@@ -410,17 +509,23 @@ function pad2(number) {
 
 // new API functions ----------------------------------------------------------------------------------
 
-function randomString(length, chars) {
+function generateRandomString(length) {
   let result = '';
-  for (let i = length; i > 0; --i) {
-    result += chars[Math.floor(Math.random() * chars.length)];
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const charactersLength = characters.length;
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
   }
   return result;
 }
 
-function base64URLEncode(str) {
-  return str.toString('base64')
-    .replace(/\+/g, '-')
-    .replace(/\//g, '_')
-    .replace(/=/g, '');
+// function generateRandomStringHex(length) {
+//   return Array.from({length: length}, () => Math.floor(Math.random() * 16).toString(16)).join('');
+// }
+
+function getQuerystringParameterFromHeaderEntryUrl(response, headerEntry, querystringParameter) {
+  const headerEntryValue = response.headers[headerEntry];
+  const parsedUrl = new URL(headerEntryValue);
+  const params = new URLSearchParams(parsedUrl.search);
+  return params.get(querystringParameter) || null;
 }
