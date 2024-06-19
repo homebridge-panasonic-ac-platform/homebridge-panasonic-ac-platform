@@ -3,7 +3,7 @@ import axios, { AxiosError } from 'axios';
 import {
   APP_VERSION,
   APP_CLIENT_ID,
-  AUTH0CLIENT,
+  AUTH_0_CLIENT,
   REDIRECT_URI,
 } from './settings';
 import {
@@ -33,6 +33,10 @@ export default class ComfortCloudApi {
     this.token = '';
     this.tokenRefresh = '';
     this.clientId = '';
+
+    this.state;
+    this.location;
+    this.crsf;
   }
 
   /**
@@ -71,7 +75,7 @@ export default class ComfortCloudApi {
     // NEW API - START ----------------------------------------------------------------------------------
 
     // const -------------------------------------
-    const auth0client = AUTH0CLIENT;
+    const auth0client = AUTH_0_CLIENT;
     const app_client_id = APP_CLIENT_ID;
     this.log.info(`auth0client: ${auth0client}`);
     this.log.info(`app_client_id: ${app_client_id}`);
@@ -103,7 +107,7 @@ export default class ComfortCloudApi {
         'response_type': 'code',
         'code_challenge': code_challenge,
         'code_challenge_method': 'S256',
-        'auth0Client': AUTH0CLIENT,
+        'auth0Client': AUTH_0_CLIENT,
         'client_id': APP_CLIENT_ID,
         'redirect_uri': REDIRECT_URI,
         'state': state,
@@ -113,8 +117,8 @@ export default class ComfortCloudApi {
       .then((response) => {
         this.log.debug('Comfort Cloud - authorize - Success');
         this.log.debug(response.data);
-        const location = response.headers['Location'];
-        state = getQuerystringParameterFromHeaderEntryUrl(response, 'Location', 'state');
+        this.location = response.headers['Location'];
+        this.state = getQuerystringParameterFromHeaderEntryUrl(response, 'Location', 'state');
       })
       .catch((error: AxiosError) => {
         this.log.error('Comfort Cloud - authorize - Error');
@@ -129,12 +133,12 @@ export default class ComfortCloudApi {
     return axios.request({
       method: 'get',
       url: 'https://authglb.digital.panasonic.com' + location,
-      allow_redirects = false,
+      maxRedirects: 0,
     })
       .then((response) => {
         this.log.debug('Comfort Cloud - authorize - Success');
         this.log.debug(response.data);
-        const csrf = response.cookies['_csrf']
+        this.csrf = response.cookies['_csrf']
       })
       .catch((error: AxiosError) => {
         this.log.error('Comfort Cloud - authorize - Error');
@@ -163,8 +167,8 @@ export default class ComfortCloudApi {
         '_csrf': csrf,
         'state': state,
         '_intstate': 'deprecated',
-        'username': self._username,
-        'password': self._password,
+        'username': this.config.email,
+        'password': this.config.password,
         'lang': 'en',
         'connection': 'PanasonicID-Authentication'
       },
@@ -173,8 +177,8 @@ export default class ComfortCloudApi {
       .then((response) => {
         this.log.debug('Comfort Cloud - authorize - Success');
         this.log.debug(response.data);
-        const location = response.headers['Location'];
-        state = getQuerystringParameterFromHeaderEntryUrl(response, 'Location', 'state');
+        this.location = response.headers['Location'];
+        this.state = getQuerystringParameterFromHeaderEntryUrl(response, 'Location', 'state');
       })
       .catch((error: AxiosError) => {
         this.log.error('Comfort Cloud - authorize - Error');
@@ -230,7 +234,7 @@ export default class ComfortCloudApi {
       method: 'post',
       url: 'https://authglb.digital.panasonic.com/oauth/token',
       headers: {
-        'Auth0-Client': AUTH0CLIENT,
+        'Auth0-Client': AUTH_0_CLIENT,
         'Content-Type': 'application/json',
         'User-Agent': 'okhttp/4.10.0',
       },
