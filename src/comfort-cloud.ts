@@ -6,7 +6,7 @@ import {
   AUTH0CLIENT,
 } from './settings';
 import {
-  ComfortCloudAuthResponse,
+  //ComfortCloudAuthResponse,
   ComfortCloudDevice,
   ComfortCloudDeviceStatus,
   ComfortCloudDeviceUpdatePayload,
@@ -186,7 +186,7 @@ export default class ComfortCloudApi {
       url: 'https://accsmart.panasonic.com/device/group',
       headers: {
         ...this.getBaseRequestHeaders(),
-        'X-Client-Id': this.client_id,
+        'X-Client-Id': this.clientId,
         'X-User-Authorization-V2': this.token,
       },
     })
@@ -237,7 +237,7 @@ export default class ComfortCloudApi {
       url: `https://accsmart.panasonic.com/deviceStatus/now/${deviceGuid}`,
       headers: {
         ...this.getBaseRequestHeaders(),
-        'X-Client-Id': this.client_id,
+        'X-Client-Id': this.clientId,
         'X-User-Authorization-V2': this.token,
       },
     })
@@ -288,7 +288,7 @@ export default class ComfortCloudApi {
       url: 'https://accsmart.panasonic.com/deviceStatus/control',
       headers: {
         ...this.getBaseRequestHeaders(),
-        'X-Client-Id': this.client_id,
+        'X-Client-Id': this.clientId,
         'X-User-Authorization-V2': this.token,
       },
       data: {
