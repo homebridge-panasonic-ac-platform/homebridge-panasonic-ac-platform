@@ -4,10 +4,9 @@ export const PLUGIN_NAME = 'homebridge-panasonic-ac-platform';
 // The platform the plugin creates (see config.json).
 export const PLATFORM_NAME = 'Panasonic AC Platform';
 
-export const COMFORT_CLOUD_USER_AGENT = 'G-RAC';
-export const APP_VERSION = '1.20.1';
+// New API
+export const APP_VERSION = '1.20.0';
+export const CLIENT_ID = 'Xmy6xIYIitMxngjB2rHvlm6HSDNnaMJx';
+export const AUTH0CLIENT = 'eyJuYW1lIjoiQXV0aDAuQW5kcm9pZCIsImVudiI6eyJhbmRyb2lkIjoiMzAifSwidmVyc2lvbiI6IjIuOS4zIn0=';
 
-// Used to renew the token periodically. Only a safety measure, since we are handling
-// network errors dynamically and re-issuing a login upon a 401 Unauthorized error.
-// 604,800 sec = 7 days
-export const LOGIN_TOKEN_REFRESH_INTERVAL = 604800 * 1000;
+
