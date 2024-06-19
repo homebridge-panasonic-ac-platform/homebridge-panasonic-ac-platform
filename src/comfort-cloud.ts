@@ -37,6 +37,9 @@ export default class ComfortCloudApi {
   async setup() {
     this.log.debug('Comfort Cloud: login()');
 
+
+    // 2 FA TOTP ------------------------------------------------------
+
     const now = new Date();
     const utcDate = now.getUTCFullYear() + '-' + pad2(now.getUTCMonth() + 1) + '-' + pad2(now.getUTCDate())
         + ' ' + pad2(now.getUTCHours()) + ':' + pad2(now.getUTCMinutes()) + ':' + pad2(now.getUTCSeconds());
@@ -59,6 +62,14 @@ export default class ComfortCloudApi {
       this.log.info('No 2FA key or incorrect key');
     }
 
+
+    // NEW API ------------------------------------------------------
+
+    const auth0client = AUTH0CLIENT;
+    const client_id = CLIENT_ID;
+    this.log.info(`auth0client: ${auth0client}`);
+    this.log.info(`client_id: ${client_id}`);   
+
     clearInterval(this._loginRefreshInterval);
 
     return axios.request<ComfortCloudAuthResponse>({
@@ -77,8 +88,7 @@ export default class ComfortCloudApi {
         this.token = response.data.uToken;
 
         // Set an interval to refresh the login token periodically.
-        this._loginRefreshInterval = setInterval(this.login.bind(this),
-          LOGIN_TOKEN_REFRESH_INTERVAL);
+        this._loginRefreshInterval = setTimeout(this.setup.bind(this), 86400000);
       })
       .catch((error: AxiosError) => {
         this.log.error('Comfort Cloud - login(): Error');
