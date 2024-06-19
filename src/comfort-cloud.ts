@@ -139,7 +139,7 @@ export default class ComfortCloudApi {
         this.log.debug(response.data);
         this.csrf = (response.headers['set-cookie'] as string[])
           .find(cookie => cookie.includes('_csrf'))
-          ?.match(new RegExp(`^_csrf=(.+?);`))
+          ?.match(new RegExp('^_csrf=(.+?);'))
           ?.[1];
       })
       .catch((error: AxiosError) => {
