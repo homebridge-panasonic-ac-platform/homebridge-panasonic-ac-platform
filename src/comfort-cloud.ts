@@ -29,7 +29,7 @@ export default class ComfortCloudApi {
   location;
   csrf;
   code;
-  parameters;
+  parameters = {};
 
   constructor(
     private readonly config: PanasonicPlatformConfig,
@@ -261,7 +261,7 @@ export default class ComfortCloudApi {
         'grant_type': 'authorization_code',
         'code': this.code,
         'redirect_uri': REDIRECT_URI,
-        'code_verifier': code_verifier
+        'code_verifier': code_verifier,
       },
       maxRedirects: 0,
     })
