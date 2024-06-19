@@ -186,11 +186,10 @@ export default class ComfortCloudApi {
         this.log.debug(response.data);
 
         // get wa, wresult, wctx from body
-        const $ = cheerio.load(response.text);
+        const $ = cheerio.load(response.data);
 
-        const parameters = {};
         $('input[type="hidden"]').each((i, el) => {
-          parameters[$(el).attr('name')] = $(el).attr('value');
+          this.parameters[$(el).attr('name')] = $(el).attr('value');
         });
 
         // const wa = parameters.wa;
