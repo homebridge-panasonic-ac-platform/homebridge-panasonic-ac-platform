@@ -256,12 +256,12 @@ export default class ComfortCloudApi {
         'user-agent': 'okhttp/4.10.0',
       },
       data: {
-        "scope": "openid",
-        "client_id": APP_CLIENT_ID,
-        "grant_type": "authorization_code",
-        "code": this.code,
-        "redirect_uri": REDIRECT_URI,
-        "code_verifier": code_verifier
+        'scope': 'openid',
+        'client_id': APP_CLIENT_ID,
+        'grant_type': 'authorization_code',
+        'code': this.code,
+        'redirect_uri': REDIRECT_URI,
+        'code_verifier': code_verifier
       },
       maxRedirects: 0,
     })
