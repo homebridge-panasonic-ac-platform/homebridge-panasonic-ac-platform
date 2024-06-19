@@ -16,6 +16,7 @@ import {
 } from './types';
 import jsSHA from 'jssha';
 import crypto from 'crypto';
+import BeautifulSoup from 'beautiful-soup-js';
 
 /**
  * This class exposes login, device status fetching, and device status update functions.
