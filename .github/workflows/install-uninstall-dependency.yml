@@ -30,7 +30,7 @@ jobs:
          # token: ${{ secrets.PAT }}
 
       - name: Set up Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '20.x'
           registry-url: 'https://registry.npmjs.org'
