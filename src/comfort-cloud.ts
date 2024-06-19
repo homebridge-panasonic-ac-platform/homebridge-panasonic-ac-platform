@@ -181,13 +181,13 @@ export default class ComfortCloudApi {
       .then((response) => {
         this.log.debug('Comfort Cloud - authorize - Success');
         this.log.debug(response.data);
-        
+
         // get wa, wresult, wctx from body
-        const soup = new BeautifulSoup(response.content, "html.parser");
-        const inputLines = soup.findAll("input", {"type": "hidden"});
-        
-        for (let inputLine of inputLines) {
-            parameters[inputLine.getAttribute("name")] = inputLine.getAttribute("value");
+        const soup = new BeautifulSoup(response.content, 'html.parser');
+        const inputLines = soup.findAll('input', {'type': 'hidden'});
+
+        for (const inputLine of inputLines) {
+          this.parameters[inputLine.getAttribute('name')] = inputLine.getAttribute('value');
         }
       })
       .catch((error: AxiosError) => {
@@ -215,7 +215,7 @@ export default class ComfortCloudApi {
       .then((response) => {
         this.log.debug('Comfort Cloud - login callback - Success');
         this.log.debug(response.data);
-        this.location = response.headers['Location']
+        this.location = response.headers['Location'];
       })
       .catch((error: AxiosError) => {
         this.log.error('Comfort Cloud - login callback - Error');
@@ -229,7 +229,7 @@ export default class ComfortCloudApi {
 
     axios.request({
       method: 'get',
-      url: 'https://authglb.digital.panasonic.com' + location,
+      url: 'https://authglb.digital.panasonic.com' + this.location,
       maxRedirects: 0,
     })
       .then((response) => {
@@ -261,7 +261,7 @@ export default class ComfortCloudApi {
         "grant_type": "authorization_code",
         "code": this.code,
         "redirect_uri": REDIRECT_URI,
-        "code_verifier": this.code_verifier
+        "code_verifier": code_verifier
       },
       maxRedirects: 0,
     })
