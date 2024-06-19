@@ -5,6 +5,7 @@ export const PLUGIN_NAME = 'homebridge-panasonic-ac-platform';
 export const PLATFORM_NAME = 'Panasonic AC Platform';
 
 // New API
+// CLIENT_ID and APP_VERSION are related - for each APP VERSION there is a different CLIENT_ID.
 export const APP_VERSION = '1.20.0';
 export const CLIENT_ID = 'Xmy6xIYIitMxngjB2rHvlm6HSDNnaMJx';
 export const AUTH0CLIENT = 'eyJuYW1lIjoiQXV0aDAuQW5kcm9pZCIsImVudiI6eyJhbmRyb2lkIjoiMzAifSwidmVyc2lvbiI6IjIuOS4zIn0=';
