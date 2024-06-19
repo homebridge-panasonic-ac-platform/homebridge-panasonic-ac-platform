@@ -27,8 +27,8 @@ export default class ComfortCloudApi {
   private _loginRefreshInterval;
   state;
   location;
-  crsf;
-  
+  csrf;
+
   constructor(
     private readonly config: PanasonicPlatformConfig,
     private readonly log: PanasonicPlatformLogger,
@@ -131,13 +131,13 @@ export default class ComfortCloudApi {
 
     return axios.request({
       method: 'get',
-      url: 'https://authglb.digital.panasonic.com' + location,
+      url: 'https://authglb.digital.panasonic.com' + this.location,
       maxRedirects: 0,
     })
       .then((response) => {
         this.log.debug('Comfort Cloud - authorize - Success');
         this.log.debug(response.data);
-        this.csrf = response.cookies['_csrf']
+        this.csrf = response.cookies['_csrf'];
       })
       .catch((error: AxiosError) => {
         this.log.error('Comfort Cloud - authorize - Error');
@@ -153,7 +153,7 @@ export default class ComfortCloudApi {
       method: 'post',
       url: 'https://authglb.digital.panasonic.com/usernamepassword/login',
       headers: {
-        'Auth0-Client': AUTH0CLIENT,
+        'Auth0-Client': AUTH_0_CLIENT,
         'user-agent': 'okhttp/4.10.0',
       },
       data: {
@@ -163,13 +163,13 @@ export default class ComfortCloudApi {
         'response_type': 'code',
         'scope': 'openid offline_access comfortcloud.control a2w.control',
         'audience': 'https://digital.panasonic.com/' + APP_CLIENT_ID +'/api/v1/',
-        '_csrf': csrf,
-        'state': state,
+        '_csrf': this.csrf,
+        'state': this.state,
         '_intstate': 'deprecated',
         'username': this.config.email,
         'password': this.config.password,
         'lang': 'en',
-        'connection': 'PanasonicID-Authentication'
+        'connection': 'PanasonicID-Authentication',
       },
       maxRedirects: 0,
     })
@@ -507,22 +507,22 @@ function pad2(number) {
 // new API functions ----------------------------------------------------------------------------------
 
 function generateRandomString(length) {
-    let result = '';
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let charactersLength = characters.length;
-    for (let i = 0; i < length; i++) {
-        result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return result;
+  let result = '';
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let charactersLength = characters.length;
+  for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
 }
 
 function generateRandomStringHex(length) {
-    return Array.from({length: length}, () => Math.floor(Math.random() * 16).toString(16)).join('');
+  return Array.from({length: length}, () => Math.floor(Math.random() * 16).toString(16)).join('');
 }
 
 function getQuerystringParameterFromHeaderEntryUrl(response, headerEntry, querystringParameter) {
-    let headerEntryValue = response.headers[headerEntry];
-    let parsedUrl = new URL(headerEntryValue);
-    let params = new URLSearchParams(parsedUrl.search);
-    return params.get(querystringParameter) || null;
+  let headerEntryValue = response.headers[headerEntry];
+  let parsedUrl = new URL(headerEntryValue);
+  let params = new URLSearchParams(parsedUrl.search);
+  return params.get(querystringParameter) || null;
 }
