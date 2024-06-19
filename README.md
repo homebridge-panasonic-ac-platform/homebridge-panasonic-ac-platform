@@ -1,11 +1,10 @@
 > [!CAUTION]
-> Panasonic has changed the API, so this plugin is currently not working.
+> Panasonic has changed the API, so all version below 4.0.0 stop working.
 >
-> Required are changes in code, so no changes to the plugin config will help.
+> Version 4.0.0 in progress (beta).
 >
 > The Panasonic app for iPhone / Android works. You can also use remote.
->
-> See more: [Issue](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/issues/330)
+
 
 
 <img src="https://raw.githubusercontent.com/homebridge/verified/latest/icons/homebridge-panasonic-ac-platform.png" width="100px"></img>
@@ -266,6 +265,7 @@ You can also combine several commands into one:
 ## Acknowledgements
 - Thanks to [embee8](https://github.com/embee8) for creating this plugin.
 - Thanks to [codyc1515](https://github.com/codyc1515) for creating and maintaining [homebridge-panasonic-air-conditioner](https://github.com/codyc1515/homebridge-panasonic-air-conditioner), which served as motivation for this platform plugin and proved particularly helpful in determining API request/response payloads.
+- Thanks to all helping in the development of this plugin and obtaining new Comfort Cloud API.
 - Thanks to the team behind Homebridge. Your efforts do not go unnoticed.
 
 ## Disclaimer
@@ -299,13 +299,16 @@ You can also combine several commands into one:
 
 ## Changelog
 
-#### Version 4.0.0
+#### Version 4.0.0 - in progress (beta)
 
 Warning! Read carefully before updating!
 
+- Completely new Comfort Cloud API. All versions below 4.0.0 will not work.
 - Option to add additional switches to control: Nanoe, Inside cleaning, Eco Navi, Dry Mode, Fan mode, Quiet Mode, Powerful Mode, Swing Up Down, Swing Left Right.
 - Option to add additional slider to control Fan speed.
 - New way to add additional sensor fot outdoor unit temperature.
 - Removed field 'Exclude devices', use exclude from individual device config instead.
-- Removed options: Force values, Oscilate switch (now it always control swing), Auto Mode (you can add switches to control Dry and Fan mode) - now you can add additional switches and sliders to control these options. 
+- Removed options: Force values, Oscilate switch (now it always control swing), Auto Mode (you can add switches to control Dry and Fan mode) - now you can add additional switches and sliders to control these options.
+
+
 

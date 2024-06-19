@@ -36,12 +36,6 @@
 				"placeholder": "Panasonic AC Platform",
 				"required": true
 			},
-			"appVersionOverride": {
-				"title": "Comfort Cloud app version (override)",
-				"description": "Leave this field empty to automatically fetch the latest version from the App Store and if that fails, it will use the last known working value which is hard-coded. Filling in this field will make the entered version used (automatic overwriting of versions from the App Store will not work).",
-				"type": "string",
-				"placeholder": "App version, E.G.: 1.19.0"
-			},
 			"suppressOutgoingUpdates": {
 				"title": "Suppress outgoing devices updates",
 				"description": "When enabled, changes in the Home app will not be sent to Comfort Cloud. Useful for testing your installation without constantly switching the state of your AC.",
@@ -294,7 +288,6 @@
 			"expanded": false,
 			"items": [
 				"name",
-				"appVersionOverride",
 				"suppressOutgoingUpdates",
 				"logsLevel"
 			]

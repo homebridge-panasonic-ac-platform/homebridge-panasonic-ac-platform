@@ -2,8 +2,8 @@ import PanasonicPlatformLogger from './logger';
 import axios, { AxiosError } from 'axios';
 import {
   APP_VERSION,
-  COMFORT_CLOUD_USER_AGENT,
-  LOGIN_TOKEN_REFRESH_INTERVAL,
+  CLIENT_ID,
+  AUTH0CLIENT,
 } from './settings';
 import {
   ComfortCloudAuthResponse,
@@ -14,12 +14,14 @@ import {
   PanasonicPlatformConfig,
 } from './types';
 import jsSHA from 'jssha';
+import crypto from 'crypto';
 
 /**
  * This class exposes login, device status fetching, and device status update functions.
  */
 export default class ComfortCloudApi {
   private token: string;
+  private client_id: string;
   private _loginRefreshInterval;
 
   constructor(
@@ -27,14 +29,18 @@ export default class ComfortCloudApi {
     private readonly log: PanasonicPlatformLogger,
   ) {
     this.token = '';
+    this.client_id = '';
   }
 
   /**
    * Logs in the user with Comfort Cloud and
    * saves the retrieved token on the instance.
   */
-  async login() {
+  async setup() {
     this.log.debug('Comfort Cloud: login()');
+
+
+    // 2 FA TOTP ----------------------------------------------------------------------------------
 
     const now = new Date();
     const utcDate = now.getUTCFullYear() + '-' + pad2(now.getUTCMonth() + 1) + '-' + pad2(now.getUTCDate())
@@ -58,6 +64,30 @@ export default class ComfortCloudApi {
       this.log.info('No 2FA key or incorrect key');
     }
 
+
+    // NEW API - START ----------------------------------------------------------------------------------
+
+    const auth0client = AUTH0CLIENT;
+    const client_id = CLIENT_ID;
+    this.log.info(`auth0client: ${auth0client}`);
+    this.log.info(`client_id: ${client_id}`);
+
+    const code_verifier = randomString(43, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
+
+    const code_challenge = crypto.createHash('sha256')
+      .update(code_verifier, 'utf-8')
+      .digest('base64')
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=+$/, '');
+
+    const code_challenge2 = base64URLEncode(code_verifier);
+
+    this.log.info(`code_verifier: ${code_verifier}`);
+    this.log.info(`code_challenge: ${code_challenge}`);
+    this.log.info(`code_challenge2: ${code_challenge2}`);
+
+
     clearInterval(this._loginRefreshInterval);
 
     return axios.request<ComfortCloudAuthResponse>({
@@ -76,8 +106,7 @@ export default class ComfortCloudApi {
         this.token = response.data.uToken;
 
         // Set an interval to refresh the login token periodically.
-        this._loginRefreshInterval = setInterval(this.login.bind(this),
-          LOGIN_TOKEN_REFRESH_INTERVAL);
+        this._loginRefreshInterval = setTimeout(this.setup.bind(this), 86400000);
       })
       .catch((error: AxiosError) => {
         this.log.error('Comfort Cloud - login(): Error');
@@ -85,6 +114,10 @@ export default class ComfortCloudApi {
         return Promise.reject(error);
       });
   }
+
+  // NEW API - END ----------------------------------------------------------------------------------
+
+  // Get devices ----------------------------------------------------------------------------------
 
   /**
    * Fetches all devices that are registered with the user's Comfort Cloud account.
@@ -106,7 +139,8 @@ export default class ComfortCloudApi {
       url: 'https://accsmart.panasonic.com/device/group',
       headers: {
         ...this.getBaseRequestHeaders(),
-        'X-User-Authorization': this.token,
+        'X-Client-Id': this.client_id,
+        'X-User-Authorization-V2': this.token,
       },
     })
       .then((response) => {
@@ -131,6 +165,8 @@ export default class ComfortCloudApi {
       });
   }
 
+  // Get devices status ----------------------------------------------------------------------------------
+
   /**
    * Retrieves the status of a device.
    *
@@ -154,7 +190,8 @@ export default class ComfortCloudApi {
       url: `https://accsmart.panasonic.com/deviceStatus/now/${deviceGuid}`,
       headers: {
         ...this.getBaseRequestHeaders(),
-        'X-User-Authorization': this.token,
+        'X-Client-Id': this.client_id,
+        'X-User-Authorization-V2': this.token,
       },
     })
       .then((response) => {
@@ -171,6 +208,8 @@ export default class ComfortCloudApi {
         return Promise.reject(`Comfort Cloud - getDeviceStatus() for GUID '${deviceGuid}': Error`);
       });
   }
+
+  // Set device status ----------------------------------------------------------------------------------
 
   /**
    * Sets the status of a device.
@@ -202,7 +241,8 @@ export default class ComfortCloudApi {
       url: 'https://accsmart.panasonic.com/deviceStatus/control',
       headers: {
         ...this.getBaseRequestHeaders(),
-        'X-User-Authorization': this.token,
+        'X-Client-Id': this.client_id,
+        'X-User-Authorization-V2': this.token,
       },
       data: {
         'deviceGuid': deviceGuid,
@@ -222,6 +262,8 @@ export default class ComfortCloudApi {
         return Promise.reject('Comfort Cloud - setDeviceStatus(): Error');
       });
   }
+
+  // ----------------------------------------------------------------------------------
 
   /**
    * Generic Axios error handler that checks which type of
@@ -253,19 +295,18 @@ export default class ComfortCloudApi {
     return {
       'Accept': 'application/json; charset=UTF-8',
       'Content-Type': 'application/json',
-      'User-Agent': COMFORT_CLOUD_USER_AGENT,
+      'User-Agent': 'G-RAC',
       'X-APP-NAME': 'Comfort Cloud',
       'X-APP-TIMESTAMP': (new Date()).toISOString().replace(/-/g, '')
         .replace('T', ' ').slice(0, 17),
       'X-APP-TYPE': '0',
-      'X-APP-VERSION': this.config.appVersionOverride
-        || this.config.latestAppVersion || APP_VERSION,
+      'X-APP-VERSION': APP_VERSION,
       'X-CFC-API-KEY': '0',
     };
   }
 }
 
-// 2FA TOTP
+// 2FA TOTP ----------------------------------------------------------------------------------
 
 function dec2hex(s) {
   return (s < 15.5 ? '0' : '') + Math.round(s).toString(16);
@@ -318,4 +359,21 @@ function generate2fa(secret) {
 // show number with 2 digits - add 0 if for numbers from 0 to 9
 function pad2(number) {
   return (number < 10 ? '0' : '') + number;
+}
+
+// new API functions ----------------------------------------------------------------------------------
+
+function randomString(length, chars) {
+  let result = '';
+  for (let i = length; i > 0; --i) {
+    result += chars[Math.floor(Math.random() * chars.length)];
+  }
+  return result;
+}
+
+function base64URLEncode(str) {
+  return str.toString('base64')
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=/g, '');
 }
