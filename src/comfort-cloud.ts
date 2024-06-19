@@ -34,7 +34,7 @@ export default class ComfortCloudApi {
    * Logs in the user with Comfort Cloud and
    * saves the retrieved token on the instance.
   */
-  async login() {
+  async setup() {
     this.log.debug('Comfort Cloud: login()');
 
     const now = new Date();
