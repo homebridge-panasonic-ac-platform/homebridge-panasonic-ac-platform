@@ -21,6 +21,7 @@ import crypto from 'crypto';
  */
 export default class ComfortCloudApi {
   private token: string;
+  private client_id: string;
   private _loginRefreshInterval;
 
   constructor(
@@ -38,7 +39,7 @@ export default class ComfortCloudApi {
     this.log.debug('Comfort Cloud: login()');
 
 
-    // 2 FA TOTP ------------------------------------------------------
+    // 2 FA TOTP ----------------------------------------------------------------------------------
 
     const now = new Date();
     const utcDate = now.getUTCFullYear() + '-' + pad2(now.getUTCMonth() + 1) + '-' + pad2(now.getUTCDate())
@@ -62,8 +63,8 @@ export default class ComfortCloudApi {
       this.log.info('No 2FA key or incorrect key');
     }
 
-
-    // NEW API ------------------------------------------------------
+    
+    // NEW API - START ----------------------------------------------------------------------------------
 
     const auth0client = AUTH0CLIENT;
     const client_id = CLIENT_ID;
@@ -84,8 +85,7 @@ export default class ComfortCloudApi {
     this.log.info(`code_verifier: ${code_verifier}`);
     this.log.info(`code_challenge: ${code_challenge}`);
     this.log.info(`code_challenge2: ${code_challenge2}`);
-
-    // NEW API ------------------------------------------------------
+    
 
     clearInterval(this._loginRefreshInterval);
 
@@ -114,6 +114,10 @@ export default class ComfortCloudApi {
       });
   }
 
+  // NEW API - END ----------------------------------------------------------------------------------
+
+  // Get devices ----------------------------------------------------------------------------------
+
   /**
    * Fetches all devices that are registered with the user's Comfort Cloud account.
    *
@@ -134,7 +138,8 @@ export default class ComfortCloudApi {
       url: 'https://accsmart.panasonic.com/device/group',
       headers: {
         ...this.getBaseRequestHeaders(),
-        'X-User-Authorization': this.token,
+        "X-Client-Id": this.client_id,
+        'X-User-Authorization-V2': this.token,
       },
     })
       .then((response) => {
@@ -159,6 +164,8 @@ export default class ComfortCloudApi {
       });
   }
 
+  // Get devices status ----------------------------------------------------------------------------------
+
   /**
    * Retrieves the status of a device.
    *
@@ -182,7 +189,8 @@ export default class ComfortCloudApi {
       url: `https://accsmart.panasonic.com/deviceStatus/now/${deviceGuid}`,
       headers: {
         ...this.getBaseRequestHeaders(),
-        'X-User-Authorization': this.token,
+        "X-Client-Id": this.client_id,
+        'X-User-Authorization-V2': this.token,
       },
     })
       .then((response) => {
@@ -199,6 +207,8 @@ export default class ComfortCloudApi {
         return Promise.reject(`Comfort Cloud - getDeviceStatus() for GUID '${deviceGuid}': Error`);
       });
   }
+
+  // Set device status ----------------------------------------------------------------------------------
 
   /**
    * Sets the status of a device.
@@ -230,7 +240,8 @@ export default class ComfortCloudApi {
       url: 'https://accsmart.panasonic.com/deviceStatus/control',
       headers: {
         ...this.getBaseRequestHeaders(),
-        'X-User-Authorization': this.token,
+        "X-Client-Id": this.client_id,
+        'X-User-Authorization-V2': this.token,
       },
       data: {
         'deviceGuid': deviceGuid,
@@ -250,6 +261,8 @@ export default class ComfortCloudApi {
         return Promise.reject('Comfort Cloud - setDeviceStatus(): Error');
       });
   }
+
+  // ----------------------------------------------------------------------------------
 
   /**
    * Generic Axios error handler that checks which type of
@@ -292,7 +305,7 @@ export default class ComfortCloudApi {
   }
 }
 
-// 2FA TOTP
+// 2FA TOTP ----------------------------------------------------------------------------------
 
 function dec2hex(s) {
   return (s < 15.5 ? '0' : '') + Math.round(s).toString(16);
@@ -347,7 +360,7 @@ function pad2(number) {
   return (number < 10 ? '0' : '') + number;
 }
 
-// new functions -----------------------------------------------------------------------
+// new API functions ----------------------------------------------------------------------------------
 
 function randomString(length, chars) {
   let result = '';
