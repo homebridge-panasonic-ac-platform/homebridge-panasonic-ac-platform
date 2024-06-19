@@ -2,7 +2,8 @@ import PanasonicPlatformLogger from './logger';
 import axios, { AxiosError } from 'axios';
 import {
   APP_VERSION,
-  COMFORT_CLOUD_USER_AGENT,
+  CLIENT_ID,
+  AUTH0CLIENT,
   LOGIN_TOKEN_REFRESH_INTERVAL,
 } from './settings';
 import {
@@ -253,13 +254,12 @@ export default class ComfortCloudApi {
     return {
       'Accept': 'application/json; charset=UTF-8',
       'Content-Type': 'application/json',
-      'User-Agent': COMFORT_CLOUD_USER_AGENT,
+      'User-Agent': 'G-RAC',
       'X-APP-NAME': 'Comfort Cloud',
       'X-APP-TIMESTAMP': (new Date()).toISOString().replace(/-/g, '')
         .replace('T', ' ').slice(0, 17),
       'X-APP-TYPE': '0',
-      'X-APP-VERSION': this.config.appVersionOverride
-        || this.config.latestAppVersion || APP_VERSION,
+      'X-APP-VERSION': APP_VERSION,
       'X-CFC-API-KEY': '0',
     };
   }
