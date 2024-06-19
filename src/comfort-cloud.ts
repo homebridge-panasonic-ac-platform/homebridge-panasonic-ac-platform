@@ -4,7 +4,7 @@ import {
   APP_VERSION,
   APP_CLIENT_ID,
   AUTH0CLIENT,
-  REDIRECT_URI
+  REDIRECT_URI,
 } from './settings';
 import {
   //ComfortCloudAuthResponse,
@@ -108,7 +108,7 @@ export default class ComfortCloudApi {
         'redirect_uri': REDIRECT_URI,
         'state': state,
       },
-      allow_redirects = false,
+      maxRedirects: 0,
     })
       .then((response) => {
         this.log.debug('Comfort Cloud - authorize - Success');
@@ -168,7 +168,7 @@ export default class ComfortCloudApi {
         'lang': 'en',
         'connection': 'PanasonicID-Authentication'
       },
-      allow_redirects = false,
+      maxRedirects: 0,
     })
       .then((response) => {
         this.log.debug('Comfort Cloud - authorize - Success');
@@ -504,10 +504,10 @@ function pad2(number) {
 // new API functions ----------------------------------------------------------------------------------
 
 function generateRandomString(length) {
-    var result = '';
-    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    var charactersLength = characters.length;
-    for (var i = 0; i < length; i++) {
+    let result = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
         result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
     return result;
@@ -518,8 +518,8 @@ function generateRandomStringHex(length) {
 }
 
 function getQuerystringParameterFromHeaderEntryUrl(response, headerEntry, querystringParameter) {
-    var headerEntryValue = response.headers[headerEntry];
-    var parsedUrl = new URL(headerEntryValue);
-    var params = new URLSearchParams(parsedUrl.search);
+    let headerEntryValue = response.headers[headerEntry];
+    let parsedUrl = new URL(headerEntryValue);
+    let params = new URLSearchParams(parsedUrl.search);
     return params.get(querystringParameter) || null;
 }
