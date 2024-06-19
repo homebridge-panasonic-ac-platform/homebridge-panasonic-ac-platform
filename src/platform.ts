@@ -94,10 +94,8 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
         const matches = $(p).text().match(/\d+(.)\d+(.)\d+/);
         if (Array.isArray(matches)) {
           this.log.info(`The latest App Store version is ${matches[0]}.`);
-          this.platformConfig.latestAppVersion = matches[0];
         } else {
-          this.log.error('Could not find latest app version. '
-            + 'Falling back to override or hard-coded value.');
+          this.log.error('Could not find latest app version.');
         }
       });
     } catch (error) {
@@ -119,15 +117,8 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
       return;
     }
 
-    if (this.noOfFailedLoginAttempts % 5 === 0) {
-      // Check for a new Comfort Cloud App Store version.
-      // This condition will apply on the first run (0 % 5 === 0)
-      // and subsequently after every fifth failed login attempt.
-      await this.getAppVersion();
-    }
-
     this.log.debug('Attempting to log into Comfort Cloud.');
-    this.comfortCloud.login()
+    this.comfortCloud.setup()
       .then(() => {
         this.log.info('Successfully logged in to Comfort Cloud.');
         this.noOfFailedLoginAttempts = 0;
