@@ -188,6 +188,7 @@ export default class ComfortCloudApi {
         // get wa, wresult, wctx from body
         const $ = cheerio.load(response.data);
         const elements = $('input[type="hidden"]');
+        this.log.info(`elements: ${elements}`);
 
         // Extract hidden input parameters and store them in a dictionary
         //for (const el of elements) {
