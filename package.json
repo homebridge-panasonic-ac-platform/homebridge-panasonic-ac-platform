@@ -1,7 +1,7 @@
 {
   "name": "homebridge-panasonic-ac-platform",
   "displayName": "Homebridge Panasonic AC Platform",
-  "version": "4.0.0-beta.7",
+  "version": "4.0.0-beta.8",
   "description": "Homebridge platform plugin providing HomeKit support for Panasonic Comfort Cloud devices.",
   "license": "Apache-2.0",
   "repository": {
