@@ -71,9 +71,9 @@ export default class ComfortCloudApi {
 
     // get new token -------------------------------------
     const auth0client = AUTH0CLIENT;
-    const client_id = APP_CLIENT_ID;
+    const app_client_id = APP_CLIENT_ID;
     this.log.info(`auth0client: ${auth0client}`);
-    this.log.info(`client_id: ${client_id}`);
+    this.log.info(`app_client_id: ${client_id}`);
 
     const code_verifier = randomString(43, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
 
@@ -90,30 +90,34 @@ export default class ComfortCloudApi {
     this.log.info(`code_challenge: ${code_challenge}`);
     this.log.info(`code_challenge2: ${code_challenge2}`);
 
-    // login -------------------------------------
+    // get client id -------------------------------------
 
+    this.log.debug('Comfort Cloud - get client id');
 
-    return axios.request<ComfortCloudAuthResponse>({
+    return axios.request({
       method: 'post',
-      url: 'https://accsmart.panasonic.com/auth/login',
-      headers: this.getBaseRequestHeaders(),
+      url: 'https://accsmart.panasonic.com/auth/v2/login',
+      headers: 
+        ...this.getBaseRequestHeaders(),
+        'X-User-Authorization-V2': this.token,
       data: {
-        'loginId': this.config.email,
         'language': 0,
-        'password': this.config.password,
       },
     })
       .then((response) => {
-        this.log.debug('Comfort Cloud - login(): Success');
+        this.log.debug('Comfort Cloud - get client id - Success');
         this.log.debug(response.data);
-        this.token = response.data.uToken;
+        this.clientId = response.data.clientId;
       })
       .catch((error: AxiosError) => {
-        this.log.error('Comfort Cloud - login(): Error');
+        this.log.error('Comfort Cloud - get client id - Error');
         this.log.debug(JSON.stringify(error, null, 2));
         return Promise.reject(error);
       });
 
+    // get devices group -------------------------------------
+
+    this.getDevices.bind(this)
 
     // set timer to refresh token -------------------------------------
 
@@ -134,13 +138,13 @@ export default class ComfortCloudApi {
       headers: {
         'Auth0-Client': AUTH0CLIENT,
         'Content-Type': 'application/json',
-        'User-Agent': 'okhttp/4.10.0'
+        'User-Agent': 'okhttp/4.10.0',
       },
       data: {
         'scope': 'openid offline_access comfortcloud.control a2w.control',
         'client_id': APP_CLIENT_ID,
         'refresh_token': this.tokenRefresh,
-        'grant_type': 'refresh_token'
+        'grant_type': 'refresh_token',
       },
     })
       .then((response) => {
