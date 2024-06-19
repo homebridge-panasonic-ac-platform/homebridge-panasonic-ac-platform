@@ -114,11 +114,15 @@ export default class ComfortCloudApi {
         this.log.debug(JSON.stringify(error, null, 2));
         return Promise.reject(error);
       });
+
+
+    // set timer to refresh token -------------------------------------
+
+    setTimeout(this.refreshToken.bind(this), 86400000);
+
   }
 
-  // set timer to refresh token -------------------------------------
-
-  setTimeout(this.refreshToken.bind(this), 86400000);
+  
 
   // refresh token -------------------------------------
 
