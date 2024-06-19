@@ -127,7 +127,7 @@ export default class ComfortCloudApi {
   async refreshToken() {
 
     this.log.debug('Comfort Cloud - refreshToken()');
-    
+
     axios.request({
       method: 'post',
       url: 'https://accsmart.panasonic.com/auth/login',
