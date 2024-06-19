@@ -4,7 +4,6 @@ import {
   APP_VERSION,
   CLIENT_ID,
   AUTH0CLIENT,
-  LOGIN_TOKEN_REFRESH_INTERVAL,
 } from './settings';
 import {
   ComfortCloudAuthResponse,
@@ -68,7 +67,7 @@ export default class ComfortCloudApi {
     const auth0client = AUTH0CLIENT;
     const client_id = CLIENT_ID;
     this.log.info(`auth0client: ${auth0client}`);
-    this.log.info(`client_id: ${client_id}`);   
+    this.log.info(`client_id: ${client_id}`);
 
     clearInterval(this._loginRefreshInterval);
 
