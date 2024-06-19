@@ -97,9 +97,10 @@ export default class ComfortCloudApi {
     return axios.request({
       method: 'post',
       url: 'https://accsmart.panasonic.com/auth/v2/login',
-      headers: 
+      headers: {
         ...this.getBaseRequestHeaders(),
         'X-User-Authorization-V2': this.token,
+      },
       data: {
         'language': 0,
       },
