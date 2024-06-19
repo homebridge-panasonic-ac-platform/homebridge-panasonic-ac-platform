@@ -187,12 +187,12 @@ export default class ComfortCloudApi {
 
         // get wa, wresult, wctx from body
         const $ = cheerio.load(response.data);
+        const elements = $('input[type="hidden"]');
 
-        $('input[type="hidden"]').each((i, el) => {
-          if ($(el).attr('name') !== undefined && $(el).attr('value') !== undefined) {
-            this.parameters[$(el!).attr('name')] = $(el).attr('value');
-          }
-        });
+        // Extract hidden input parameters and store them in a dictionary
+        for (let el of elements) {
+          this.parameters[el.getAttribute("name")] = el.getAttribute("value");
+        }
 
         // const wa = parameters.wa;
         // const wresult = parameters.wresult;
