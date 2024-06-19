@@ -99,7 +99,7 @@ export default class ComfortCloudApi {
 
     this.log.debug('Comfort Cloud - authorize');
 
-    axios.request({
+    await axios.request({
       method: 'get',
       url: 'https://authglb.digital.panasonic.com/authorize',
       headers: {
@@ -138,7 +138,7 @@ export default class ComfortCloudApi {
 
     this.log.debug('Comfort Cloud - authorize - follow redirect');
 
-    axios.request({
+    await axios.request({
       method: 'get',
       url: 'https://authglb.digital.panasonic.com' + this.location,
       maxRedirects: 0,
@@ -321,11 +321,11 @@ export default class ComfortCloudApi {
 
     // get devices group -------------------------------------
 
-    this.getDevices.bind(this);
+    //this.getDevices.bind(this);
 
     // set timer to refresh token -------------------------------------
 
-    setTimeout(this.refreshToken.bind(this), 86400000);
+    //setTimeout(this.refreshToken.bind(this), 86400000);
 
   }
 
