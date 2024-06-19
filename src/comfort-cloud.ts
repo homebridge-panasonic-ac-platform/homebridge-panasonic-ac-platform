@@ -186,7 +186,7 @@ export default class ComfortCloudApi {
         this.log.debug(response.data);
 
         // get wa, wresult, wctx from body
-        const soup = new BeautifulSoup(response.content, 'html.parser');
+        const soup = new BeautifulSoup(response.data);
         const inputLines = soup.findAll('input', {'type': 'hidden'});
 
         for (const inputLine of inputLines) {
