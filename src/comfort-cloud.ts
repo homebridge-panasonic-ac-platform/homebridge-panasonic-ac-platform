@@ -209,7 +209,7 @@ export default class ComfortCloudApi {
         'User-Agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 '
           + '(KHTML, like Gecko) Chrome/113.0.0.0 Mobile Safari/537.36',
       },
-      data = this.parameters,
+      data: this.parameters,
       maxRedirects: 0,
     })
       .then((response) => {
