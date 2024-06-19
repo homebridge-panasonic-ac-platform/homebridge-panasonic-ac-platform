@@ -16,7 +16,7 @@ import {
 } from './types';
 import jsSHA from 'jssha';
 import crypto from 'crypto';
-import BeautifulSoup from 'beautiful-soup-js';
+import * as cheerio from 'cheerio';
 
 /**
  * This class exposes login, device status fetching, and device status update functions.
@@ -186,12 +186,17 @@ export default class ComfortCloudApi {
         this.log.debug(response.data);
 
         // get wa, wresult, wctx from body
-        const soup = new BeautifulSoup(response.data);
-        const inputLines = soup.findAll('input', {'type': 'hidden'});
+        const $ = cheerio.load(response.text);
 
-        for (const inputLine of inputLines) {
-          this.parameters[inputLine.getAttribute('name')] = inputLine.getAttribute('value');
-        }
+        const parameters = {};
+        $('input[type="hidden"]').each((i, el) => {
+          parameters[$(el).attr('name')] = $(el).attr('value');
+        });
+
+        // const wa = parameters.wa;
+        // const wresult = parameters.wresult;
+        // const wctx = parameters.wctx;
+
       })
       .catch((error: AxiosError) => {
         this.log.error('Comfort Cloud - authorize - Error');
