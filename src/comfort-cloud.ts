@@ -190,9 +190,9 @@ export default class ComfortCloudApi {
         const elements = $('input[type="hidden"]');
 
         // Extract hidden input parameters and store them in a dictionary
-        for (const el of elements) {
-          this.parameters[el.getAttribute('name')] = el.getAttribute('value');
-        }
+        //for (const el of elements) {
+        //  this.parameters[el.getAttribute('name')] = el.getAttribute('value');
+        //}
 
         // const wa = parameters.wa;
         // const wresult = parameters.wresult;
