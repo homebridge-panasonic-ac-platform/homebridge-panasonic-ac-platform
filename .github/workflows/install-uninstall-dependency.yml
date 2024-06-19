@@ -3,6 +3,8 @@
 
 name: Install or uninstall dependency
 
+permissions: write-all
+
 on:
   workflow_dispatch:
     inputs:
