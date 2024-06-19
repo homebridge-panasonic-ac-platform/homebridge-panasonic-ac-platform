@@ -92,7 +92,6 @@ export default class ComfortCloudApi {
 
     // login -------------------------------------
 
-    
 
     return axios.request<ComfortCloudAuthResponse>({
       method: 'post',
@@ -122,11 +121,33 @@ export default class ComfortCloudApi {
 
   }
 
-  
 
   // refresh token -------------------------------------
 
   async refreshToken() {
+
+    this.log.debug('Comfort Cloud - refreshToken()');
+    
+    axios.request({
+      method: 'post',
+      url: 'https://accsmart.panasonic.com/auth/login',
+      headers: this.getBaseRequestHeaders(),
+      data: {
+        'loginId': this.config.email,
+        'language': 0,
+        'password': this.config.password,
+      },
+    })
+      .then((response) => {
+        this.log.debug('Comfort Cloud - refreshToken() - Success');
+        this.log.debug(response.data);
+        this.token = response.data.uToken;
+      })
+      .catch((error: AxiosError) => {
+        this.log.error('Comfort Cloud - refreshToken() - Error');
+        this.log.debug(JSON.stringify(error, null, 2));
+        return Promise.reject(error);
+      });
 
   }
 
