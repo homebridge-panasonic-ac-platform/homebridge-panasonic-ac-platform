@@ -137,7 +137,10 @@ export default class ComfortCloudApi {
       .then((response) => {
         this.log.debug('Comfort Cloud - authorize - Success');
         this.log.debug(response.data);
-        this.csrf = response.cookies['_csrf'];
+        this.csrf = (response.headers['set-cookie'] as string[])
+          .find(cookie => cookie.includes('_csrf'))
+          ?.match(new RegExp(`^_csrf=(.+?);`))
+          ?.[1];
       })
       .catch((error: AxiosError) => {
         this.log.error('Comfort Cloud - authorize - Error');
