@@ -25,7 +25,10 @@ export default class ComfortCloudApi {
   private tokenRefresh: string;
   private clientId: string;
   private _loginRefreshInterval;
-
+  state;
+  location;
+  crsf;
+  
   constructor(
     private readonly config: PanasonicPlatformConfig,
     private readonly log: PanasonicPlatformLogger,
@@ -33,10 +36,6 @@ export default class ComfortCloudApi {
     this.token = '';
     this.tokenRefresh = '';
     this.clientId = '';
-
-    this.state;
-    this.location;
-    this.crsf;
   }
 
   /**
