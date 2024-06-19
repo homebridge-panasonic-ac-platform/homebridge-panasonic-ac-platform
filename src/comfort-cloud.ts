@@ -22,7 +22,7 @@ import crypto from 'crypto';
 export default class ComfortCloudApi {
   private token: string;
   private tokenRefresh: string;
-  private client_id: string;
+  private clientId: string;
   private _loginRefreshInterval;
 
   constructor(
@@ -31,7 +31,7 @@ export default class ComfortCloudApi {
   ) {
     this.token = '';
     this.tokenRefresh = '';
-    this.client_id = '';
+    this.clientId = '';
   }
 
   /**
@@ -73,7 +73,7 @@ export default class ComfortCloudApi {
     const auth0client = AUTH0CLIENT;
     const app_client_id = APP_CLIENT_ID;
     this.log.info(`auth0client: ${auth0client}`);
-    this.log.info(`app_client_id: ${client_id}`);
+    this.log.info(`app_client_id: ${app_client_id}`);
 
     const code_verifier = randomString(43, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
 
@@ -118,7 +118,7 @@ export default class ComfortCloudApi {
 
     // get devices group -------------------------------------
 
-    this.getDevices.bind(this)
+    this.getDevices.bind(this);
 
     // set timer to refresh token -------------------------------------
 
