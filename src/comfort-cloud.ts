@@ -69,6 +69,7 @@ export default class ComfortCloudApi {
 
     // NEW API - START ----------------------------------------------------------------------------------
 
+    // get new token -------------------------------------
     const auth0client = AUTH0CLIENT;
     const client_id = APP_CLIENT_ID;
     this.log.info(`auth0client: ${auth0client}`);
@@ -89,8 +90,9 @@ export default class ComfortCloudApi {
     this.log.info(`code_challenge: ${code_challenge}`);
     this.log.info(`code_challenge2: ${code_challenge2}`);
 
+    // login -------------------------------------
 
-    clearInterval(this._loginRefreshInterval);
+    
 
     return axios.request<ComfortCloudAuthResponse>({
       method: 'post',
@@ -106,15 +108,22 @@ export default class ComfortCloudApi {
         this.log.debug('Comfort Cloud - login(): Success');
         this.log.debug(response.data);
         this.token = response.data.uToken;
-
-        // Set an interval to refresh the login token periodically.
-        this._loginRefreshInterval = setTimeout(this.setup.bind(this), 86400000);
       })
       .catch((error: AxiosError) => {
         this.log.error('Comfort Cloud - login(): Error');
         this.log.debug(JSON.stringify(error, null, 2));
         return Promise.reject(error);
       });
+  }
+
+  // set timer to refresh token -------------------------------------
+
+  setTimeout(this.refreshToken.bind(this), 86400000);
+
+  // refresh token -------------------------------------
+
+  async refreshToken() {
+
   }
 
   // NEW API - END ----------------------------------------------------------------------------------
