@@ -130,18 +130,24 @@ export default class ComfortCloudApi {
 
     axios.request({
       method: 'post',
-      url: 'https://accsmart.panasonic.com/auth/login',
-      headers: this.getBaseRequestHeaders(),
+      url: 'https://authglb.digital.panasonic.com/oauth/token',
+      headers: {
+        'Auth0-Client': AUTH0CLIENT,
+        'Content-Type': 'application/json',
+        'User-Agent': 'okhttp/4.10.0'
+      },
       data: {
-        'loginId': this.config.email,
-        'language': 0,
-        'password': this.config.password,
+        'scope': 'openid offline_access comfortcloud.control a2w.control',
+        'client_id': APP_CLIENT_ID,
+        'refresh_token': this.tokenRefresh,
+        'grant_type': 'refresh_token'
       },
     })
       .then((response) => {
         this.log.debug('Comfort Cloud - refreshToken() - Success');
         this.log.debug(response.data);
-        this.token = response.data.uToken;
+        this.token = response.data.access_token;
+        this.tokenRefresh = response.data.refresh_token;
       })
       .catch((error: AxiosError) => {
         this.log.error('Comfort Cloud - refreshToken() - Error');
