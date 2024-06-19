@@ -190,7 +190,7 @@ export default class ComfortCloudApi {
 
         $('input[type="hidden"]').each((i, el) => {
           if ($(el).attr('name') !== undefined && $(el).attr('value') !== undefined) {
-            parameters[$(el!).attr('name')] = $(el).attr('value');
+            this.parameters[$(el!).attr('name')] = $(el).attr('value');
           }
         });
 
