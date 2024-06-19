@@ -509,20 +509,20 @@ function pad2(number) {
 function generateRandomString(length) {
   let result = '';
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let charactersLength = characters.length;
+  const charactersLength = characters.length;
   for (let i = 0; i < length; i++) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
   }
   return result;
 }
 
-function generateRandomStringHex(length) {
-  return Array.from({length: length}, () => Math.floor(Math.random() * 16).toString(16)).join('');
-}
+// function generateRandomStringHex(length) {
+//   return Array.from({length: length}, () => Math.floor(Math.random() * 16).toString(16)).join('');
+// }
 
 function getQuerystringParameterFromHeaderEntryUrl(response, headerEntry, querystringParameter) {
-  let headerEntryValue = response.headers[headerEntry];
-  let parsedUrl = new URL(headerEntryValue);
-  let params = new URLSearchParams(parsedUrl.search);
+  const headerEntryValue = response.headers[headerEntry];
+  const parsedUrl = new URL(headerEntryValue);
+  const params = new URLSearchParams(parsedUrl.search);
   return params.get(querystringParameter) || null;
 }
