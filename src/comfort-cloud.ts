@@ -29,6 +29,7 @@ export default class ComfortCloudApi {
     private readonly log: PanasonicPlatformLogger,
   ) {
     this.token = '';
+    this.client_id = '';
   }
 
   /**
@@ -63,7 +64,7 @@ export default class ComfortCloudApi {
       this.log.info('No 2FA key or incorrect key');
     }
 
-    
+
     // NEW API - START ----------------------------------------------------------------------------------
 
     const auth0client = AUTH0CLIENT;
@@ -85,7 +86,7 @@ export default class ComfortCloudApi {
     this.log.info(`code_verifier: ${code_verifier}`);
     this.log.info(`code_challenge: ${code_challenge}`);
     this.log.info(`code_challenge2: ${code_challenge2}`);
-    
+
 
     clearInterval(this._loginRefreshInterval);
 
@@ -138,7 +139,7 @@ export default class ComfortCloudApi {
       url: 'https://accsmart.panasonic.com/device/group',
       headers: {
         ...this.getBaseRequestHeaders(),
-        "X-Client-Id": this.client_id,
+        'X-Client-Id': this.client_id,
         'X-User-Authorization-V2': this.token,
       },
     })
@@ -189,7 +190,7 @@ export default class ComfortCloudApi {
       url: `https://accsmart.panasonic.com/deviceStatus/now/${deviceGuid}`,
       headers: {
         ...this.getBaseRequestHeaders(),
-        "X-Client-Id": this.client_id,
+        'X-Client-Id': this.client_id,
         'X-User-Authorization-V2': this.token,
       },
     })
@@ -240,7 +241,7 @@ export default class ComfortCloudApi {
       url: 'https://accsmart.panasonic.com/deviceStatus/control',
       headers: {
         ...this.getBaseRequestHeaders(),
-        "X-Client-Id": this.client_id,
+        'X-Client-Id': this.client_id,
         'X-User-Authorization-V2': this.token,
       },
       data: {
