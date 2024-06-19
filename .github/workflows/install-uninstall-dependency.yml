@@ -3,8 +3,6 @@
 
 name: Install or uninstall dependency
 
-permissions: write-all
-
 on:
   workflow_dispatch:
     inputs:
@@ -22,6 +20,9 @@ on:
 
 jobs:
   create-release:
+    
+    permissions: write-all
+    
     name: Install or uninstall
     runs-on: ubuntu-latest
 
