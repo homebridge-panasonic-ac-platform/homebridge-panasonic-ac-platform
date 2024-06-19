@@ -189,7 +189,9 @@ export default class ComfortCloudApi {
         const $ = cheerio.load(response.data);
 
         $('input[type="hidden"]').each((i, el) => {
-          this.parameters[$(el).attr('name')] = $(el).attr('value');
+          if ($(el).attr('name') !== undefined) {
+            this.parameters[$(el).attr('name')] = $(el).attr('value');
+          }
         });
 
         // const wa = parameters.wa;
