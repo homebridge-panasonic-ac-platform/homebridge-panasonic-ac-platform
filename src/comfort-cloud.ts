@@ -2,7 +2,7 @@ import PanasonicPlatformLogger from './logger';
 import axios, { AxiosError } from 'axios';
 import {
   APP_VERSION,
-  CLIENT_ID,
+  APP_CLIENT_ID,
   AUTH0CLIENT,
 } from './settings';
 import {
@@ -21,6 +21,7 @@ import crypto from 'crypto';
  */
 export default class ComfortCloudApi {
   private token: string;
+  private tokenRefresh: string;
   private client_id: string;
   private _loginRefreshInterval;
 
@@ -29,6 +30,7 @@ export default class ComfortCloudApi {
     private readonly log: PanasonicPlatformLogger,
   ) {
     this.token = '';
+    this.tokenRefresh = '';
     this.client_id = '';
   }
 
@@ -68,7 +70,7 @@ export default class ComfortCloudApi {
     // NEW API - START ----------------------------------------------------------------------------------
 
     const auth0client = AUTH0CLIENT;
-    const client_id = CLIENT_ID;
+    const client_id = APP_CLIENT_ID;
     this.log.info(`auth0client: ${auth0client}`);
     this.log.info(`client_id: ${client_id}`);
 
