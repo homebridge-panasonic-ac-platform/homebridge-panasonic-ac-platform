@@ -75,6 +75,8 @@ export default class ComfortCloudApi {
 
     // NEW API - START ----------------------------------------------------------------------------------
 
+    // Based on: https://github.com/little-quokka/python-panasonic-comfort-cloud/blob/master/pcomfortcloud/session.py
+
     // const -------------------------------------
     const auth0client = AUTH_0_CLIENT;
     const app_client_id = APP_CLIENT_ID;
