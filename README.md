@@ -1,7 +1,7 @@
 > [!CAUTION]
 > Panasonic has changed the API, so all version below 4.0.0 stop working.
 >
-> Version 4.0.0 in progress (beta).
+> Version 4.0.0 in progress (beta) - not working yet!
 >
 > The Panasonic app for iPhone / Android works. You can also use remote.
 
