@@ -70,16 +70,14 @@ export default class ComfortCloudApi {
     this.log.info(`auth0client: ${auth0client}`);
     this.log.info(`client_id: ${client_id}`);
 
-    const crypto = require('crypto');
-
     const code_verifier = randomString(43, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
 
     const code_challenge = crypto.createHash('sha256')
-                        .update(code_verifier, 'utf-8')
-                        .digest('base64')
-                        .replace(/\+/g, '-')
-                        .replace(/\//g, '_')
-                        .replace(/=+$/, '');
+      .update(code_verifier, 'utf-8')
+      .digest('base64')
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=+$/, '');
 
     const code_challenge2 = base64URLEncode(code_verifier);
 
