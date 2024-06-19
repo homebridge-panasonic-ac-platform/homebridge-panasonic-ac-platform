@@ -14,6 +14,7 @@ import {
   PanasonicPlatformConfig,
 } from './types';
 import jsSHA from 'jssha';
+import crypto from 'crypto';
 
 /**
  * This class exposes login, device status fetching, and device status update functions.
@@ -70,6 +71,23 @@ export default class ComfortCloudApi {
     this.log.info(`client_id: ${client_id}`);
 
     const crypto = require('crypto');
+
+    const code_verifier = randomString(43, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
+
+    const code_challenge = crypto.createHash('sha256')
+                        .update(code_verifier, 'utf-8')
+                        .digest('base64')
+                        .replace(/\+/g, '-')
+                        .replace(/\//g, '_')
+                        .replace(/=+$/, '');
+
+    const code_challenge2 = base64URLEncode(code_verifier);
+
+    this.log.info(`code_verifier: ${code_verifier}`);
+    this.log.info(`code_challenge: ${code_challenge}`);
+    this.log.info(`code_challenge2: ${code_challenge2}`);
+
+    // NEW API ------------------------------------------------------
 
     clearInterval(this._loginRefreshInterval);
 
