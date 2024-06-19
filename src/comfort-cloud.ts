@@ -2,11 +2,11 @@ import PanasonicPlatformLogger from './logger';
 import axios, { AxiosError } from 'axios';
 import {
   APP_VERSION,
-  CLIENT_ID,
+  APP_CLIENT_ID,
   AUTH0CLIENT,
 } from './settings';
 import {
-  ComfortCloudAuthResponse,
+  //ComfortCloudAuthResponse,
   ComfortCloudDevice,
   ComfortCloudDeviceStatus,
   ComfortCloudDeviceUpdatePayload,
@@ -21,7 +21,8 @@ import crypto from 'crypto';
  */
 export default class ComfortCloudApi {
   private token: string;
-  private client_id: string;
+  private tokenRefresh: string;
+  private clientId: string;
   private _loginRefreshInterval;
 
   constructor(
@@ -29,7 +30,8 @@ export default class ComfortCloudApi {
     private readonly log: PanasonicPlatformLogger,
   ) {
     this.token = '';
-    this.client_id = '';
+    this.tokenRefresh = '';
+    this.clientId = '';
   }
 
   /**
@@ -67,10 +69,11 @@ export default class ComfortCloudApi {
 
     // NEW API - START ----------------------------------------------------------------------------------
 
+    // get new token -------------------------------------
     const auth0client = AUTH0CLIENT;
-    const client_id = CLIENT_ID;
+    const app_client_id = APP_CLIENT_ID;
     this.log.info(`auth0client: ${auth0client}`);
-    this.log.info(`client_id: ${client_id}`);
+    this.log.info(`app_client_id: ${app_client_id}`);
 
     const code_verifier = randomString(43, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
 
@@ -87,32 +90,76 @@ export default class ComfortCloudApi {
     this.log.info(`code_challenge: ${code_challenge}`);
     this.log.info(`code_challenge2: ${code_challenge2}`);
 
+    // get client id -------------------------------------
 
-    clearInterval(this._loginRefreshInterval);
+    this.log.debug('Comfort Cloud - get client id');
 
-    return axios.request<ComfortCloudAuthResponse>({
+    return axios.request({
       method: 'post',
-      url: 'https://accsmart.panasonic.com/auth/login',
-      headers: this.getBaseRequestHeaders(),
+      url: 'https://accsmart.panasonic.com/auth/v2/login',
+      headers: {
+        ...this.getBaseRequestHeaders(),
+        'X-User-Authorization-V2': this.token,
+      },
       data: {
-        'loginId': this.config.email,
         'language': 0,
-        'password': this.config.password,
       },
     })
       .then((response) => {
-        this.log.debug('Comfort Cloud - login(): Success');
+        this.log.debug('Comfort Cloud - get client id - Success');
         this.log.debug(response.data);
-        this.token = response.data.uToken;
-
-        // Set an interval to refresh the login token periodically.
-        this._loginRefreshInterval = setTimeout(this.setup.bind(this), 86400000);
+        this.clientId = response.data.clientId;
       })
       .catch((error: AxiosError) => {
-        this.log.error('Comfort Cloud - login(): Error');
+        this.log.error('Comfort Cloud - get client id - Error');
         this.log.debug(JSON.stringify(error, null, 2));
         return Promise.reject(error);
       });
+
+    // get devices group -------------------------------------
+
+    this.getDevices.bind(this);
+
+    // set timer to refresh token -------------------------------------
+
+    setTimeout(this.refreshToken.bind(this), 86400000);
+
+  }
+
+
+  // refresh token -------------------------------------
+
+  async refreshToken() {
+
+    this.log.debug('Comfort Cloud - refreshToken()');
+
+    axios.request({
+      method: 'post',
+      url: 'https://authglb.digital.panasonic.com/oauth/token',
+      headers: {
+        'Auth0-Client': AUTH0CLIENT,
+        'Content-Type': 'application/json',
+        'User-Agent': 'okhttp/4.10.0',
+      },
+      data: {
+        'scope': 'openid offline_access comfortcloud.control a2w.control',
+        'client_id': APP_CLIENT_ID,
+        'refresh_token': this.tokenRefresh,
+        'grant_type': 'refresh_token',
+      },
+    })
+      .then((response) => {
+        this.log.debug('Comfort Cloud - refreshToken() - Success');
+        this.log.debug(response.data);
+        this.token = response.data.access_token;
+        this.tokenRefresh = response.data.refresh_token;
+      })
+      .catch((error: AxiosError) => {
+        this.log.error('Comfort Cloud - refreshToken() - Error');
+        this.log.debug(JSON.stringify(error, null, 2));
+        return Promise.reject(error);
+      });
+
   }
 
   // NEW API - END ----------------------------------------------------------------------------------
@@ -139,7 +186,7 @@ export default class ComfortCloudApi {
       url: 'https://accsmart.panasonic.com/device/group',
       headers: {
         ...this.getBaseRequestHeaders(),
-        'X-Client-Id': this.client_id,
+        'X-Client-Id': this.clientId,
         'X-User-Authorization-V2': this.token,
       },
     })
@@ -190,7 +237,7 @@ export default class ComfortCloudApi {
       url: `https://accsmart.panasonic.com/deviceStatus/now/${deviceGuid}`,
       headers: {
         ...this.getBaseRequestHeaders(),
-        'X-Client-Id': this.client_id,
+        'X-Client-Id': this.clientId,
         'X-User-Authorization-V2': this.token,
       },
     })
@@ -241,7 +288,7 @@ export default class ComfortCloudApi {
       url: 'https://accsmart.panasonic.com/deviceStatus/control',
       headers: {
         ...this.getBaseRequestHeaders(),
-        'X-Client-Id': this.client_id,
+        'X-Client-Id': this.clientId,
         'X-User-Authorization-V2': this.token,
       },
       data: {
