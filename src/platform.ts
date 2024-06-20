@@ -155,14 +155,12 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
           this.log.error(
             'The Comfort Cloud server might be experiencing issues at the moment. '
             + 'If issue persists, make sure: '
-            + 'configured is the correct email and password in plugin settings, '
-            + 'field "Emulated Comfort Cloud app version (override)" in settings '
-            + 'is empty or have the latest version of Panasonic Comfort Cloud '
-            + 'from the App Store (like 1.19.0), '
             + 'the latest version of this plugin is installed, '
             + 'all terms and conditions after logging into Panasonic Comfort Cloud app'
             + 'are accepted and you can successfully login and control devices via app.'
-            + 'Restart Homebridge if you change plugin settings.');
+
+          this.log.error('Panasonic introduced a new API, so the plug-in does not work. '
+            + 'Working on a solution...');
 
           const delayMap = new Map([
             [1, 300], // 5 min
