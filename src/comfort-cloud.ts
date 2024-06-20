@@ -58,7 +58,7 @@ export default class ComfortCloudApi {
     // Based on: https://github.com/little-quokka/python-panasonic-comfort-cloud/
     // blob/de2869eae5684e5ef5bc8181016902eeb6c73760/pcomfortcloud/panasonic_session.py#L307
 
-    // STEP 0 - const -------------------------------------
+    // STEP 0 - const ----------------------------------------------------------------
     this.log.debug('-------------------------- STEP 0 --------------------------');
 
     const auth0client = AUTH_0_CLIENT;
@@ -76,7 +76,7 @@ export default class ComfortCloudApi {
     this.log.info(`code_challenge: ${code_challenge}`);
     this.log.info(`state: ${state}`);
 
-    // STEP 1 - authorize -------------------------------------
+    // STEP 1 - authorize ----------------------------------------------------------------
 
     this.log.debug('-------------------------- STEP 1 --------------------------');
 
@@ -115,7 +115,7 @@ export default class ComfortCloudApi {
         return Promise.reject(error);
       });
 
-    // STEP 2 - authorize - follow redirect -------------------------------------
+    // STEP 2 - authorize - follow redirect --------------------------------------------------
 
     this.log.debug('-------------------------- STEP 2 --------------------------');
 
@@ -141,7 +141,7 @@ export default class ComfortCloudApi {
         return Promise.reject(error);
       });
 
-    // STEP 3 - login -------------------------------------
+    // STEP 3 - login ----------------------------------------------------------------
 
     this.log.debug('-------------------------- STEP 3 --------------------------');
 
@@ -198,7 +198,7 @@ export default class ComfortCloudApi {
       });
 
 
-    // STEP 4 - login callback -------------------------------------
+    // STEP 4 - login callback ------------------------------------------------------------
 
     this.log.debug('-------------------------- STEP 4 --------------------------');
 
@@ -227,7 +227,7 @@ export default class ComfortCloudApi {
         return Promise.reject(error);
       });
 
-    // STEP 5 - login follow redirect -------------------------------------
+    // STEP 5 - login follow redirect ----------------------------------------------------------
 
     this.log.debug('-------------------------- STEP 5 --------------------------');
 
@@ -251,7 +251,7 @@ export default class ComfortCloudApi {
       });
 
 
-    // STEP 6 - get new token -------------------------------------
+    // STEP 6 - get new token -------------------------------------------------------------------
 
     this.log.debug('-------------------------- STEP 6 --------------------------');
 
@@ -287,9 +287,7 @@ export default class ComfortCloudApi {
       });
 
 
-
-
-    // STEP 7 - get client id -------------------------------------
+    // STEP 7 - get client id --------------------------------------------------------------
 
     this.log.debug('-------------------------- STEP 7 --------------------------');
 
@@ -318,13 +316,13 @@ export default class ComfortCloudApi {
         return Promise.reject(error);
       });
 
-    // STEP 8 - get devices group -------------------------------------
+    // STEP 8 - get devices group -----------------------------------------------------
 
     this.log.debug('-------------------------- STEP 8 --------------------------');
 
     this.getDevices.bind(this);
 
-    // STEP 9 - set timer to refresh token -------------------------------------
+    // STEP 9 - set timer to refresh token --------------------------------------------
 
     this.log.debug('-------------------------- STEP 9 --------------------------');
 
@@ -334,7 +332,7 @@ export default class ComfortCloudApi {
   }
 
 
-  // refresh token -------------------------------------
+  // refresh token --------------------------------------------------------------------
 
   async refreshToken() {
 
@@ -374,7 +372,7 @@ export default class ComfortCloudApi {
 
   async setup2fa() {
 
-    // 2 FA TOTP ----------------------------------------------------------------------------------
+    // 2 FA TOTP
 
     if (this.config.key2fa && this.config.key2fa.length === 32) {
 
