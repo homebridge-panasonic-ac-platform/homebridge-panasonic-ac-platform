@@ -118,11 +118,9 @@ export default class ComfortCloudApi {
         'state': state,
       },
       maxRedirects: 0,
+      validateStatus: status => (status >= 200 && status < 300) || status === 302,
     })
       .then((response) => {
-        if (response.status !== 302) {
-          return Promise.reject(response.status);
-        }
         this.log.debug('Comfort Cloud - authorize - Success');
         this.log.debug(response.data);
         this.location = response.headers['Location'];
