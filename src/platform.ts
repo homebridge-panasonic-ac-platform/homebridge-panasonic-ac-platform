@@ -158,9 +158,11 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
             + 'the latest version of this plugin is installed, '
             + 'all terms and conditions after logging into Panasonic Comfort Cloud app'
             + 'are accepted and you can successfully login and control devices via app.'
+          );
 
           this.log.error('Panasonic introduced a new API, so the plug-in does not work. '
-            + 'Working on a solution...');
+            + 'Working on a solution...'
+          );
 
           const delayMap = new Map([
             [1, 300], // 5 min
