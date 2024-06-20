@@ -60,7 +60,7 @@ export default class ComfortCloudApi {
 
     // STEP 0 - const -------------------------------------
     this.log.debug('-------------------------- STEP 0 --------------------------');
-    
+
     const auth0client = AUTH_0_CLIENT;
     const app_client_id = APP_CLIENT_ID;
     this.log.info(`auth0client: ${auth0client}`);
@@ -377,7 +377,7 @@ export default class ComfortCloudApi {
     // 2 FA TOTP ----------------------------------------------------------------------------------
 
     if (this.config.key2fa && this.config.key2fa.length === 32) {
-      
+
       const now = new Date();
       const utcDate = now.getUTCFullYear() + '-' + pad2(now.getUTCMonth() + 1) + '-' + pad2(now.getUTCDate())
           + ' ' + pad2(now.getUTCHours()) + ':' + pad2(now.getUTCMinutes()) + ':' + pad2(now.getUTCSeconds());
@@ -418,7 +418,7 @@ export default class ComfortCloudApi {
         + 'Check your credentials and restart Homebridge.');
     }
 
-    await axios.request<ComfortCloudGroupResponse>({
+    return axios.request<ComfortCloudGroupResponse>({
       method: 'get',
       url: 'https://accsmart.panasonic.com/device/group',
       headers: {
