@@ -105,11 +105,11 @@ export default class ComfortCloudApi {
     })
       .then((response) => {
         this.log.debug('Comfort Cloud - authorize - Success');
+        this.log.debug(response.data);
         this.location = response.headers['Location'];
         this.state = getQuerystringParameterFromHeaderEntryUrl(response, 'Location', 'state');
       })
       .catch((error: AxiosError) => {
-        this.log.debug(JSON.stringify(data));
         this.log.error('Comfort Cloud - authorize - Error');
         this.log.debug(JSON.stringify(error, null, 2));
         return Promise.reject(error);
