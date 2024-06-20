@@ -50,4 +50,4 @@ replace 192.168.102.1 to your IP.
 
 Now when starting the Comfort Cloud app, all traffic is successfully intercepted.
 
-Author of thia manual: [@heldchen](https://github.com/heldchen). Tkanks!
+Author of this manual: [@heldchen](https://github.com/heldchen). Tkanks!
