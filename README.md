@@ -3,8 +3,8 @@
 > 
 > As a result, versions of this plugin prior to 4.0.0 are no longer able to
 > communicate with the Panasonic Comfort Cloud servers. Development of a new
-> version of the plugin (4.0.0) supporting their new API is in beta,
-> however is not working yet!
+> version of the plugin (4.0.0) supporting their new API is being developed
+> and is in beta, however this is a work in progress and not yet working!
 >
 > In the meantime, the Panasonic app for iPhone / Android works as usual.
 > You can also use compatible infrared remotes.
