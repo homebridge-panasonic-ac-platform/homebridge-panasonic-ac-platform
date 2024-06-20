@@ -116,8 +116,8 @@ export default class ComfortCloudApi {
         this.state = getQuerystringParameterFromHeaderEntryUrl(response, 'location', 'state');
       })
       .catch((error: AxiosError) => {
-        // this.log.error('Comfort Cloud - authorize - Error');
-        // this.log.debug(JSON.stringify(error, null, 2));
+        this.log.error('Comfort Cloud - authorize - Error');
+        this.log.debug(JSON.stringify(error, null, 2));
         // return Promise.reject(error);
       });
 
