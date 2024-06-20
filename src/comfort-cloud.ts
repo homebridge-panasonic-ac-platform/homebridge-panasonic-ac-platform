@@ -55,10 +55,11 @@ export default class ComfortCloudApi {
 
     // NEW API - START ----------------------------------------------------------------------------------
 
-    // How to check API:
-    // /docs/intercept-traffic.md
+    // How to check API: /docs/intercept-traffic.md
 
-    // Based on: https://github.com/little-quokka/python-panasonic-comfort-cloud/
+    // Based on (Python): https://github.com/craibo/panasonic_cc
+
+    // Based on (Python): https://github.com/little-quokka/python-panasonic-comfort-cloud/
     // blob/de2869eae5684e5ef5bc8181016902eeb6c73760/pcomfortcloud/panasonic_session.py#L307
 
     // STEP 0 - const ----------------------------------------------------------------
