@@ -110,6 +110,7 @@ export default class ComfortCloudApi {
     })
       .then((response) => {
         this.log.debug('Comfort Cloud - authorize - Success');
+        this.log.debug(response);
         this.log.debug(response.data);
         this.location = response.headers['Location'];
         this.state = getQuerystringParameterFromHeaderEntryUrl(response, 'Location', 'state');
