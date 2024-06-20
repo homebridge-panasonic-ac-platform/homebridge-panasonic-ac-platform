@@ -112,13 +112,13 @@ export default class ComfortCloudApi {
         this.log.debug('Comfort Cloud - authorize - Success');
         this.log.debug(response);
         this.log.debug(response.data);
-        this.location = response.headers['Location'];
-        this.state = getQuerystringParameterFromHeaderEntryUrl(response, 'Location', 'state');
+        this.location = response.headers['location'];
+        this.state = getQuerystringParameterFromHeaderEntryUrl(response, 'location', 'state');
       })
       .catch((error: AxiosError) => {
-        this.log.error('Comfort Cloud - authorize - Error');
-        this.log.debug(JSON.stringify(error, null, 2));
-        return Promise.reject(error);
+        // this.log.error('Comfort Cloud - authorize - Error');
+        // this.log.debug(JSON.stringify(error, null, 2));
+        // return Promise.reject(error);
       });
 
     // STEP 2 - authorize - follow redirect --------------------------------------------------
