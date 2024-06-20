@@ -128,7 +128,7 @@ export default class ComfortCloudApi {
       validateStatus: status => (status >= 200 && status < 300) || status === 200,
     })
       .then((response) => {
-        this.log.debug('Comfort Cloud - authorize - Success');
+        this.log.debug('Comfort Cloud - authorize - follow redirect - Success');
         this.log.debug(response.data);
         this.csrf = (response.headers['set-cookie'] as string[])
           .find(cookie => cookie.includes('_csrf'))
@@ -136,7 +136,7 @@ export default class ComfortCloudApi {
           ?.[1];
       })
       .catch((error: AxiosError) => {
-        this.log.error('Comfort Cloud - authorize - Error');
+        this.log.error('Comfort Cloud - authorize - follow redirect - Error');
         this.log.debug(JSON.stringify(error, null, 2));
         return Promise.reject(error);
       });
@@ -173,7 +173,7 @@ export default class ComfortCloudApi {
       validateStatus: status => (status >= 200 && status < 300) || status === 200,
     })
       .then((response) => {
-        this.log.debug('Comfort Cloud - authorize - Success');
+        this.log.debug('Comfort Cloud - login - Success');
         this.log.debug(response.data);
 
         // get wa, wresult, wctx from body
@@ -192,7 +192,7 @@ export default class ComfortCloudApi {
 
       })
       .catch((error: AxiosError) => {
-        this.log.error('Comfort Cloud - authorize - Error');
+        this.log.error('Comfort Cloud - login - Error');
         this.log.debug(JSON.stringify(error, null, 2));
         return Promise.reject(error);
       });
@@ -276,12 +276,12 @@ export default class ComfortCloudApi {
       validateStatus: status => (status >= 200 && status < 300) || status === 200,
     })
       .then((response) => {
-        this.log.debug('Comfort Cloud - get client id - Success');
+        this.log.debug('Comfort Cloud - get new token - Success');
         this.log.debug(response.data);
         this.token = response.data.access_token;
       })
       .catch((error: AxiosError) => {
-        this.log.error('Comfort Cloud - get client id - Error');
+        this.log.error('Comfort Cloud - get new token - Error');
         this.log.debug(JSON.stringify(error, null, 2));
         return Promise.reject(error);
       });
