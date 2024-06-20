@@ -49,7 +49,7 @@ export default class ComfortCloudApi {
     this.log.debug('Comfort Cloud: login()');
 
 
-    this.2fa();
+    this.setup2fa();
 
 
     // NEW API - START ----------------------------------------------------------------------------------
@@ -344,7 +344,7 @@ export default class ComfortCloudApi {
   // NEW API - END ----------------------------------------------------------------------------------
 
 
-  async 2fa() {
+  async setup2fa() {
 
     // 2 FA TOTP ----------------------------------------------------------------------------------
 
