@@ -372,7 +372,7 @@ export default class ComfortCloudApi {
 
   async setup2fa() {
 
-    // 2 FA TOTP 
+    // 2 FA TOTP
 
     if (this.config.key2fa && this.config.key2fa.length === 32) {
 
