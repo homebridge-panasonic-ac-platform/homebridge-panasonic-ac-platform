@@ -48,8 +48,9 @@ export default class ComfortCloudApi {
   async login() {
     this.log.debug('Comfort Cloud: login()');
 
-
-    this.setup2fa();
+    // 2 FA TOTP
+    // This is not necessary for know, it only calculate PIN, but Panasonic API not require it yet.
+    await this.setup2fa();
 
 
     // NEW API - START ----------------------------------------------------------------------------------
@@ -57,7 +58,9 @@ export default class ComfortCloudApi {
     // Based on: https://github.com/little-quokka/python-panasonic-comfort-cloud/
     // blob/de2869eae5684e5ef5bc8181016902eeb6c73760/pcomfortcloud/panasonic_session.py#L307
 
-    // const -------------------------------------
+    // STEP 0 - const -------------------------------------
+    this.log.debug('-------------------------- STEP 0 --------------------------');
+    
     const auth0client = AUTH_0_CLIENT;
     const app_client_id = APP_CLIENT_ID;
     this.log.info(`auth0client: ${auth0client}`);
@@ -73,7 +76,9 @@ export default class ComfortCloudApi {
     this.log.info(`code_challenge: ${code_challenge}`);
     this.log.info(`state: ${state}`);
 
-    // authorize -------------------------------------
+    // STEP 1 - authorize -------------------------------------
+
+    this.log.debug('-------------------------- STEP 1 --------------------------');
 
     this.log.debug('Comfort Cloud - authorize');
 
@@ -110,7 +115,9 @@ export default class ComfortCloudApi {
         return Promise.reject(error);
       });
 
-    // authorize - follow redirect -------------------------------------
+    // STEP 2 - authorize - follow redirect -------------------------------------
+
+    this.log.debug('-------------------------- STEP 2 --------------------------');
 
     this.log.debug('Comfort Cloud - authorize - follow redirect');
 
@@ -118,6 +125,7 @@ export default class ComfortCloudApi {
       method: 'get',
       url: 'https://authglb.digital.panasonic.com' + this.location,
       maxRedirects: 0,
+      validateStatus: status => (status >= 200 && status < 300) || status === 200,
     })
       .then((response) => {
         this.log.debug('Comfort Cloud - authorize - Success');
@@ -133,7 +141,9 @@ export default class ComfortCloudApi {
         return Promise.reject(error);
       });
 
-    // login -------------------------------------
+    // STEP 3 - login -------------------------------------
+
+    this.log.debug('-------------------------- STEP 3 --------------------------');
 
     this.log.debug('Comfort Cloud - login');
 
@@ -160,6 +170,7 @@ export default class ComfortCloudApi {
         'connection': 'PanasonicID-Authentication',
       },
       maxRedirects: 0,
+      validateStatus: status => (status >= 200 && status < 300) || status === 200,
     })
       .then((response) => {
         this.log.debug('Comfort Cloud - authorize - Success');
@@ -187,7 +198,9 @@ export default class ComfortCloudApi {
       });
 
 
-    // login callback -------------------------------------
+    // STEP 4 - login callback -------------------------------------
+
+    this.log.debug('-------------------------- STEP 4 --------------------------');
 
     this.log.debug('Comfort Cloud - login callback');
 
@@ -201,6 +214,7 @@ export default class ComfortCloudApi {
       },
       data: this.parameters,
       maxRedirects: 0,
+      validateStatus: status => (status >= 200 && status < 300) || status === 302,
     })
       .then((response) => {
         this.log.debug('Comfort Cloud - login callback - Success');
@@ -213,7 +227,9 @@ export default class ComfortCloudApi {
         return Promise.reject(error);
       });
 
-    // login follow redirect -------------------------------------
+    // STEP 5 - login follow redirect -------------------------------------
+
+    this.log.debug('-------------------------- STEP 5 --------------------------');
 
     this.log.debug('Comfort Cloud - login follow redirect');
 
@@ -221,6 +237,7 @@ export default class ComfortCloudApi {
       method: 'get',
       url: 'https://authglb.digital.panasonic.com' + this.location,
       maxRedirects: 0,
+      validateStatus: status => (status >= 200 && status < 300) || status === 302,
     })
       .then((response) => {
         this.log.debug('Comfort Cloud - login follow redirect - Success');
@@ -234,7 +251,9 @@ export default class ComfortCloudApi {
       });
 
 
-    // get new token -------------------------------------
+    // STEP 6 - get new token -------------------------------------
+
+    this.log.debug('-------------------------- STEP 6 --------------------------');
 
     this.log.debug('Comfort Cloud - get new token');
 
@@ -254,6 +273,7 @@ export default class ComfortCloudApi {
         'code_verifier': code_verifier,
       },
       maxRedirects: 0,
+      validateStatus: status => (status >= 200 && status < 300) || status === 200,
     })
       .then((response) => {
         this.log.debug('Comfort Cloud - get client id - Success');
@@ -269,7 +289,9 @@ export default class ComfortCloudApi {
 
 
 
-    // get client id -------------------------------------
+    // STEP 7 - get client id -------------------------------------
+
+    this.log.debug('-------------------------- STEP 7 --------------------------');
 
     this.log.debug('Comfort Cloud - get client id');
 
@@ -283,6 +305,7 @@ export default class ComfortCloudApi {
       data: {
         'language': 0,
       },
+      validateStatus: status => (status >= 200 && status < 300) || status === 200,
     })
       .then((response) => {
         this.log.debug('Comfort Cloud - get client id - Success');
@@ -295,13 +318,18 @@ export default class ComfortCloudApi {
         return Promise.reject(error);
       });
 
-    // get devices group -------------------------------------
+    // STEP 8 - get devices group -------------------------------------
 
-    //this.getDevices.bind(this);
+    this.log.debug('-------------------------- STEP 8 --------------------------');
 
-    // set timer to refresh token -------------------------------------
+    this.getDevices.bind(this);
 
-    //setTimeout(this.refreshToken.bind(this), 86400000);
+    // STEP 9 - set timer to refresh token -------------------------------------
+
+    this.log.debug('-------------------------- STEP 9 --------------------------');
+
+    // Refresh token every 24 hours
+    setTimeout(this.refreshToken.bind(this), 86400000);
 
   }
 
@@ -348,15 +376,16 @@ export default class ComfortCloudApi {
 
     // 2 FA TOTP ----------------------------------------------------------------------------------
 
-    const now = new Date();
-    const utcDate = now.getUTCFullYear() + '-' + pad2(now.getUTCMonth() + 1) + '-' + pad2(now.getUTCDate())
-        + ' ' + pad2(now.getUTCHours()) + ':' + pad2(now.getUTCMinutes()) + ':' + pad2(now.getUTCSeconds());
-    const localDate = now.getFullYear() + '-' + pad2(now.getMonth() + 1) + '-' + pad2(now.getDate())
-        + ' ' + pad2(now.getHours()) + ':' + pad2(now.getMinutes()) + ':' + pad2(now.getSeconds());
-    this.log.info('UTC date: ' + utcDate);
-    this.log.info('Local date: ' + localDate);
-
     if (this.config.key2fa && this.config.key2fa.length === 32) {
+      
+      const now = new Date();
+      const utcDate = now.getUTCFullYear() + '-' + pad2(now.getUTCMonth() + 1) + '-' + pad2(now.getUTCDate())
+          + ' ' + pad2(now.getUTCHours()) + ':' + pad2(now.getUTCMinutes()) + ':' + pad2(now.getUTCSeconds());
+      const localDate = now.getFullYear() + '-' + pad2(now.getMonth() + 1) + '-' + pad2(now.getDate())
+          + ' ' + pad2(now.getHours()) + ':' + pad2(now.getMinutes()) + ':' + pad2(now.getSeconds());
+      this.log.debug('UTC date: ' + utcDate);
+      this.log.debug('Local date: ' + localDate);
+
       const key2fa = this.config.key2fa;
       const code2fa = generate2fa(key2fa);
       this.log.info('2FA code: ' + code2fa
@@ -371,7 +400,7 @@ export default class ComfortCloudApi {
     }
 
   }
-  
+
   // Get devices ----------------------------------------------------------------------------------
 
   /**
@@ -389,7 +418,7 @@ export default class ComfortCloudApi {
         + 'Check your credentials and restart Homebridge.');
     }
 
-    return axios.request<ComfortCloudGroupResponse>({
+    await axios.request<ComfortCloudGroupResponse>({
       method: 'get',
       url: 'https://accsmart.panasonic.com/device/group',
       headers: {
