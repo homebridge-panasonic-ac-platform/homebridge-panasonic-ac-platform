@@ -93,7 +93,7 @@ export default class ComfortCloudApi {
       headers: {
         'user-agent': 'okhttp/4.10.0',
       },
-      data: {
+      params: {
         'scope': 'openid offline_access comfortcloud.control a2w.control',
         'audience': 'https://digital.panasonic.com/' + APP_CLIENT_ID +'/api/v1/',
         'protocol': 'oauth2',
