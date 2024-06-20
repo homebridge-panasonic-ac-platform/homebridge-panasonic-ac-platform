@@ -1,9 +1,13 @@
 > [!CAUTION]
-> Panasonic has changed the API, so all version below 4.0.0 stop working.
+> Panasonic have changed the way their Comfort Cloud API controls our AC units.
+> 
+> As a result, versions of this plugin prior to 4.0.0 are no longer able to
+> communicate with the Panasonic Comfort Cloud servers. Development of a new
+> version of the plugin (4.0.0) supporting their new API is in beta,
+> however is not working yet!
 >
-> Version 4.0.0 in progress (beta) - not working yet!
->
-> The Panasonic app for iPhone / Android works. You can also use remote.
+> In the meantime, the Panasonic app for iPhone / Android works as usual.
+> You can also use compatible infrared remotes.
 
 
 
