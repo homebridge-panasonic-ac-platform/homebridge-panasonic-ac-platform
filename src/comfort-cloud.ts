@@ -18,6 +18,10 @@ import jsSHA from 'jssha';
 import crypto from 'crypto';
 import * as cheerio from 'cheerio';
 
+
+import { wrapper } from 'axios-cookiejar-support';
+import { CookieJar } from 'tough-cookie';
+
 /**
  * This class exposes login, device status fetching, and device status update functions.
  */
@@ -87,7 +91,10 @@ export default class ComfortCloudApi {
 
     this.log.debug('Comfort Cloud - authorize');
 
-    await axios.request({
+    const jar = new CookieJar();
+    const client = wrapper(axios.create({ jar }));
+
+    await client.request({
       method: 'get',
       url: 'https://authglb.digital.panasonic.com/authorize',
       headers: {
@@ -112,8 +119,8 @@ export default class ComfortCloudApi {
         this.log.debug('Comfort Cloud - authorize - Success');
         this.log.debug(response);
         this.log.debug(response.data);
-        this.location = response.headers['location'];
-        this.state = getQuerystringParameterFromHeaderEntryUrl(response, 'location', 'state');
+        this.location = response.headers.location;
+        this.state = getQuerystringParameterFromHeaderEntryUrl(response, 'location', 'state', 'https://authglb.digital.panasonic.com');
       })
       .catch((error: AxiosError) => {
         this.log.error('Comfort Cloud - authorize - Error');
@@ -127,7 +134,7 @@ export default class ComfortCloudApi {
 
     this.log.debug('Comfort Cloud - authorize - follow redirect');
 
-    await axios.request({
+    await client.request({
       method: 'get',
       url: 'https://authglb.digital.panasonic.com' + this.location,
       maxRedirects: 0,
@@ -153,7 +160,7 @@ export default class ComfortCloudApi {
 
     this.log.debug('Comfort Cloud - login');
 
-    await axios.request({
+    await client.request({
       method: 'post',
       url: 'https://authglb.digital.panasonic.com/usernamepassword/login',
       headers: {
@@ -188,13 +195,13 @@ export default class ComfortCloudApi {
         this.log.info(`elements: ${elements}`);
 
         // Extract hidden input parameters and store them in a dictionary
-        //for (const el of elements) {
-        //  this.parameters[el.getAttribute('name')] = el.getAttribute('value');
-        //}
+        for (const el of elements) {
+         this.parameters[el.attribs.name] = el.attribs.value;
+        }
 
-        // const wa = parameters.wa;
-        // const wresult = parameters.wresult;
-        // const wctx = parameters.wctx;
+        const wa = this.parameters.wa;
+        const wresult = this.parameters.wresult;
+        const wctx = this.parameters.wctx;
 
       })
       .catch((error: AxiosError) => {
@@ -210,7 +217,7 @@ export default class ComfortCloudApi {
 
     this.log.debug('Comfort Cloud - login callback');
 
-    await axios.request({
+    await client.request({
       method: 'post',
       url: 'https://authglb.digital.panasonic.com/login/callback',
       headers: {
@@ -225,7 +232,7 @@ export default class ComfortCloudApi {
       .then((response) => {
         this.log.debug('Comfort Cloud - login callback - Success');
         this.log.debug(response.data);
-        this.location = response.headers['Location'];
+        this.location = response.headers.location;
       })
       .catch((error: AxiosError) => {
         this.log.error('Comfort Cloud - login callback - Error');
@@ -239,7 +246,7 @@ export default class ComfortCloudApi {
 
     this.log.debug('Comfort Cloud - login follow redirect');
 
-    await axios.request({
+    await client.request({
       method: 'get',
       url: 'https://authglb.digital.panasonic.com' + this.location,
       maxRedirects: 0,
@@ -248,7 +255,7 @@ export default class ComfortCloudApi {
       .then((response) => {
         this.log.debug('Comfort Cloud - login follow redirect - Success');
         this.log.debug(response.data);
-        this.code = getQuerystringParameterFromHeaderEntryUrl(response, 'Location', 'code');
+        this.code = getQuerystringParameterFromHeaderEntryUrl(response, 'location', 'code', 'https://authglb.digital.panasonic.com');
       })
       .catch((error: AxiosError) => {
         this.log.error('Comfort Cloud - login follow redirect - Error');
@@ -263,7 +270,7 @@ export default class ComfortCloudApi {
 
     this.log.debug('Comfort Cloud - get new token');
 
-    await axios.request({
+    await client.request({
       method: 'post',
       url: 'https://accsmart.panasonic.com/auth/v2/login',
       headers: {
@@ -299,7 +306,7 @@ export default class ComfortCloudApi {
 
     this.log.debug('Comfort Cloud - get client id');
 
-    await axios.request({
+    await client.request({
       method: 'post',
       url: 'https://accsmart.panasonic.com/auth/v2/login',
       headers: {
@@ -665,9 +672,9 @@ function generateRandomString(length) {
 //   return Array.from({length: length}, () => Math.floor(Math.random() * 16).toString(16)).join('');
 // }
 
-function getQuerystringParameterFromHeaderEntryUrl(response, headerEntry, querystringParameter) {
+function getQuerystringParameterFromHeaderEntryUrl(response, headerEntry, querystringParameter, baseUrl) {
   const headerEntryValue = response.headers[headerEntry];
-  const parsedUrl = new URL(headerEntryValue);
+  const parsedUrl = new URL(headerEntryValue.startsWith('/') ? baseUrl + headerEntryValue : headerEntryValue);
   const params = new URLSearchParams(parsedUrl.search);
   return params.get(querystringParameter) || null;
 }
