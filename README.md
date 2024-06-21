@@ -55,7 +55,6 @@ Configure the plugin through the settings UI or in the JSON editor.
         "email": "mail@example.com",
         "password": "********",
         "key2fa": "GVZCKT2LLBLV2QBXMFAWFXKFKU5EWL2H",
-        "appVersionOverride": "1.21.0",
         "suppressOutgoingUpdates": false, 
         "logsLevel": 1,
         "devices": [
@@ -98,9 +97,6 @@ Configure the plugin through the settings UI or in the JSON editor.
 
 * `key2fa` (string): 
 2FA key received from Panasonic (32 characters). Example: GVZCKT2LLBLV2QBXMFAWFXKFKU5EWL2H. Note: This field is currently not required to make this plugin work, but Panasonic already requires 2FA (code or SMS, recommended code) to log in to Comfort Cloud, so it may be required soon.
-
-* `appVersionOverride` (string):
-Leave this field empty to automatically fetch the latest version from the App Store and if that fails, it will use the last known working value which is hard-coded. Filling in this field will make the entered version used (automatic overwriting of versions from the App Store will not work).
 
 * `suppressOutgoingUpdates` (boolean):
 When enabled, changes in the Home app will not be sent to Comfort Cloud. Useful for testing your installation without constantly switching the state of your AC.
@@ -211,7 +207,6 @@ HomeKit has only one 'Oscillate' switch, but most Panasonic ACs have two swing d
 - Make sure that you can successfully log in and control each device via Panasonic Comfort Cloud application.
 - Accept all terms, conditions, etc in Panasonic Comfort Cloud app.
 - Update plugin, Homebridge and all its components and Apple hubs to the newest versions.
-- Field Comfort Cloud app version (in plugin settings) should be empty or have newest Comfort Cloud app version (same as in Apple App Store).
 - Disconnect each Comfort Cloud device (like AC) from the power and turn it on again (or restart WiFi in them).
 - Restart Internet routers.
 - Restart Homebridge or plugin bridge.
@@ -228,7 +223,7 @@ HomeKit has only one 'Oscillate' switch, but most Panasonic ACs have two swing d
 </details>
 
 <details>
-<summary><b>Wrong device, sensor or switch name</b></summary>
+<summary><b>Incorrect display or name of device, sensor or switch</b></summary>
     
 Remove device from Homebridge cache (Homebridge settings > remove one device from cache).
 
