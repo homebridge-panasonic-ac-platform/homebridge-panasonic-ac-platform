@@ -13,10 +13,10 @@ preparations:
 ### patching com-panasonic-accsmart-v1.20.0.apk for https interception:
 
 - download com-panasonic-accsmart-v1.20.0.apk from one of the APK mirrors
-- download recent apktool & uper-apk-signer jars
-- prepare: java -jar apktool.jar if com-panasonic-accsmart-v1.20.0.apk
-- decompile: java -jar apktool.jar d com-panasonic-accsmart-v1.20.0.apk
-- update res/xml/network_security_config.xml to
+- download recent [apktool](https://apktool.org) & [uber-apk-signer](https://github.com/patrickfav/uber-apk-signer)
+- prepare: `java -jar apktool.jar if com-panasonic-accsmart-v1.20.0.apk`
+- decompile: `java -jar apktool.jar d com-panasonic-accsmart-v1.20.0.apk`
+- update `res/xml/network_security_config.xml` to
 
 ```
 <?xml version="1.0" encoding="utf-8"?>
@@ -40,10 +40,10 @@ preparations:
   </base-config>
 </network-security-config>
 ```
-replace 192.168.102.1 to your IP.
+replace `192.168.102.1` to your IP.
 
-- recompile: java -jar apktool.jar b com-panasonic-accsmart-v1.20.0
-- sign apk: java -jar uber-apk-signer.jar --apks com-panasonic-accsmart-v1.20.0/dist/com-panasonic-accsmart-v1.20.0.apk
-- drag-drop the signed apk to the Virtual Device to install the apk
+- recompile: `java -jar apktool.jar b com-panasonic-accsmart-v1.20.0`
+- sign apk: `java -jar uber-apk-signer.jar --apks com-panasonic-accsmart-v1.20.0/dist/com-panasonic-accsmart-v1.20.0.apk`
+- drag and drop the signed apk to the Virtual Device to install the apk
 
 Now when starting the Comfort Cloud app, all traffic is successfully intercepted.
