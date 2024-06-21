@@ -1,3 +1,5 @@
+Author of this manual: [@heldchen](https://github.com/heldchen). Tkanks!
+
 # Intercept the traffic from the app to the api server. 
 
 The android APK is using a <network-security-config> that pins the TLS certificate of the api servers. to cirumvent this.
@@ -49,5 +51,3 @@ replace 192.168.102.1 to your IP.
 - drag-drop the signed apk to the Virtual Device to install the apk
 
 Now when starting the Comfort Cloud app, all traffic is successfully intercepted.
-
-Author of this manual: [@heldchen](https://github.com/heldchen). Tkanks!
