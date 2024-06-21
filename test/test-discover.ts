@@ -9,5 +9,6 @@ const platform = new PanasonicPlatform(
   config,
   new HomebridgeAPI,
 );
+platform.getAppVersion();
 
 platform.loginAndDiscoverDevices();
