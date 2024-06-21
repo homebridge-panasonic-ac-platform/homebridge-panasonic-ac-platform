@@ -154,10 +154,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
         } else {
           this.log.error(
             'The Comfort Cloud server might be experiencing issues at the moment. '
-            + 'If issue persists, make sure: '
-            + 'the latest version of this plugin is installed, '
-            + 'all terms and conditions after logging into Panasonic Comfort Cloud app'
-            + 'are accepted and you can successfully login and control devices via app.');
+            + 'If issue persists check Truobleshooting section in plugin homepage.');
 
           this.log.error('-----------------------------------------------------------------');
           this.log.error('IMPORTANT!');
