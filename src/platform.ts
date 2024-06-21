@@ -114,7 +114,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
         }
       });
       if (!foundVersion) {
-        this.log.error('Could not find latest app version.');
+        throw new Error('Could not find latest app version.');
       }
     };
 
@@ -141,8 +141,14 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
     try {
       await getPlayStoreVersion();
     } catch (error) {
-      this.log.error('Could not fetch latest app version from Store.');
+      this.log.error('Could not fetch latest app version from Play Store. Trying App Store.');
       this.log.debug(JSON.stringify(error, null, 2));
+      try {
+        await getAppStoreVersion();
+      } catch (error) {
+        this.log.error('Could not fetch latest app version from App Store.');
+        this.log.debug(JSON.stringify(error, null, 2));
+      }
     }
   }
 
