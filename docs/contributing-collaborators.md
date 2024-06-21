@@ -39,7 +39,28 @@ npm run build-watch
 
 ### Test changes
 
-To test your changes locally, copy the entire project directory into the `node_modules` directory of your Homebridge installation. This is where all plugins are stored.
+#### Testing portions of the plugin
+
+To test just the login and discovery process locally follow these steps:
+
+1) Create a file called `config.ts` in the `test/` directory with the following content:
+```js
+import { PanasonicPlatformConfig } from '../src/types';
+
+export default {
+  email: '{your login email}',
+  password: '{your login password}',
+  debugMode: true,
+} as PanasonicPlatformConfig;
+```
+
+You can now test individual portions of the script, e.g. to test the login run `npm run test-login`, to test device discovery run `npm run test-discover`. You don't need to run `npm run build`, before doing so. This can be run from your local device without homebridge access.
+
+If you wish to test further aspects of the plugin, have a look at the `test/test-discover.ts` and `test/test-login.ts` files: You can adjust these, or create new file following similar principles.
+
+#### Testing the whole plugin
+
+To properly test your changes within the homebridge environment, copy the entire project directory into the `node_modules` directory of your Homebridge installation. This is where all plugins are stored.
 
 The way to achieve this will vary by platform and your development setup. If you run Homebridge in Docker container and you edit the project on the same machine, you can use the following script to do the copying.
 
