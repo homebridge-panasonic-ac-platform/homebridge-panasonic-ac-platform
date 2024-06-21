@@ -288,9 +288,7 @@ You can also combine several commands into one:
 
 ## Changelog
 
-#### Version 4.0.0 - in progress (beta)
-
-Warning! Read carefully before updating!
+#### Version 4.0.0
 
 - Completely new Comfort Cloud API. All versions below 4.0.0 will not work. Thank you @nanos and @heldchen for help!
 - Option to add additional switches to control: Nanoe, Inside cleaning, Eco Navi, Dry Mode, Fan mode, Quiet Mode, Powerful Mode, Swing Up Down, Swing Left Right.
