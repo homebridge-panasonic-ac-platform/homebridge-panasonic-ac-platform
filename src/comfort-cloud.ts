@@ -59,14 +59,14 @@ export default class ComfortCloudApi {
 
     // NEW API - START ----------------------------------------------------------------------------------
 
-    // How to check API: 
+    // How to check API:
     // https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/blob/master/docs/api.md
 
-    // Based on (Python): 
+    // Based on (Python):
     // https://github.com/lostfields/python-panasonic-comfort-cloud
     // https://github.com/craibo/panasonic_cc/
     // https://github.com/little-quokka/python-panasonic-comfort-cloud/
-    
+
 
     // STEP 0 - const ----------------------------------------------------------------
     this.log.debug('-------------------------- STEP 0 --------------------------');
