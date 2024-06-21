@@ -38,7 +38,6 @@
   "dependencies": {
     "axios": "^1.7.2",
     "axios-cookiejar-support": "^5.0.2",
-    "beautiful-soup-js": "^0.0.4",
     "cheerio": "^1.0.0-rc.12",
     "jssha": "^3.3.1",
     "tough-cookie": "^4.1.4"
