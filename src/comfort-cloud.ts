@@ -92,7 +92,7 @@ export default class ComfortCloudApi {
     this.log.info(`code_verifier: ${code_verifier}`);
     this.log.info(`code_challenge: ${code_challenge}`);
     this.log.info(`state: ${state}`);
-    
+
     // Setup CookieJar
     const jar = new CookieJar();
     const client = wrapper(axios.create({ jar }));
