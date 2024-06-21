@@ -275,7 +275,7 @@ export default class ComfortCloudApi {
 
     await client.request({
       method: 'post',
-      url: 'https://accsmart.panasonic.com/auth/v2/login',
+      url: 'https://authglb.digital.panasonic.com/oauth/token',
       headers: {
         'Auth0-Client': AUTH_0_CLIENT,
         'user-agent': 'okhttp/4.10.0',
@@ -289,7 +289,7 @@ export default class ComfortCloudApi {
         'code_verifier': code_verifier,
       },
       maxRedirects: 0,
-      validateStatus: status => (status >= 200 && status < 300) || status === 200,
+      validateStatus: status => (status >= 200 && status < 300) || status === 302,
     })
       .then((response) => {
         this.log.debug('Comfort Cloud - get new token - Success');
@@ -314,7 +314,7 @@ export default class ComfortCloudApi {
       url: 'https://accsmart.panasonic.com/auth/v2/login',
       headers: {
         ...this.getBaseRequestHeaders(),
-        'X-User-Authorization-V2': this.token,
+        'X-User-Authorization-V2': 'Bearer ' + this.token,
       },
       data: {
         'language': 0,
@@ -597,7 +597,7 @@ export default class ComfortCloudApi {
       'X-APP-NAME': 'Comfort Cloud',
       'X-APP-TIMESTAMP': (new Date()).toISOString().replace(/-/g, '')
         .replace('T', ' ').slice(0, 17),
-      'X-APP-TYPE': '0',
+      'X-APP-TYPE': '1',
       'X-APP-VERSION': APP_VERSION,
       'X-CFC-API-KEY': '0',
     };
