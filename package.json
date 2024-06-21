@@ -23,7 +23,9 @@
     "build": "npm run clean && tsc",
     "build-watch": "npm run clean && tsc -w",
     "prepublishOnly": "npm run lint && npm run build",
-    "postpublish": "npm run clean"
+    "postpublish": "npm run clean",
+    "test-login": "npx tsx ./test/test-login.ts",
+    "test-discover": "npx tsx ./test/test-discover.ts"
   },
   "keywords": [
     "homebridge",
