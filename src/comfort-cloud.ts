@@ -59,13 +59,14 @@ export default class ComfortCloudApi {
 
     // NEW API - START ----------------------------------------------------------------------------------
 
-    // How to check API: /docs/intercept-traffic.md
+    // How to check API: 
+    // https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/blob/master/docs/api.md
 
-    // Based on (Python): https://github.com/craibo/panasonic_cc
-    // https://github.com/craibo/panasonic_cc/blob/master/custom_components/panasonic_cc/pcomfortcloud/panasonicsession.py
-
-    // Based on (Python): https://github.com/little-quokka/python-panasonic-comfort-cloud/
-    // blob/de2869eae5684e5ef5bc8181016902eeb6c73760/pcomfortcloud/panasonic_session.py#L307
+    // Based on (Python): 
+    // https://github.com/lostfields/python-panasonic-comfort-cloud
+    // https://github.com/craibo/panasonic_cc/
+    // https://github.com/little-quokka/python-panasonic-comfort-cloud/
+    
 
     // STEP 0 - const ----------------------------------------------------------------
     this.log.debug('-------------------------- STEP 0 --------------------------');
