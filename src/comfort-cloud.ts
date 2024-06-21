@@ -404,7 +404,7 @@ export default class ComfortCloudApi {
       headers: {
         ...this.getBaseRequestHeaders(),
         'X-Client-Id': this.clientId,
-        'X-User-Authorization-V2': this.token,
+        'X-User-Authorization-V2': 'Bearer ' + this.token,
       },
     })
       .then((response) => {
@@ -455,7 +455,7 @@ export default class ComfortCloudApi {
       headers: {
         ...this.getBaseRequestHeaders(),
         'X-Client-Id': this.clientId,
-        'X-User-Authorization-V2': this.token,
+        'X-User-Authorization-V2': 'Bearer ' + this.token,
       },
     })
       .then((response) => {
@@ -506,7 +506,7 @@ export default class ComfortCloudApi {
       headers: {
         ...this.getBaseRequestHeaders(),
         'X-Client-Id': this.clientId,
-        'X-User-Authorization-V2': this.token,
+        'X-User-Authorization-V2': 'Bearer ' + this.token,
       },
       data: {
         'deviceGuid': deviceGuid,
