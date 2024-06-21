@@ -1,7 +1,5 @@
 # Contribution guidelines - for maintainers
 
-### Strategy
-There are many strategies for release management out there and all of them come with their trade-offs. To keep things simple and easy to maintain, we choose a light-weight approach with the following features: all releases are created from the master branch, feature branches are considered work in progress until they are merged.
 
 ### Merging pull requests
 Besides reviewing the proposed changes, check the results of the lint compile workflow. 
