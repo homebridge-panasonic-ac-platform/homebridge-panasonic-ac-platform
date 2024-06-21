@@ -254,7 +254,7 @@ You can also combine several commands into one:
 
 ## Acknowledgements
 - Thanks to [embee8](https://github.com/embee8) for creating this plugin.
-- Thanks to all helping in the development of this plugin and obtaining new Comfort Cloud API.
+- Thanks to everyone helping in the development of this plugin and obtaining new Comfort Cloud API.
 - Thanks to the team behind Homebridge. Your efforts do not go unnoticed.
 
 ## Disclaimer
