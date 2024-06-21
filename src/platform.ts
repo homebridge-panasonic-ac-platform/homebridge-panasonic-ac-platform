@@ -17,6 +17,7 @@ import { PanasonicAccessoryContext, PanasonicPlatformConfig } from './types';
 import {
   PLATFORM_NAME,
   PLUGIN_NAME,
+  APP_VERSION,
 } from './settings';
 
 
@@ -76,6 +77,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
   }
 
   async configurePlugin() {
+    await this.getAppVersion();
     await this.loginAndDiscoverDevices();
   }
 
@@ -94,6 +96,9 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
         const matches = $(p).text().match(/\d+(.)\d+(.)\d+/);
         if (Array.isArray(matches)) {
           this.log.info(`The latest App Store version is ${matches[0]}.`);
+          if (matches[0] !== APP_VERSION) {
+            this.log.info(`Plugin App version is ${APP_VERSION}.`);
+          }
         } else {
           this.log.error('Could not find latest app version.');
         }
