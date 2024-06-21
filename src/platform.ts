@@ -159,12 +159,6 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
             'The Comfort Cloud server might be experiencing issues at the moment. '
             + 'If issue persists check Truobleshooting section in plugin homepage.');
 
-          this.log.error('-----------------------------------------------------------------');
-          this.log.error('IMPORTANT!');
-          this.log.error('Panasonic introduced a new API, so the plugin does not work!');
-          this.log.error('Working on a solution...');
-          this.log.error('-----------------------------------------------------------------');
-
           const delayMap = new Map([
             [1, 300], // 5 min
             [2, 1800], // 30 min
