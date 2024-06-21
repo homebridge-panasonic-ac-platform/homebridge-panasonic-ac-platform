@@ -71,9 +71,10 @@ export default class ComfortCloudApi {
     this.log.debug('-------------------------- STEP 0 --------------------------');
 
     const auth0client = AUTH_0_CLIENT;
+    this.log.debug(`auth0client: ${auth0client}`);
+
     const app_client_id = APP_CLIENT_ID;
-    this.log.info(`auth0client: ${auth0client}`);
-    this.log.info(`app_client_id: ${app_client_id}`);
+    this.log.debug(`app_client_id: ${app_client_id}`);
 
     // taken from AuthO docs
     function base64URLEncode(str) {
@@ -88,10 +89,6 @@ export default class ComfortCloudApi {
     const code_verifier = base64URLEncode(crypto.randomBytes(32));
     const code_challenge = base64URLEncode(sha256(code_verifier));
     const state = generateRandomString(20);
-
-    this.log.info(`code_verifier: ${code_verifier}`);
-    this.log.info(`code_challenge: ${code_challenge}`);
-    this.log.info(`state: ${state}`);
 
     // Setup CookieJar
     const jar = new CookieJar();
