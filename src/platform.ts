@@ -76,6 +76,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
   }
 
   async configurePlugin() {
+    await this.getAppVersion();
     await this.loginAndDiscoverDevices();
   }
 
