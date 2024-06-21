@@ -202,7 +202,7 @@ HomeKit has only one 'Oscillate' switch, but most Panasonic ACs have two swing d
 ## Troubleshooting
 
 <details>
-<summary><b>General</b></summary>
+<summary><b>Plugin doesn't work</b></summary>
 
 - Make sure that you can successfully log in and control each device via Panasonic Comfort Cloud application.
 - Accept all terms, conditions, etc in Panasonic Comfort Cloud app.
@@ -212,13 +212,6 @@ HomeKit has only one 'Oscillate' switch, but most Panasonic ACs have two swing d
 - Restart Homebridge or plugin bridge.
 - Remove one or move device from Homebridge cache (Homebridge settings > remove one device from cache).
 - Set Logs Level to all (in plugin config) and enable debug mode (in Homebridge settings). This will include more detailed information in the log.
-
-</details>
-
-<details>
-<summary><b>Child bridge</b></summary>
-    
-- It's recommended you run this plugin as a [child bridge](https://github.com/homebridge/homebridge/wiki/Child-Bridges).
 
 </details>
 
@@ -252,6 +245,13 @@ Examples of commands:
 
 You can also combine several commands into one:
 - Hey Siri, [device name] , set [auto, heat, cool] mode and rotation speed to [value from 1 to 8]
+
+</details>
+
+<details>
+<summary><b>Child bridge</b></summary>
+    
+- It's recommended you run this plugin as a [child bridge](https://github.com/homebridge/homebridge/wiki/Child-Bridges).
 
 </details>
 
@@ -308,4 +308,4 @@ Warning! Read carefully before updating!
 - New way to add additional sensor fot outdoor unit temperature.
 - Removed field 'Exclude devices', use exclude from individual device config instead.
 - Removed options: Force values, Oscilate switch (now it always control swing), Auto Mode (you can add switches to control Dry and Fan mode) - now you can add additional switches and sliders to control these options.
-- Dependency updates
+- Dependency updates.
