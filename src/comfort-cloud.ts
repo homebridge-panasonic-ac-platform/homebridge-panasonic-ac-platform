@@ -196,13 +196,8 @@ export default class ComfortCloudApi {
 
         // Extract hidden input parameters and store them in a dictionary
         for (const el of elements) {
-         this.parameters[el.attribs.name] = el.attribs.value;
+          this.parameters[el.attribs.name] = el.attribs.value;
         }
-
-        const wa = this.parameters.wa;
-        const wresult = this.parameters.wresult;
-        const wctx = this.parameters.wctx;
-
       })
       .catch((error: AxiosError) => {
         this.log.error('Comfort Cloud - login - Error');
