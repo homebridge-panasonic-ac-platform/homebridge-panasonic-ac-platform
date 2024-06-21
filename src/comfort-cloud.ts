@@ -75,7 +75,7 @@ export default class ComfortCloudApi {
     this.log.info(`auth0client: ${auth0client}`);
     this.log.info(`app_client_id: ${app_client_id}`);
 
-    // taken from https://auth0.com/docs/get-started/authentication-and-authorization-flow/authorization-code-flow-with-pkce/call-your-api-using-the-authorization-code-flow-with-pkce
+    // taken from AuthO docs
     function base64URLEncode(str) {
       return str.toString('base64')
         .replace(/\+/g, '-')
