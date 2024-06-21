@@ -75,10 +75,18 @@ export default class ComfortCloudApi {
     this.log.info(`auth0client: ${auth0client}`);
     this.log.info(`app_client_id: ${app_client_id}`);
 
-    const code_verifier = generateRandomString(43);
-    const hash = crypto.createHash('sha256').update(code_verifier, 'utf-8').digest();
-    const base64String = Buffer.from(hash).toString('base64');
-    const code_challenge = base64String.split('=')[0];
+    // taken from AuthO docs
+    function base64URLEncode(str) {
+      return str.toString('base64')
+        .replace(/\+/g, '-')
+        .replace(/\//g, '_')
+        .replace(/=/g, '');
+    }
+    function sha256(buffer) {
+      return crypto.createHash('sha256').update(buffer).digest();
+    }
+    const code_verifier = base64URLEncode(crypto.randomBytes(32));
+    const code_challenge = base64URLEncode(sha256(code_verifier));
     const state = generateRandomString(20);
 
     this.log.info(`code_verifier: ${code_verifier}`);
@@ -267,7 +275,7 @@ export default class ComfortCloudApi {
 
     await client.request({
       method: 'post',
-      url: 'https://accsmart.panasonic.com/auth/v2/login',
+      url: 'https://authglb.digital.panasonic.com/oauth/token',
       headers: {
         'Auth0-Client': AUTH_0_CLIENT,
         'user-agent': 'okhttp/4.10.0',
@@ -281,7 +289,7 @@ export default class ComfortCloudApi {
         'code_verifier': code_verifier,
       },
       maxRedirects: 0,
-      validateStatus: status => (status >= 200 && status < 300) || status === 200,
+      validateStatus: status => (status >= 200 && status < 300) || status === 302,
     })
       .then((response) => {
         this.log.debug('Comfort Cloud - get new token - Success');
@@ -306,7 +314,7 @@ export default class ComfortCloudApi {
       url: 'https://accsmart.panasonic.com/auth/v2/login',
       headers: {
         ...this.getBaseRequestHeaders(),
-        'X-User-Authorization-V2': this.token,
+        'X-User-Authorization-V2': 'Bearer ' + this.token,
       },
       data: {
         'language': 0,
@@ -589,7 +597,7 @@ export default class ComfortCloudApi {
       'X-APP-NAME': 'Comfort Cloud',
       'X-APP-TIMESTAMP': (new Date()).toISOString().replace(/-/g, '')
         .replace('T', ' ').slice(0, 17),
-      'X-APP-TYPE': '0',
+      'X-APP-TYPE': '1',
       'X-APP-VERSION': APP_VERSION,
       'X-CFC-API-KEY': '0',
     };
