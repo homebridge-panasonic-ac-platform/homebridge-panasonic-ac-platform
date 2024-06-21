@@ -272,6 +272,7 @@ export default class ComfortCloudApi {
         this.log.debug('Comfort Cloud Login - Step 6 - Success');
         this.log.debug(response.data);
         this.token = response.data.access_token;
+        this.tokenRefresh = response.data.refresh_token;
       })
       .catch((error: AxiosError) => {
         this.log.error('Comfort Cloud Login - Step 6 - Error');
