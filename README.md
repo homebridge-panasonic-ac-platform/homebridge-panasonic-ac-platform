@@ -250,7 +250,7 @@ You can also combine several commands into one:
 - Test/use the plugin and [report issues and share feedback](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/issues).
 - Contribute with your own bug fixes, code clean-ups, or additional features - [Pull Request](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/pulls).
 - Develop: [contributing-collaborators.md](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/blob/master/docs/contributing-collaborators.md).
-- Check new API: [intercept-traffic.md](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/blob/master/docs/intercept-traffic.md).
+- Check new API: [api.md](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/blob/master/docs/api.md).
 
 ## Acknowledgements
 - Thanks to [embee8](https://github.com/embee8) for creating this plugin.
