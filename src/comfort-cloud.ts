@@ -62,7 +62,7 @@ export default class ComfortCloudApi {
     // How to check API:
     // https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/blob/master/docs/api.md
 
-    // Based on (Python):
+    // Based on panasonic_session.py (Python):
     // https://github.com/lostfields/python-panasonic-comfort-cloud
     // https://github.com/craibo/panasonic_cc/
     // https://github.com/little-quokka/python-panasonic-comfort-cloud/
