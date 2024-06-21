@@ -83,8 +83,9 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
 
   async getAppVersion() {
     this.log.info(`Plugin App version: ${APP_VERSION}.`);
-    this.log.debug('Attempting to fetch latest Comfort Cloud version from the Play Store.');
-    try {
+
+    const getPlayStoreVersion = async () => {
+      this.log.debug('Attempting to fetch latest Comfort Cloud version from the Play Store.');
       let foundVersion = false;
       const response = await axios.request({
         method: 'get',
@@ -115,8 +116,32 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
       if (!foundVersion) {
         this.log.error('Could not find latest app version.');
       }
+    };
+
+    const getAppStoreVersion = async () => {
+      this.log.debug('Attempting to fetch latest Comfort Cloud version from the App Store.');
+      const response = await axios.request({
+        method: 'get',
+        url: 'https://apps.apple.com/app/panasonic-comfort-cloud/id1348640525',
+      });
+      const $ = cheerio.load(response.data);
+      const paragraphs = $('p.whats-new__latest__version');
+      paragraphs.each((idx, p) => {
+        // One or more digit(s), followed by ., followed by one or more digit(s),
+        // followed by ., followed by one or more digit(s)
+        const matches = $(p).text().match(/\d+(.)\d+(.)\d+/);
+        if (Array.isArray(matches)) {
+          this.log.info(`The latest App Store version: ${matches[0]}.`);
+        } else {
+          this.log.error('Could not find latest App Store version.');
+        }
+      });
+    };
+
+    try {
+      await getPlayStoreVersion();
     } catch (error) {
-      this.log.error('Could not fetch latest app version from App Store.');
+      this.log.error('Could not fetch latest app version from Store.');
       this.log.debug(JSON.stringify(error, null, 2));
     }
   }
