@@ -308,7 +308,7 @@ export default class ComfortCloudApi {
     // STEP 8 - set timer to refresh token --------------------------------------------
 
     // Refresh token every 24 hours
-    setTimeout(this.refreshToken.bind(this), 86400000);
+    setTimeout(this.refreshToken.bind(this), 86300000);
 
   }
 
