@@ -149,10 +149,9 @@ HomeKit has a limited number of switches, which is much less than the number of 
     
 - Enable additional sensor for outdoor temp. and/or switches for: Nanoe, Inside Cleaning, Eco Navi, Dry Mode, Fan mode, Quiet Mode, Powerful Mode, Swing Up Down, Swing Left Right.
 - Sensor / Switch will work only if device support this function.
-- Some values can be changed only when device is on (E.G.: Quiet Mode, Powerful mode, Swing Up Down, Swing Left Right).
+- Some values can be changed only when device is turned on (E.G.: Quiet Mode, Powerful mode, Swing Up Down, Swing Left Right).
 - These switches will be available in HomeKit, directly in your main device or in device / settings (wheel icon) / accessories. 
-- If you add at least one sensor or switch, the appearance of the air conditioning will change - rotation speed and swing will not be available in the main view, only after entering the device / settings (wheel icon) / accessories / device / settings (wheel icon).
-- You can also use the option 'show as separate tiles' to separate the accessories.
+- If you add at least one sensor or switch, the appearance of the air conditioning in HomeKit will change to accessory group (rotation speed and swing will be available after entering the device / settings (wheel icon) / accessories / device / settings (wheel icon)). You can also use the option 'show as separate tiles' to separate the accessories.
 
 </details>
 
@@ -177,7 +176,7 @@ The following mapping applies:
 
 <details>
 <summary><b>Oscilate switch, Swing mode (switch built-in thermostat accessory, not additional)</b></summary>
-HomeKit has only one 'Oscillate' switch, but most Panasonic ACs have two swing directions. In plugin settings you can set horizontal (left right) and vertical (up down) desired positions.
+HomeKit has only one 'Oscillate' switch, but most Panasonic ACs have two swing directions. In plugin settings you can set horizontal (left - right) and vertical (up - down) desired positions.
 </details>
 
 <details>
@@ -201,7 +200,7 @@ HomeKit has only one 'Oscillate' switch, but most Panasonic ACs have two swing d
 - Restart Internet routers.
 - Restart Homebridge or plugin bridge.
 - Remove one or move device from Homebridge cache (Homebridge settings > remove one device from cache).
-- Set Logs Level to all (in plugin config) and enable debug mode (in Homebridge settings). This will include more detailed information in the log.
+- Set Logs Level to all (in plugin config) and enable debug mode (in Homebridge settings) - this will include more detailed information in the log.
 
 </details>
 
@@ -247,8 +246,8 @@ You can also combine several commands into one:
 
 ## Contributing and support
 
-- Test/use the plugin and [report issues and share feedback](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/issues).
-- Contribute with your own bug fixes, code clean-ups, or additional features - [Pull Request](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/pulls).
+- Test/use the plugin and report issues and share feedback: [Issues](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/issues).
+- Contribute with your own bug fixes, code clean-ups, or additional features: [Pull Requests](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/pulls).
 - Develop: [contributing-collaborators.md](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/blob/master/docs/contributing-collaborators.md).
 - Check new API: [api.md](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/blob/master/docs/api.md).
 
