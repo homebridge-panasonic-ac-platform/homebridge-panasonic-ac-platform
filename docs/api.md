@@ -2,23 +2,19 @@ Author of this manual: [@heldchen](https://github.com/heldchen). Tkanks!
 
 # Intercept the traffic from the app to the api server. 
 
-The android APK is using a <network-security-config> that pins the TLS certificate of the api servers. to cirumvent this.
+The Android APK is using a <network-security-config> that pins the TLS certificate of the api servers to cirumvent this.
 
 preparations:
 
-- install Android Studio
-- install HttpToolkit
-- create a fresh Virtual Device (Pixel 8 Pro with Play Store, rest default settings)
-- start the Virtual Device
-- start HttpToolkit
-- downloaded the httptoolkit.apk from https://github.com/httptoolkit/httptoolkit-android/releases/tag/v1.3.12
-- drag-drop the httptoolkit.apk to the Virtual Device, started it & followed onboarding
+- install [Android Studio](https://developer.android.com/studio) create a fresh Virtual Device (Pixel 8 Pro with Play Store, rest default settings) and start the Virtual Device.
+- install [HttpToolkit](https://httptoolkit.com) and start it.
+- download the [httptoolkit.apk](https://github.com/httptoolkit/httptoolkit-android/releases/tag/v1.3.12), drag-drop it to the Virtual Device, started it & followed onboarding.
 
 ### patching com-panasonic-accsmart-v1.20.0.apk for https interception:
 
 - download com-panasonic-accsmart-v1.20.0.apk from one of the APK mirrors
 - download recent apktool & uper-apk-signer jars
-- prepare: java -jar apktool.jar if  com-panasonic-accsmart-v1.20.0.apk
+- prepare: java -jar apktool.jar if com-panasonic-accsmart-v1.20.0.apk
 - decompile: java -jar apktool.jar d com-panasonic-accsmart-v1.20.0.apk
 - update res/xml/network_security_config.xml to
 
