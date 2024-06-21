@@ -295,4 +295,5 @@ You can also combine several commands into one:
 - New way to add additional sensor fot outdoor unit temperature.
 - Removed field 'Exclude devices', use exclude from individual device config instead.
 - Removed options: Force values, Oscilate switch (now it always control swing), Auto Mode (you can add switches to control Dry and Fan mode) - now you can add additional switches and sliders to control these options.
+- Function to check latest Google Play app version. Thanks to @nanos !
 - Dependency updates.
