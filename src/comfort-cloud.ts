@@ -89,10 +89,10 @@ export default class ComfortCloudApi {
     }
     const code_verifier = base64URLEncode(crypto.randomBytes(32));
     this.log.debug(`code_verifier: ${code_verifier}`);
-    
+
     const code_challenge = base64URLEncode(sha256(code_verifier));
     this.log.debug(`code_challenge: ${code_challenge}`);
-    
+
     const state = generateRandomString(20);
     this.log.debug(`state: ${state}`);
 
