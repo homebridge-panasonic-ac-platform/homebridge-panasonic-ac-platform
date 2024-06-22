@@ -1,4 +1,4 @@
-# Contribution guidelines - for collaborators
+# Developers
 
 ### Discuss ideas
 
