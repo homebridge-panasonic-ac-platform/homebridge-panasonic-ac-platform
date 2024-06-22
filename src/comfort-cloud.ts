@@ -26,10 +26,9 @@ import { CookieJar } from 'tough-cookie';
  * This class exposes login, device status fetching, and device status update functions.
  */
 export default class ComfortCloudApi {
-  private token: string;
-  private tokenRefresh: string;
-  private clientId: string;
-  private _loginRefreshInterval;
+  token;
+  tokenRefresh;
+  clientId;
   state;
   location;
   csrf;
@@ -40,9 +39,7 @@ export default class ComfortCloudApi {
     private readonly config: PanasonicPlatformConfig,
     private readonly log: PanasonicPlatformLogger,
   ) {
-    this.token = '';
-    this.tokenRefresh = '';
-    this.clientId = '';
+
   }
 
   /**
@@ -359,6 +356,9 @@ export default class ComfortCloudApi {
         this.log.debug(JSON.stringify(error, null, 2));
         return Promise.reject(error);
       });
+
+    // Refresh token just a moment before the expiration of 24 hours
+    setTimeout(this.refreshToken.bind(this), 86300000);
 
   }
 
