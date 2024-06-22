@@ -1,4 +1,4 @@
-# Contribution guidelines - for maintainers
+# Administrators
 
 
 ### Merging pull requests
