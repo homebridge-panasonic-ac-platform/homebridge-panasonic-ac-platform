@@ -1,6 +1,8 @@
 Author of this manual: [@heldchen](https://github.com/heldchen). Tkanks!
 
-# Intercept the traffic from the app to the api server. 
+# Panasonic Comfort Cloud app (for Android)
+
+## Intercept the traffic from the app to the api server. 
 
 The Android APK is using a <network-security-config> that pins the TLS certificate of the api servers to cirumvent this.
 
