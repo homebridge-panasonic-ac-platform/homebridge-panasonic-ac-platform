@@ -3,7 +3,7 @@
   "displayName": "Homebridge Panasonic AC Platform",
   "version": "4.0.2",
   "maintainers": [
-    "jansersonhill"
+    "jandersonhill"
   ],
   "description": "Homebridge platform plugin providing HomeKit support for Panasonic Comfort Cloud devices.",
   "license": "Apache-2.0",
