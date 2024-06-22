@@ -60,16 +60,16 @@ export default class ComfortCloudApi {
     // NEW API - START ----------------------------------------------------------------------------------
 
     // How to check API:
-    // https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/blob/master/docs/api.md
+    // https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/blob/master/docs/app.md
 
-    // Based on panasonic_session.py (Python):
+    // Based on:
+    // https://github.com/sockless-coding/panasonic_cc/blob/master/custom_components/panasonic_cc/pcomfortcloud/panasonicauthentication.py
     // https://github.com/lostfields/python-panasonic-comfort-cloud
     // https://github.com/craibo/panasonic_cc/
     // https://github.com/little-quokka/python-panasonic-comfort-cloud/
 
 
-    // STEP 0 - const ----------------------------------------------------------------
-    this.log.debug('-------------------------- STEP 0 --------------------------');
+    // STEP 0 - prepare ---------------------------------------------------------------
 
     const auth0client = AUTH_0_CLIENT;
     this.log.debug(`auth0client: ${auth0client}`);
@@ -88,8 +88,13 @@ export default class ComfortCloudApi {
       return crypto.createHash('sha256').update(buffer).digest();
     }
     const code_verifier = base64URLEncode(crypto.randomBytes(32));
+    this.log.debug(`code_verifier: ${code_verifier}`);
+    
     const code_challenge = base64URLEncode(sha256(code_verifier));
+    this.log.debug(`code_challenge: ${code_challenge}`);
+    
     const state = generateRandomString(20);
+    this.log.debug(`state: ${state}`);
 
     // Setup CookieJar
     const jar = new CookieJar();
@@ -120,15 +125,16 @@ export default class ComfortCloudApi {
     })
       .then((response) => {
         this.log.debug('Comfort Cloud Login - Step 1 - Success');
-        this.log.debug(response);
         this.log.debug(response.data);
         this.location = response.headers.location;
+        this.log.debug(`location: ${this.location}`);
         this.state = getQuerystringParameterFromHeaderEntryUrl(response, 'location', 'state', 'https://authglb.digital.panasonic.com');
+        this.log.debug(`state: ${this.state}`);
       })
       .catch((error: AxiosError) => {
         this.log.error('Comfort Cloud Login - Step 1 - Error');
         this.log.debug(JSON.stringify(error, null, 2));
-        // return Promise.reject(error);
+        return Promise.reject(error);
       });
 
     // STEP 2 - authorize - follow redirect --------------------------------------------------
@@ -146,6 +152,7 @@ export default class ComfortCloudApi {
           .find(cookie => cookie.includes('_csrf'))
           ?.match(new RegExp('^_csrf=(.+?);'))
           ?.[1];
+        this.log.debug(`csrf: ${this.csrf}`);
       })
       .catch((error: AxiosError) => {
         this.log.error('Comfort Cloud Login - Step 2 - Error');
@@ -219,6 +226,7 @@ export default class ComfortCloudApi {
         this.log.debug('Comfort Cloud Login - Step 4 - Success');
         this.log.debug(response.data);
         this.location = response.headers.location;
+        this.log.debug(`location: ${this.location}`);
       })
       .catch((error: AxiosError) => {
         this.log.error('Comfort Cloud Login - Step 4 - Error');
@@ -238,6 +246,7 @@ export default class ComfortCloudApi {
         this.log.debug('Comfort Cloud Login - Step 5 - Success');
         this.log.debug(response.data);
         this.code = getQuerystringParameterFromHeaderEntryUrl(response, 'location', 'code', 'https://authglb.digital.panasonic.com');
+        this.log.debug(`code: ${this.code}`);
       })
       .catch((error: AxiosError) => {
         this.log.error('Comfort Cloud Login - Step 5 - Error');
@@ -270,7 +279,9 @@ export default class ComfortCloudApi {
         this.log.debug('Comfort Cloud Login - Step 6 - Success');
         this.log.debug(response.data);
         this.token = response.data.access_token;
+        this.log.debug(`token: ${this.token}`);
         this.tokenRefresh = response.data.refresh_token;
+        this.log.debug(`tokenRefresh: ${this.tokenRefresh}`);
       })
       .catch((error: AxiosError) => {
         this.log.error('Comfort Cloud Login - Step 6 - Error');
@@ -297,6 +308,7 @@ export default class ComfortCloudApi {
         this.log.debug('Comfort Cloud Login - Step 7 - Success');
         this.log.debug(response.data);
         this.clientId = response.data.clientId;
+        this.log.debug(`clientId: ${this.clientId}`);
       })
       .catch((error: AxiosError) => {
         this.log.error('Comfort Cloud Login - Step 7 - Error');
@@ -307,7 +319,7 @@ export default class ComfortCloudApi {
 
     // STEP 8 - set timer to refresh token --------------------------------------------
 
-    // Refresh token every 24 hours
+    // Refresh token just a moment before the expiration of 24 hours
     setTimeout(this.refreshToken.bind(this), 86300000);
 
   }
@@ -338,7 +350,9 @@ export default class ComfortCloudApi {
         this.log.debug('Comfort Cloud - refreshToken() - Success');
         this.log.debug(response.data);
         this.token = response.data.access_token;
+        this.log.debug(`token: ${this.token}`);
         this.tokenRefresh = response.data.refresh_token;
+        this.log.debug(`tokenRefresh: ${this.tokenRefresh}`);
       })
       .catch((error: AxiosError) => {
         this.log.error('Comfort Cloud - refreshToken() - Error');
