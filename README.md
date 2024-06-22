@@ -1,5 +1,5 @@
 > [!CAUTION]
-> Panasonic has changed the API - every plugin version below 4.0.0 will not work!
+> Panasonic has changed the API - every plugin version below 4.0.1 will not work!
 
 <img src="https://raw.githubusercontent.com/homebridge/verified/latest/icons/homebridge-panasonic-ac-platform.png" width="100px"></img>
 
