@@ -13,6 +13,9 @@
 - `SDK` can be found in `/resources/AndroidManifest.xml` , something like: `android:maxSdkVersion="30"`
 - `version` can be found in `/sources/t/a.java` , something like: `this("Auth0.Android", "2.9.3");`
 
+#### REDIRECT_URI
+- can be found in `/resources/AndroidManifest.xml`, it is: `scheme+:+host+pathPrefix`, so: `<data android:scheme="panasonic-iot-cfc" android:host="authglb.digital.panasonic.com" android:pathPrefix="/android/com.panasonic.ACCsmart/callback"/>` will be: `panasonic-iot-cfc://authglb.digital.panasonic.com/android/com.panasonic.ACCsmart/callback`
+
 ## Intercept the traffic from the app to the api server. 
 Author of this manual: [@heldchen](https://github.com/heldchen). Tkanks!
 
