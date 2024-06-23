@@ -28,7 +28,7 @@ export default class IndoorUnitAccessory {
   exposeNanoe;
   exposeInsideCleaning;
   exposeEcoNavi;
-  exposeEcoMode;
+  exposeEcoFunction;
   exposeDryMode;
   exposeFanMode;
   exposeQuietMode;
@@ -203,20 +203,20 @@ export default class IndoorUnitAccessory {
       }
     }
 
-    // Eco Mode
-    if (this.devConfig?.exposeEcoMode) {
-      this.exposeEcoMode = this.accessory.getService(this.accessory.displayName + ' (eco mode)')
-        || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (eco mode)', 'exposeEcoMode');
-      this.exposeEcoMode.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (eco mode)');
-      this.exposeEcoMode
+    // Eco Function
+    if (this.devConfig?.exposeEcoFunction) {
+      this.exposeEcoFunction = this.accessory.getService(this.accessory.displayName + ' (eco function)')
+        || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (eco function)', 'exposeEcoFunction');
+      this.exposeEcoFunction.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (eco function)');
+      this.exposeEcoFunction
         .getCharacteristic(this.platform.Characteristic.On)
-        .onSet(this.setEcoMode.bind(this));
-      this.platform.log.debug(`${this.accessory.displayName}: add eco mode switch`);
+        .onSet(this.setEcoFunction.bind(this));
+      this.platform.log.debug(`${this.accessory.displayName}: add eco function switch`);
     } else {
-      const removeEcoMode = this.accessory.getService(this.accessory.displayName + ' (eco mode)');
-      if (removeEcoMode) {
-        this.accessory.removeService(removeEcoMode);
-        this.platform.log.debug(`${this.accessory.displayName}: remove eco mode switch`);
+      const removeEcoFunction = this.accessory.getService(this.accessory.displayName + ' (eco function)');
+      if (removeEcoFunction) {
+        this.accessory.removeService(removeEcoFunction);
+        this.platform.log.debug(`${this.accessory.displayName}: remove eco function switch`);
       }
     }
 
@@ -592,12 +592,12 @@ export default class IndoorUnitAccessory {
         }
       }
 
-      // Eco Mode
-      if (this.exposeEcoMode && this.deviceStatusFull?.ecoFunction) {
+      // Eco Function
+      if (this.exposeEcoFunction && this.deviceStatusFull?.ecoFunction) {
         if (this.deviceStatus.ecoFunctionData === 2) {
-          this.exposeEcoNavi.updateCharacteristic(this.platform.Characteristic.On, true);
+          this.exposeEcoFunction.updateCharacteristic(this.platform.Characteristic.On, true);
         } else {
-          this.exposeEcoNavi.updateCharacteristic(this.platform.Characteristic.On, false);
+          this.exposeEcoFunction.updateCharacteristic(this.platform.Characteristic.On, false);
         }
       }
 
@@ -933,16 +933,16 @@ export default class IndoorUnitAccessory {
     }
   }
 
-  // set Eco Mode
-  async setEcoMode(value) {
+  // set Eco Function
+  async setEcoFunction(value) {
     if (this.deviceStatusFull?.ecoFunction) {
       const parameters: ComfortCloudDeviceUpdatePayload = {};
       if (value) {
         parameters.ecoFunctionData = 2;
-        this.platform.log.debug(`${this.accessory.displayName}: Eco Mode On`);
+        this.platform.log.debug(`${this.accessory.displayName}: Eco Function On`);
       } else {
-        parameters.ecoNavi = 1;
-        this.platform.log.debug(`${this.accessory.displayName}: Eco Mode Off`);
+        parameters.ecoFunctionData = 1;
+        this.platform.log.debug(`${this.accessory.displayName}: Eco Function Off`);
       }
       this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
     }
