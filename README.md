@@ -114,7 +114,7 @@ When enabled it will create a dummy temperature sensor which will display the te
 
 * `exposeEcoNavi` (boolean): When enabled it will create a switch to control Eco Navi.
 
-* `exposeEcoMode` (boolean): When enabled it will create a switch to control Eco Mode.
+* `exposeEcoFunction` (boolean): When enabled it will create a switch to control Eco Function.
  
 * `exposeDryMode` (boolean): When enabled it will create a switch to control Dry Mode. Note: disabling this switch will set Auto Mode.
 
@@ -300,4 +300,4 @@ You can also combine several commands into one:
 - Function to check latest Google Play app version. Thanks to @nanos !
 - Dependency updates.
 
-In addition to the version 4.0.0: versions from 4.0.1 to 4.0.3 fixes NPM issues, version 4.0.4 fix tefresh token timer, version 4.0.5 adds Eco Mode switch.
+In addition to the version 4.0.0: versions from 4.0.1 to 4.0.3 fixes NPM issues, version 4.0.4 fix tefresh token timer, version 4.0.5 adds Eco Function switch.
