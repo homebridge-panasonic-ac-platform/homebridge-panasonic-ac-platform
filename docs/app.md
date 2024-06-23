@@ -5,7 +5,7 @@
 - decompile it online: [https://www.decompiler.com](https://www.decompiler.com)
 - download and unzip decompiled files or browse online
 - value for `client_id` is in `/sources/com/panasonic/ACCsmart/ui/login/auth0/Auth0LoginActivity.java` (use search)
-- AUTH_0_CLIENT is a base64 encoded of what SDK and version was used, decoded it is: `{"name":"auth0.js-ulp","version":"9.23.2"}`
+- AUTH_0_CLIENT is a base64 encoded of what SDK and version was used, decoded it is: `{"name":"Auth0.Android","env":{"android":"30"},"version":"2.9.3"}`
 
 ## Intercept the traffic from the app to the api server. 
 Author of this manual: [@heldchen](https://github.com/heldchen). Tkanks!
