@@ -221,9 +221,9 @@
 							"type": "boolean",
 							"default": false
 						},
-						"exposeEcoMode": {
-							"title": "Expose Eco Mode",
-							"description": "When enabled it will create a switch to control Eco Mode.",
+						"exposeEcoFunction": {
+							"title": "Expose Eco Function",
+							"description": "When enabled it will create a switch to control Eco Function.",
 							"type": "boolean",
 							"default": false
 						},
@@ -333,7 +333,7 @@
 								"devices[].exposeNanoe",
 								"devices[].exposeInsideCleaning",
 								"devices[].exposeEcoNavi",
-								"devices[].exposeEcoMode",
+								"devices[].exposeEcoFunction",
 								"devices[].exposeDryMode",
 								"devices[].exposeFanMode",
 								"devices[].exposeQuietMode",
