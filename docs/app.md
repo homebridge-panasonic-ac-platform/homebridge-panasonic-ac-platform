@@ -6,15 +6,17 @@
 - download and unzip decompiled files or browse online
 
 #### APP_CLIENT_ID
-- value for `client_id` is in `/sources/com/panasonic/ACCsmart/ui/login/auth0/Auth0LoginActivity.java` (use search)
+- `client_id` is in `/sources/com/panasonic/ACCsmart/ui/login/auth0/Auth0LoginActivity.java` (use search)
 
 #### AUTH_0_CLIENT
-- AUTH_0_CLIENT is a base64 encoded of what SDK and version was used, decoded it is: `{"name":"Auth0.Android","env":{"android":"30"},"version":"2.9.3"}`
-- `SDK` can be found in `/resources/AndroidManifest.xml` , something like: `android:maxSdkVersion="30"`
-- `version` can be found in `/sources/t/a.java` , something like: `this("Auth0.Android", "2.9.3");`
+- `AUTH_0_CLIENT` is a base64 encoded `{"name":"Auth0.Android","env":{"android":"30"},"version":"2.9.3"}` where: 
+    - `SDK` (here: "30") can be found in `/resources/AndroidManifest.xml` , something like: `android:maxSdkVersion="30"`
+    - `version` (here: "2.9.3") can be found in `/sources/t/a.java` , something like: `this("Auth0.Android", "2.9.3");`
 
 #### REDIRECT_URI
-- can be found in `/resources/AndroidManifest.xml`, it is: `scheme+:+host+pathPrefix`, so: `<data android:scheme="panasonic-iot-cfc" android:host="authglb.digital.panasonic.com" android:pathPrefix="/android/com.panasonic.ACCsmart/callback"/>` will be: `panasonic-iot-cfc://authglb.digital.panasonic.com/android/com.panasonic.ACCsmart/callback`
+- `REDIRECT_URI` can be found in `/resources/AndroidManifest.xml`,
+    - it is: `scheme+:+host+pathPrefix`,
+    - so: `<data android:scheme="panasonic-iot-cfc" android:host="authglb.digital.panasonic.com" android:pathPrefix="/android/com.panasonic.ACCsmart/callback"/>` will be: `panasonic-iot-cfc://authglb.digital.panasonic.com/android/com.panasonic.ACCsmart/callback`
 
 ## Intercept the traffic from the app to the api server. 
 Author of this manual: [@heldchen](https://github.com/heldchen). Tkanks!
