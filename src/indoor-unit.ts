@@ -28,6 +28,7 @@ export default class IndoorUnitAccessory {
   exposeNanoe;
   exposeInsideCleaning;
   exposeEcoNavi;
+  exposeEcoFunction;
   exposeDryMode;
   exposeFanMode;
   exposeQuietMode;
@@ -199,6 +200,23 @@ export default class IndoorUnitAccessory {
       if (removeEcoNavi) {
         this.accessory.removeService(removeEcoNavi);
         this.platform.log.debug(`${this.accessory.displayName}: remove eco navi switch`);
+      }
+    }
+
+    // Eco Function
+    if (this.devConfig?.exposeEcoFunction) {
+      this.exposeEcoFunction = this.accessory.getService(this.accessory.displayName + ' (eco function)')
+        || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (eco function)', 'exposeEcoFunction');
+      this.exposeEcoFunction.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (eco function)');
+      this.exposeEcoFunction
+        .getCharacteristic(this.platform.Characteristic.On)
+        .onSet(this.setEcoFunction.bind(this));
+      this.platform.log.debug(`${this.accessory.displayName}: add eco function switch`);
+    } else {
+      const removeEcoFunction = this.accessory.getService(this.accessory.displayName + ' (eco function)');
+      if (removeEcoFunction) {
+        this.accessory.removeService(removeEcoFunction);
+        this.platform.log.debug(`${this.accessory.displayName}: remove eco function switch`);
       }
     }
 
@@ -574,6 +592,15 @@ export default class IndoorUnitAccessory {
         }
       }
 
+      // Eco Function
+      if (this.exposeEcoFunction && this.deviceStatusFull?.ecoFunction) {
+        if (this.deviceStatus.ecoFunctionData === 2) {
+          this.exposeEcoFunction.updateCharacteristic(this.platform.Characteristic.On, true);
+        } else {
+          this.exposeEcoFunction.updateCharacteristic(this.platform.Characteristic.On, false);
+        }
+      }
+
       // Dry Mode
       if (this.exposeDryMode && this.deviceStatusFull?.dryMode) {
         if (this.deviceStatus.operationMode === 1) {
@@ -891,7 +918,7 @@ export default class IndoorUnitAccessory {
     }
   }
 
-  // set Nanoe
+  // set Eco Navi
   async setEcoNavi(value) {
     if (this.deviceStatusFull?.ecoNavi) {
       const parameters: ComfortCloudDeviceUpdatePayload = {};
@@ -901,6 +928,21 @@ export default class IndoorUnitAccessory {
       } else {
         parameters.ecoNavi = 1;
         this.platform.log.debug(`${this.accessory.displayName}: Eco Navi Off`);
+      }
+      this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
+    }
+  }
+
+  // set Eco Function
+  async setEcoFunction(value) {
+    if (this.deviceStatusFull?.ecoFunction) {
+      const parameters: ComfortCloudDeviceUpdatePayload = {};
+      if (value) {
+        parameters.ecoFunctionData = 2;
+        this.platform.log.debug(`${this.accessory.displayName}: Eco Function On`);
+      } else {
+        parameters.ecoFunctionData = 1;
+        this.platform.log.debug(`${this.accessory.displayName}: Eco Function Off`);
       }
       this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
     }
