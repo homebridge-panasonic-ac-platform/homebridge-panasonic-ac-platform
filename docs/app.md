@@ -1,11 +1,17 @@
 # Panasonic Comfort Cloud app (for Android)
 
-## Get hardcoded app values (APP_CLIENT_ID and AUTH_0_CLIENT)
+## Get hardcoded app values (APP_CLIENT_ID and AUTH_0_CLIENT) (v.1.20.0 example)
 - get com-panasonic-accsmart-v1.20.0.apk, E.G. from [https://apkpure.com](https://apkpure.com)
 - decompile it online: [https://www.decompiler.com](https://www.decompiler.com)
 - download and unzip decompiled files or browse online
+
+#### APP_CLIENT_ID
 - value for `client_id` is in `/sources/com/panasonic/ACCsmart/ui/login/auth0/Auth0LoginActivity.java` (use search)
+
+#### AUTH_0_CLIENT
 - AUTH_0_CLIENT is a base64 encoded of what SDK and version was used, decoded it is: `{"name":"Auth0.Android","env":{"android":"30"},"version":"2.9.3"}`
+- `SDK` can be found in `/resources/AndroidManifest.xml` , something like: `android:maxSdkVersion="30"`
+- `version` can be found in `/sources/t/a.java` , something like: `this("Auth0.Android", "2.9.3");`
 
 ## Intercept the traffic from the app to the api server. 
 Author of this manual: [@heldchen](https://github.com/heldchen). Tkanks!
