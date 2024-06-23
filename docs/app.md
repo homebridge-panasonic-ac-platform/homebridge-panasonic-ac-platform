@@ -1,6 +1,6 @@
 # Panasonic Comfort Cloud app (for Android)
 
-## Get hardcoded app values (like client id and auth0
+## Get hardcoded app values (APP_CLIENT_ID and AUTH_0_CLIENT)
 - get com-panasonic-accsmart-v1.20.0.apk, E.G. from [https://apkpure.com](https://apkpure.com)
 - decompile it online: [https://www.decompiler.com](https://www.decompiler.com)
 - download and unzip decompiled files or browse online
