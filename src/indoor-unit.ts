@@ -917,7 +917,6 @@ export default class IndoorUnitAccessory {
 
   // set Power (on/off)
   async setPower(value) {
-
     const parameters: ComfortCloudDeviceUpdatePayload = {};
     if (value) {
       parameters.operate = 1;
@@ -927,129 +926,112 @@ export default class IndoorUnitAccessory {
       this.platform.log.debug(`${this.accessory.displayName}: Nanoe Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
-
   }
 
   // set Nanoe
   async setNanoe(value) {
-    if (this.deviceStatusFull?.nanoe) {
-      const parameters: ComfortCloudDeviceUpdatePayload = {};
-      if (value) {
-        parameters.nanoe = 2;
-        this.platform.log.debug(`${this.accessory.displayName}: Nanoe On`);
-      } else {
-        parameters.nanoe = 1;
-        this.platform.log.debug(`${this.accessory.displayName}: Nanoe Off`);
-      }
-      this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
+    const parameters: ComfortCloudDeviceUpdatePayload = {};
+    if (value) {
+      parameters.nanoe = 2;
+      this.platform.log.debug(`${this.accessory.displayName}: Nanoe On`);
+    } else {
+      parameters.nanoe = 1;
+      this.platform.log.debug(`${this.accessory.displayName}: Nanoe Off`);
     }
+    this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
 
   // set Inside Cleaning
   async setInsideCleaning(value) {
-    if (this.deviceStatusFull?.insideCleaning) {
-      const parameters: ComfortCloudDeviceUpdatePayload = {};
-      if (value) {
-        parameters.insideCleaning = 2;
-        this.platform.log.debug(`${this.accessory.displayName}: Inside Cleaning On`);
-      } else {
-        parameters.insideCleaning = 1;
-        this.platform.log.debug(`${this.accessory.displayName}: Inside Cleaning Off`);
-      }
-      this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
+    const parameters: ComfortCloudDeviceUpdatePayload = {};
+    if (value) {
+      parameters.insideCleaning = 2;
+      this.platform.log.debug(`${this.accessory.displayName}: Inside Cleaning On`);
+    } else {
+      parameters.insideCleaning = 1;
+      this.platform.log.debug(`${this.accessory.displayName}: Inside Cleaning Off`);
     }
+    this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
 
   // set Eco Navi
   async setEcoNavi(value) {
-    if (this.deviceStatusFull?.ecoNavi) {
-      const parameters: ComfortCloudDeviceUpdatePayload = {};
-      if (value) {
-        parameters.ecoNavi = 2;
-        this.platform.log.debug(`${this.accessory.displayName}: Eco Navi On`);
-      } else {
-        parameters.ecoNavi = 1;
-        this.platform.log.debug(`${this.accessory.displayName}: Eco Navi Off`);
-      }
-      this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
+    const parameters: ComfortCloudDeviceUpdatePayload = {};
+    if (value) {
+      parameters.ecoNavi = 2;
+      this.platform.log.debug(`${this.accessory.displayName}: Eco Navi On`);
+    } else {
+      parameters.ecoNavi = 1;
+      this.platform.log.debug(`${this.accessory.displayName}: Eco Navi Off`);
     }
+    this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
 
   // set Eco Function
   async setEcoFunction(value) {
-    if (this.deviceStatusFull?.ecoFunction) {
-      const parameters: ComfortCloudDeviceUpdatePayload = {};
-      if (value) {
-        parameters.ecoFunctionData = 2;
-        this.platform.log.debug(`${this.accessory.displayName}: Eco Function On`);
-      } else {
-        parameters.ecoFunctionData = 1;
-        this.platform.log.debug(`${this.accessory.displayName}: Eco Function Off`);
-      }
-      this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
+    const parameters: ComfortCloudDeviceUpdatePayload = {};
+    if (value) {
+      parameters.ecoFunctionData = 2;
+      this.platform.log.debug(`${this.accessory.displayName}: Eco Function On`);
+    } else {
+      parameters.ecoFunctionData = 1;
+      this.platform.log.debug(`${this.accessory.displayName}: Eco Function Off`);
     }
+    this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
 
   // set Dry Mode
   async setDryMode(value) {
-    if (this.deviceStatusFull?.dryMode) {
-      const parameters: ComfortCloudDeviceUpdatePayload = {};
-      if (value) {
-        parameters.operate = 1;
-        parameters.operationMode = 1;
-        this.platform.log.debug(`${this.accessory.displayName}: Dry Mode On`);
-      } else {
-        parameters.operate = 0;
-        this.platform.log.debug(`${this.accessory.displayName}: Dry Mode Off`);
-      }
-      this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
+    const parameters: ComfortCloudDeviceUpdatePayload = {};
+    if (value) {
+      parameters.operate = 1;
+      parameters.operationMode = 1;
+      this.platform.log.debug(`${this.accessory.displayName}: Dry Mode On`);
+    } else {
+      parameters.operate = 0;
+      this.platform.log.debug(`${this.accessory.displayName}: Dry Mode Off`);
     }
+    this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
 
   // set Fan Mode
   async setFanMode(value) {
-    if (this.deviceStatusFull?.fanMode) {
-      const parameters: ComfortCloudDeviceUpdatePayload = {};
-      if (value) {
-        parameters.operate = 1;
-        parameters.operationMode = 4;
-        this.platform.log.debug(`${this.accessory.displayName}: Fan Mode On`);
-      } else {
-        parameters.operate = 0;
-        this.platform.log.debug(`${this.accessory.displayName}: Fan Mode Off`);
-      }
-      this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
+    const parameters: ComfortCloudDeviceUpdatePayload = {};
+    if (value) {
+      parameters.operate = 1;
+      parameters.operationMode = 4;
+      this.platform.log.debug(`${this.accessory.displayName}: Fan Mode On`);
+    } else {
+      parameters.operate = 0;
+      this.platform.log.debug(`${this.accessory.displayName}: Fan Mode Off`);
     }
+    this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
 
   // set Quiet Mode
   async setQuietMode(value) {
-    if (this.deviceStatusFull?.quietMode) {
-      const parameters: ComfortCloudDeviceUpdatePayload = {};
-      if (value) {
-        parameters.ecoMode = ComfortCloudEcoMode.Quiet;
-        this.platform.log.debug(`${this.accessory.displayName}: Quiet Mode On`);
-      } else {
-        parameters.ecoMode = 0;
-        this.platform.log.debug(`${this.accessory.displayName}: Quiet Mode Off`);
-      }
-      this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
+    const parameters: ComfortCloudDeviceUpdatePayload = {};
+    if (value) {
+      parameters.ecoMode = ComfortCloudEcoMode.Quiet;
+      this.platform.log.debug(`${this.accessory.displayName}: Quiet Mode On`);
+    } else {
+      parameters.ecoMode = 0;
+      this.platform.log.debug(`${this.accessory.displayName}: Quiet Mode Off`);
     }
+    this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
 
   // set Powerful Mode
   async setPowerfulMode(value) {
-    if (this.deviceStatusFull?.powerfulMode) {
-      const parameters: ComfortCloudDeviceUpdatePayload = {};
-      if (value) {
-        parameters.ecoMode = ComfortCloudEcoMode.Powerful;
-        this.platform.log.debug(`${this.accessory.displayName}: Powerful Mode On`);
-      } else {
-        parameters.ecoMode = 0;
-        this.platform.log.debug(`${this.accessory.displayName}: Powerful Mode Off`);
-      }
-      this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
+    const parameters: ComfortCloudDeviceUpdatePayload = {};
+    if (value) {
+      parameters.ecoMode = ComfortCloudEcoMode.Powerful;
+      this.platform.log.debug(`${this.accessory.displayName}: Powerful Mode On`);
+    } else {
+      parameters.ecoMode = 0;
+      this.platform.log.debug(`${this.accessory.displayName}: Powerful Mode Off`);
     }
+    this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
 
   // set Swing Up Down
@@ -1078,28 +1060,26 @@ export default class IndoorUnitAccessory {
 
   // set Swing Left Right
   async setSwingLeftRight(value) {
-    if (this.deviceStatusFull?.airSwingLR) {
-      const parameters: ComfortCloudDeviceUpdatePayload = {};
-      if (value) {
-        // if Swing Up Down is enabled than set Swing Auto (Up Down and Left Right)
-        if (this.deviceStatus.fanAutoMode === 2) {
-          parameters.fanAutoMode = 0;
-        } else {
-          parameters.fanAutoMode = 3;
-        }
-        parameters.airSwingLR = this.swingModeLeftRightToComfortCloudPayloadValue(
-          this.platform.platformConfig.swingModeDefaultPositionLeftRight);
-        this.platform.log.debug(`${this.accessory.displayName}: Swing Left Right On`);
+    const parameters: ComfortCloudDeviceUpdatePayload = {};
+    if (value) {
+      // if Swing Up Down is enabled than set Swing Auto (Up Down and Left Right)
+      if (this.deviceStatus.fanAutoMode === 2) {
+        parameters.fanAutoMode = 0;
       } else {
-        if (this.deviceStatus.fanAutoMode === 0) {
-          parameters.fanAutoMode = 2;
-        } else {
-          parameters.fanAutoMode = 1;
-        }
-        this.platform.log.debug(`${this.accessory.displayName}: Swing Left Right Off`);
+        parameters.fanAutoMode = 3;
       }
-      this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
+      parameters.airSwingLR = this.swingModeLeftRightToComfortCloudPayloadValue(
+        this.platform.platformConfig.swingModeDefaultPositionLeftRight);
+      this.platform.log.debug(`${this.accessory.displayName}: Swing Left Right On`);
+    } else {
+      if (this.deviceStatus.fanAutoMode === 0) {
+        parameters.fanAutoMode = 2;
+      } else {
+        parameters.fanAutoMode = 1;
+      }
+      this.platform.log.debug(`${this.accessory.displayName}: Swing Left Right Off`);
     }
+    this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
 
   // set Fan speed
