@@ -295,6 +295,7 @@ You can also combine several commands into one:
 
 - Added Power (on/off) switch.
 - Improved behavior Fan Mode and Dry Mode switch - now when switch will be turning on it will turn on AC and set desired mode, and when switch will be turning off it will turn off AC.
+- Improved mechanism for detecting functions available for a given device.
 - Fixed error handling.
 - Update App Version api to 1.21.0.
 - Dependency updates.
