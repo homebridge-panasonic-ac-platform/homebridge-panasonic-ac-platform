@@ -309,4 +309,4 @@ You can also combine several commands into one:
 - Function to check latest Google Play app version. Thanks to @nanos !
 - Dependency updates.
 
-In addition to the version 4.0.0: versions from 4.0.1 to 4.0.3 fixes NPM issues, version 4.0.4 fix refresh token timer, version 4.0.5 adds Eco Function switch, version 4.0.6 adds Power (on/off) switch.
+In addition to the version 4.0.0: versions from 4.0.1 to 4.0.3 fixes NPM issues, version 4.0.4 fix refresh token timer, version 4.0.5 adds Eco Function switch.
