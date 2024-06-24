@@ -25,6 +25,7 @@ export default class IndoorUnitAccessory {
   deviceStatusFull;
   deviceStatus;
   exposeOutdoorTemp;
+  exposePower;
   exposeNanoe;
   exposeInsideCleaning;
   exposeEcoNavi;
@@ -149,6 +150,23 @@ export default class IndoorUnitAccessory {
       if (removeOutdoorTemp) {
         this.accessory.removeService(removeOutdoorTemp);
         this.platform.log.debug(`${this.accessory.displayName}: remove outdoor temp sensor`);
+      }
+    }
+
+    // Power (on/off)
+    if (this.devConfig?.exposePower) {
+      this.exposePower = this.accessory.getService(this.accessory.displayName + ' (power)')
+        || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (power)', 'exposePower');
+      this.exposePower.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (power)');
+      this.exposePower
+        .getCharacteristic(this.platform.Characteristic.On)
+        .onSet(this.setPower.bind(this));
+      this.platform.log.debug(`${this.accessory.displayName}: add power (on/off) switch`);
+    } else {
+      const removePower = this.accessory.getService(this.accessory.displayName + ' (power)');
+      if (removePower) {
+        this.accessory.removeService(removePower);
+        this.platform.log.debug(`${this.accessory.displayName}: remove power (on/off) switch`);
       }
     }
 
@@ -565,6 +583,15 @@ export default class IndoorUnitAccessory {
           .updateValue(this.platform.Characteristic.SwingMode.SWING_ENABLED);
       }
 
+      // Power (on/off)
+      if (this.exposePower) {
+        if (this.deviceStatus.operate === 1) {
+          this.exposePower.updateCharacteristic(this.platform.Characteristic.On, true);
+        } else {
+          this.exposePower.updateCharacteristic(this.platform.Characteristic.On, false);
+        }
+      }
+
       // Nanoe
       if (this.exposeNanoe && this.deviceStatusFull?.nanoe) {
         if (this.deviceStatus.nanoe === 2) {
@@ -888,6 +915,21 @@ export default class IndoorUnitAccessory {
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
 
+  // set Power (on/off)
+  async setPower(value) {
+
+    const parameters: ComfortCloudDeviceUpdatePayload = {};
+    if (value) {
+      parameters.operate = 1;
+      this.platform.log.debug(`${this.accessory.displayName}: Nanoe On`);
+    } else {
+      parameters.operate = 0;
+      this.platform.log.debug(`${this.accessory.displayName}: Nanoe Off`);
+    }
+    this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
+  
+  }
+  
   // set Nanoe
   async setNanoe(value) {
     if (this.deviceStatusFull?.nanoe) {
