@@ -593,7 +593,7 @@ export default class IndoorUnitAccessory {
       }
 
       // Nanoe
-      if (this.exposeNanoe && this.deviceStatusFull?.nanoe) {
+      if (this.exposeNanoe) {
         if (this.deviceStatus.nanoe === 2) {
           this.exposeNanoe.updateCharacteristic(this.platform.Characteristic.On, true);
         } else {
@@ -602,7 +602,7 @@ export default class IndoorUnitAccessory {
       }
 
       // Inside Cleaning
-      if (this.exposeInsideCleaning && this.deviceStatusFull?.insideCleaning) {
+      if (this.exposeInsideCleaning) {
         if (this.deviceStatus.insideCleaning === 2) {
           this.exposeInsideCleaning.updateCharacteristic(this.platform.Characteristic.On, true);
         } else {
@@ -611,7 +611,7 @@ export default class IndoorUnitAccessory {
       }
 
       // Eco Navi
-      if (this.exposeEcoNavi && this.deviceStatusFull?.ecoNavi) {
+      if (this.exposeEcoNavi) {
         if (this.deviceStatus.ecoNavi === 2) {
           this.exposeEcoNavi.updateCharacteristic(this.platform.Characteristic.On, true);
         } else {
@@ -620,7 +620,7 @@ export default class IndoorUnitAccessory {
       }
 
       // Eco Function
-      if (this.exposeEcoFunction && this.deviceStatusFull?.ecoFunction) {
+      if (this.exposeEcoFunction) {
         if (this.deviceStatus.ecoFunctionData === 2) {
           this.exposeEcoFunction.updateCharacteristic(this.platform.Characteristic.On, true);
         } else {
@@ -629,7 +629,7 @@ export default class IndoorUnitAccessory {
       }
 
       // Dry Mode
-      if (this.exposeDryMode && this.deviceStatusFull?.dryMode) {
+      if (this.exposeDryMode) {
         if (this.deviceStatus.operate === 1 && this.deviceStatus.operationMode === 1) {
           this.exposeDryMode.updateCharacteristic(this.platform.Characteristic.On, true);
         } else {
@@ -638,7 +638,7 @@ export default class IndoorUnitAccessory {
       }
 
       // Fan Mode
-      if (this.exposeFanMode && this.deviceStatusFull?.fanMode) {
+      if (this.exposeFanMode) {
         if (this.deviceStatus.operate === 1 && this.deviceStatus.operationMode === 4) {
           this.exposeFanMode.updateCharacteristic(this.platform.Characteristic.On, true);
         } else {
@@ -647,7 +647,7 @@ export default class IndoorUnitAccessory {
       }
 
       // Quiet Mode (speed)
-      if (this.exposeQuietMode && this.deviceStatusFull?.quietMode) {
+      if (this.exposeQuietMode) {
         if (this.deviceStatus.ecoMode === ComfortCloudEcoMode.Quiet) {
           this.exposeQuietMode.updateCharacteristic(this.platform.Characteristic.On, true);
         } else {
@@ -656,7 +656,7 @@ export default class IndoorUnitAccessory {
       }
 
       // Powerful Mode (speed)
-      if (this.exposePowerfulMode && this.deviceStatusFull?.powerfulMode) {
+      if (this.exposePowerfulMode) {
         if (this.deviceStatus.ecoMode === ComfortCloudEcoMode.Powerful) {
           this.exposePowerfulMode.updateCharacteristic(this.platform.Characteristic.On, true);
         } else {
@@ -674,7 +674,7 @@ export default class IndoorUnitAccessory {
       }
 
       // Swing Left Right
-      if (this.exposeSwingLeftRight && this.deviceStatusFull?.airSwingLR) {
+      if (this.exposeSwingLeftRight) {
         if (this.deviceStatus.fanAutoMode === 0 || this.deviceStatus.fanAutoMode === 3 ) {
           this.exposeSwingLeftRight.updateCharacteristic(this.platform.Characteristic.On, true);
         } else {
