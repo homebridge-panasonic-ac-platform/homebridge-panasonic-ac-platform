@@ -496,7 +496,7 @@ export default class ComfortCloudApi {
    * @returns
    */
   setDeviceStatus(deviceGuid: string, parameters: ComfortCloudDeviceUpdatePayload) {
-    this.log.debug(`Comfort Cloud: sendUpdate() for '${deviceGuid}'`);
+    this.log.debug(`Comfort Cloud: setDeviceStatus() for '${deviceGuid}'`);
     this.log.debug(JSON.stringify(parameters, null, 2));
 
     if (!this.token) {
