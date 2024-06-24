@@ -603,7 +603,7 @@ export default class IndoorUnitAccessory {
 
       // Dry Mode
       if (this.exposeDryMode && this.deviceStatusFull?.dryMode) {
-        if (this.deviceStatus.operationMode === 1) {
+        if (this.deviceStatus.operate === 1 && this.deviceStatus.operationMode === 1) {
           this.exposeDryMode.updateCharacteristic(this.platform.Characteristic.On, true);
         } else {
           this.exposeDryMode.updateCharacteristic(this.platform.Characteristic.On, false);
@@ -612,7 +612,7 @@ export default class IndoorUnitAccessory {
 
       // Fan Mode
       if (this.exposeFanMode && this.deviceStatusFull?.fanMode) {
-        if (this.deviceStatus.operationMode === 4) {
+        if (this.deviceStatus.operate === 1 && this.deviceStatus.operationMode === 4) {
           this.exposeFanMode.updateCharacteristic(this.platform.Characteristic.On, true);
         } else {
           this.exposeFanMode.updateCharacteristic(this.platform.Characteristic.On, false);
@@ -953,10 +953,11 @@ export default class IndoorUnitAccessory {
     if (this.deviceStatusFull?.dryMode) {
       const parameters: ComfortCloudDeviceUpdatePayload = {};
       if (value) {
+        parameters.operate = 1;
         parameters.operationMode = 1;
         this.platform.log.debug(`${this.accessory.displayName}: Dry Mode On`);
       } else {
-        parameters.operationMode = 0;
+        parameters.operate = 0;
         this.platform.log.debug(`${this.accessory.displayName}: Dry Mode Off`);
       }
       this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
@@ -968,10 +969,11 @@ export default class IndoorUnitAccessory {
     if (this.deviceStatusFull?.fanMode) {
       const parameters: ComfortCloudDeviceUpdatePayload = {};
       if (value) {
+        parameters.operate = 1;
         parameters.operationMode = 4;
         this.platform.log.debug(`${this.accessory.displayName}: Fan Mode On`);
       } else {
-        parameters.operationMode = 0;
+        parameters.operate = 0;
         this.platform.log.debug(`${this.accessory.displayName}: Fan Mode Off`);
       }
       this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
