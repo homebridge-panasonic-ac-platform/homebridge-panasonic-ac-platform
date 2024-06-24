@@ -927,9 +927,9 @@ export default class IndoorUnitAccessory {
       this.platform.log.debug(`${this.accessory.displayName}: Nanoe Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
-  
+
   }
-  
+
   // set Nanoe
   async setNanoe(value) {
     if (this.deviceStatusFull?.nanoe) {
