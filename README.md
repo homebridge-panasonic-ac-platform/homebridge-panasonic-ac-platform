@@ -294,10 +294,10 @@ You can also combine several commands into one:
 #### Version 4.1.0
 
 - Added Power (on/off) switch.
-- Improved behavior Fan Mode and Dry Mode switch - now when switch will be turning on it will turn on AC and set desired mode, and when switch will be turning off it will turn off AC.
+- Improved behavior of Fan Mode and Dry Mode switch, now when switch will be turning on it will turn on device and set desired mode, and when switch will be turning off it will turn off device.
 - Improved mechanism for detecting functions available for a given device.
 - Fixed error handling.
-- Update App Version api to 1.21.0.
+- Update App Version to 1.21.0.
 - Dependency updates.
 
 #### Version 4.0.0
