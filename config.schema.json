@@ -229,13 +229,13 @@
 						},
 						"exposeDryMode": {
 							"title": "Expose Dry Mode",
-							"description": "When enabled it will create a switch to control Dry Mode. Note: disabling this switch will set Auto Mode.",
+							"description": "When enabled it will create a switch to control Dry Mode.",
 							"type": "boolean",
 							"default": false
 						},
 						"exposeFanMode": {
 							"title": "Expose Fan Mode",
-							"description": "When enabled it will create a switch to control Fan Mode. Note: disabling this switch will set Auto Mode.",
+							"description": "When enabled it will create a switch to control Fan Mode.",
 							"type": "boolean",
 							"default": false
 						},
