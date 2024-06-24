@@ -144,7 +144,7 @@ export default class ComfortCloudApi {
     })
       .then((response) => {
         this.log.debug('Comfort Cloud Login - Step 2 - Success');
-        this.log.debug(response.data);
+        //this.log.debug(response.data);
         this.csrf = (response.headers['set-cookie'] as string[])
           .find(cookie => cookie.includes('_csrf'))
           ?.match(new RegExp('^_csrf=(.+?);'))
