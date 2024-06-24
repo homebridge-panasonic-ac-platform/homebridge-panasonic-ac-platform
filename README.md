@@ -108,6 +108,8 @@ The default heating temperature range is 16-30°C. Some Panasonic ACs have an ad
 * `exposeOutdoorTemp` (boolean):
 When enabled it will create a dummy temperature sensor which will display the temperature from outdoor unit. This can be used for monitoring or automation purposes. Note: It may be required for the device to be turned on to retrieve the current temperature from the outdoor unit.
 
+* `exposePower` (boolean): When enabled it will create a switch to control Power (on/off).
+
 * `exposeNanoe` (boolean): When enabled it will create a switch to control Nanoe.
 
 * `exposeInsideCleaning` (boolean): When enabled it will create a switch to control Inside Cleaning.
