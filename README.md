@@ -291,6 +291,13 @@ You can also combine several commands into one:
 
 ## Changelog
 
+#### Version 4.1.0
+
+- Added Power (on/off) switch
+- Improved behavior Fan Mode and Dry Mode switch - now when switch will be turning on it will turn on AC and set desired mode, and when switch will be turning off it will turn off AC.
+- Fixed error handling.
+- Dependency updates.
+
 #### Version 4.0.0
 
 - Completely new Comfort Cloud API. All versions below 4.0.0 will not work. Thank you @nanos and @heldchen for help!
