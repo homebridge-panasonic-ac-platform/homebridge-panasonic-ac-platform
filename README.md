@@ -116,9 +116,9 @@ When enabled it will create a dummy temperature sensor which will display the te
 
 * `exposeEcoFunction` (boolean): When enabled it will create a switch to control Eco Function.
  
-* `exposeDryMode` (boolean): When enabled it will create a switch to control Dry Mode. Note: disabling this switch will set Auto Mode.
+* `exposeDryMode` (boolean): When enabled it will create a switch to control Dry Mode.
 
-* `exposeFanMode` (boolean): When enabled it will create a switch to control Fan Mode. Note: disabling this switch will set Auto Mode.
+* `exposeFanMode` (boolean): When enabled it will create a switch to control Fan Mode.
 
 * `exposeQuietMode` (boolean): When enabled it will create a switch to control Quiet Mode. Quiet Mode can also be enabled by setting the speed slider (rotation) to 1.
 
