@@ -1,7 +1,7 @@
 # Panasonic Comfort Cloud app (for Android)
 
 ## Get hardcoded app values (APP_CLIENT_ID, AUTH_0_CLIENT, REDIRECT_URI) (v.1.20.0 example)
-- get com-panasonic-accsmart-v1.20.0.apk, E.G. from [https://apkpure.com](https://apkpure.com) or use [http://apps.evozi.com/apk-downloader/](http://apps.evozi.com/apk-downloader/) to grab apk from Google Play store.
+- get com-panasonic-accsmart-v1.20.0.apk, E.G. from [https://apkpure.com](https://apkpure.com) or use [https://apkcombo.com/pl/downloader](https://apkcombo.com/pl/downloader) to grab apk from Google Play store.
 - decompile it online: [https://www.decompiler.com](https://www.decompiler.com)
 - download and unzip decompiled files or browse online
 
