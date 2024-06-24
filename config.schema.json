@@ -203,9 +203,9 @@
 							"type": "boolean",
 							"default": false
 						},
-						"exposeActive": {
-							"title": "Expose Active (On/Off)",
-							"description": "When enabled it will create a switch to control Active (On/Off).",
+						"exposePower": {
+							"title": "Expose Power (On/Off)",
+							"description": "When enabled it will create a switch to control Power (On/Off).",
 							"type": "boolean",
 							"default": false
 						},
@@ -336,7 +336,7 @@
 							"expanded": false,
 							"items": [
 								"devices[].exposeOutdoorTemp",
-								"devices[].exposeActive",
+								"devices[].exposePower",
 								"devices[].exposeNanoe",
 								"devices[].exposeInsideCleaning",
 								"devices[].exposeEcoNavi",
