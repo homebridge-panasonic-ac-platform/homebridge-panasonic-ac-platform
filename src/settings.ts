@@ -8,7 +8,9 @@ export const PLATFORM_NAME = 'Panasonic AC Platform';
 // CLIENT_ID and APP_VERSION are related - for each APP VERSION there is a different CLIENT_ID.
 // CLIENT_ID and AUTH0CLIENT are hardcoded in Pansonic Comfort Cloud app(iOS / Android).
 // Manual how to check APP_CLIENT_ID and AUTH_0_CLIENT: /docs/app.md
-export const APP_VERSION = '1.20.0';
+
+// 1.21.0
+export const APP_VERSION = '1.21.0';
 export const APP_CLIENT_ID = 'Xmy6xIYIitMxngjB2rHvlm6HSDNnaMJx';
 export const AUTH_0_CLIENT = 'eyJuYW1lIjoiQXV0aDAuQW5kcm9pZCIsImVudiI6eyJhbmRyb2lkIjoiMzAifSwidmVyc2lvbiI6IjIuOS4zIn0=';
 export const REDIRECT_URI = 'panasonic-iot-cfc://authglb.digital.panasonic.com/android/com.panasonic.ACCsmart/callback';
