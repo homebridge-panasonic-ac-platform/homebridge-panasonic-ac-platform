@@ -536,7 +536,7 @@ export default class ComfortCloudApi {
                        +' and turn it on again) and Internet router and Homebridge.');
         this.log.error('Turn on debug for more info.');
         this.handleNetworkRequestError(error);
-        return Promise.reject('Comfort Cloud - setDeviceStatus(): Error');
+        //return Promise.reject('Comfort Cloud - setDeviceStatus(): Error');
       });
   }
 
