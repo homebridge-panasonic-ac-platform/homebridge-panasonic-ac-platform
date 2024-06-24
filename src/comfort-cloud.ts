@@ -500,12 +500,14 @@ export default class ComfortCloudApi {
     this.log.debug(JSON.stringify(parameters, null, 2));
 
     if (!this.token) {
-      return Promise.reject('No auth token available (login probably failed). '
+      this.log.error('No auth token available (login probably failed). '
         + 'Check your credentials and restart Homebridge.');
+      return;
     }
 
     if (!deviceGuid) {
-      return Promise.reject('Cannot set device status for undefined deviceGuid.');
+      this.log.error('Cannot set device status for undefined deviceGuid.');
+      return;
     }
 
     if (this.config.suppressOutgoingUpdates) {
@@ -536,7 +538,6 @@ export default class ComfortCloudApi {
                        +' and turn it on again) and Internet router and Homebridge.');
         this.log.error('Turn on debug for more info.');
         this.handleNetworkRequestError(error);
-        //return Promise.reject('Comfort Cloud - setDeviceStatus(): Error');
       });
   }
 
