@@ -203,6 +203,12 @@
 							"type": "boolean",
 							"default": false
 						},
+						"exposePower": {
+							"title": "Expose Power (On/Off)",
+							"description": "When enabled it will create a switch to control Power (On/Off).",
+							"type": "boolean",
+							"default": false
+						},
 						"exposeNanoe": {
 							"title": "Expose Nanoe",
 							"description": "When enabled it will create a switch to control Nanoe.",
@@ -330,6 +336,7 @@
 							"expanded": false,
 							"items": [
 								"devices[].exposeOutdoorTemp",
+								"devices[].exposePower",
 								"devices[].exposeNanoe",
 								"devices[].exposeInsideCleaning",
 								"devices[].exposeEcoNavi",

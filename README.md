@@ -108,6 +108,8 @@ The default heating temperature range is 16-30°C. Some Panasonic ACs have an ad
 * `exposeOutdoorTemp` (boolean):
 When enabled it will create a dummy temperature sensor which will display the temperature from outdoor unit. This can be used for monitoring or automation purposes. Note: It may be required for the device to be turned on to retrieve the current temperature from the outdoor unit.
 
+* `exposePower` (boolean): When enabled it will create a switch to control Power (on/off).
+
 * `exposeNanoe` (boolean): When enabled it will create a switch to control Nanoe.
 
 * `exposeInsideCleaning` (boolean): When enabled it will create a switch to control Inside Cleaning.
@@ -300,4 +302,4 @@ You can also combine several commands into one:
 - Function to check latest Google Play app version. Thanks to @nanos !
 - Dependency updates.
 
-In addition to the version 4.0.0: versions from 4.0.1 to 4.0.3 fixes NPM issues, version 4.0.4 fix refresh token timer, version 4.0.5 adds Eco Function switch.
+In addition to the version 4.0.0: versions from 4.0.1 to 4.0.3 fixes NPM issues, version 4.0.4 fix refresh token timer, version 4.0.5 adds Eco Function switch, version 4.0.6 adds Power (on/off) switch.
