@@ -245,6 +245,12 @@
 							"type": "boolean",
 							"default": false
 						},
+						"exposeNanoeStandAloneMode": {
+							"title": "Expose Fan Mode",
+							"description": "When enabled it will create a switch to control Nanoe Stand Alone Mode.",
+							"type": "boolean",
+							"default": false
+						},
 						"exposeQuietMode": {
 							"title": "Expose Quiet Mode",
 							"description": "When enabled it will create a switch to control Quiet Mode. Quiet Mode can also be enabled by setting the speed slider (rotation) to 1.",
@@ -343,6 +349,7 @@
 								"devices[].exposeEcoFunction",
 								"devices[].exposeDryMode",
 								"devices[].exposeFanMode",
+								"devices[].exposeNanoeStandAloneMode",
 								"devices[].exposeQuietMode",
 								"devices[].exposePowerfulMode",
 								"devices[].exposeSwingUpDown",
