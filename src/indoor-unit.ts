@@ -278,7 +278,7 @@ export default class IndoorUnitAccessory {
       this.exposeNanoeStandAloneMode = this.accessory.getService(this.accessory.displayName + ' (nanoe stand alone mode)')
         || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (nanoe stand alone mode)', 'exposeNanoeStandAloneMode');
       this.exposeNanoeStandAloneMode.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (nanoe stand alone mode)');
-      this.eexposeNanoeStandAloneMode
+      this.exposeNanoeStandAloneMode
         .getCharacteristic(this.platform.Characteristic.On)
         .onSet(this.setNanoeStandAloneMode.bind(this));
       this.platform.log.debug(`${this.accessory.displayName}: add nanoe stand alone mode switch`);
@@ -664,7 +664,7 @@ export default class IndoorUnitAccessory {
         }
       }
 
-       // Nanoe Stand Alone Mode
+      // Nanoe Stand Alone Mode
       if (this.exposeNanoeStandAloneMode) {
         if (this.deviceStatus.operate === 1 && this.deviceStatus.operationMode === 4 && this.deviceStatus.lastSettingMode === 2) {
           this.exposeNanoeStandAloneMode.updateCharacteristic(this.platform.Characteristic.On, true);
