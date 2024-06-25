@@ -20,7 +20,7 @@ All devices that are set up on your Comfort Cloud account will automaticaly appe
 ## Comfort Cloud account (Panasonic ID)
 
 - Register and manage your Panasonic ID (used to manage Comfort Cloud) via app (iOS / Android) or browser [Panasonic ID](https://csapl.pcpf.panasonic.com).
-- From January 2024, Panasonic requires 2FA (Two Factor Authentication), you can choose: the code or SMS - the recommended choice is the code (it could be available after clicking on the small link 'try another verification method').
+- From January 2024, Panasonic requires 2FA (Two Factor Authentication), you can choose: TOTP code or SMS - the recommended choice is the TOTP code (it could be available after clicking on the small link 'try another verification method').
 - Instructions on how to create a [dual-account setup](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/blob/master/docs/dual-account-setup.md).
 
 ## Install plugin
