@@ -250,6 +250,13 @@ You can also combine several commands into one:
 
 </details>
 
+<details>
+<summary><b>Comfort Cloud manual</b></summary>
+
+https://www.panasonic.com/global/hvac/products/comfort-cloud/how-to-set-up-comfort-cloud.html
+
+</detail>
+
 ## Contributing and support
 
 - Test/use the plugin and report issues and share feedback: [Issues](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/issues).
