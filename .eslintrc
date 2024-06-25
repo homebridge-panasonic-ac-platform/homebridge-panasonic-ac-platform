@@ -23,7 +23,7 @@
     "curly": ["warn", "all"],
     "brace-style": ["warn"],
     "prefer-arrow-callback": ["warn"],
-    "max-len": ["warn", 150],
+    "max-len": ["warn", 160],
     "no-console": ["warn"], // Use the provided Homebridge log API instead
     "no-non-null-assertion": ["off"],
     "comma-spacing": ["error"],
