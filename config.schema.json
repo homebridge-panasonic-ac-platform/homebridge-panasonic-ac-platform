@@ -85,37 +85,9 @@
 							"type": "boolean",
 							"default": false
 						},
-						
-						"swingModeDirections": {
-							"title": "Swing Mode Directions",
-							"description": "Desired swing direction(s) activated when swing is switched on.",
-							"type": "string",
-							"default": "LEFT-RIGHT-UP-DOWN",
-							"oneOf": [
-								{
-									"title": "Left-Right and Up-Down",
-									"enum": [
-										"LEFT-RIGHT-UP-DOWN"
-									]
-								},
-								{
-									"title": "Left-Right only",
-									"enum": [
-										"LEFT-RIGHT"
-									]
-								},
-								{
-									"title": "Up-Down only",
-									"enum": [
-										"UP-DOWN"
-									]
-								}
-							],
-							"required": true
-						},
 						"swingModeDefaultPositionUpDown": {
 							"title": "Swing Mode Default Position (Up-Down)",
-							"description": "Desired position of the Up-Down flaps when swing is switched off or the swing directions setting is Left-Right only.",
+							"description": "Desired position of the Up-Down flaps when swing is switched off.",
 							"type": "string",
 							"default": "CENTER",
 							"oneOf": [
@@ -154,7 +126,7 @@
 						},
 						"swingModeDefaultPositionLeftRight": {
 							"title": "Swing Mode Default Position (Left-Right)",
-							"description": "Desired position of the Left-Right flaps when swing is switched off or the swing directions setting is Up-Down only.",
+							"description": "Desired position of the Left-Right flaps when swing is switched off.",
 							"type": "string",
 							"default": "CENTER",
 							"oneOf": [
@@ -359,12 +331,11 @@
 						},
 						{
 							"type": "fieldset",
-							"title": "Swing directions",
+							"title": "Swing (oscilate) desired positions",
 							"flex": "1 1 100%",
 							"expandable": true,
 							"expanded": false,
 							"items": [
-								"devices[].swingModeDirections",
 								"devices[].swingModeDefaultPositionUpDown",
 								"devices[].swingModeDefaultPositionLeftRight"
 							]
