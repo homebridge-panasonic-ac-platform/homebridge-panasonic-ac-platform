@@ -32,6 +32,7 @@ export default class IndoorUnitAccessory {
   exposeEcoFunction;
   exposeDryMode;
   exposeFanMode;
+  exposeNanoeStandAloneMode;
   exposeQuietMode;
   exposePowerfulMode;
   exposeSwingUpDown;
@@ -269,6 +270,23 @@ export default class IndoorUnitAccessory {
       if (removeFanMode) {
         this.accessory.removeService(removeFanMode);
         this.platform.log.debug(`${this.accessory.displayName}: remove fan mode switch`);
+      }
+    }
+
+    // Nanoe Stand Alone Mode
+    if (this.devConfig?.exposeNanoeStandAloneMode) {
+      this.exposeNanoeStandAloneMode = this.accessory.getService(this.accessory.displayName + ' (nanoe stand alone mode)')
+        || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (nanoe stand alone mode)', 'exposeNanoeStandAloneMode');
+      this.exposeNanoeStandAloneMode.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (nanoe stand alone mode)');
+      this.exposeNanoeStandAloneMode
+        .getCharacteristic(this.platform.Characteristic.On)
+        .onSet(this.setNanoeStandAloneMode.bind(this));
+      this.platform.log.debug(`${this.accessory.displayName}: add nanoe stand alone mode switch`);
+    } else {
+      const removeNanoeStandAloneMode = this.accessory.getService(this.accessory.displayName + ' (nanoe stand alone mode)');
+      if (removeNanoeStandAloneMode) {
+        this.accessory.removeService(removeNanoeStandAloneMode);
+        this.platform.log.debug(`${this.accessory.displayName}: remove nanoe stand alone mode switch`);
       }
     }
 
@@ -639,10 +657,19 @@ export default class IndoorUnitAccessory {
 
       // Fan Mode
       if (this.exposeFanMode) {
-        if (this.deviceStatus.operate === 1 && this.deviceStatus.operationMode === 4) {
+        if (this.deviceStatus.operate === 1 && this.deviceStatus.operationMode === 4 && this.deviceStatus.lastSettingMode === 1) {
           this.exposeFanMode.updateCharacteristic(this.platform.Characteristic.On, true);
         } else {
           this.exposeFanMode.updateCharacteristic(this.platform.Characteristic.On, false);
+        }
+      }
+
+      // Nanoe Stand Alone Mode
+      if (this.exposeNanoeStandAloneMode) {
+        if (this.deviceStatus.operate === 1 && this.deviceStatus.operationMode === 4 && this.deviceStatus.lastSettingMode === 2) {
+          this.exposeNanoeStandAloneMode.updateCharacteristic(this.platform.Characteristic.On, true);
+        } else {
+          this.exposeNanoeStandAloneMode.updateCharacteristic(this.platform.Characteristic.On, false);
         }
       }
 
@@ -1000,10 +1027,26 @@ export default class IndoorUnitAccessory {
     if (value) {
       parameters.operate = 1;
       parameters.operationMode = 4;
+      parameters.lastSettingMode = 1;
       this.platform.log.debug(`${this.accessory.displayName}: Fan Mode On`);
     } else {
       parameters.operate = 0;
       this.platform.log.debug(`${this.accessory.displayName}: Fan Mode Off`);
+    }
+    this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
+  }
+
+  // set Nanoe Stand Alone Mode
+  async setNanoeStandAloneMode(value) {
+    const parameters: ComfortCloudDeviceUpdatePayload = {};
+    if (value) {
+      parameters.operate = 1;
+      parameters.operationMode = 4;
+      parameters.lastSettingMode = 2;
+      this.platform.log.debug(`${this.accessory.displayName}: Nanoe Stand Alone Mode On`);
+    } else {
+      parameters.operate = 0;
+      this.platform.log.debug(`${this.accessory.displayName}: Nanoe Stand Alone Mode Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
