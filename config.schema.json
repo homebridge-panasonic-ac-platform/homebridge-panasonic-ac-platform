@@ -246,7 +246,7 @@
 							"default": false
 						},
 						"exposeNanoeStandAloneMode": {
-							"title": "Expose Fan Mode",
+							"title": "Expose Nanoe Stand Alone Mode",
 							"description": "When enabled it will create a switch to control Nanoe Stand Alone Mode.",
 							"type": "boolean",
 							"default": false
