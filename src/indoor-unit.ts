@@ -7,7 +7,6 @@ import {
   ComfortCloudEcoMode,
   ComfortCloudFanAutoMode,
   ComfortCloudFanSpeed,
-  SwingModeDirection,
   SwingModePositionLeftRight,
   SwingModePositionUpDown,
 } from './enums';
