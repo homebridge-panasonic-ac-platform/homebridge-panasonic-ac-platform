@@ -119,6 +119,7 @@ export interface ComfortCloudDeviceStatus {
   ecoNavi: number;
   ecoFunctionData: number;
   insideCleaning: number;
+  lastSettingMode: number;
 }
 
 // Set device status
@@ -136,4 +137,5 @@ export interface ComfortCloudDeviceUpdatePayload {
   ecoNavi?: number;
   ecoFunctionData?: number;
   insideCleaning?: number;
+  lastSettingMode?: number;
 }
