@@ -19,7 +19,7 @@ All devices that are set up on your Comfort Cloud account will automaticaly appe
 
 ## Comfort Cloud account (Panasonic ID)
 
-- Register and manage your Panasonic ID (used to manage Comfort Cloud) via app (iOS / Android) or browser [Panasonic ID](https://csapl.pcpf.panasonic.com).
+- Register and manage your Panasonic ID (used to manage Comfort Cloud) via app (iOS / Android) or browser -  [Panasonic ID](https://csapl.pcpf.panasonic.com).
 - From January 2024, Panasonic requires 2FA (Two Factor Authentication), you can choose: TOTP code or SMS - the recommended choice is the TOTP code (it could be available after clicking on the small link 'try another verification method').
 - Instructions on how to create a [dual-account setup](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/blob/master/docs/dual-account-setup.md).
 
@@ -303,7 +303,7 @@ https://www.panasonic.com/global/hvac/products/comfort-cloud/how-to-set-up-comfo
 #### Version 4.1.0
 
 - Added Power (on/off) switch.
-- Added Nanoe Stand Alone switch.
+- Added Nanoe Stand Alone Mode switch.
 - Improved behavior of Fan Mode and Dry Mode switch (now when switch will be turning on it will turn on device and set desired mode, and when switch will be turning off it will turn off device).
 - Improved mechanism for detecting functions available for a given device.
 - Fixed Oscilate switch.
