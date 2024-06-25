@@ -7,7 +7,6 @@ import {
   ComfortCloudEcoMode,
   ComfortCloudFanAutoMode,
   ComfortCloudFanSpeed,
-  SwingModeDirection,
   SwingModePositionLeftRight,
   SwingModePositionUpDown,
 } from './enums';
@@ -587,18 +586,12 @@ export default class IndoorUnitAccessory {
         .updateValue(sliderValue);
 
       // Swing Mode
-      if ((!this.devConfig?.swingModeDirections)
-          || (this.deviceStatus.fanAutoMode === ComfortCloudFanAutoMode.AirSwingAuto
-              && this.devConfig?.swingModeDirections === SwingModeDirection.LeftRightAndUpDown)
-          || (this.deviceStatus.fanAutoMode === ComfortCloudFanAutoMode.AirSwingLR
-              && this.devConfig?.swingModeDirections === SwingModeDirection.LeftRightOnly)
-          || (this.deviceStatus.fanAutoMode === ComfortCloudFanAutoMode.AirSwingUD
-              && this.devConfig?.swingModeDirections === SwingModeDirection.UpDownOnly)) {
+      if (this.deviceStatus.fanAutoMode !== ComfortCloudFanAutoMode.Disabled) {
         this.service.getCharacteristic(this.platform.Characteristic.SwingMode)
           .updateValue(this.platform.Characteristic.SwingMode.SWING_ENABLED);
       } else {
         this.service.getCharacteristic(this.platform.Characteristic.SwingMode)
-          .updateValue(this.platform.Characteristic.SwingMode.SWING_ENABLED);
+          .updateValue(this.platform.Characteristic.SwingMode.SWING_DISABLED);
       }
 
       // Power (on/off)
@@ -904,33 +897,8 @@ export default class IndoorUnitAccessory {
     const parameters: ComfortCloudDeviceUpdatePayload = {};
 
     if (value === this.platform.Characteristic.SwingMode.SWING_ENABLED) {
-      // Activate swing mode
-      // and (if needed) reset one set of fins to their default position.
-
-      switch (this.devConfig?.swingModeDirections) {
-        case SwingModeDirection.LeftRightAndUpDown:
-          parameters.fanAutoMode = ComfortCloudFanAutoMode.AirSwingAuto;
-          this.platform.log.debug(
-            `${this.accessory.displayName}: Swing mode Left/Right and Up/Down`);
-          break;
-        case SwingModeDirection.LeftRightOnly:
-          parameters.fanAutoMode = ComfortCloudFanAutoMode.AirSwingLR;
-          parameters.airSwingUD = this.swingModeUpDownToComfortCloudPayloadValue(
-            this.platform.platformConfig.swingModeDefaultPositionUpDown);
-          this.platform.log.debug(`${this.accessory.displayName}: Swing mode Left/Right`);
-          break;
-        case SwingModeDirection.UpDownOnly:
-          parameters.fanAutoMode = ComfortCloudFanAutoMode.AirSwingUD;
-          parameters.airSwingLR = this.swingModeLeftRightToComfortCloudPayloadValue(
-            this.platform.platformConfig.swingModeDefaultPositionLeftRight);
-          this.platform.log.debug(`${this.accessory.displayName}: Swing mode Up/Down`);
-          break;
-        default:
-          parameters.fanAutoMode = ComfortCloudFanAutoMode.AirSwingAuto;
-          this.platform.log.debug(`${this.accessory.displayName}: Swing mode Auto`);
-          break;
-      }
-
+      parameters.fanAutoMode = ComfortCloudFanAutoMode.AirSwingAuto;
+      this.platform.log.debug(`${this.accessory.displayName}: Swing mode Auto`);
     } else if (value === this.platform.Characteristic.SwingMode.SWING_DISABLED) {
       parameters.fanAutoMode = ComfortCloudFanAutoMode.Disabled;
       parameters.airSwingLR = this.swingModeLeftRightToComfortCloudPayloadValue(
