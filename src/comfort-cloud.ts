@@ -534,8 +534,6 @@ export default class ComfortCloudApi {
       })
       .catch((error: AxiosError) => {
         this.log.error('Comfort Cloud - setDeviceStatus(): Error');
-        this.log.error('Try restarting the AC (turn it off from the power completely'
-                       +' and turn it on again) and Internet router and Homebridge.');
         this.log.error('Turn on debug for more info.');
         this.handleNetworkRequestError(error);
       });
