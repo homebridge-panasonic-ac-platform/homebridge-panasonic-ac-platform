@@ -255,7 +255,7 @@ You can also combine several commands into one:
 
 https://www.panasonic.com/global/hvac/products/comfort-cloud/how-to-set-up-comfort-cloud.html
 
-</detail>
+</details>
 
 ## Contributing and support
 
