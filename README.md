@@ -59,7 +59,6 @@ Configure the plugin through the settings UI or in the JSON editor.
                     "exposeDryMode": false,
                     "exposeQuietMode": true,
                     "exposePowerfulMode": false,
-                    "swingModeDirections": "LEFT-RIGHT-UP-DOWN",
                     "swingModeDefaultPositionUpDown": "CENTER",
                     "swingModeDefaultPositionLeftRight": "CENTER"
                 },
@@ -134,14 +133,11 @@ When enabled it will create a dummy temperature sensor which will display the te
 
 * `exposeFanSpeed` (boolean): When enabled it will create a switch to control Fan Speed. Value from 0 to 20 = speed 1, value from 21 to 40 = speed 2, value from 41 to 60 = speed 3, value from 61 to 80 = speed 4, value from 81 to 99 = speed 5 and value 100 = speed auto. Note: Changing value will not change Quiet / Powerful Mode - there are dedicated switches for this.
 
-* `swingModeDirections` (string):
-Desired swing direction(s) activated when swing is switched on.
-
 * `swingModeDefaultPositionUpDown` (string):
-Desired position of the Up-Down flaps when swing is switched off or the swing directions setting is Left-Right only.
+Desired position of the Up-Down flaps when swing is switched off.
 
 * `swingModeDefaultPositionLeftRight` (string):
-Desired position of the Left-Right flaps when swing is switched off or the swing directions setting is Up-Down only.
+Desired position of the Left-Right flaps when swing is switched off.
 
 
 </details>
@@ -182,7 +178,11 @@ The following mapping applies:
 
 <details>
 <summary><b>Oscilate switch, Swing mode (switch built-in thermostat accessory, not additional)</b></summary>
-HomeKit has only one 'Oscillate' switch, but most Panasonic ACs have two swing directions. In plugin settings you can set horizontal (left - right) and vertical (up - down) desired positions.
+
+- Activation of Oscilate switch from HomeKit will set swing to auto (for up-down and left-right).
+- Deactivation of the Oscilate switch from HomeKit will set desired positions - you can set them in plugin config.
+- When refreshing data, it will activate switch if at least one of the swing modes be enabled (up-down or left-right or both), otherwise it will be turned off.
+- For more control you can add additional switches for up-down swing and left-right swing.
 </details>
 
 <details>
@@ -299,6 +299,7 @@ You can also combine several commands into one:
 - Added Nanoe Stand Alone switch.
 - Improved behavior of Fan Mode and Dry Mode switch (now when switch will be turning on it will turn on device and set desired mode, and when switch will be turning off it will turn off device).
 - Improved mechanism for detecting functions available for a given device.
+- Fixed Oscilate switch.
 - Fixed error handling.
 - Update App Version to 1.21.0.
 - Dependency updates.
