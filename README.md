@@ -122,6 +122,8 @@ When enabled it will create a dummy temperature sensor which will display the te
 
 * `exposeFanMode` (boolean): When enabled it will create a switch to control Fan Mode.
 
+* `exposeNanoeStandAloneMode` (boolean): When enabled it will create a switch to control Nanoe Stand Alone Mode.
+
 * `exposeQuietMode` (boolean): When enabled it will create a switch to control Quiet Mode. Quiet Mode can also be enabled by setting the speed slider (rotation) to 1.
 
 * `exposePowerfulMode` (boolean): When enabled it will create a switch to control Powerful Mode. Powerful Mode can also be enabled by setting the speed slider (rotation) to 7.
@@ -294,6 +296,7 @@ You can also combine several commands into one:
 #### Version 4.1.0
 
 - Added Power (on/off) switch.
+- Added Nanoe Stand Alone switch.
 - Improved behavior of Fan Mode and Dry Mode switch, now when switch will be turning on it will turn on device and set desired mode, and when switch will be turning off it will turn off device.
 - Improved mechanism for detecting functions available for a given device.
 - Fixed error handling.
