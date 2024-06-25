@@ -1027,7 +1027,6 @@ export default class IndoorUnitAccessory {
     if (value) {
       parameters.operate = 1;
       parameters.operationMode = 4;
-      parameters.lastSettingMode = 1;
       this.platform.log.debug(`${this.accessory.displayName}: Fan Mode On`);
     } else {
       parameters.operate = 0;
@@ -1041,8 +1040,7 @@ export default class IndoorUnitAccessory {
     const parameters: ComfortCloudDeviceUpdatePayload = {};
     if (value) {
       parameters.operate = 1;
-      parameters.operationMode = 4;
-      parameters.lastSettingMode = 2;
+      parameters.operationMode = 5;
       this.platform.log.debug(`${this.accessory.displayName}: Nanoe Stand Alone Mode On`);
     } else {
       parameters.operate = 0;
