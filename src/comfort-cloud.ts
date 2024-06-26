@@ -350,16 +350,16 @@ export default class ComfortCloudApi {
         this.log.debug(`token: ${this.token}`);
         this.tokenRefresh = response.data.refresh_token;
         this.log.debug(`tokenRefresh: ${this.tokenRefresh}`);
+
+        // Refresh token just a moment before the expiration of 24 hours
+        setTimeout(this.refreshToken.bind(this), 86300000);
       })
       .catch((error: AxiosError) => {
         this.log.error('Comfort Cloud - refreshToken() - Error');
         this.log.debug(JSON.stringify(error, null, 2));
+        this.login.bind(this);
         return Promise.reject(error);
       });
-
-    // Refresh token just a moment before the expiration of 24 hours
-    setTimeout(this.refreshToken.bind(this), 86300000);
-
   }
 
   // NEW API - END ----------------------------------------------------------------------------------
