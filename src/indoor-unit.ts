@@ -577,7 +577,7 @@ export default class IndoorUnitAccessory {
         .updateValue(sliderValue);
 
       // Swing Mode
-      if (this.deviceStatus.fanAutoMode !== ComfortCloudFanAutoMode.Disabled) {
+      if (this.deviceStatus.fanAutoMode !== 1) {
         this.service.getCharacteristic(this.platform.Characteristic.SwingMode)
           .updateValue(this.platform.Characteristic.SwingMode.SWING_ENABLED);
       } else {
