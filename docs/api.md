@@ -14,7 +14,7 @@
 - Fan = 4
 - Nanoe Stand Alone = 5
 
-Note: After set Nanoe Stand Alone, value for operationMode will be 4, to check if Fan mode or Nanoe mode is enabled check 'lastSettingMode' (read only value) - 1 is for Fan, 2 is for Nanoe. 
+Note: After set Nanoe Stand Alone, value for operationMode will be 4, to check if Fan mode or Nanoe mode is enabled check 'lastSettingMode' (read only value), 1 is for Fan, 2 is for Nanoe. 
 
 
 ### ecoMode
