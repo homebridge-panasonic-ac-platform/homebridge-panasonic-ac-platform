@@ -7,7 +7,6 @@ import {
   REDIRECT_URI,
 } from './settings';
 import {
-  //ComfortCloudAuthResponse,
   ComfortCloudDevice,
   ComfortCloudDeviceStatus,
   ComfortCloudDeviceUpdatePayload,
@@ -357,6 +356,8 @@ export default class ComfortCloudApi {
       .catch((error: AxiosError) => {
         this.log.error('Comfort Cloud - refreshToken() - Error');
         this.log.debug(JSON.stringify(error, null, 2));
+        this.token = null;
+        this.tokenRefresh = null;
         this.login.bind(this);
         return Promise.reject(error);
       });
