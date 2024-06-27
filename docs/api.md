@@ -34,7 +34,7 @@ Note: After set Nanoe Stand Alone, value for operationMode will be 4, to check i
 - AirSwingLR = 3
 - AirSwingUD = 2
 
-### airSwingUD:
+### airSwingUD
 
 - Up = 0
 - UpMid = 3
@@ -42,7 +42,7 @@ Note: After set Nanoe Stand Alone, value for operationMode will be 4, to check i
 - DownMid = 4
 - Down = 1
 
-### airSwingLR:
+### airSwingLR
 
 - Left = 0
 - LeftMid = 4
@@ -50,7 +50,7 @@ Note: After set Nanoe Stand Alone, value for operationMode will be 4, to check i
 - RightMid = 3
 - Right = 1
 
-### fanSpeed:
+### fanSpeed
 
 - Auto = 0
 - Low = 1
