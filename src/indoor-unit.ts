@@ -547,27 +547,27 @@ export default class IndoorUnitAccessory {
         logOutput += ', Speed 5 (Powerful Mode)';
       } else if (this.deviceStatus.ecoMode === 0) {
         switch (this.deviceStatus.fanSpeed) {
-          case ComfortCloudFanSpeed.One:
+          case 1:
             sliderValue = 2;
             logOutput += ', Speed 1';
             break;
-          case ComfortCloudFanSpeed.Two:
+          case 2:
             sliderValue = 3;
             logOutput += ', Speed 2';
             break;
-          case ComfortCloudFanSpeed.Three:
+          case 3:
             sliderValue = 4;
             logOutput += ', Speed 3';
             break;
-          case ComfortCloudFanSpeed.Four:
+          case 4:
             sliderValue = 5;
             logOutput += ', Speed 4';
             break;
-          case ComfortCloudFanSpeed.Five:
+          case 5:
             sliderValue = 6;
             logOutput += ', Speed 5';
             break;
-          case ComfortCloudFanSpeed.Auto:
+          case 0:
             sliderValue = 8;
             logOutput += ', Speed Auto';
             break;
