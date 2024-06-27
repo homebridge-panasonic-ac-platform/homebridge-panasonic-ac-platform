@@ -2,13 +2,9 @@ import { Service, PlatformAccessory, CharacteristicValue } from 'homebridge';
 import PanasonicPlatform from './platform';
 import { ComfortCloudDeviceUpdatePayload, PanasonicAccessoryContext } from './types';
 import {
-  ComfortCloudAirSwingLR,
-  ComfortCloudAirSwingUD,
   ComfortCloudEcoMode,
   ComfortCloudFanAutoMode,
   ComfortCloudFanSpeed,
-  SwingModePositionLeftRight,
-  SwingModePositionUpDown,
 } from './enums';
 
 /**
@@ -901,10 +897,49 @@ export default class IndoorUnitAccessory {
       this.platform.log.debug(`${this.accessory.displayName}: Swing mode Auto`);
     } else if (value === this.platform.Characteristic.SwingMode.SWING_DISABLED) {
       parameters.fanAutoMode = ComfortCloudFanAutoMode.Disabled;
-      parameters.airSwingLR = this.swingModeLeftRightToComfortCloudPayloadValue(
-        this.platform.platformConfig.swingModeDefaultPositionLeftRight);
-      parameters.airSwingUD = this.swingModeUpDownToComfortCloudPayloadValue(
-        this.platform.platformConfig.swingModeDefaultPositionUpDown);
+
+      switch (this.devConfig.swingModeDefaultPositionUpDown) {
+        case 'UP':
+          parameters.airSwingUD = 0;
+          break;
+        case 'CENTER-UP':
+          parameters.airSwingUD= 3;
+          break;
+        case 'CENTER':
+          parameters.airSwingUD = 2;
+          break;
+        case 'CENTER-DOWN':
+          parameters.airSwingUD = 4;
+          break;
+        case 'DOWN':
+          parameters.airSwingUD= 1;
+          break;
+        default:
+          parameters.airSwingUD = 2;
+          break;
+      }
+
+      switch (this.devConfig.swingModeDefaultPositionLeftRight) {
+        case 'LEFT':
+          parameters.airSwingLR = 1;
+          break;
+        case 'CENTER-LEFT':
+          parameters.airSwingLR= 5;
+          break;
+        case 'CENTER':
+          parameters.airSwingLR = 2;
+          break;
+        case 'CENTER-RIGHT':
+          parameters.airSwingLR = 4;
+          break;
+        case 'RIGHT':
+          parameters.airSwingLR= 0;
+          break;
+        default:
+          parameters.airSwingLR = 2;
+          break;
+      }
+
       this.platform.log.debug(`${this.accessory.displayName}: Swing mode Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
@@ -1060,8 +1095,28 @@ export default class IndoorUnitAccessory {
       } else {
         parameters.fanAutoMode = 1;
       }
-      parameters.airSwingUD = this.swingModeUpDownToComfortCloudPayloadValue(
-        this.platform.platformConfig.swingModeDefaultPositionUpDown);
+
+      switch (this.devConfig.swingModeDefaultPositionUpDown) {
+        case 'UP':
+          parameters.airSwingUD = 0;
+          break;
+        case 'CENTER-UP':
+          parameters.airSwingUD= 3;
+          break;
+        case 'CENTER':
+          parameters.airSwingUD = 2;
+          break;
+        case 'CENTER-DOWN':
+          parameters.airSwingUD = 4;
+          break;
+        case 'DOWN':
+          parameters.airSwingUD= 1;
+          break;
+        default:
+          parameters.airSwingUD = 2;
+          break;
+      }
+
       this.platform.log.debug(`${this.accessory.displayName}: Swing Up Down Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
@@ -1077,8 +1132,6 @@ export default class IndoorUnitAccessory {
       } else {
         parameters.fanAutoMode = 3;
       }
-      parameters.airSwingLR = this.swingModeLeftRightToComfortCloudPayloadValue(
-        this.platform.platformConfig.swingModeDefaultPositionLeftRight);
       this.platform.log.debug(`${this.accessory.displayName}: Swing Left Right On`);
     } else {
       if (this.deviceStatus.fanAutoMode === 0) {
@@ -1086,6 +1139,28 @@ export default class IndoorUnitAccessory {
       } else {
         parameters.fanAutoMode = 1;
       }
+
+      switch (this.devConfig.swingModeDefaultPositionLeftRight) {
+        case 'LEFT':
+          parameters.airSwingLR = 1;
+          break;
+        case 'CENTER-LEFT':
+          parameters.airSwingLR= 5;
+          break;
+        case 'CENTER':
+          parameters.airSwingLR = 2;
+          break;
+        case 'CENTER-RIGHT':
+          parameters.airSwingLR = 4;
+          break;
+        case 'RIGHT':
+          parameters.airSwingLR= 0;
+          break;
+        default:
+          parameters.airSwingLR = 2;
+          break;
+      }
+
       this.platform.log.debug(`${this.accessory.displayName}: Swing Left Right Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
@@ -1135,52 +1210,6 @@ export default class IndoorUnitAccessory {
 
   // ===============================================================================================================================================
 
-  /**
-   * Maps the internal left-right swing mode position enum to the corresponding
-   * Comfort Cloud value.
-   *
-   * @param position The internal value for the left-right position.
-   * @returns The corresponding Comfort Cloud value for the given position.
-   */
-  swingModeLeftRightToComfortCloudPayloadValue(position?: SwingModePositionLeftRight) {
-    switch (position) {
-      case SwingModePositionLeftRight.Left:
-        return ComfortCloudAirSwingLR.Left;
-      case SwingModePositionLeftRight.CenterLeft:
-        return ComfortCloudAirSwingLR.CenterLeft;
-      case SwingModePositionLeftRight.Center:
-        return ComfortCloudAirSwingLR.Center;
-      case SwingModePositionLeftRight.CenterRight:
-        return ComfortCloudAirSwingLR.CenterRight;
-      case SwingModePositionLeftRight.Right:
-        return ComfortCloudAirSwingLR.Right;
-      default:
-        return ComfortCloudAirSwingLR.Center;
-    }
-  }
-
-  /**
-   * Maps the internal up-down swing mode position enum to the corresponding Comfort Cloud value.
-   *
-   * @param position The internal value for the up-down position.
-   * @returns The corresponding Comfort Cloud value for the given position.
-   */
-  swingModeUpDownToComfortCloudPayloadValue(position?: SwingModePositionUpDown) {
-    switch (position) {
-      case SwingModePositionUpDown.Up:
-        return ComfortCloudAirSwingUD.Up;
-      case SwingModePositionUpDown.CenterUp:
-        return ComfortCloudAirSwingUD.CenterUp;
-      case SwingModePositionUpDown.Center:
-        return ComfortCloudAirSwingUD.Center;
-      case SwingModePositionUpDown.CenterDown:
-        return ComfortCloudAirSwingUD.CenterDown;
-      case SwingModePositionUpDown.Down:
-        return ComfortCloudAirSwingUD.Down;
-      default:
-        return ComfortCloudAirSwingUD.Center;
-    }
-  }
 
   async setThresholdTemperature(value: CharacteristicValue) {
     /**
