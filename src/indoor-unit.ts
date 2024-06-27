@@ -2,13 +2,9 @@ import { Service, PlatformAccessory, CharacteristicValue } from 'homebridge';
 import PanasonicPlatform from './platform';
 import { ComfortCloudDeviceUpdatePayload, PanasonicAccessoryContext } from './types';
 import {
-  ComfortCloudAirSwingLR,
-  ComfortCloudAirSwingUD,
   ComfortCloudEcoMode,
   ComfortCloudFanAutoMode,
   ComfortCloudFanSpeed,
-  SwingModePositionLeftRight,
-  SwingModePositionUpDown,
 } from './enums';
 
 /**
@@ -919,7 +915,7 @@ export default class IndoorUnitAccessory {
           parameters.airSwingUD= 1;
           break;
         default:
-          parameters.airSwingUD = 2
+          parameters.airSwingUD = 2;
           break;
       }
 
@@ -940,7 +936,7 @@ export default class IndoorUnitAccessory {
           parameters.airSwingLR= 0;
           break;
         default:
-          parameters.airSwingLR = 2
+          parameters.airSwingLR = 2;
           break;
       }
 
