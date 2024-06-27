@@ -1,11 +1,6 @@
 import { Service, PlatformAccessory, CharacteristicValue } from 'homebridge';
 import PanasonicPlatform from './platform';
 import { ComfortCloudDeviceUpdatePayload, PanasonicAccessoryContext } from './types';
-import {
-  ComfortCloudEcoMode,
-  ComfortCloudFanAutoMode,
-  ComfortCloudFanSpeed,
-} from './enums';
 
 /**
  * An instance of this class is created for each accessory the platform registers.
@@ -544,13 +539,13 @@ export default class IndoorUnitAccessory {
       // Default to AUTO mode
       let sliderValue = 8;
 
-      if (this.deviceStatus.ecoMode === ComfortCloudEcoMode.Quiet) {
+      if (this.deviceStatus.ecoMode === 2) {
         sliderValue = 1;
         logOutput += ', Speed 1 (Quiet Mode)';
-      } else if (this.deviceStatus.ecoMode === ComfortCloudEcoMode.Powerful) {
+      } else if (this.deviceStatus.ecoMode === 1) {
         sliderValue = 7;
         logOutput += ', Speed 5 (Powerful Mode)';
-      } else if (this.deviceStatus.ecoMode === ComfortCloudEcoMode.AutoOrManual) {
+      } else if (this.deviceStatus.ecoMode === 0) {
         switch (this.deviceStatus.fanSpeed) {
           case ComfortCloudFanSpeed.One:
             sliderValue = 2;
@@ -664,7 +659,7 @@ export default class IndoorUnitAccessory {
 
       // Quiet Mode (speed)
       if (this.exposeQuietMode) {
-        if (this.deviceStatus.ecoMode === ComfortCloudEcoMode.Quiet) {
+        if (this.deviceStatus.ecoMode === 2) {
           this.exposeQuietMode.updateCharacteristic(this.platform.Characteristic.On, true);
         } else {
           this.exposeQuietMode.updateCharacteristic(this.platform.Characteristic.On, false);
@@ -673,7 +668,7 @@ export default class IndoorUnitAccessory {
 
       // Powerful Mode (speed)
       if (this.exposePowerfulMode) {
-        if (this.deviceStatus.ecoMode === ComfortCloudEcoMode.Powerful) {
+        if (this.deviceStatus.ecoMode === 1) {
           this.exposePowerfulMode.updateCharacteristic(this.platform.Characteristic.On, true);
         } else {
           this.exposePowerfulMode.updateCharacteristic(this.platform.Characteristic.On, false);
@@ -841,45 +836,45 @@ export default class IndoorUnitAccessory {
         // Nothing to handle here, but documenting for clarity.
         break;
       case 1:
-        parameters.ecoMode = ComfortCloudEcoMode.Quiet;
+        parameters.ecoMode = 2;
         this.platform.log.debug(`${this.accessory.displayName}: Quiet Mode`);
         break;
       case 2:
-        parameters.ecoMode = ComfortCloudEcoMode.AutoOrManual;
-        parameters.fanSpeed = ComfortCloudFanSpeed.One;
+        parameters.ecoMode = 0;
+        parameters.fanSpeed = 1;
         this.platform.log.debug(`${this.accessory.displayName}: Fan speed 1`);
         break;
       case 3:
-        parameters.ecoMode = ComfortCloudEcoMode.AutoOrManual;
-        parameters.fanSpeed = ComfortCloudFanSpeed.Two;
+        parameters.ecoMode = 0;
+        parameters.fanSpeed = 2;
         this.platform.log.debug(`${this.accessory.displayName}: Fan speed 2`);
         break;
       case 4:
-        parameters.ecoMode = ComfortCloudEcoMode.AutoOrManual;
-        parameters.fanSpeed = ComfortCloudFanSpeed.Three;
+        parameters.ecoMode = 0;
+        parameters.fanSpeed = 3;
         this.platform.log.debug(`${this.accessory.displayName}: Fan speed 3`);
         break;
       case 5:
-        parameters.ecoMode = ComfortCloudEcoMode.AutoOrManual;
-        parameters.fanSpeed = ComfortCloudFanSpeed.Four;
+        parameters.ecoMode = 0;
+        parameters.fanSpeed = 4;
         this.platform.log.debug(`${this.accessory.displayName}: Fan speed 4`);
         break;
       case 6:
-        parameters.ecoMode = ComfortCloudEcoMode.AutoOrManual;
-        parameters.fanSpeed = ComfortCloudFanSpeed.Five;
+        parameters.ecoMode = 0;
+        parameters.fanSpeed = 5;
         this.platform.log.debug(`${this.accessory.displayName}: Fan speed 5`);
         break;
       case 7:
-        parameters.ecoMode = ComfortCloudEcoMode.Powerful;
+        parameters.ecoMode = 1;
         this.platform.log.debug(`${this.accessory.displayName}: Powerful Mode`);
         break;
       case 8:
-        parameters.ecoMode = ComfortCloudEcoMode.AutoOrManual;
-        parameters.fanSpeed = ComfortCloudFanSpeed.Auto;
+        parameters.ecoMode = 0;
+        parameters.fanSpeed = 0;
         break;
       default:
-        parameters.ecoMode = ComfortCloudEcoMode.AutoOrManual;
-        parameters.fanSpeed = ComfortCloudFanSpeed.Auto;
+        parameters.ecoMode = 0;
+        parameters.fanSpeed = 0;
         break;
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
@@ -893,10 +888,10 @@ export default class IndoorUnitAccessory {
     const parameters: ComfortCloudDeviceUpdatePayload = {};
 
     if (value === this.platform.Characteristic.SwingMode.SWING_ENABLED) {
-      parameters.fanAutoMode = ComfortCloudFanAutoMode.AirSwingAuto;
+      parameters.fanAutoMode = 0;
       this.platform.log.debug(`${this.accessory.displayName}: Swing mode Auto`);
     } else if (value === this.platform.Characteristic.SwingMode.SWING_DISABLED) {
-      parameters.fanAutoMode = ComfortCloudFanAutoMode.Disabled;
+      parameters.fanAutoMode = 1;
 
       switch (this.devConfig.swingModeDefaultPositionUpDown) {
         case 'UP':
@@ -1056,7 +1051,7 @@ export default class IndoorUnitAccessory {
   async setQuietMode(value) {
     const parameters: ComfortCloudDeviceUpdatePayload = {};
     if (value) {
-      parameters.ecoMode = ComfortCloudEcoMode.Quiet;
+      parameters.ecoMode = 2;
       this.platform.log.debug(`${this.accessory.displayName}: Quiet Mode On`);
     } else {
       parameters.ecoMode = 0;
@@ -1069,7 +1064,7 @@ export default class IndoorUnitAccessory {
   async setPowerfulMode(value) {
     const parameters: ComfortCloudDeviceUpdatePayload = {};
     if (value) {
-      parameters.ecoMode = ComfortCloudEcoMode.Powerful;
+      parameters.ecoMode = 1;
       this.platform.log.debug(`${this.accessory.displayName}: Powerful Mode On`);
     } else {
       parameters.ecoMode = 0;
