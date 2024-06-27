@@ -308,6 +308,7 @@ https://www.panasonic.com/global/hvac/products/comfort-cloud/how-to-set-up-comfo
 - Improved mechanism for detecting functions available for a given device.
 - Fixed Oscilate switch.
 - Fixed error handling.
+- Fixed mechanism of actions when the token cannot be refreshed.
 - Update App Version to 1.21.0.
 - Dependency updates.
 
