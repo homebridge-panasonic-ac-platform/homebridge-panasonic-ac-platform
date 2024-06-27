@@ -1,3 +1,5 @@
+# Comfort Cloud api params
+
 ### operate
 
 - Off = 0
@@ -56,3 +58,16 @@ Note: After set Nanoe Stand Alone, value for operationMode will be 4, to check i
 - Mid = 3
 - HighMid = 4
 - High = 5
+
+### nanoe
+- Unavailable = 0
+- Off = 1
+- On = 2
+- ModeG = 3
+- All = 4
+
+### ecoNavi, ecoFunctionData, insideCleaning
+- Unavailable = 0
+- Off = 1
+- On = 2
+
