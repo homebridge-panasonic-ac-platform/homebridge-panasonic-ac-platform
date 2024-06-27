@@ -902,7 +902,7 @@ export default class IndoorUnitAccessory {
         case 'UP':
           parameters.airSwingUD = 0;
           break;
-        case 'CENTER-UP': 
+        case 'CENTER-UP':
           parameters.airSwingUD= 3;
           break;
         case 'CENTER':
@@ -923,7 +923,7 @@ export default class IndoorUnitAccessory {
         case 'LEFT':
           parameters.airSwingLR = 1;
           break;
-        case 'CENTER-LEFT': 
+        case 'CENTER-LEFT':
           parameters.airSwingLR= 5;
           break;
         case 'CENTER':
@@ -1095,8 +1095,28 @@ export default class IndoorUnitAccessory {
       } else {
         parameters.fanAutoMode = 1;
       }
-      parameters.airSwingUD = this.swingModeUpDownToComfortCloudPayloadValue(
-        this.platform.platformConfig.swingModeDefaultPositionUpDown);
+
+      switch (this.devConfig.swingModeDefaultPositionUpDown) {
+        case 'UP':
+          parameters.airSwingUD = 0;
+          break;
+        case 'CENTER-UP':
+          parameters.airSwingUD= 3;
+          break;
+        case 'CENTER':
+          parameters.airSwingUD = 2;
+          break;
+        case 'CENTER-DOWN':
+          parameters.airSwingUD = 4;
+          break;
+        case 'DOWN':
+          parameters.airSwingUD= 1;
+          break;
+        default:
+          parameters.airSwingUD = 2;
+          break;
+      }
+
       this.platform.log.debug(`${this.accessory.displayName}: Swing Up Down Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
@@ -1112,8 +1132,6 @@ export default class IndoorUnitAccessory {
       } else {
         parameters.fanAutoMode = 3;
       }
-      parameters.airSwingLR = this.swingModeLeftRightToComfortCloudPayloadValue(
-        this.platform.platformConfig.swingModeDefaultPositionLeftRight);
       this.platform.log.debug(`${this.accessory.displayName}: Swing Left Right On`);
     } else {
       if (this.deviceStatus.fanAutoMode === 0) {
@@ -1121,6 +1139,28 @@ export default class IndoorUnitAccessory {
       } else {
         parameters.fanAutoMode = 1;
       }
+
+      switch (this.devConfig.swingModeDefaultPositionLeftRight) {
+        case 'LEFT':
+          parameters.airSwingLR = 1;
+          break;
+        case 'CENTER-LEFT':
+          parameters.airSwingLR= 5;
+          break;
+        case 'CENTER':
+          parameters.airSwingLR = 2;
+          break;
+        case 'CENTER-RIGHT':
+          parameters.airSwingLR = 4;
+          break;
+        case 'RIGHT':
+          parameters.airSwingLR= 0;
+          break;
+        default:
+          parameters.airSwingLR = 2;
+          break;
+      }
+
       this.platform.log.debug(`${this.accessory.displayName}: Swing Left Right Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
@@ -1170,7 +1210,6 @@ export default class IndoorUnitAccessory {
 
   // ===============================================================================================================================================
 
-  
 
   async setThresholdTemperature(value: CharacteristicValue) {
     /**
