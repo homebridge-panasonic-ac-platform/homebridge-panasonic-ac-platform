@@ -1,38 +1,15 @@
 import { PlatformConfig } from 'homebridge';
-import {
-  SwingModeDirection,
-  SwingModePositionLeftRight,
-  SwingModePositionUpDown,
-} from './enums';
 
 export interface PanasonicPlatformConfig extends PlatformConfig {
   email: string;
   password: string;
   debugMode: boolean;
   suppressOutgoingUpdates?: boolean;
-  latestAppVersion: string;
-  appVersionOverride: string;
-  exposeOutdoorUnit: boolean;
   minHeatingTemperature?: number;
-  swingModeDirections?: SwingModeDirection;
-  swingModeDefaultPositionLeftRight?: SwingModePositionLeftRight;
-  swingModeDefaultPositionUpDown?: SwingModePositionUpDown;
 }
 
 export interface PanasonicAccessoryContext {
   device: ComfortCloudDevice;
-}
-
-// Login
-// POST https://accsmart.panasonic.com/auth/login
-export interface ComfortCloudAuthResponse {
-  code: number;
-  message: string;
-  uToken: string;
-  result: number;
-  country: string; // e.g. 'GB'
-  clientId: string;
-  language: number;
 }
 
 // Fetch devices
