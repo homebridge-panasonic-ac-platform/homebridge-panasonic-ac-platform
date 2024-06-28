@@ -163,6 +163,84 @@
 							],
 							"required": true
 						},
+						"swingDefaultUD": {
+							"title": "Swing Mode Default Position (Up-Down)",
+							"description": "Desired position of the Up-Down flaps when swing is switched off.",
+							"type": "integer",
+							"default": 2,
+							"oneOf": [
+								{
+									"title": "Up",
+									"enum": [
+										0
+									]
+								},
+								{
+									"title": "Center-Up",
+									"enum": [
+										3
+									]
+								},
+								{
+									"title": "Center",
+									"enum": [
+										2
+									]
+								},
+								{
+									"title": "Center-Down",
+									"enum": [
+										4
+									]
+								},
+								{
+									"title": "Down",
+									"enum": [
+										1
+									]
+								}
+							],
+							"required": true
+						},
+						"swingDefaultLR": {
+							"title": "Swing Mode Default Position (Left-Right)",
+							"description": "Desired position of the Left-Right flaps when swing is switched off.",
+							"type": "integer",
+							"default": 2,
+							"oneOf": [
+								{
+									"title": "Left",
+									"enum": [
+										0
+									]
+								},
+								{
+									"title": "Center-Left",
+									"enum": [
+										4
+									]
+								},
+								{
+									"title": "Center",
+									"enum": [
+										2
+									]
+								},
+								{
+									"title": "Center-Right",
+									"enum": [
+										3
+									]
+								},
+								{
+									"title": "Right",
+									"enum": [
+										1
+									]
+								}
+							],
+							"required": true
+						},
 						"minHeatingTemperature": {
 							"title": "Minimum heating temperature (override)",
 							"description": "The default heating temperature range is 16-30°C. Some Panasonic ACs have an additional heating mode for the range of 8-15°C. You can use this setting to adjust the minimum value. Leave it empty to use the default value.",
