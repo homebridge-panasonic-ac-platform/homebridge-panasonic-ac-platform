@@ -262,7 +262,7 @@ https://www.panasonic.com/global/hvac/products/comfort-cloud/how-to-set-up-comfo
 - Test/use the plugin and report issues and share feedback: [Issues](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/issues).
 - Contribute with your own bug fixes, code clean-ups, or additional features: [Pull Requests](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/pulls).
 - Develop: [developers.md](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/blob/master/docs/developers.md).
-- Check new API: [app.md](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/blob/master/docs/app.md).
+- Check Comfort Cloud app, how it works and how it comunicates with server: [app.md](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/blob/master/docs/app.md).
 
 ## Acknowledgements
 - Thanks to [embee8](https://github.com/embee8) for creating this plugin.
@@ -300,7 +300,7 @@ https://www.panasonic.com/global/hvac/products/comfort-cloud/how-to-set-up-comfo
 
 ## Changelog
 
-#### Version 4.1.0
+#### Version 4.1.0 - 4.1.2
 
 - Added Power (on/off) switch.
 - Added Nanoe Stand Alone Mode switch.
@@ -312,7 +312,7 @@ https://www.panasonic.com/global/hvac/products/comfort-cloud/how-to-set-up-comfo
 - Update App Version to 1.21.0.
 - Dependency updates.
 
-#### Version 4.0.0
+#### Version 4.0.0 - 4.0.6
 
 - Completely new Comfort Cloud API. All versions below 4.0.0 will not work. Thank you @nanos and @heldchen for help!
 - Option to add additional switches to control: Nanoe, Inside cleaning, Eco Navi, Dry Mode, Fan mode, Quiet Mode, Powerful Mode, Swing Up Down, Swing Left Right.
@@ -322,5 +322,4 @@ https://www.panasonic.com/global/hvac/products/comfort-cloud/how-to-set-up-comfo
 - Removed options: Force values, Oscilate switch (now it always control swing), Auto Mode (you can add switches to control Dry and Fan mode) - now you can add additional switches and sliders to control these options.
 - Function to check latest Google Play app version. Thanks to @nanos !
 - Dependency updates.
-
-In addition to the version 4.0.0: versions from 4.0.1 to 4.0.3 fixes NPM issues, version 4.0.4 fix refresh token timer, version 4.0.5 adds Eco Function switch.
+- In addition to the version 4.0.0: versions from 4.0.1 to 4.0.3 fixes NPM issues, version 4.0.4 fix refresh token timer, version 4.0.5 adds Eco Function switch.
