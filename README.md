@@ -306,7 +306,7 @@ https://www.panasonic.com/global/hvac/products/comfort-cloud/how-to-set-up-comfo
 - Added Nanoe Stand Alone Mode switch.
 - Improved behavior of Fan Mode and Dry Mode switch (now when switch will be turning on it will turn on device and set desired mode, and when switch will be turning off it will turn off device).
 - Improved mechanism for detecting functions available for a given device.
-- Fixed Oscilate switch.
+- Fixed Oscilate switch and Swing mode default positions (it might be required to set these values again in plugin config).
 - Fixed error handling.
 - Fixed mechanism of actions when the token cannot be refreshed.
 - Update App Version to 1.21.0.
