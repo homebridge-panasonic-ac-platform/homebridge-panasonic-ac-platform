@@ -85,79 +85,79 @@
 							"type": "boolean",
 							"default": false
 						},
-						"swingModeDefaultPositionUpDown": {
+						"swingDefaultUD": {
 							"title": "Swing Mode Default Position (Up-Down)",
 							"description": "Desired position of the Up-Down flaps when swing is switched off.",
-							"type": "string",
-							"default": "CENTER",
+							"type": "integer",
+							"default": 2,
 							"oneOf": [
 								{
 									"title": "Up",
 									"enum": [
-										"UP"
+										0
 									]
 								},
 								{
 									"title": "Center-Up",
 									"enum": [
-										"CENTER-UP"
+										3
 									]
 								},
 								{
 									"title": "Center",
 									"enum": [
-										"CENTER"
+										2
 									]
 								},
 								{
 									"title": "Center-Down",
 									"enum": [
-										"CENTER-DOWN"
+										4
 									]
 								},
 								{
 									"title": "Down",
 									"enum": [
-										"DOWN"
+										1
 									]
 								}
 							],
 							"required": true
 						},
-						"swingModeDefaultPositionLeftRight": {
+						"swingDefaultLR": {
 							"title": "Swing Mode Default Position (Left-Right)",
 							"description": "Desired position of the Left-Right flaps when swing is switched off.",
-							"type": "string",
-							"default": "CENTER",
+							"type": "integer",
+							"default": 2,
 							"oneOf": [
 								{
 									"title": "Left",
 									"enum": [
-										"LEFT"
+										0
 									]
 								},
 								{
 									"title": "Center-Left",
 									"enum": [
-										"CENTER-LEFT"
+										4
 									]
 								},
 								{
 									"title": "Center",
 									"enum": [
-										"CENTER"
+										2
 									]
 								},
 								{
 									"title": "Center-Right",
 									"enum": [
-										"CENTER-RIGHT"
+										3
 									]
 								},
 								{
 									"title": "Right",
 									"enum": [
-										"RIGHT"
+										1
 									]
 								}
 							],
@@ -336,8 +336,8 @@
 							"expandable": true,
 							"expanded": false,
 							"items": [
-								"devices[].swingModeDefaultPositionUpDown",
-								"devices[].swingModeDefaultPositionLeftRight"
+								"devices[].swingDefaultUD",
+								"devices[].swingDefaultLR"
 							]
 						}
 					]

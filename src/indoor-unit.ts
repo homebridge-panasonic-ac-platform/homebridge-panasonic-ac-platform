@@ -892,49 +892,8 @@ export default class IndoorUnitAccessory {
       this.platform.log.debug(`${this.accessory.displayName}: Swing mode Auto`);
     } else if (value === this.platform.Characteristic.SwingMode.SWING_DISABLED) {
       parameters.fanAutoMode = 1;
-
-      switch (this.devConfig.swingModeDefaultPositionUpDown) {
-        case 'UP':
-          parameters.airSwingUD = 0;
-          break;
-        case 'CENTER-UP':
-          parameters.airSwingUD= 3;
-          break;
-        case 'CENTER':
-          parameters.airSwingUD = 2;
-          break;
-        case 'CENTER-DOWN':
-          parameters.airSwingUD = 4;
-          break;
-        case 'DOWN':
-          parameters.airSwingUD= 1;
-          break;
-        default:
-          parameters.airSwingUD = 2;
-          break;
-      }
-
-      switch (this.devConfig.swingModeDefaultPositionLeftRight) {
-        case 'LEFT':
-          parameters.airSwingLR = 1;
-          break;
-        case 'CENTER-LEFT':
-          parameters.airSwingLR= 5;
-          break;
-        case 'CENTER':
-          parameters.airSwingLR = 2;
-          break;
-        case 'CENTER-RIGHT':
-          parameters.airSwingLR = 4;
-          break;
-        case 'RIGHT':
-          parameters.airSwingLR= 0;
-          break;
-        default:
-          parameters.airSwingLR = 2;
-          break;
-      }
-
+      parameters.airSwingUD = this.devConfig.swingDefaultUD || 2;
+      parameters.airSwingLR = this.devConfig.swingDefaultLR || 2;
       this.platform.log.debug(`${this.accessory.displayName}: Swing mode Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
@@ -1090,28 +1049,7 @@ export default class IndoorUnitAccessory {
       } else {
         parameters.fanAutoMode = 1;
       }
-
-      switch (this.devConfig.swingModeDefaultPositionUpDown) {
-        case 'UP':
-          parameters.airSwingUD = 0;
-          break;
-        case 'CENTER-UP':
-          parameters.airSwingUD= 3;
-          break;
-        case 'CENTER':
-          parameters.airSwingUD = 2;
-          break;
-        case 'CENTER-DOWN':
-          parameters.airSwingUD = 4;
-          break;
-        case 'DOWN':
-          parameters.airSwingUD= 1;
-          break;
-        default:
-          parameters.airSwingUD = 2;
-          break;
-      }
-
+      parameters.airSwingUD = this.devConfig.swingDefaultUD || 2;
       this.platform.log.debug(`${this.accessory.displayName}: Swing Up Down Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
@@ -1134,28 +1072,7 @@ export default class IndoorUnitAccessory {
       } else {
         parameters.fanAutoMode = 1;
       }
-
-      switch (this.devConfig.swingModeDefaultPositionLeftRight) {
-        case 'LEFT':
-          parameters.airSwingLR = 1;
-          break;
-        case 'CENTER-LEFT':
-          parameters.airSwingLR= 5;
-          break;
-        case 'CENTER':
-          parameters.airSwingLR = 2;
-          break;
-        case 'CENTER-RIGHT':
-          parameters.airSwingLR = 4;
-          break;
-        case 'RIGHT':
-          parameters.airSwingLR= 0;
-          break;
-        default:
-          parameters.airSwingLR = 2;
-          break;
-      }
-
+      parameters.airSwingLR = this.devConfig.swingDefaultLR || 2;
       this.platform.log.debug(`${this.accessory.displayName}: Swing Left Right Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
