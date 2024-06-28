@@ -85,84 +85,6 @@
 							"type": "boolean",
 							"default": false
 						},
-						"swingModeDefaultPositionUpDown": {
-							"title": "Swing Mode Default Position (Up-Down)",
-							"description": "Desired position of the Up-Down flaps when swing is switched off.",
-							"type": "string",
-							"default": "CENTER",
-							"oneOf": [
-								{
-									"title": "Up",
-									"enum": [
-										"UP"
-									]
-								},
-								{
-									"title": "Center-Up",
-									"enum": [
-										"CENTER-UP"
-									]
-								},
-								{
-									"title": "Center",
-									"enum": [
-										"CENTER"
-									]
-								},
-								{
-									"title": "Center-Down",
-									"enum": [
-										"CENTER-DOWN"
-									]
-								},
-								{
-									"title": "Down",
-									"enum": [
-										"DOWN"
-									]
-								}
-							],
-							"required": true
-						},
-						"swingModeDefaultPositionLeftRight": {
-							"title": "Swing Mode Default Position (Left-Right)",
-							"description": "Desired position of the Left-Right flaps when swing is switched off.",
-							"type": "string",
-							"default": "CENTER",
-							"oneOf": [
-								{
-									"title": "Left",
-									"enum": [
-										"LEFT"
-									]
-								},
-								{
-									"title": "Center-Left",
-									"enum": [
-										"CENTER-LEFT"
-									]
-								},
-								{
-									"title": "Center",
-									"enum": [
-										"CENTER"
-									]
-								},
-								{
-									"title": "Center-Right",
-									"enum": [
-										"CENTER-RIGHT"
-									]
-								},
-								{
-									"title": "Right",
-									"enum": [
-										"RIGHT"
-									]
-								}
-							],
-							"required": true
-						},
 						"swingDefaultUD": {
 							"title": "Swing Mode Default Position (Up-Down)",
 							"description": "Desired position of the Up-Down flaps when swing is switched off.",
@@ -414,8 +336,8 @@
 							"expandable": true,
 							"expanded": false,
 							"items": [
-								"devices[].swingModeDefaultPositionUpDown",
-								"devices[].swingModeDefaultPositionLeftRight"
+								"devices[].swingDefaultUD",
+								"devices[].swingDefaultLR"
 							]
 						}
 					]
