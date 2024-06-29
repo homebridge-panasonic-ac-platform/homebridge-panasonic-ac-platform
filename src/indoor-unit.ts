@@ -396,10 +396,9 @@ export default class IndoorUnitAccessory {
       }
 
       // Current Temperature
-      // If the temperature of the indoor unit is not available, the temperature of the
-      // outdoor unit will be used. If both are not available, the default values will
-      // be used: 8°C for heating and 30°C for cooling.
-      // Temperature of 126 from the API = null/failure
+      // If the temperature of the indoor unit is not available,
+      // default values will be used: 8°C for heating and 30°C for cooling and else.
+      // Temperature of 126 or higher from the API = null/failure
 
       if (this.deviceStatus.insideTemperature < 126) {
         this.service.updateCharacteristic(
@@ -410,7 +409,7 @@ export default class IndoorUnitAccessory {
         this.platform.log.debug('Indoor temperature is not available - setting default temperature');
         this.service.updateCharacteristic(
           this.platform.Characteristic.CurrentTemperature,
-          (this.deviceStatus.operationMode === 3) ? 30 : 8,
+          (this.deviceStatus.operationMode === 3) ? 8 : 30,
         );
       }
 
