@@ -205,6 +205,18 @@
 							"type": "boolean",
 							"default": false
 						},
+						"exposeCoolMode": {
+							"title": "Expose Cool Mode",
+							"description": "When enabled it will create a switch to control Cool Mode.",
+							"type": "boolean",
+							"default": false
+						},
+						"exposeHeatMode": {
+							"title": "Expose Heat Mode",
+							"description": "When enabled it will create a switch to control Heat Mode.",
+							"type": "boolean",
+							"default": false
+						},
 						"exposeDryMode": {
 							"title": "Expose Dry Mode",
 							"description": "When enabled it will create a switch to control Dry Mode.",
@@ -319,6 +331,8 @@
 								"devices[].exposeInsideCleaning",
 								"devices[].exposeEcoNavi",
 								"devices[].exposeEcoFunction",
+								"devices[].exposeCoolMode",
+								"devices[].exposeHeatMode",
 								"devices[].exposeDryMode",
 								"devices[].exposeFanMode",
 								"devices[].exposeNanoeStandAloneMode",
