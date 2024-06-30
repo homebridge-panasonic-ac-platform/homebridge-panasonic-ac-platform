@@ -20,6 +20,8 @@ export default class IndoorUnitAccessory {
   exposeInsideCleaning;
   exposeEcoNavi;
   exposeEcoFunction;
+  exposeCoolMode;
+  exposeHeatMode;
   exposeDryMode;
   exposeFanMode;
   exposeNanoeStandAloneMode;
@@ -226,6 +228,40 @@ export default class IndoorUnitAccessory {
       if (removeEcoFunction) {
         this.accessory.removeService(removeEcoFunction);
         this.platform.log.debug(`${this.accessory.displayName}: remove eco function switch`);
+      }
+    }
+
+    // Cool mode
+    if (this.devConfig?.exposeCoolMode) {
+      this.exposeCoolMode = this.accessory.getService(this.accessory.displayName + ' (cool mode)')
+        || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (cool mode)', 'exposeCoolMode');
+      this.exposeCoolMode.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (cool mode)');
+      this.exposeCoolMode
+        .getCharacteristic(this.platform.Characteristic.On)
+        .onSet(this.setCoolMode.bind(this));
+      this.platform.log.debug(`${this.accessory.displayName}: add cool mode switch`);
+    } else {
+      const removeCoolMode = this.accessory.getService(this.accessory.displayName + ' (cool mode)');
+      if (removeCoolMode) {
+        this.accessory.removeService(removeCoolMode);
+        this.platform.log.debug(`${this.accessory.displayName}: remove cool mode switch`);
+      }
+    }
+
+    // Heat mode
+    if (this.devConfig?.exposeHeatMode) {
+      this.exposeHeatMode = this.accessory.getService(this.accessory.displayName + ' (heat mode)')
+        || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (heat mode)', 'exposeHeatMode');
+      this.exposeHeatMode.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (heat mode)');
+      this.exposeHeatMode
+        .getCharacteristic(this.platform.Characteristic.On)
+        .onSet(this.setHeatMode.bind(this));
+      this.platform.log.debug(`${this.accessory.displayName}: add heat mode switch`);
+    } else {
+      const removeHeatMode = this.accessory.getService(this.accessory.displayName + ' (heat mode)');
+      if (removeHeatMode) {
+        this.accessory.removeService(removeHeatMode);
+        this.platform.log.debug(`${this.accessory.displayName}: remove heat mode switch`);
       }
     }
 
@@ -629,6 +665,24 @@ export default class IndoorUnitAccessory {
         }
       }
 
+      // Cool Mode
+      if (this.exposeCoolMode) {
+        if (this.deviceStatus.operate === 1 && this.deviceStatus.operationMode === 2) {
+          this.exposeCoolMode.updateCharacteristic(this.platform.Characteristic.On, true);
+        } else {
+          this.exposeCoolMode.updateCharacteristic(this.platform.Characteristic.On, false);
+        }
+      }
+
+      // Heat Mode
+      if (this.exposeHeatMode) {
+        if (this.deviceStatus.operate === 1 && this.deviceStatus.operationMode === 3) {
+          this.exposeHeatMode.updateCharacteristic(this.platform.Characteristic.On, true);
+        } else {
+          this.exposeHeatMode.updateCharacteristic(this.platform.Characteristic.On, false);
+        }
+      }
+
       // Dry Mode
       if (this.exposeDryMode) {
         if (this.deviceStatus.operate === 1 && this.deviceStatus.operationMode === 1) {
@@ -959,6 +1013,34 @@ export default class IndoorUnitAccessory {
     } else {
       parameters.ecoFunctionData = 1;
       this.platform.log.debug(`${this.accessory.displayName}: Eco Function Off`);
+    }
+    this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
+  }
+
+  // set Cool Mode
+  async setCoolMode(value) {
+    const parameters: ComfortCloudDeviceUpdatePayload = {};
+    if (value) {
+      parameters.operate = 1;
+      parameters.operationMode = 2;
+      this.platform.log.debug(`${this.accessory.displayName}: Cool Mode On`);
+    } else {
+      parameters.operate = 0;
+      this.platform.log.debug(`${this.accessory.displayName}: Cool Mode Off`);
+    }
+    this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
+  }
+
+  // set Heat Mode
+  async setHeatMode(value) {
+    const parameters: ComfortCloudDeviceUpdatePayload = {};
+    if (value) {
+      parameters.operate = 1;
+      parameters.operationMode = 3;
+      this.platform.log.debug(`${this.accessory.displayName}: Heat Mode On`);
+    } else {
+      parameters.operate = 0;
+      this.platform.log.debug(`${this.accessory.displayName}: Heat Mode Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
