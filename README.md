@@ -116,6 +116,10 @@ When enabled it will create a dummy temperature sensor which will display the te
 * `exposeEcoNavi` (boolean): When enabled it will create a switch to control Eco Navi.
 
 * `exposeEcoFunction` (boolean): When enabled it will create a switch to control Eco Function.
+
+* `exposeCoolMode` (boolean): When enabled it will create a switch to control Cool Mode.
+ 
+* `exposeHeayMode` (boolean): When enabled it will create a switch to control Heat Mode.
  
 * `exposeDryMode` (boolean): When enabled it will create a switch to control Dry Mode.
 
@@ -300,7 +304,7 @@ https://www.panasonic.com/global/hvac/products/comfort-cloud/how-to-set-up-comfo
 
 ## Changelog
 
-#### Version 4.1.0 - 4.1.3
+#### Version 4.1.0 - 4.1.4
 
 - Added Power (on/off) switch.
 - Added Nanoe Stand Alone Mode switch.
@@ -311,7 +315,7 @@ https://www.panasonic.com/global/hvac/products/comfort-cloud/how-to-set-up-comfo
 - Fixed mechanism of actions when the token cannot be refreshed.
 - Update App Version to 1.21.0.
 - Dependency updates.
-- In addition to the version 4.1.0: versions from 4.1.1 to 4.1.3 fixes some small bugs.
+- In addition to the version 4.1.0: versions from 4.1.1 to 4.1.3 fixes some small bugs, version 4.1.4 adds Cool and Heat Mode switches.
 
 #### Version 4.0.0 - 4.0.6
 
