@@ -151,20 +151,20 @@ Desired position of the Left-Right flaps when swing is switched off.
 HomeKit has a limited number of switches, which is much less than the number of available options in Panasonic Comfort Cloud. Therefore, in the plugin settings you can choose what controls what and add additional sensors and switches. You can apply individual settings for each device.
 
 <details>
-<summary><b>Additional sensors (Outdoor Unit Temp.), switches (Nanoe, Inside Cleaning, Eco Navi, Quiet Mode, Powerful Mode, Dry Mode, Fan Mode, Swing Up Down, Swing Left Right) and slider (Fan speed)</b></summary>
+<summary><b>Additional sensors and switches</b></summary>
     
-- Enable additional sensor for outdoor temp. and/or switches for: Nanoe, Inside Cleaning, Eco Navi, Dry Mode, Fan mode, Quiet Mode, Powerful Mode, Swing Up Down, Swing Left Right.
+- Enable additional sensor for outdoor temp. and/or switches for: Nanoe, Inside Cleaning, Eco Navi, Cool Mode, Heat Mode, Dry Mode, Fan mode, Quiet Mode, Powerful Mode, Swing Up Down, Swing Left Right, Fan Speed, etc.
 - Sensor / Switch will work only if device support this function.
 - Some values can be changed only when device is turned on (E.G.: Quiet Mode, Powerful mode, Swing Up Down, Swing Left Right).
-- These switches will be available in HomeKit, directly in your main device or in device / settings (wheel icon) / accessories. 
+- These sensors / switches will be available in HomeKit, directly in your main device or in device / settings (wheel icon) / accessories. 
 - If you add at least one sensor or switch, the appearance of the air conditioning in HomeKit will change to accessory group (rotation speed and swing will be available after entering the device / settings (wheel icon) / accessories / device / settings (wheel icon)). You can also use the option 'show as separate tiles' to separate the accessories.
 
 </details>
 
 <details>
-<summary><b>Fan speed, including Quiet Mode, Powerful Mode (slider built-in thermostat accessory, not additional)</b></summary>
+<summary><b>Fan speed (including Quiet and Powerful Mode)</b></summary>
 
-The following mapping applies:
+For the built-in slider (not additional), the following mapping applies:
 
 | Home app slider position  | Comfort Cloud setting |
 | ------------------------: | --------------------- |
@@ -181,7 +181,7 @@ The following mapping applies:
 </details>
 
 <details>
-<summary><b>Oscilate switch, Swing mode (switch built-in thermostat accessory, not additional)</b></summary>
+<summary><b>Oscilate switch (swing)</b></summary>
 
 - Activation of Oscilate switch from HomeKit will set swing to auto (for up-down and left-right).
 - Deactivation of the Oscilate switch from HomeKit will set desired positions - you can set them in plugin config.
