@@ -40,36 +40,36 @@ Configure the plugin through the settings UI or in the JSON editor.
 {
   "platforms": [
     {
-        "platform": "Panasonic AC Platform",
-        "name": "Homebridge Panasonic AC Platform",
-        "email": "mail@example.com",
-        "password": "********",
-        "key2fa": "GVZCKT2LLBLV2QBXMFAWFXKFKU5EWL2H",
-        "suppressOutgoingUpdates": false, 
-        "logsLevel": 1,
-        "devices": [
-                {
-                    "name": "CS-Z50VKEW+4942673181",
-                    "excludeDevice": true,
-                    "minHeatingTemperature": 8,
-                    "exposeOutdoorTemp": false,
-                    "exposeNanoe": true,
-                    "exposeInsideCleaning": false,
-                    "exposeEcoNavi": false,
-                    "exposeDryMode": false,
-                    "exposeQuietMode": true,
-                    "exposePowerfulMode": false,
-                    "swingDefaultUD": "CENTER",
-                    "swingDefaultLR": "CENTER"
-                },
-                 {
-                    "name": "Bedroom AC",
-                    "excludeDevice": false,
-                    "exposeOutdoorTemp": true,
-                    "exposeNanoe": false,
-                    "exposeInsideCleaning": true,
-                },
-            ]
+      "platform": "Panasonic AC Platform",
+      "name": "Homebridge Panasonic AC Platform",
+      "email": "mail@example.com",
+      "password": "********",
+      "key2fa": "GVZCKT2LLBLV2QBXMFAWFXKFKU5EWL2H",
+      "suppressOutgoingUpdates": false, 
+      "logsLevel": 1,
+      "devices": [
+        {
+            "name": "CS-Z50VKEW+4942673181",
+            "excludeDevice": true,
+            "minHeatingTemperature": 8,
+            "exposeOutdoorTemp": false,
+            "exposeNanoe": true,
+            "exposeInsideCleaning": false,
+            "exposeEcoNavi": false,
+            "exposeDryMode": false,
+            "exposeQuietMode": true,
+            "exposePowerfulMode": false,
+            "swingDefaultUD": "CENTER",
+            "swingDefaultLR": "CENTER"
+        },
+        {
+            "name": "Bedroom AC",
+            "excludeDevice": false,
+            "exposeOutdoorTemp": true,
+            "exposeNanoe": false,
+            "exposeInsideCleaning": true,
+        },
+      ]
     }
   ]
 }
