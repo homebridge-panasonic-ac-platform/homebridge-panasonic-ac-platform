@@ -322,7 +322,7 @@ https://www.panasonic.com/global/hvac/products/comfort-cloud/how-to-set-up-comfo
 - Completely new Comfort Cloud API. All versions below 4.0.0 will not work. Thank you @nanos and @heldchen for help!
 - Option to add additional switches to control: Nanoe, Inside cleaning, Eco Navi, Dry Mode, Fan mode, Quiet Mode, Powerful Mode, Swing Up Down, Swing Left Right.
 - Option to add additional slider to control Fan speed.
-- New way to add additional sensor fot outdoor unit temperature.
+- New way to add additional sensor for outdoor unit temperature.
 - Removed field 'Exclude devices', use exclude from individual device config instead.
 - Removed options: Force values, Oscilate switch (now it always control swing), Auto Mode (you can add switches to control Dry and Fan mode) - now you can add additional switches and sliders to control these options.
 - Function to check latest Google Play app version. Thanks to @nanos !
