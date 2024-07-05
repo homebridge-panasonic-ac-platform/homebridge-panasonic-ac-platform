@@ -449,7 +449,7 @@ export default class ComfortCloudApi {
 
       // Generate 6 digit PIN calculated by key
       const key2fa = this.config.key2fa;
-      const key2famasked = key2fa.replace(key2fa.substring(4,28), "(...)"));
+      const key2famasked = key2fa.replace(key2fa.substring(4,28), "(...)");
       const code2fa = generate2fa(key2fa);
       this.log.info('2FA code: ' + code2fa ' (for key: ' + key2famasked + ')');
     } else {
