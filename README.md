@@ -315,7 +315,7 @@ https://www.panasonic.com/global/hvac/products/comfort-cloud/how-to-set-up-comfo
 - Fixed mechanism of actions when the token cannot be refreshed.
 - Update App Version to 1.21.0.
 - Dependency updates.
-- In addition to the version 4.1.0: versions from 4.1.1 to 4.1.3 fixes some small bugs, version 4.1.4 adds Cool and Heat Mode switches.
+- In addition to the version 4.1.0: versions from 4.1.1 to 4.1.3 fixes some small bugs, version 4.1.4 adds Cool and Heat Mode switches, version 4.1.5 fix small bugs and simplify code.
 
 #### Version 4.0.0 - 4.0.6
 
