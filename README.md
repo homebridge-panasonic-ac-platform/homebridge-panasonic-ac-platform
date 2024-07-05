@@ -304,7 +304,7 @@ https://www.panasonic.com/global/hvac/products/comfort-cloud/how-to-set-up-comfo
 
 ## Changelog
 
-#### Version 4.1.0 - 4.1.4
+#### Version 4.1.0 - 4.1.5
 
 - Added Power (on/off) switch.
 - Added Nanoe Stand Alone Mode switch.
