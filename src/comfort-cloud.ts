@@ -451,7 +451,7 @@ export default class ComfortCloudApi {
       const key2fa = this.config.key2fa;
       const key2famasked = key2fa.replace(key2fa.substring(4,28), "(...)");
       const code2fa = generate2fa(key2fa);
-      this.log.info('2FA code: ' + code2fa ' (for key: ' + key2famasked + ')');
+      this.log.info('2FA code: ' + code2fa + ' (for key: ' + key2famasked + ')');
     } else {
       this.log.debug('No 2FA key or incorrect key');
     }
