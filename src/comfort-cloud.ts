@@ -73,6 +73,23 @@ export default class ComfortCloudApi {
     const app_client_id = APP_CLIENT_ID;
     this.log.debug(`app_client_id: ${app_client_id}`);
 
+    function generateRandomString(length) {
+      let result = '';
+      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      const charactersLength = characters.length;
+      for (let i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+      }
+      return result;
+    }
+
+    function getQuerystringParameterFromHeaderEntryUrl(response, headerEntry, querystringParameter, baseUrl) {
+      const headerEntryValue = response.headers[headerEntry];
+      const parsedUrl = new URL(headerEntryValue.startsWith('/') ? baseUrl + headerEntryValue : headerEntryValue);
+      const params = new URLSearchParams(parsedUrl.search);
+      return params.get(querystringParameter) || null;
+    }
+
     // taken from AuthO docs
     function base64URLEncode(str) {
       return str.toString('base64')
@@ -365,13 +382,63 @@ export default class ComfortCloudApi {
 
   // NEW API - END ----------------------------------------------------------------------------------
 
+  // 2 FA TOTP ----------------------------------------------------------------------------------
 
   async setup2fa() {
 
-    // 2 FA TOTP
+    function dec2hex(s) {
+      return (s < 15.5 ? '0' : '') + Math.round(s).toString(16);
+    }
 
+    function hex2dec(s) {
+      return parseInt(s, 16);
+    }
+
+    function leftpad(str, len, pad) {
+      if (len + 1 >= str.length) {
+        str = Array(len + 1 - str.length).join(pad) + str;
+      }
+      return str;
+    }
+
+    function base32tohex(base32) {
+      const base32chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+      let bits = '';
+      let hex = '';
+      for (let i = 0; i < base32.length; i++) {
+        const val = base32chars.indexOf(base32.charAt(i).toUpperCase());
+        bits += leftpad(val.toString(2), 5, '0');
+      }
+      for (let i = 0; i + 4 <= bits.length; i += 4) {
+        const chunk = bits.substr(i, 4);
+        hex = hex + parseInt(chunk, 2).toString(16);
+      }
+      return hex;
+    }
+
+    function generate2fa(secret) {
+      const key = base32tohex(secret);
+      const epoch = Math.round(new Date().getTime() / 1000.0);
+      const hextime = leftpad(dec2hex(Math.floor(epoch / 30)), 16, '0');
+      const shaObj = new jsSHA('SHA-1', 'HEX');
+      shaObj.setHMACKey(key, 'HEX');
+      shaObj.update(hextime);
+      const hmac = shaObj.getHMAC('HEX');
+      const offset = hex2dec(hmac.substring(hmac.length - 1));
+      let otp = (hex2dec(hmac.substr(offset * 2, 8)) & hex2dec('7fffffff')) + '';
+      otp = (otp).substring(otp.length - 6, 10);
+      return otp;
+    }
+
+    // Show number with 2 digits (prepend 0 to numbers from 0 to 9)
+    function pad2(number) {
+      return (number < 10 ? '0' : '') + number;
+    }
+
+    // Check if the key is given and if it has 32 characters
     if (this.config.key2fa && this.config.key2fa.length === 32) {
 
+      // Show UTC and Local time
       const now = new Date();
       const utcDate = now.getUTCFullYear() + '-' + pad2(now.getUTCMonth() + 1) + '-' + pad2(now.getUTCDate())
           + ' ' + pad2(now.getUTCHours()) + ':' + pad2(now.getUTCMinutes()) + ':' + pad2(now.getUTCSeconds());
@@ -380,19 +447,14 @@ export default class ComfortCloudApi {
       this.log.debug('UTC date: ' + utcDate);
       this.log.debug('Local date: ' + localDate);
 
+      // Generate 6 digit PIN calculated by key
       const key2fa = this.config.key2fa;
+      const key2famasked = key2fa.replace(key2fa.substring(4, 28), '(...)');
       const code2fa = generate2fa(key2fa);
-      this.log.info('2FA code: ' + code2fa
-                    + ' (for key '
-                    + key2fa[0] + key2fa[1] + key2fa[2] + key2fa[3]
-                    + key2fa[4] + key2fa[5] + key2fa[6] + key2fa[7]
-                    + '...'
-                    + key2fa[24] + key2fa[25] + key2fa[26] + key2fa[27]
-                    + key2fa[28] + key2fa[29] + key2fa[30] + key2fa[31] + ')');
+      this.log.info('2FA code: ' + code2fa + ' (for key: ' + key2famasked + ')');
     } else {
-      this.log.info('No 2FA key or incorrect key');
+      this.log.debug('No 2FA key or incorrect key');
     }
-
   }
 
   // Get devices ----------------------------------------------------------------------------------
@@ -583,80 +645,6 @@ export default class ComfortCloudApi {
   }
 }
 
-// 2FA TOTP ----------------------------------------------------------------------------------
 
-function dec2hex(s) {
-  return (s < 15.5 ? '0' : '') + Math.round(s).toString(16);
-}
 
-function hex2dec(s) {
-  return parseInt(s, 16);
-}
 
-function base32tohex(base32) {
-  const base32chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
-  let bits = '';
-  let hex = '';
-
-  for (let i = 0; i < base32.length; i++) {
-    const val = base32chars.indexOf(base32.charAt(i).toUpperCase());
-    bits += leftpad(val.toString(2), 5, '0');
-  }
-
-  for (let i = 0; i + 4 <= bits.length; i += 4) {
-    const chunk = bits.substr(i, 4);
-    hex = hex + parseInt(chunk, 2).toString(16);
-  }
-
-  return hex;
-}
-
-function leftpad(str, len, pad) {
-  if (len + 1 >= str.length) {
-    str = Array(len + 1 - str.length).join(pad) + str;
-  }
-  return str;
-}
-
-function generate2fa(secret) {
-  const key = base32tohex(secret);
-  const epoch = Math.round(new Date().getTime() / 1000.0);
-  const hextime = leftpad(dec2hex(Math.floor(epoch / 30)), 16, '0');
-  const shaObj = new jsSHA('SHA-1', 'HEX');
-  shaObj.setHMACKey(key, 'HEX');
-  shaObj.update(hextime);
-  const hmac = shaObj.getHMAC('HEX');
-  const offset = hex2dec(hmac.substring(hmac.length - 1));
-  let otp = (hex2dec(hmac.substr(offset * 2, 8)) & hex2dec('7fffffff')) + '';
-  //otp = (otp).substr(otp.length - 6, 6);
-  otp = (otp).substring(otp.length - 6, 10);
-  return otp;
-}
-
-// show number with 2 digits - add 0 if for numbers from 0 to 9
-function pad2(number) {
-  return (number < 10 ? '0' : '') + number;
-}
-
-// new API functions ----------------------------------------------------------------------------------
-
-function generateRandomString(length) {
-  let result = '';
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  const charactersLength = characters.length;
-  for (let i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
-  return result;
-}
-
-// function generateRandomStringHex(length) {
-//   return Array.from({length: length}, () => Math.floor(Math.random() * 16).toString(16)).join('');
-// }
-
-function getQuerystringParameterFromHeaderEntryUrl(response, headerEntry, querystringParameter, baseUrl) {
-  const headerEntryValue = response.headers[headerEntry];
-  const parsedUrl = new URL(headerEntryValue.startsWith('/') ? baseUrl + headerEntryValue : headerEntryValue);
-  const params = new URLSearchParams(parsedUrl.search);
-  return params.get(querystringParameter) || null;
-}
