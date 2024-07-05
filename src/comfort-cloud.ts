@@ -447,11 +447,11 @@ export default class ComfortCloudApi {
       this.log.debug('UTC date: ' + utcDate);
       this.log.debug('Local date: ' + localDate);
 
-      // Generate 6 digit PIN calculated by key
+      // Generate 6 digit PIN code calculated by key
       const key2fa = this.config.key2fa;
-      const key2famasked = key2fa.replace(key2fa.substring(4, 28), '(...)');
+      const key2fa_masked = key2fa.replace(key2fa.substring(4, 28), '(...)');
       const code2fa = generate2fa(key2fa);
-      this.log.info('2FA code: ' + code2fa + ' (for key: ' + key2famasked + ')');
+      this.log.info('2FA TOTP, for key: ' + key2fa_masked + ', PIN code: ' + code2fa);
     } else {
       this.log.debug('No 2FA key or incorrect key');
     }
