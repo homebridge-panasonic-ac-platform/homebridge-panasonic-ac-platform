@@ -382,10 +382,9 @@ export default class ComfortCloudApi {
 
   // NEW API - END ----------------------------------------------------------------------------------
 
-
+  // 2 FA TOTP ----------------------------------------------------------------------------------
+  
   async setup2fa() {
-
-    // 2 FA TOTP
 
     function dec2hex(s) {
       return (s < 15.5 ? '0' : '') + Math.round(s).toString(16);
@@ -395,29 +394,26 @@ export default class ComfortCloudApi {
       return parseInt(s, 16);
     }
 
-    function base32tohex(base32) {
-      const base32chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
-      let bits = '';
-      let hex = '';
-
-      for (let i = 0; i < base32.length; i++) {
-        const val = base32chars.indexOf(base32.charAt(i).toUpperCase());
-        bits += leftpad(val.toString(2), 5, '0');
-      }
-
-      for (let i = 0; i + 4 <= bits.length; i += 4) {
-        const chunk = bits.substr(i, 4);
-        hex = hex + parseInt(chunk, 2).toString(16);
-      }
-
-      return hex;
-    }
-
     function leftpad(str, len, pad) {
       if (len + 1 >= str.length) {
         str = Array(len + 1 - str.length).join(pad) + str;
       }
       return str;
+    }
+
+    function base32tohex(base32) {
+      const base32chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+      let bits = '';
+      let hex = '';
+      for (let i = 0; i < base32.length; i++) {
+        const val = base32chars.indexOf(base32.charAt(i).toUpperCase());
+        bits += leftpad(val.toString(2), 5, '0');
+      }
+      for (let i = 0; i + 4 <= bits.length; i += 4) {
+        const chunk = bits.substr(i, 4);
+        hex = hex + parseInt(chunk, 2).toString(16);
+      }
+      return hex;
     }
 
     function generate2fa(secret) {
@@ -430,17 +426,19 @@ export default class ComfortCloudApi {
       const hmac = shaObj.getHMAC('HEX');
       const offset = hex2dec(hmac.substring(hmac.length - 1));
       let otp = (hex2dec(hmac.substr(offset * 2, 8)) & hex2dec('7fffffff')) + '';
-      //otp = (otp).substr(otp.length - 6, 6);
       otp = (otp).substring(otp.length - 6, 10);
       return otp;
     }
 
-    // show number with 2 digits - add 0 if for numbers from 0 to 9
+    // Show number with 2 digits (prepend 0 to numbers from 0 to 9)
     function pad2(number) {
       return (number < 10 ? '0' : '') + number;
     }
 
+    // Check if the key is given and if it has 32 characters
     if (this.config.key2fa && this.config.key2fa.length === 32) {
+
+      // Show UTC and Local time
       const now = new Date();
       const utcDate = now.getUTCFullYear() + '-' + pad2(now.getUTCMonth() + 1) + '-' + pad2(now.getUTCDate())
           + ' ' + pad2(now.getUTCHours()) + ':' + pad2(now.getUTCMinutes()) + ':' + pad2(now.getUTCSeconds());
@@ -449,8 +447,8 @@ export default class ComfortCloudApi {
       this.log.debug('UTC date: ' + utcDate);
       this.log.debug('Local date: ' + localDate);
 
-      const key2fa = this.config.key2fa;
-      const code2fa = generate2fa(key2fa);
+      // Generate 6 digit PIN calculated by key
+      const code2fa = generate2fa(this.config.key2fa);
       this.log.info('2FA code: ' + code2fa
                     + ' (for key '
                     + key2fa[0] + key2fa[1] + key2fa[2] + key2fa[3]
