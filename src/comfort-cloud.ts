@@ -394,32 +394,32 @@ export default class ComfortCloudApi {
     function hex2dec(s) {
       return parseInt(s, 16);
     }
-    
+
     function base32tohex(base32) {
       const base32chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
       let bits = '';
       let hex = '';
-    
+
       for (let i = 0; i < base32.length; i++) {
         const val = base32chars.indexOf(base32.charAt(i).toUpperCase());
         bits += leftpad(val.toString(2), 5, '0');
       }
-    
+
       for (let i = 0; i + 4 <= bits.length; i += 4) {
         const chunk = bits.substr(i, 4);
         hex = hex + parseInt(chunk, 2).toString(16);
       }
-    
+
       return hex;
     }
-    
+
     function leftpad(str, len, pad) {
       if (len + 1 >= str.length) {
         str = Array(len + 1 - str.length).join(pad) + str;
       }
       return str;
     }
-    
+
     function generate2fa(secret) {
       const key = base32tohex(secret);
       const epoch = Math.round(new Date().getTime() / 1000.0);
@@ -434,14 +434,13 @@ export default class ComfortCloudApi {
       otp = (otp).substring(otp.length - 6, 10);
       return otp;
     }
-    
+
     // show number with 2 digits - add 0 if for numbers from 0 to 9
     function pad2(number) {
       return (number < 10 ? '0' : '') + number;
     }
 
     if (this.config.key2fa && this.config.key2fa.length === 32) {
-
       const now = new Date();
       const utcDate = now.getUTCFullYear() + '-' + pad2(now.getUTCMonth() + 1) + '-' + pad2(now.getUTCDate())
           + ' ' + pad2(now.getUTCHours()) + ':' + pad2(now.getUTCMinutes()) + ':' + pad2(now.getUTCSeconds());
@@ -462,7 +461,6 @@ export default class ComfortCloudApi {
     } else {
       this.log.info('No 2FA key or incorrect key');
     }
-
   }
 
   // Get devices ----------------------------------------------------------------------------------
