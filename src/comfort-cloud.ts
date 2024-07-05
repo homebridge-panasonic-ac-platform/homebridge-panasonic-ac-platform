@@ -383,7 +383,7 @@ export default class ComfortCloudApi {
   // NEW API - END ----------------------------------------------------------------------------------
 
   // 2 FA TOTP ----------------------------------------------------------------------------------
-  
+
   async setup2fa() {
 
     function dec2hex(s) {
@@ -448,7 +448,8 @@ export default class ComfortCloudApi {
       this.log.debug('Local date: ' + localDate);
 
       // Generate 6 digit PIN calculated by key
-      const code2fa = generate2fa(this.config.key2fa);
+      const key2fa = this.config.key2fa;
+      const code2fa = generate2fa(key2fa);
       this.log.info('2FA code: ' + code2fa
                     + ' (for key '
                     + key2fa[0] + key2fa[1] + key2fa[2] + key2fa[3]
