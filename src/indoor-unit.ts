@@ -776,7 +776,7 @@ export default class IndoorUnitAccessory {
 
       // Fan speed
       // Check status only when device is on
-      if (this.exposeFanSpeed {
+      if (this.exposeFanSpeed) {
         if (this.deviceStatus.operate === 1) {
           if (this.deviceStatus.fanSpeed === 1) {
             this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.On, true);
@@ -802,7 +802,6 @@ export default class IndoorUnitAccessory {
           this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.On, false);
           this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.RotationSpeed, 0);
         }
-          
       }
 
       // Cooling Threshold Temperature (optional)
