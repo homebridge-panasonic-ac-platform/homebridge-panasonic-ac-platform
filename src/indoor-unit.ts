@@ -734,7 +734,8 @@ export default class IndoorUnitAccessory {
       }
 
       // Quiet Mode (speed)
-      if (this.exposeQuietMode) {
+      // Check status only when device is on
+      if (this.exposeQuietMode && this.deviceStatus.operate === 1) {
         if (this.deviceStatus.ecoMode === 2) {
           this.exposeQuietMode.updateCharacteristic(this.platform.Characteristic.On, true);
         } else {
@@ -743,7 +744,8 @@ export default class IndoorUnitAccessory {
       }
 
       // Powerful Mode (speed)
-      if (this.exposePowerfulMode) {
+      // Check status only when device is on
+      if (this.exposePowerfulMode && this.deviceStatus.operate === 1) {
         if (this.deviceStatus.ecoMode === 1) {
           this.exposePowerfulMode.updateCharacteristic(this.platform.Characteristic.On, true);
         } else {
