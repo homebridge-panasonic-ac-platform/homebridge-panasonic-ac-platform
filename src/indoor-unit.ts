@@ -594,45 +594,48 @@ export default class IndoorUnitAccessory {
        * 3) See README for the mapping of Comfort Cloud payload to slider position.
        */
 
-      // Default to AUTO mode
-      let sliderValue = 8;
+      // Check status only when device is on
+      if (this.deviceStatus.operate === 1) {
+        // Default to AUTO mode
+        let sliderValue = 8;
 
-      if (this.deviceStatus.ecoMode === 2) {
-        sliderValue = 1;
-        logOutput += ', Speed 1 (Quiet Mode)';
-      } else if (this.deviceStatus.ecoMode === 1) {
-        sliderValue = 7;
-        logOutput += ', Speed 5 (Powerful Mode)';
-      } else if (this.deviceStatus.ecoMode === 0) {
-        switch (this.deviceStatus.fanSpeed) {
-          case 1:
-            sliderValue = 2;
-            logOutput += ', Speed 1';
-            break;
-          case 2:
-            sliderValue = 3;
-            logOutput += ', Speed 2';
-            break;
-          case 3:
-            sliderValue = 4;
-            logOutput += ', Speed 3';
-            break;
-          case 4:
-            sliderValue = 5;
-            logOutput += ', Speed 4';
-            break;
-          case 5:
-            sliderValue = 6;
-            logOutput += ', Speed 5';
-            break;
-          case 0:
-            sliderValue = 8;
-            logOutput += ', Speed Auto';
-            break;
+        if (this.deviceStatus.ecoMode === 2) {
+          sliderValue = 1;
+          logOutput += ', Speed 1 (Quiet Mode)';
+        } else if (this.deviceStatus.ecoMode === 1) {
+          sliderValue = 7;
+          logOutput += ', Speed 5 (Powerful Mode)';
+        } else if (this.deviceStatus.ecoMode === 0) {
+          switch (this.deviceStatus.fanSpeed) {
+            case 1:
+              sliderValue = 2;
+              logOutput += ', Speed 1';
+              break;
+            case 2:
+              sliderValue = 3;
+              logOutput += ', Speed 2';
+              break;
+            case 3:
+              sliderValue = 4;
+              logOutput += ', Speed 3';
+              break;
+            case 4:
+              sliderValue = 5;
+              logOutput += ', Speed 4';
+              break;
+            case 5:
+              sliderValue = 6;
+              logOutput += ', Speed 5';
+              break;
+            case 0:
+              sliderValue = 8;
+              logOutput += ', Speed Auto';
+              break;
+          }
         }
+        this.service.getCharacteristic(this.platform.Characteristic.RotationSpeed)
+          .updateValue(sliderValue);
       }
-      this.service.getCharacteristic(this.platform.Characteristic.RotationSpeed)
-        .updateValue(sliderValue);
 
       // Swing Mode
       if (this.deviceStatus.fanAutoMode !== 1) {
@@ -772,7 +775,8 @@ export default class IndoorUnitAccessory {
       }
 
       // Fan speed
-      if (this.exposeFanSpeed) {
+      // Check status only when device is on
+      if (this.exposeFanSpeed && this.deviceStatus.operate === 1) {
         if (this.deviceStatus.fanSpeed === 1) {
           this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.RotationSpeed, 10);
         } else if (this.deviceStatus.fanSpeed === 2) {
