@@ -306,7 +306,10 @@ https://www.panasonic.com/global/hvac/products/comfort-cloud/how-to-set-up-comfo
 
 #### Version 4.2.0
 
+- A new way to send parameters to Comfort Cloud, from now on all commands set at short intervals are collected together and sent together, not separately as was the case before.
 - Added additional sensor for indoor unit temperature.
+- Fixed small bugs.
+- Dependency updates.
 
 #### Version 4.1.0 - 4.1.5
 
