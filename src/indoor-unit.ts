@@ -1221,22 +1221,28 @@ export default class IndoorUnitAccessory {
         const parameters: ComfortCloudDeviceUpdatePayload = {};
 
         if (value <= 20) {
+          parameters.ecoMode = 0;
           parameters.fanSpeed = 1;
           this.platform.log.debug(`${this.accessory.displayName}: set fan speed 1`);
         } else if (value > 20 && value <= 40) {
+          parameters.ecoMode = 0;
           parameters.fanSpeed = 2;
           this.platform.log.debug(`${this.accessory.displayName}: set fan speed 2`);
         } else if (value > 40 && value <= 60) {
+          parameters.ecoMode = 0;
           parameters.fanSpeed = 3;
           this.platform.log.debug(`${this.accessory.displayName}: set fan speed 3`);
         } else if (value > 60 && value <= 80) {
+          parameters.ecoMode = 0;
           parameters.fanSpeed = 4;
           this.platform.log.debug(`${this.accessory.displayName}: set fan speed 4`);
         } else if (value > 80 && value <= 99) {
+          parameters.ecoMode = 0;
           parameters.fanSpeed = 5;
           this.platform.log.debug(`${this.accessory.displayName}: set fan speed 5`);
         } else {
           // Auto mode
+          parameters.ecoMode = 0;
           parameters.fanSpeed = 0;
           this.platform.log.debug(`${this.accessory.displayName}: set fan speed auto`);
         }
