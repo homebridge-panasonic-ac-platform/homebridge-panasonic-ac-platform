@@ -864,11 +864,11 @@ export default class IndoorUnitAccessory {
         `${this.accessory.displayName}: ${value === this.platform.Characteristic.Active.ACTIVE ? 'set On' : 'set Off'}`);
     }
 
-    fanSpeedWorkaround();
-
     this.sendDeviceUpdate(
       this.accessory.context.device.deviceGuid, parameters);
     this.platform.log.debug(`${this.accessory.displayName}: ${value === 1 ? 'On' : 'Off'}`);
+
+    this.fanSpeedWorkaround.bind(this);
   }
 
   async setTargetHeaterCoolerState(value: CharacteristicValue) {
@@ -994,6 +994,8 @@ export default class IndoorUnitAccessory {
       this.platform.log.debug(`${this.accessory.displayName}: Nanoe Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
+
+    this.fanSpeedWorkaround.bind(this);
   }
 
   // set Nanoe
@@ -1060,6 +1062,8 @@ export default class IndoorUnitAccessory {
       this.platform.log.debug(`${this.accessory.displayName}: Cool Mode Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
+
+    this.fanSpeedWorkaround.bind(this);
   }
 
   // set Heat Mode
@@ -1074,6 +1078,8 @@ export default class IndoorUnitAccessory {
       this.platform.log.debug(`${this.accessory.displayName}: Heat Mode Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
+
+    this.fanSpeedWorkaround.bind(this);
   }
 
   // set Dry Mode
@@ -1088,6 +1094,8 @@ export default class IndoorUnitAccessory {
       this.platform.log.debug(`${this.accessory.displayName}: Dry Mode Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
+
+    this.fanSpeedWorkaround.bind(this);
   }
 
   // set Fan Mode
@@ -1102,6 +1110,8 @@ export default class IndoorUnitAccessory {
       this.platform.log.debug(`${this.accessory.displayName}: Fan Mode Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
+
+    this.fanSpeedWorkaround.bind(this);
   }
 
   // set Nanoe Stand Alone Mode
@@ -1116,6 +1126,8 @@ export default class IndoorUnitAccessory {
       this.platform.log.debug(`${this.accessory.displayName}: Nanoe Stand Alone Mode Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
+
+    this.fanSpeedWorkaround.bind(this);
   }
 
   // set Quiet Mode
