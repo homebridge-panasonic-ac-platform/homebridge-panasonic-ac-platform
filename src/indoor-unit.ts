@@ -8,7 +8,7 @@ import { ComfortCloudDeviceUpdatePayload, PanasonicAccessoryContext } from './ty
  */
 export default class IndoorUnitAccessory {
   private service: Service;
-  sendDeviceUpdatePayload: ComfortCloudDeviceUpdatePayload = {};
+  sendDeviceUpdatePayload = {};
   timerRefreshDeviceStatus;
   timerSendDeviceUpdate;
   timerSendDeviceUpdateRefresh;
