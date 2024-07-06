@@ -868,7 +868,7 @@ export default class IndoorUnitAccessory {
       this.accessory.context.device.deviceGuid, parameters);
     this.platform.log.debug(`${this.accessory.displayName}: ${value === 1 ? 'On' : 'Off'}`);
 
-    this.fanSpeedWorkaround.bind(this);
+    this.fanSpeedWorkaround();
   }
 
   async setTargetHeaterCoolerState(value: CharacteristicValue) {
@@ -906,6 +906,8 @@ export default class IndoorUnitAccessory {
         return;
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
+
+    this.fanSpeedWorkaround();
   }
 
   async setRotationSpeed(value: CharacteristicValue) {
@@ -1063,7 +1065,7 @@ export default class IndoorUnitAccessory {
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
 
-    this.fanSpeedWorkaround.bind(this);
+    this.fanSpeedWorkaround();
   }
 
   // set Heat Mode
@@ -1079,7 +1081,7 @@ export default class IndoorUnitAccessory {
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
 
-    this.fanSpeedWorkaround.bind(this);
+    this.fanSpeedWorkaround();
   }
 
   // set Dry Mode
@@ -1095,7 +1097,7 @@ export default class IndoorUnitAccessory {
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
 
-    this.fanSpeedWorkaround.bind(this);
+    this.fanSpeedWorkaround();
   }
 
   // set Fan Mode
@@ -1111,7 +1113,7 @@ export default class IndoorUnitAccessory {
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
 
-    this.fanSpeedWorkaround.bind(this);
+    this.fanSpeedWorkaround();
   }
 
   // set Nanoe Stand Alone Mode
@@ -1127,7 +1129,7 @@ export default class IndoorUnitAccessory {
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
 
-    this.fanSpeedWorkaround.bind(this);
+    this.fanSpeedWorkaround();
   }
 
   // set Quiet Mode
