@@ -169,9 +169,15 @@
 							"type": "integer",
 							"placeholder": "16"
 						},
+						"exposeIndoorTemp": {
+							"title": "Expose Indoor Temp",
+							"description": "When enabled it will create a virtual temperature sensor which will display the temperature from indoor unit. This can be used for monitoring or automation purposes. Note: It is recomended to use external temperature sensor (not built-in in AC)",
+							"type": "boolean",
+							"default": false
+						},
 						"exposeOutdoorTemp": {
 							"title": "Expose Outdoor Temp",
-							"description": "When enabled it will create a dummy temperature sensor which will display the temperature from outdoor unit. This can be used for monitoring or automation purposes. Note: It may be required for the device to be turned on to retrieve the current temperature from the outdoor unit.",
+							"description": "When enabled it will create a virtual temperature sensor which will display the temperature from outdoor unit. This can be used for monitoring or automation purposes. Note: It may be required for the device to be turned on to retrieve the current temperature from the outdoor unit.",
 							"type": "boolean",
 							"default": false
 						},
@@ -325,6 +331,7 @@
 							"expandable": true,
 							"expanded": false,
 							"items": [
+								"devices[].exposeIndoorTemp",
 								"devices[].exposeOutdoorTemp",
 								"devices[].exposePower",
 								"devices[].exposeNanoe",
