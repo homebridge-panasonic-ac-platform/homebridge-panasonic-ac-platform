@@ -8,8 +8,10 @@ import { ComfortCloudDeviceUpdatePayload, PanasonicAccessoryContext } from './ty
  */
 export default class IndoorUnitAccessory {
   private service: Service;
+  sendDeviceUpdatePayload: ComfortCloudDeviceUpdatePayload = {};
   timerRefreshDeviceStatus;
   timerSendDeviceUpdate;
+  timerSendDeviceUpdateRefresh;
   timerSetFanSpeed;
   devConfig;
   deviceStatusFull;
@@ -1258,15 +1260,22 @@ export default class IndoorUnitAccessory {
 
   async sendDeviceUpdate(guid: string, payload: ComfortCloudDeviceUpdatePayload = {}) {
     try {
-      // Only send non-empty payloads to prevent a '500 Internal Server Error'
-      if (Object.keys(payload).length > 0) {
-        this.platform.comfortCloud.setDeviceStatus(guid, payload);
-      }
-      // Refresh device status
+      // We collect together all parameters sent in a specified time, so as not to send each parameters separately
+      this.sendDeviceUpdatePayload = Object.assign(this.sendDeviceUpdatePayload, payload);
       clearTimeout(this.timerSendDeviceUpdate);
       this.timerSendDeviceUpdate = null;
-      this.timerSendDeviceUpdate = setTimeout(this.refreshDeviceStatus.bind(this), 8000);
-
+      this.timerSendDeviceUpdate = setTimeout(() => {
+        // Only send non-empty payloads to prevent a '500 Internal Server Error'
+        if (Object.keys(this.sendDeviceUpdatePayload).length > 0) {
+          this.platform.comfortCloud.setDeviceStatus(guid, this.sendDeviceUpdatePayload);
+        }
+        // Reset payload
+        this.sendDeviceUpdatePayload = {};
+        // Refresh device status
+        clearTimeout(this.timerSendDeviceUpdateRefresh);
+        this.timerSendDeviceUpdateRefresh = null;
+        this.timerSendDeviceUpdateRefresh = setTimeout(this.refreshDeviceStatus.bind(this), 8000);
+      }, 2000);
     } catch (error) {
       this.platform.log.error('An error occurred while sending a device update. '
         + 'Turn on debug mode for more information.');
