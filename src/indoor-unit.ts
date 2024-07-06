@@ -1260,7 +1260,6 @@ export default class IndoorUnitAccessory {
 
   async sendDeviceUpdate(guid: string, payload: ComfortCloudDeviceUpdatePayload = {}) {
     try {
-
       this.sendDeviceUpdatePayload = payload;
       clearTimeout(this.timerSendDeviceUpdate);
       this.timerSendDeviceUpdate = null;
@@ -1275,7 +1274,6 @@ export default class IndoorUnitAccessory {
         this.timerSendDeviceUpdateRefresh = null;
         this.timerSendDeviceUpdateRefresh = setTimeout(this.refreshDeviceStatus.bind(this), 8000);
       }, 2000);
-      
     } catch (error) {
       this.platform.log.error('An error occurred while sending a device update. '
         + 'Turn on debug mode for more information.');
