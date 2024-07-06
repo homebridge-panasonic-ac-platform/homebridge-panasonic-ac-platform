@@ -85,8 +85,65 @@
 							"type": "boolean",
 							"default": false
 						},
+						"defaultSpeed": {
+							"title": "Default speed",
+							"description": "Default Fan speed or Quiet / Powerful mode.",
+							"type": "integer",
+							"default": 0,
+							"oneOf": [
+								{
+									"title": "Auto",
+									"enum": [
+										0
+									]
+								},
+								{
+									"title": "Quiet Mode",
+									"enum": [
+										1
+									]
+								},
+								{
+									"title": "Speed 1",
+									"enum": [
+										2
+									]
+								},
+								{
+									"title": "Speed 2",
+									"enum": [
+										3
+									]
+								},
+								{
+									"title": "Speed 3",
+									"enum": [
+										4
+									]
+								},
+								{
+									"title": "Speed 4",
+									"enum": [
+										5
+									]
+								},
+								{
+									"title": "Speed 5",
+									"enum": [
+										6
+									]
+								},
+								{
+									"title": "Powerful Mode",
+									"enum": [
+										7
+									]
+								}
+							],
+							"required": true
+						},
 						"swingDefaultUD": {
-							"title": "Swing Mode Default Position (Up-Down)",
+							"title": "Swing Mode desired position (Up-Down)",
 							"description": "Desired position of the Up-Down flaps when swing is switched off.",
 							"type": "integer",
 							"default": 2,
@@ -125,7 +182,7 @@
 							"required": true
 						},
 						"swingDefaultLR": {
-							"title": "Swing Mode Default Position (Left-Right)",
+							"title": "Swing Mode desired position (Left-Right)",
 							"description": "Desired position of the Left-Right flaps when swing is switched off.",
 							"type": "integer",
 							"default": 2,
@@ -352,11 +409,12 @@
 						},
 						{
 							"type": "fieldset",
-							"title": "Swing (oscilate) desired positions",
+							"title": "Default values",
 							"flex": "1 1 100%",
 							"expandable": true,
 							"expanded": false,
 							"items": [
+								"devices[].defaultSpeed",
 								"devices[].swingDefaultUD",
 								"devices[].swingDefaultLR"
 							]
