@@ -16,7 +16,7 @@ export default class IndoorUnitAccessory {
   devConfig;
   deviceStatusFull;
   deviceStatus;
-  exposeIndoorTemp;
+  exposeInsideTemp;
   exposeOutdoorTemp;
   exposePower;
   exposeNanoe;
@@ -136,17 +136,17 @@ export default class IndoorUnitAccessory {
 
     // Additional sensors and switches
 
-    // Indoor temp.
-    if (this.devConfig?.exposeIndoorTemp) {
-      this.exposeIndoorTemp = this.accessory.getService(this.accessory.displayName + ' (indoor temp)')
-        || this.accessory.addService(this.platform.Service.TemperatureSensor, this.accessory.displayName + ' (indoor temp)', 'exposeIndoorTemp');
-      this.exposeIndoorTemp.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (indoor temp)');
-      this.platform.log.debug(`${this.accessory.displayName}: add indoor temp sensor`);
+    // Inside temp.
+    if (this.devConfig?.exposeInsideTemp) {
+      this.exposeInsideTemp = this.accessory.getService(this.accessory.displayName + ' (inside temp)')
+        || this.accessory.addService(this.platform.Service.TemperatureSensor, this.accessory.displayName + ' (inside temp)', 'exposeInsideTemp');
+      this.exposeInsideTemp.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (inside temp)');
+      this.platform.log.debug(`${this.accessory.displayName}: add inside temp sensor`);
     } else {
-      const removeIndoorTemp = this.accessory.getService(this.accessory.displayName + ' (indoor temp)');
-      if (removeIndoorTemp) {
-        this.accessory.removeService(removeIndoorTemp);
-        this.platform.log.debug(`${this.accessory.displayName}: remove indoor temp sensor`);
+      const removeInsideTemp = this.accessory.getService(this.accessory.displayName + ' (inside temp)');
+      if (removeInsideTemp) {
+        this.accessory.removeService(removeInsideTemp);
+        this.platform.log.debug(`${this.accessory.displayName}: remove inside temp sensor`);
       }
     }
 
@@ -468,8 +468,8 @@ export default class IndoorUnitAccessory {
       }
 
       // Indoor temperature for virtual sensor
-      if (this.exposeIndoorTemp && this.deviceStatus.indoorTemperature < 126) {
-        this.exposeIndoorTemp.updateCharacteristic(this.platform.Characteristic.CurrentTemperature, this.deviceStatus.indoorTemperature);
+      if (this.exposeInsideTemp && this.deviceStatus.insideTemperature < 126) {
+        this.exposeInsideTemp.updateCharacteristic(this.platform.Characteristic.CurrentTemperature, this.deviceStatus.insideTemperature);
       }
 
       // Outdoor temperature for logs
