@@ -331,7 +331,7 @@
 							"expandable": true,
 							"expanded": false,
 							"items": [
-								"devices[].exposeIndoorTemp",
+								"devices[].exposeInsideTemp",
 								"devices[].exposeOutdoorTemp",
 								"devices[].exposePower",
 								"devices[].exposeNanoe",
