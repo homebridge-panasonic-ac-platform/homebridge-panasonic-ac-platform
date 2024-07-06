@@ -132,7 +132,7 @@ When enabled it will create a dummy temperature sensor which will display the te
 
 * `exposeSwingLeftRight` (boolean): When enabled it will create a switch to control Swing Left Right.
 
-* `exposeFanSpeed` (boolean): When enabled it will create a switch to control Fan Speed. Value from 1 to 20 = speed 1, value from 21 to 40 = speed 2, value from 41 to 60 = speed 3, value from 61 to 80 = speed 4, value from 81 to 100 = speed 5 and value 0 = speed auto.
+* `exposeFanSpeed` (boolean): When enabled it will create a switch to control Fan Speed. Value 0 will turn device off, value from 1 to 20 = speed 1, value from 21 to 40 = speed 2, value from 41 to 60 = speed 3, value from 61 to 80 = speed 4, value from 81 to 99 = speed 5 and value 100 = speed auto. Note: changing value will turn off Quiet / Powerful mode.
 
 * `swingDefaultUD` (string):
 Desired position of the Up-Down flaps when swing is switched off.
