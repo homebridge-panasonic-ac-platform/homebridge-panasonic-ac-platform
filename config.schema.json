@@ -169,9 +169,9 @@
 							"type": "integer",
 							"placeholder": "16"
 						},
-						"exposeIndoorTemp": {
-							"title": "Expose Indoor Temp",
-							"description": "When enabled it will create a virtual temperature sensor which will display the temperature from indoor unit. This can be used for monitoring or automation purposes. Note: It is recomended to use external temperature sensor (not built-in in AC)",
+						"exposeInsideTemp": {
+							"title": "Expose Inside Temp",
+							"description": "When enabled it will create a virtual temperature sensor which will display the temperature from inside unit. This can be used for monitoring or automation purposes. Note: It is recomended to use external temperature sensor (not built-in in AC)",
 							"type": "boolean",
 							"default": false
 						},
