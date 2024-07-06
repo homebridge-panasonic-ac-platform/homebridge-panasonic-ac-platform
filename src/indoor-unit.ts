@@ -14,6 +14,7 @@ export default class IndoorUnitAccessory {
   devConfig;
   deviceStatusFull;
   deviceStatus;
+  exposeIndoorTemp;
   exposeOutdoorTemp;
   exposePower;
   exposeNanoe;
@@ -132,6 +133,21 @@ export default class IndoorUnitAccessory {
 
 
     // Additional sensors and switches
+
+    // Indoor temp.
+    if (this.devConfig?.exposeIndoorTemp) {
+      this.exposeIndoorTemp = this.accessory.getService(this.accessory.displayName + ' (indoor temp)')
+        || this.accessory.addService(this.platform.Service.TemperatureSensor, this.accessory.displayName + ' (indoor temp)', 'exposeIndoorTemp');
+      this.exposeIndoorTemp.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (indoor temp)');
+      this.platform.log.debug(`${this.accessory.displayName}: add indoor temp sensor`);
+    } else {
+      const removeIndoorTemp = this.accessory.getService(this.accessory.displayName + ' (indoor temp)');
+      if (removeIndoorTemp) {
+        this.accessory.removeService(removeIndoorTemp);
+        this.platform.log.debug(`${this.accessory.displayName}: remove indoor temp sensor`);
+      }
+    }
+
     // Outdoor temp.
     if (this.devConfig?.exposeOutdoorTemp) {
       this.exposeOutdoorTemp = this.accessory.getService(this.accessory.displayName + ' (out temp)')
@@ -447,6 +463,11 @@ export default class IndoorUnitAccessory {
           this.platform.Characteristic.CurrentTemperature,
           (this.deviceStatus.operationMode === 3) ? 8 : 30,
         );
+      }
+
+      // Indoor temperature for virtual sensor
+      if (this.exposeIndoorTemp && this.deviceStatus.indoorTemperature < 126) {
+        this.exposeIndoorTemp.updateCharacteristic(this.platform.Characteristic.CurrentTemperature, this.deviceStatus.indoorTemperature);
       }
 
       // Outdoor temperature for logs
