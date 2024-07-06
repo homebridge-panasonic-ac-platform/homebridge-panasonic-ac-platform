@@ -101,6 +101,9 @@ Exclude device from Homebridge and HomeKit (it will stay in Comfort Cloud).
 * `minHeatingTemperature` (integer):
 The default heating temperature range is 16-30°C. Some Panasonic ACs have an additional heating mode for the range of 8-15°C. You can use this setting to adjust the minimum value. Leave it empty to use the default value.
 
+* `exposeInsideTemp` (boolean):
+When enabled it will create a virtual temperature sensor which will display the temperature from inside unit. This can be used for monitoring or automation purposes. Note: It is recomended to use external temperature sensor (not built-in in AC).
+
 * `exposeOutdoorTemp` (boolean):
 When enabled it will create a dummy temperature sensor which will display the temperature from outdoor unit. This can be used for monitoring or automation purposes. Note: It may be required for the device to be turned on to retrieve the current temperature from the outdoor unit.
 
