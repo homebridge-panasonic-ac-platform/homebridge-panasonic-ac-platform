@@ -304,6 +304,10 @@ https://www.panasonic.com/global/hvac/products/comfort-cloud/how-to-set-up-comfo
 
 ## Changelog
 
+#### Version 4.2.0
+
+- Added additional sensor for indoor unit temperature.
+
 #### Version 4.1.0 - 4.1.5
 
 - Added Power (on/off) switch.
