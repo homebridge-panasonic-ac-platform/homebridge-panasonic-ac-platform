@@ -1,9 +1,3 @@
-> [!CAUTION]
-> Panasonic has changed the API - every plugin version below 4.0.0 will not work!
-
-> [!WARNING]
-> Panasonic has changed something in the API and from now on the values for fanSpeed and ecoMode (Quiet and Powerful modes) are not stored in the API after turning off the device. This means that when you turn on the device, the last values are not set automatically - you must set these values after every turning on device.
-
 <img src="https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/blob/master/logo.png" width="100px"></img>
 
 # Homebridge Panasonic AC Platform
@@ -310,6 +304,7 @@ https://www.panasonic.com/global/hvac/products/comfort-cloud/how-to-set-up-comfo
 #### Version 4.2.0
 
 - A new way to send parameters to Comfort Cloud, from now on all commands set at short interval of time are collected together and sent as one, not separately as was the case before. This will reduce the number of requests to the server.
+- Workaround for changes in API - values for fanSpeed and ecoMode (Quiet and Powerful modes) are no longer stored in the API after turning off the device.
 - Added additional sensor for indoor unit temperature. Note: It is still recommended to use an external sensor, such as not built into the AC.
 - Fixed small bugs.
 - Dependency updates.
