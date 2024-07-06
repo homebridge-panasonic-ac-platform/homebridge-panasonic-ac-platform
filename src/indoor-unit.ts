@@ -598,7 +598,7 @@ export default class IndoorUnitAccessory {
       if (this.deviceStatus.operate === 1) {
         // Default to AUTO mode
         let sliderValue = 8;
-  
+
         if (this.deviceStatus.ecoMode === 2) {
           sliderValue = 1;
           logOutput += ', Speed 1 (Quiet Mode)';
