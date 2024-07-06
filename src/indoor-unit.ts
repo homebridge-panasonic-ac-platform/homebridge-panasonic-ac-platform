@@ -457,17 +457,17 @@ export default class IndoorUnitAccessory {
       if (this.deviceStatus.insideTemperature < 126) {
         this.service.updateCharacteristic(
           this.platform.Characteristic.CurrentTemperature, this.deviceStatus.insideTemperature);
-        logOutput += `, Indoor Temp. ${this.deviceStatus.insideTemperature}`;
+        logOutput += `, Inside Temp. ${this.deviceStatus.insideTemperature}`;
       } else {
-        logOutput += ', Indoor Temp. not available';
-        this.platform.log.debug('Indoor temperature is not available - setting default temperature');
+        logOutput += ', Inside Temp. not available';
+        this.platform.log.debug('Inside temperature is not available - setting default temperature');
         this.service.updateCharacteristic(
           this.platform.Characteristic.CurrentTemperature,
           (this.deviceStatus.operationMode === 3) ? 8 : 30,
         );
       }
 
-      // Indoor temperature for virtual sensor
+      // Inside temperature for virtual sensor
       if (this.exposeInsideTemp && this.deviceStatus.insideTemperature < 126) {
         this.exposeInsideTemp.updateCharacteristic(this.platform.Characteristic.CurrentTemperature, this.deviceStatus.insideTemperature);
       }
