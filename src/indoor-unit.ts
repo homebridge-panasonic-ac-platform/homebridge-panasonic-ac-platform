@@ -864,38 +864,11 @@ export default class IndoorUnitAccessory {
         `${this.accessory.displayName}: ${value === this.platform.Characteristic.Active.ACTIVE ? 'set On' : 'set Off'}`);
     }
 
-    // Workaround - API not storing fanSpeed and ecoMode
-    switch (this.service.getCharacteristic(this.platform.Characteristic.RotationSpeed).value) {
-      case 1:
-        parameters.ecoMode = 2;
-        break;
-      case 2:
-        parameters.fanSpeed = 1;
-        break;
-      case 3:
-        parameters.fanSpeed = 2;
-        break;
-      case 4:
-        parameters.fanSpeed = 3;
-        break;
-      case 5:
-        parameters.fanSpeed = 4;
-        break;
-      case 6:
-        parameters.fanSpeed = 5;
-        break;
-      case 7:
-        parameters.ecoMode = 1;
-        break;
-      default:
-        parameters.ecoMode = 0;
-        parameters.fanSpeed = 0;
-        break;
-    }
-
     this.sendDeviceUpdate(
       this.accessory.context.device.deviceGuid, parameters);
     this.platform.log.debug(`${this.accessory.displayName}: ${value === 1 ? 'On' : 'Off'}`);
+
+    this.fanSpeedWorkaround.bind(this);
   }
 
   async setTargetHeaterCoolerState(value: CharacteristicValue) {
@@ -1021,6 +994,8 @@ export default class IndoorUnitAccessory {
       this.platform.log.debug(`${this.accessory.displayName}: Nanoe Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
+
+    this.fanSpeedWorkaround.bind(this);
   }
 
   // set Nanoe
@@ -1087,6 +1062,8 @@ export default class IndoorUnitAccessory {
       this.platform.log.debug(`${this.accessory.displayName}: Cool Mode Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
+
+    this.fanSpeedWorkaround.bind(this);
   }
 
   // set Heat Mode
@@ -1101,6 +1078,8 @@ export default class IndoorUnitAccessory {
       this.platform.log.debug(`${this.accessory.displayName}: Heat Mode Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
+
+    this.fanSpeedWorkaround.bind(this);
   }
 
   // set Dry Mode
@@ -1115,6 +1094,8 @@ export default class IndoorUnitAccessory {
       this.platform.log.debug(`${this.accessory.displayName}: Dry Mode Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
+
+    this.fanSpeedWorkaround.bind(this);
   }
 
   // set Fan Mode
@@ -1129,6 +1110,8 @@ export default class IndoorUnitAccessory {
       this.platform.log.debug(`${this.accessory.displayName}: Fan Mode Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
+
+    this.fanSpeedWorkaround.bind(this);
   }
 
   // set Nanoe Stand Alone Mode
@@ -1143,6 +1126,8 @@ export default class IndoorUnitAccessory {
       this.platform.log.debug(`${this.accessory.displayName}: Nanoe Stand Alone Mode Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
+
+    this.fanSpeedWorkaround.bind(this);
   }
 
   // set Quiet Mode
@@ -1261,6 +1246,43 @@ export default class IndoorUnitAccessory {
 
   // ===============================================================================================================================================
 
+  // Workaround - API not storing fanSpeed and ecoMode
+  async fanSpeedWorkaround() {
+
+    this.platform.log.debug(
+      `Accessory: fanSpeedWorkaround() for device '${this.accessory.displayName}'`);
+
+    const parameters: ComfortCloudDeviceUpdatePayload = {};
+
+    switch (this.service.getCharacteristic(this.platform.Characteristic.RotationSpeed).value) {
+      case 1:
+        parameters.ecoMode = 2;
+        break;
+      case 2:
+        parameters.fanSpeed = 1;
+        break;
+      case 3:
+        parameters.fanSpeed = 2;
+        break;
+      case 4:
+        parameters.fanSpeed = 3;
+        break;
+      case 5:
+        parameters.fanSpeed = 4;
+        break;
+      case 6:
+        parameters.fanSpeed = 5;
+        break;
+      case 7:
+        parameters.ecoMode = 1;
+        break;
+      default:
+        parameters.ecoMode = 0;
+        parameters.fanSpeed = 0;
+        break;
+    }
+    this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
+  }
 
   async setThresholdTemperature(value: CharacteristicValue) {
     /**
