@@ -306,8 +306,8 @@ https://www.panasonic.com/global/hvac/products/comfort-cloud/how-to-set-up-comfo
 
 #### Version 4.2.0
 
-- A new way to send parameters to Comfort Cloud, from now on all commands set at short intervals are collected together and sent together, not separately as was the case before.
-- Added additional sensor for indoor unit temperature.
+- A new way to send parameters to Comfort Cloud, from now on all commands set at short interval of time are collected together and sent as one, not separately as was the case before. This will reduce the number of requests to the server.
+- Added additional sensor for indoor unit temperature. Note: It is still recommended to use an external sensor, such as not built into the AC.
 - Fixed small bugs.
 - Dependency updates.
 
