@@ -147,7 +147,7 @@ export default class IndoorUnitAccessory {
         this.platform.log.debug(`${this.accessory.displayName}: remove indoor temp sensor`);
       }
     }
-  
+
     // Outdoor temp.
     if (this.devConfig?.exposeOutdoorTemp) {
       this.exposeOutdoorTemp = this.accessory.getService(this.accessory.displayName + ' (out temp)')
