@@ -1,6 +1,9 @@
 > [!CAUTION]
 > Panasonic has changed the API - every plugin version below 4.0.0 will not work!
 
+> [!WARNING]
+> Panasonic has changed something in the API and from now on the values for fanSpeed and ecoMode (Quiet and Powerful modes) are not stored in the API after turning off the device. This means that when you turn on the device, the last values are not set automatically - you must set these values after every turning on device.
+
 <img src="https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/blob/master/logo.png" width="100px"></img>
 
 # Homebridge Panasonic AC Platform
