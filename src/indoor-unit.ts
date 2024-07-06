@@ -778,18 +778,24 @@ export default class IndoorUnitAccessory {
       // Check status only when device is on
       if (this.exposeFanSpeed && this.deviceStatus.operate === 1) {
         if (this.deviceStatus.fanSpeed === 1) {
+          this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.On, true);
           this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.RotationSpeed, 10);
         } else if (this.deviceStatus.fanSpeed === 2) {
+          this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.On, true);
           this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.RotationSpeed, 30);
         } else if (this.deviceStatus.fanSpeed === 3) {
+          this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.On, true);
           this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.RotationSpeed, 50);
         } else if (this.deviceStatus.fanSpeed === 4) {
+          this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.On, true);
           this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.RotationSpeed, 70);
         } else if (this.deviceStatus.fanSpeed === 5) {
+          this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.On, true);
           this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.RotationSpeed, 90);
         } else {
           // Auto mode
-          this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.RotationSpeed, 100);
+          this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.On, false);
+          this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.RotationSpeed, 0);
         }
       }
 
@@ -1220,7 +1226,7 @@ export default class IndoorUnitAccessory {
 
         const parameters: ComfortCloudDeviceUpdatePayload = {};
 
-        if (value <= 20) {
+        if (value > 0 && value <= 20) {
           parameters.ecoMode = 0;
           parameters.fanSpeed = 1;
           this.platform.log.debug(`${this.accessory.displayName}: set fan speed 1`);
@@ -1236,7 +1242,7 @@ export default class IndoorUnitAccessory {
           parameters.ecoMode = 0;
           parameters.fanSpeed = 4;
           this.platform.log.debug(`${this.accessory.displayName}: set fan speed 4`);
-        } else if (value > 80 && value <= 99) {
+        } else if (value > 80) {
           parameters.ecoMode = 0;
           parameters.fanSpeed = 5;
           this.platform.log.debug(`${this.accessory.displayName}: set fan speed 5`);
