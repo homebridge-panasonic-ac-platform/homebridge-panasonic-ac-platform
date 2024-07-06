@@ -1264,7 +1264,7 @@ export default class IndoorUnitAccessory {
       this.sendDeviceUpdatePayload = payload;
       clearTimeout(this.timerSendDeviceUpdate);
       this.timerSendDeviceUpdate = null;
-      this.timerSendDeviceUpdate = setTimeout(function() {
+      this.timerSendDeviceUpdate = setTimeout(() => {
         // Only send non-empty payloads to prevent a '500 Internal Server Error'
         if (Object.keys(this.sendDeviceUpdatePayload).length > 0) {
           this.platform.comfortCloud.setDeviceStatus(guid, this.sendDeviceUpdatePayload);
