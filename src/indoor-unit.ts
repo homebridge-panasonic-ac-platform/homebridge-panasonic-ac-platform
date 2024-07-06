@@ -1260,7 +1260,8 @@ export default class IndoorUnitAccessory {
 
   async sendDeviceUpdate(guid: string, payload: ComfortCloudDeviceUpdatePayload = {}) {
     try {
-      this.sendDeviceUpdatePayload = payload;
+      // We collect together all parameters sent in a specified time, so as not to send each parameters separately
+      this.sendDeviceUpdatePayload = Object.assign(this.sendDeviceUpdatePayload, payload);
       clearTimeout(this.timerSendDeviceUpdate);
       this.timerSendDeviceUpdate = null;
       this.timerSendDeviceUpdate = setTimeout(() => {
@@ -1268,6 +1269,7 @@ export default class IndoorUnitAccessory {
         if (Object.keys(this.sendDeviceUpdatePayload).length > 0) {
           this.platform.comfortCloud.setDeviceStatus(guid, this.sendDeviceUpdatePayload);
         }
+        // Reset payload
         this.sendDeviceUpdatePayload = {};
         // Refresh device status
         clearTimeout(this.timerSendDeviceUpdateRefresh);
