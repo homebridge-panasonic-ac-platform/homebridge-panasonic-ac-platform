@@ -267,7 +267,7 @@
 						},
 						"exposeFanSpeed": {
 							"title": "Expose Fan Speed",
-							"description": "When enabled it will create a switch to control Fan Speed. Value from 0 to 20 = speed 1, value from 21 to 40 = speed 2, value from 41 to 60 = speed 3, value from 61 to 80 = speed 4, value from 81 to 99 = speed 5 and value 100 = speed auto. Note: Changing value will not change Quiet / Powerful Mode - there are dedicated switches for this.",
+							"description": "When enabled it will create a switch to control Fan Speed. Value from 1 to 20 = speed 1, value from 21 to 40 = speed 2, value from 41 to 60 = speed 3, value from 61 to 80 = speed 4, value from 81 to 100 = speed 5 and value 0 = speed auto.",
 							"type": "boolean",
 							"default": false
 						}
