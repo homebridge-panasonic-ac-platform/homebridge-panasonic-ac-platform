@@ -1308,7 +1308,7 @@ export default class IndoorUnitAccessory {
           // Workaround - API not storing fanSpeed and ecoMode.
           // Apply only when device is turned off and it is turning on
           // and there is no command to set fanSpeed or ecoMode.
-          if (this.deviceStatus.operate === 0 
+          if (this.deviceStatus.operate === 0
               && this.sendDeviceUpdatePayload.operate === 1
               && !Object.prototype.hasOwnProperty.call(this.sendDeviceUpdatePayload, 'fanSpeed')
               && !Object.prototype.hasOwnProperty.call(this.sendDeviceUpdatePayload, 'ecoMode')) {
