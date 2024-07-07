@@ -1305,8 +1305,11 @@ export default class IndoorUnitAccessory {
 
         this.timerSendDeviceUpdate = setTimeout(() => {
 
-          // Workaround - API not storing fanSpeed and ecoMode
-          if ((Object.prototype.hasOwnProperty.call(this.sendDeviceUpdatePayload, 'operate') && this.sendDeviceUpdatePayload.operate === 1)
+          // Workaround - API not storing fanSpeed and ecoMode.
+          // Apply only when device is turned off and it is turning on
+          // and there is no command to set fanSpeed or ecoMode.
+          if (this.deviceStatus.operate === 0
+              && this.sendDeviceUpdatePayload.operate === 1
               && !Object.prototype.hasOwnProperty.call(this.sendDeviceUpdatePayload, 'fanSpeed')
               && !Object.prototype.hasOwnProperty.call(this.sendDeviceUpdatePayload, 'ecoMode')) {
             this.platform.log.debug(`Accessory: fanSpeedWorkaround() for device '${this.accessory.displayName}'`);
