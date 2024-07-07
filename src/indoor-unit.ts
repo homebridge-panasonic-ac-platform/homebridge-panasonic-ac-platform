@@ -878,8 +878,6 @@ export default class IndoorUnitAccessory {
     this.sendDeviceUpdate(
       this.accessory.context.device.deviceGuid, parameters);
     this.platform.log.debug(`${this.accessory.displayName}: ${value === 1 ? 'On' : 'Off'}`);
-
-    this.fanSpeedWorkaround();
   }
 
   async setTargetHeaterCoolerState(value: CharacteristicValue) {
@@ -917,8 +915,6 @@ export default class IndoorUnitAccessory {
         return;
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
-
-    this.fanSpeedWorkaround();
   }
 
   async setRotationSpeed(value: CharacteristicValue) {
@@ -1015,8 +1011,6 @@ export default class IndoorUnitAccessory {
       this.platform.log.debug(`${this.accessory.displayName}: Nanoe Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
-
-    this.fanSpeedWorkaround.bind(this);
   }
 
   // set Nanoe
@@ -1083,8 +1077,6 @@ export default class IndoorUnitAccessory {
       this.platform.log.debug(`${this.accessory.displayName}: Cool Mode Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
-
-    this.fanSpeedWorkaround();
   }
 
   // set Heat Mode
@@ -1099,8 +1091,6 @@ export default class IndoorUnitAccessory {
       this.platform.log.debug(`${this.accessory.displayName}: Heat Mode Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
-
-    this.fanSpeedWorkaround();
   }
 
   // set Dry Mode
@@ -1115,8 +1105,6 @@ export default class IndoorUnitAccessory {
       this.platform.log.debug(`${this.accessory.displayName}: Dry Mode Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
-
-    this.fanSpeedWorkaround();
   }
 
   // set Fan Mode
@@ -1131,8 +1119,6 @@ export default class IndoorUnitAccessory {
       this.platform.log.debug(`${this.accessory.displayName}: Fan Mode Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
-
-    this.fanSpeedWorkaround();
   }
 
   // set Nanoe Stand Alone Mode
@@ -1147,8 +1133,6 @@ export default class IndoorUnitAccessory {
       this.platform.log.debug(`${this.accessory.displayName}: Nanoe Stand Alone Mode Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
-
-    this.fanSpeedWorkaround();
   }
 
   // set Quiet Mode
@@ -1277,44 +1261,6 @@ export default class IndoorUnitAccessory {
 
   // ===============================================================================================================================================
 
-  // Workaround - API not storing fanSpeed and ecoMode
-  async fanSpeedWorkaround() {
-
-    this.platform.log.debug(
-      `Accessory: fanSpeedWorkaround() for device '${this.accessory.displayName}'`);
-
-    const parameters: ComfortCloudDeviceUpdatePayload = {};
-
-    switch (this.service.getCharacteristic(this.platform.Characteristic.RotationSpeed).value) {
-      case 1:
-        parameters.ecoMode = 2;
-        break;
-      case 2:
-        parameters.fanSpeed = 1;
-        break;
-      case 3:
-        parameters.fanSpeed = 2;
-        break;
-      case 4:
-        parameters.fanSpeed = 3;
-        break;
-      case 5:
-        parameters.fanSpeed = 4;
-        break;
-      case 6:
-        parameters.fanSpeed = 5;
-        break;
-      case 7:
-        parameters.ecoMode = 1;
-        break;
-      default:
-        parameters.ecoMode = 0;
-        parameters.fanSpeed = 0;
-        break;
-    }
-    this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
-  }
-
   async setThresholdTemperature(value: CharacteristicValue) {
     /**
      * This function is used for Cooling AND Heating Threshold Temperature,
@@ -1350,20 +1296,65 @@ export default class IndoorUnitAccessory {
     try {
       // We collect together all parameters sent in a specified time, so as not to send each parameters separately
       this.sendDeviceUpdatePayload = Object.assign(this.sendDeviceUpdatePayload, payload);
+
       clearTimeout(this.timerSendDeviceUpdate);
       this.timerSendDeviceUpdate = null;
-      this.timerSendDeviceUpdate = setTimeout(() => {
-        // Only send non-empty payloads to prevent a '500 Internal Server Error'
-        if (Object.keys(this.sendDeviceUpdatePayload).length > 0) {
+
+      // Only send non-empty payloads to prevent a '500 Internal Server Error'
+      if (Object.keys(this.sendDeviceUpdatePayload).length > 0) {
+
+        this.timerSendDeviceUpdate = setTimeout(() => {
+
+          // Workaround - API not storing fanSpeed and ecoMode
+          if (this.sendDeviceUpdatePayload.operate === 1 
+              && !this.sendDeviceUpdatePayload.hasOwnProperty('fanSpeed') && !this.sendDeviceUpdatePayload.hasOwnProperty('ecoMode')) {
+            this.platform.log.debug(`Accessory: fanSpeedWorkaround() for device '${this.accessory.displayName}'`);
+            const parameters = {};
+            switch (this.service.getCharacteristic(this.platform.Characteristic.RotationSpeed).value) {
+              case 1:
+                parameters.ecoMode = 2;
+                break;
+              case 2:
+                parameters.fanSpeed = 1;
+                break;
+              case 3:
+                parameters.fanSpeed = 2;
+                break;
+              case 4:
+                parameters.fanSpeed = 3;
+                break;
+              case 5:
+                parameters.fanSpeed = 4;
+                break;
+              case 6:
+                parameters.fanSpeed = 5;
+                break;
+              case 7:
+                parameters.ecoMode = 1;
+                break;
+              default:
+                parameters.ecoMode = 0;
+                parameters.fanSpeed = 0;
+                break;
+              }
+              this.sendDeviceUpdatePayload = Object.assign(this.sendDeviceUpdatePayload, parameters);
+          }
+
+          // Send update
+          this.platform.log.debug(`sendDeviceUpdatePayload: ${JSON.stringify(this.sendDeviceUpdatePayload)}`);
           this.platform.comfortCloud.setDeviceStatus(guid, this.sendDeviceUpdatePayload);
-        }
-        // Reset payload
-        this.sendDeviceUpdatePayload = {};
-        // Refresh device status
-        clearTimeout(this.timerSendDeviceUpdateRefresh);
-        this.timerSendDeviceUpdateRefresh = null;
-        this.timerSendDeviceUpdateRefresh = setTimeout(this.refreshDeviceStatus.bind(this), 8000);
-      }, 2000);
+
+          // Reset payload
+          this.sendDeviceUpdatePayload = {};
+
+          // Refresh device status
+          clearTimeout(this.timerSendDeviceUpdateRefresh);
+          this.timerSendDeviceUpdateRefresh = null;
+          this.timerSendDeviceUpdateRefresh = setTimeout(this.refreshDeviceStatus.bind(this), 5000);
+          
+        }, 2000);
+      }
+      
     } catch (error) {
       this.platform.log.error('An error occurred while sending a device update. '
         + 'Turn on debug mode for more information.');
