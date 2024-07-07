@@ -982,7 +982,7 @@ export default class IndoorUnitAccessory {
           break;
       }
       this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
-    }, 1000);
+    }, 2000);
   }
 
   async setSwingMode(value: CharacteristicValue) {
@@ -1271,7 +1271,7 @@ export default class IndoorUnitAccessory {
         }
 
         this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
-      }, 1000);
+      }, 2000);
     }
   }
 
