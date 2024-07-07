@@ -922,59 +922,67 @@ export default class IndoorUnitAccessory {
   }
 
   async setRotationSpeed(value: CharacteristicValue) {
-    this.platform.log.debug(
-      `Accessory: setRotationSpeed() for device '${this.accessory.displayName}'`);
-    const parameters: ComfortCloudDeviceUpdatePayload = {};
-    switch (value) {
-      // See README for the mapping of slider position to Comfort Cloud payload.
-      case 0:
-        // HomeKit independently switches off the accessory
-        // in this case, which triggers setActive().
-        // Nothing to handle here, but documenting for clarity.
-        break;
-      case 1:
-        parameters.ecoMode = 2;
-        this.platform.log.debug(`${this.accessory.displayName}: Quiet Mode`);
-        break;
-      case 2:
-        parameters.ecoMode = 0;
-        parameters.fanSpeed = 1;
-        this.platform.log.debug(`${this.accessory.displayName}: Fan speed 1`);
-        break;
-      case 3:
-        parameters.ecoMode = 0;
-        parameters.fanSpeed = 2;
-        this.platform.log.debug(`${this.accessory.displayName}: Fan speed 2`);
-        break;
-      case 4:
-        parameters.ecoMode = 0;
-        parameters.fanSpeed = 3;
-        this.platform.log.debug(`${this.accessory.displayName}: Fan speed 3`);
-        break;
-      case 5:
-        parameters.ecoMode = 0;
-        parameters.fanSpeed = 4;
-        this.platform.log.debug(`${this.accessory.displayName}: Fan speed 4`);
-        break;
-      case 6:
-        parameters.ecoMode = 0;
-        parameters.fanSpeed = 5;
-        this.platform.log.debug(`${this.accessory.displayName}: Fan speed 5`);
-        break;
-      case 7:
-        parameters.ecoMode = 1;
-        this.platform.log.debug(`${this.accessory.displayName}: Powerful Mode`);
-        break;
-      case 8:
-        parameters.ecoMode = 0;
-        parameters.fanSpeed = 0;
-        break;
-      default:
-        parameters.ecoMode = 0;
-        parameters.fanSpeed = 0;
-        break;
-    }
-    this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
+    // We use timer because HomeKit / Apple Home sends command when moving slider
+    // not only when finish move
+    clearTimeout(this.timerSetFanSpeed);
+    this.timerSetFanSpeed = null;
+    this.timerSetFanSpeed = setTimeout(async () => {
+      this.platform.log.debug(
+        `Accessory: setRotationSpeed() for device '${this.accessory.displayName}'`);
+      const parameters: ComfortCloudDeviceUpdatePayload = {};
+      switch (value) {
+        // See README for the mapping of slider position to Comfort Cloud payload.
+        case 0:
+          // HomeKit independently switches off the accessory
+          // in this case, which triggers setActive().
+          // Nothing to handle here, but documenting for clarity.
+          break;
+        case 1:
+          parameters.ecoMode = 2;
+          this.platform.log.debug(`${this.accessory.displayName}: Quiet Mode`);
+          break;
+        case 2:
+          parameters.ecoMode = 0;
+          parameters.fanSpeed = 1;
+          this.platform.log.debug(`${this.accessory.displayName}: Fan speed 1`);
+          break;
+        case 3:
+          parameters.ecoMode = 0;
+          parameters.fanSpeed = 2;
+          this.platform.log.debug(`${this.accessory.displayName}: Fan speed 2`);
+          break;
+        case 4:
+          parameters.ecoMode = 0;
+          parameters.fanSpeed = 3;
+          this.platform.log.debug(`${this.accessory.displayName}: Fan speed 3`);
+          break;
+        case 5:
+          parameters.ecoMode = 0;
+          parameters.fanSpeed = 4;
+          this.platform.log.debug(`${this.accessory.displayName}: Fan speed 4`);
+          break;
+        case 6:
+          parameters.ecoMode = 0;
+          parameters.fanSpeed = 5;
+          this.platform.log.debug(`${this.accessory.displayName}: Fan speed 5`);
+          break;
+        case 7:
+          parameters.ecoMode = 1;
+          this.platform.log.debug(`${this.accessory.displayName}: Powerful Mode`);
+          break;
+        case 8:
+          parameters.ecoMode = 0;
+          parameters.fanSpeed = 0;
+          this.platform.log.debug(`${this.accessory.displayName}: Auto Mode`);
+          break;
+        default:
+          parameters.ecoMode = 0;
+          parameters.fanSpeed = 0;
+          this.platform.log.debug(`${this.accessory.displayName}: Auto Mode`);
+          break;
+      }
+      this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
+    }, 1000);
   }
 
   async setSwingMode(value: CharacteristicValue) {
