@@ -1306,8 +1306,9 @@ export default class IndoorUnitAccessory {
         this.timerSendDeviceUpdate = setTimeout(() => {
 
           // Workaround - API not storing fanSpeed and ecoMode
-          if (this.sendDeviceUpdatePayload.operate === 1 
-              && !this.sendDeviceUpdatePayload.hasOwnProperty('fanSpeed') && !this.sendDeviceUpdatePayload.hasOwnProperty('ecoMode')) {
+          if (this.sendDeviceUpdatePayload.operate === 1
+              && !Object.prototype.hasOwnProperty.call(this.sendDeviceUpdatePayload, 'fanSpeed')
+              && !Object.prototype.hasOwnProperty.call(this.sendDeviceUpdatePayload, 'ecoMode')) {
             this.platform.log.debug(`Accessory: fanSpeedWorkaround() for device '${this.accessory.displayName}'`);
             const parameters = {};
             switch (this.service.getCharacteristic(this.platform.Characteristic.RotationSpeed).value) {
@@ -1336,8 +1337,8 @@ export default class IndoorUnitAccessory {
                 parameters.ecoMode = 0;
                 parameters.fanSpeed = 0;
                 break;
-              }
-              this.sendDeviceUpdatePayload = Object.assign(this.sendDeviceUpdatePayload, parameters);
+            }
+            this.sendDeviceUpdatePayload = Object.assign(this.sendDeviceUpdatePayload, parameters);
           }
 
           // Send update
@@ -1351,10 +1352,10 @@ export default class IndoorUnitAccessory {
           clearTimeout(this.timerSendDeviceUpdateRefresh);
           this.timerSendDeviceUpdateRefresh = null;
           this.timerSendDeviceUpdateRefresh = setTimeout(this.refreshDeviceStatus.bind(this), 5000);
-          
+
         }, 2000);
       }
-      
+
     } catch (error) {
       this.platform.log.error('An error occurred while sending a device update. '
         + 'Turn on debug mode for more information.');
