@@ -437,7 +437,7 @@ export default class IndoorUnitAccessory {
 
     try {
       this.deviceStatusFull = await this.platform.comfortCloud.getDeviceStatus(
-        this.accessory.context.device.deviceGuid);
+        this.accessory.context.device.deviceGuid, this.accessory.displayName);
       this.deviceStatus = this.deviceStatusFull.parameters;
 
       // Active
@@ -1342,7 +1342,7 @@ export default class IndoorUnitAccessory {
 
           // Send update
           this.platform.log.debug(`${this.accessory.displayName}: sendDeviceUpdatePayload: ${JSON.stringify(this.sendDeviceUpdatePayload)}`);
-          this.platform.comfortCloud.setDeviceStatus(guid, this.sendDeviceUpdatePayload);
+          this.platform.comfortCloud.setDeviceStatus(guid, this.accessory.displayName, this.sendDeviceUpdatePayload);
 
           // Reset payload
           this.sendDeviceUpdatePayload = {};
