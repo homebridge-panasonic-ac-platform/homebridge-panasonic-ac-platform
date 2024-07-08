@@ -1177,7 +1177,7 @@ export default class IndoorUnitAccessory {
         parameters.fanAutoMode = 1;
       }
       parameters.airSwingUD = this.devConfig?.swingDefaultUD || 2;
-      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug']g(`${this.accessory.displayName}: Swing Up Down Off`);
+      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Swing Up Down Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
