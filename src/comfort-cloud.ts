@@ -514,7 +514,7 @@ export default class ComfortCloudApi {
    * @returns A promise of the status of the requested device.
    */
   public getDeviceStatus(deviceGuid: string, deviceName: string): Promise<ComfortCloudDeviceStatus> {
-    this.log.debug(`${deviceName}(${deviceGuid}): Comfort Cloud: getDeviceStatus()`);
+    this.log.debug(`${deviceName} (${deviceGuid}): Comfort Cloud: getDeviceStatus()`);
 
     if (!this.token) {
       return Promise.reject('No auth token available (login probably failed). '
@@ -535,8 +535,8 @@ export default class ComfortCloudApi {
       },
     })
       .then((response) => {
-        this.log.debug(`${deviceName}(${deviceGuid}): Comfort Cloud - getDeviceStatus() : Success`);
-        this.log.debug(`${deviceName}(${deviceGuid}):\n${JSON.stringify(response.data, null, 2)}`);
+        this.log.debug(`${deviceName} (${deviceGuid}): Comfort Cloud - getDeviceStatus() : Success`);
+        this.log.debug(`${deviceName} (${deviceGuid}):\n${JSON.stringify(response.data, null, 2)}`);
         return response.data;
       })
       .catch((error: AxiosError) => {
@@ -545,7 +545,7 @@ export default class ComfortCloudApi {
                        +' and turn it on again) and Internet router and Homebridge.');
         this.log.error('Turn on debug for more info.');
         this.handleNetworkRequestError(error);
-        return Promise.reject(`${deviceName}(${deviceGuid}): Comfort Cloud - getDeviceStatus() : Error`);
+        return Promise.reject(`${deviceName} (${deviceGuid}): Comfort Cloud - getDeviceStatus() : Error`);
       });
   }
 
@@ -559,8 +559,8 @@ export default class ComfortCloudApi {
    * @returns
    */
   setDeviceStatus(deviceGuid: string, deviceName: string, parameters: ComfortCloudDeviceUpdatePayload) {
-    this.log.debug(`${deviceName}(${deviceGuid}): Comfort Cloud: setDeviceStatus()`);
-    this.log.debug(`${deviceName}(${deviceGuid}): ${JSON.stringify(parameters)}`);
+    this.log.debug(`${deviceName} (${deviceGuid}): Comfort Cloud: setDeviceStatus()`);
+    this.log.debug(`${deviceName} (${deviceGuid}): ${JSON.stringify(parameters)}`);
 
     if (!this.token) {
       this.log.error('No auth token available (login probably failed). '
@@ -574,7 +574,7 @@ export default class ComfortCloudApi {
     }
 
     if (this.config.suppressOutgoingUpdates) {
-      this.log.debug(`${deviceName}(${deviceGuid}): Suppressing outgoing device update.`);
+      this.log.debug(`${deviceName} (${deviceGuid}): Suppressing outgoing device update.`);
       return;
     }
 
@@ -592,11 +592,11 @@ export default class ComfortCloudApi {
       },
     })
       .then((response) => {
-        this.log.debug(`${deviceName}(${deviceGuid}): Comfort Cloud - setDeviceStatus(): Success`);
-        this.log.debug(`${deviceName}(${deviceGuid}): ${JSON.stringify(response.data)}`);
+        this.log.debug(`${deviceName} (${deviceGuid}): Comfort Cloud - setDeviceStatus(): Success`);
+        this.log.debug(`${deviceName} (${deviceGuid}): ${JSON.stringify(response.data)}`);
       })
       .catch((error: AxiosError) => {
-        this.log.error(`${deviceName}(${deviceGuid}): Comfort Cloud - setDeviceStatus(): Error`);
+        this.log.error(`${deviceName} (${deviceGuid}): Comfort Cloud - setDeviceStatus(): Error`);
         this.log.error('Turn on debug for more info.');
         this.handleNetworkRequestError(error);
       });
