@@ -1330,8 +1330,8 @@ export default class IndoorUnitAccessory {
                 parameters.fanSpeed = 0;
                 break;
             }
-            this.platform.log.debug(`${this.accessory.displayName}: Applying workaround fix for speed and eco mode,`
-                                    + `adding parameters ${parameters} to ${this.sendDeviceUpdatePayload}.`);
+            this.platform.log.debug(`${this.accessory.displayName}: Applying workaround fix for speed and eco mode, `
+                                    + `adding parameters ${JSON.stringify(parameters)} to ${JSON.stringify(this.sendDeviceUpdatePayload)}.`);
             this.sendDeviceUpdatePayload = Object.assign(this.sendDeviceUpdatePayload, parameters);
           }
 
