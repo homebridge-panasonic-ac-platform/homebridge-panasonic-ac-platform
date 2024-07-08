@@ -868,7 +868,7 @@ export default class IndoorUnitAccessory {
       operate: value === this.platform.Characteristic.Active.ACTIVE ? 1 : 0,
     };
     this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](
-        `${this.accessory.displayName}: ${value === this.platform.Characteristic.Active.ACTIVE ? 'set On' : 'set Off'}`);
+      `${this.accessory.displayName}: ${value === this.platform.Characteristic.Active.ACTIVE ? 'set On' : 'set Off'}`);
     // if (this.platform.platformConfig.logsLevel >= 1) {
     //   this.platform.log.info(
     //     `${this.accessory.displayName}: ${value === this.platform.Characteristic.Active.ACTIVE ? 'set On' : 'set Off'}`);
