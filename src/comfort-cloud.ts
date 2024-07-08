@@ -535,8 +535,8 @@ export default class ComfortCloudApi {
       },
     })
       .then((response) => {
-        this.log.debug(`Comfort Cloud - getDeviceStatus() for GUID '${deviceGuid}': Success`);
-        this.log.debug(response.data);
+        this.log.debug(`${deviceGuid}: Comfort Cloud - getDeviceStatus() : Success`);
+        this.log.debug(`${deviceGuid}: ${response.data}`);
         return response.data;
       })
       .catch((error: AxiosError) => {
@@ -545,7 +545,7 @@ export default class ComfortCloudApi {
                        +' and turn it on again) and Internet router and Homebridge.');
         this.log.error('Turn on debug for more info.');
         this.handleNetworkRequestError(error);
-        return Promise.reject(`Comfort Cloud - getDeviceStatus() for GUID '${deviceGuid}': Error`);
+        return Promise.reject(`${deviceGuid}: Comfort Cloud - getDeviceStatus() : Error`);
       });
   }
 
@@ -574,7 +574,7 @@ export default class ComfortCloudApi {
     }
 
     if (this.config.suppressOutgoingUpdates) {
-      this.log.debug('Suppressing outgoing device update.');
+      this.log.debug(`${deviceGuid}: Suppressing outgoing device update.`);
       return;
     }
 
@@ -592,11 +592,11 @@ export default class ComfortCloudApi {
       },
     })
       .then((response) => {
-        this.log.debug('Comfort Cloud - setDeviceStatus(): Success');
-        this.log.debug(response.data);
+        this.log.debug(`${deviceGuid}: Comfort Cloud - setDeviceStatus(): Success`);
+        this.log.debug(`${deviceGuid}: ${response.data}`);
       })
       .catch((error: AxiosError) => {
-        this.log.error('Comfort Cloud - setDeviceStatus(): Error');
+        this.log.error(`${deviceGuid}: Comfort Cloud - setDeviceStatus(): Error`);
         this.log.error('Turn on debug for more info.');
         this.handleNetworkRequestError(error);
       });
