@@ -869,13 +869,6 @@ export default class IndoorUnitAccessory {
     };
     this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](
       `${this.accessory.displayName}: ${value === this.platform.Characteristic.Active.ACTIVE ? 'set On' : 'set Off'}`);
-    // if (this.platform.platformConfig.logsLevel >= 1) {
-    //   this.platform.log.info(
-    //     `${this.accessory.displayName}: ${value === this.platform.Characteristic.Active.ACTIVE ? 'set On' : 'set Off'}`);
-    // } else {
-    //   this.platform.log.debug(
-    //     `${this.accessory.displayName}: ${value === this.platform.Characteristic.Active.ACTIVE ? 'set On' : 'set Off'}`);
-    // }
 
     this.sendDeviceUpdate(
       this.accessory.context.device.deviceGuid, parameters);
@@ -890,24 +883,24 @@ export default class IndoorUnitAccessory {
       case this.platform.Characteristic.TargetHeaterCoolerState.AUTO:
         if (this.platform.platformConfig.autoMode === 'fan') {
           parameters.operationMode = 4;
-          this.platform.log.debug(`${this.accessory.displayName}: Fan Mode`);
+          this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Fan Mode`);
         } else if (this.platform.platformConfig.autoMode === 'dry') {
           parameters.operationMode = 1;
-          this.platform.log.debug(`${this.accessory.displayName}: Dry mode`);
+          this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Dry mode`);
         } else {
           parameters.operationMode = 0;
-          this.platform.log.debug(`${this.accessory.displayName}: Auto mode`);
+          this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Auto mode`);
         }
         break;
 
       case this.platform.Characteristic.TargetHeaterCoolerState.COOL:
         parameters.operationMode = 2;
-        this.platform.log.debug(`${this.accessory.displayName}: Mode Cool`);
+        this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Mode Cool`);
         break;
 
       case this.platform.Characteristic.TargetHeaterCoolerState.HEAT:
         parameters.operationMode = 3;
-        this.platform.log.debug(`${this.accessory.displayName}: Mode Heat`);
+        this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Mode Heat`);
         break;
 
       default:
@@ -929,46 +922,46 @@ export default class IndoorUnitAccessory {
         break;
       case 1:
         parameters.ecoMode = 2;
-        this.platform.log.debug(`${this.accessory.displayName}: Quiet Mode`);
+        this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Quiet Mode`);
         break;
       case 2:
         parameters.ecoMode = 0;
         parameters.fanSpeed = 1;
-        this.platform.log.debug(`${this.accessory.displayName}: Fan speed 1`);
+        this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Fan speed 1`);
         break;
       case 3:
         parameters.ecoMode = 0;
         parameters.fanSpeed = 2;
-        this.platform.log.debug(`${this.accessory.displayName}: Fan speed 2`);
+        this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Fan speed 2`);
         break;
       case 4:
         parameters.ecoMode = 0;
         parameters.fanSpeed = 3;
-        this.platform.log.debug(`${this.accessory.displayName}: Fan speed 3`);
+        this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Fan speed 3`);
         break;
       case 5:
         parameters.ecoMode = 0;
         parameters.fanSpeed = 4;
-        this.platform.log.debug(`${this.accessory.displayName}: Fan speed 4`);
+        this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Fan speed 4`);
         break;
       case 6:
         parameters.ecoMode = 0;
         parameters.fanSpeed = 5;
-        this.platform.log.debug(`${this.accessory.displayName}: Fan speed 5`);
+        this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Fan speed 5`);
         break;
       case 7:
         parameters.ecoMode = 1;
-        this.platform.log.debug(`${this.accessory.displayName}: Powerful Mode`);
+        this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Powerful Mode`);
         break;
       case 8:
         parameters.ecoMode = 0;
         parameters.fanSpeed = 0;
-        this.platform.log.debug(`${this.accessory.displayName}: Auto Mode`);
+        this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Auto Mode`);
         break;
       default:
         parameters.ecoMode = 0;
         parameters.fanSpeed = 0;
-        this.platform.log.debug(`${this.accessory.displayName}: Auto Mode`);
+        this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Auto Mode`);
         break;
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
@@ -982,12 +975,12 @@ export default class IndoorUnitAccessory {
 
     if (value === this.platform.Characteristic.SwingMode.SWING_ENABLED) {
       parameters.fanAutoMode = 0;
-      this.platform.log.debug(`${this.accessory.displayName}: Swing mode Auto`);
+      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Swing mode Auto`);
     } else if (value === this.platform.Characteristic.SwingMode.SWING_DISABLED) {
       parameters.fanAutoMode = 1;
       parameters.airSwingUD = this.devConfig?.swingDefaultUD || 2;
       parameters.airSwingLR = this.devConfig?.swingDefaultLR || 2;
-      this.platform.log.debug(`${this.accessory.displayName}: Swing mode Off`);
+      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Swing mode Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
@@ -998,10 +991,10 @@ export default class IndoorUnitAccessory {
     const parameters: ComfortCloudDeviceUpdatePayload = {};
     if (value) {
       parameters.operate = 1;
-      this.platform.log.debug(`${this.accessory.displayName}: Nanoe On`);
+      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Nanoe On`);
     } else {
       parameters.operate = 0;
-      this.platform.log.debug(`${this.accessory.displayName}: Nanoe Off`);
+      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Nanoe Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
@@ -1012,10 +1005,10 @@ export default class IndoorUnitAccessory {
     const parameters: ComfortCloudDeviceUpdatePayload = {};
     if (value) {
       parameters.nanoe = 2;
-      this.platform.log.debug(`${this.accessory.displayName}: Nanoe On`);
+      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Nanoe On`);
     } else {
       parameters.nanoe = 1;
-      this.platform.log.debug(`${this.accessory.displayName}: Nanoe Off`);
+      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Nanoe Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
@@ -1026,10 +1019,10 @@ export default class IndoorUnitAccessory {
     const parameters: ComfortCloudDeviceUpdatePayload = {};
     if (value) {
       parameters.insideCleaning = 2;
-      this.platform.log.debug(`${this.accessory.displayName}: Inside Cleaning On`);
+      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Inside Cleaning On`);
     } else {
       parameters.insideCleaning = 1;
-      this.platform.log.debug(`${this.accessory.displayName}: Inside Cleaning Off`);
+      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Inside Cleaning Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
@@ -1040,10 +1033,10 @@ export default class IndoorUnitAccessory {
     const parameters: ComfortCloudDeviceUpdatePayload = {};
     if (value) {
       parameters.ecoNavi = 2;
-      this.platform.log.debug(`${this.accessory.displayName}: Eco Navi On`);
+      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Eco Navi On`);
     } else {
       parameters.ecoNavi = 1;
-      this.platform.log.debug(`${this.accessory.displayName}: Eco Navi Off`);
+      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Eco Navi Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
@@ -1054,10 +1047,10 @@ export default class IndoorUnitAccessory {
     const parameters: ComfortCloudDeviceUpdatePayload = {};
     if (value) {
       parameters.ecoFunctionData = 2;
-      this.platform.log.debug(`${this.accessory.displayName}: Eco Function On`);
+      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Eco Function On`);
     } else {
       parameters.ecoFunctionData = 1;
-      this.platform.log.debug(`${this.accessory.displayName}: Eco Function Off`);
+      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Eco Function Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
@@ -1069,10 +1062,10 @@ export default class IndoorUnitAccessory {
     if (value) {
       parameters.operate = 1;
       parameters.operationMode = 2;
-      this.platform.log.debug(`${this.accessory.displayName}: Cool Mode On`);
+      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Cool Mode On`);
     } else {
       parameters.operate = 0;
-      this.platform.log.debug(`${this.accessory.displayName}: Cool Mode Off`);
+      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Cool Mode Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
@@ -1084,10 +1077,10 @@ export default class IndoorUnitAccessory {
     if (value) {
       parameters.operate = 1;
       parameters.operationMode = 3;
-      this.platform.log.debug(`${this.accessory.displayName}: Heat Mode On`);
+      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Heat Mode On`);
     } else {
       parameters.operate = 0;
-      this.platform.log.debug(`${this.accessory.displayName}: Heat Mode Off`);
+      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Heat Mode Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
@@ -1099,10 +1092,10 @@ export default class IndoorUnitAccessory {
     if (value) {
       parameters.operate = 1;
       parameters.operationMode = 1;
-      this.platform.log.debug(`${this.accessory.displayName}: Dry Mode On`);
+      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Dry Mode On`);
     } else {
       parameters.operate = 0;
-      this.platform.log.debug(`${this.accessory.displayName}: Dry Mode Off`);
+      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Dry Mode Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
@@ -1114,10 +1107,10 @@ export default class IndoorUnitAccessory {
     if (value) {
       parameters.operate = 1;
       parameters.operationMode = 4;
-      this.platform.log.debug(`${this.accessory.displayName}: Fan Mode On`);
+      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Fan Mode On`);
     } else {
       parameters.operate = 0;
-      this.platform.log.debug(`${this.accessory.displayName}: Fan Mode Off`);
+      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Fan Mode Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
@@ -1129,10 +1122,10 @@ export default class IndoorUnitAccessory {
     if (value) {
       parameters.operate = 1;
       parameters.operationMode = 5;
-      this.platform.log.debug(`${this.accessory.displayName}: Nanoe Stand Alone Mode On`);
+      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Nanoe Stand Alone Mode On`);
     } else {
       parameters.operate = 0;
-      this.platform.log.debug(`${this.accessory.displayName}: Nanoe Stand Alone Mode Off`);
+      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Nanoe Stand Alone Mode Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
@@ -1143,10 +1136,10 @@ export default class IndoorUnitAccessory {
     const parameters: ComfortCloudDeviceUpdatePayload = {};
     if (value) {
       parameters.ecoMode = 2;
-      this.platform.log.debug(`${this.accessory.displayName}: Quiet Mode On`);
+      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Quiet Mode On`);
     } else {
       parameters.ecoMode = 0;
-      this.platform.log.debug(`${this.accessory.displayName}: Quiet Mode Off`);
+      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Quiet Mode Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
@@ -1157,10 +1150,10 @@ export default class IndoorUnitAccessory {
     const parameters: ComfortCloudDeviceUpdatePayload = {};
     if (value) {
       parameters.ecoMode = 1;
-      this.platform.log.debug(`${this.accessory.displayName}: Powerful Mode On`);
+      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Powerful Mode On`);
     } else {
       parameters.ecoMode = 0;
-      this.platform.log.debug(`${this.accessory.displayName}: Powerful Mode Off`);
+      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Powerful Mode Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
@@ -1176,7 +1169,7 @@ export default class IndoorUnitAccessory {
       } else {
         parameters.fanAutoMode = 2;
       }
-      this.platform.log.debug(`${this.accessory.displayName}: Swing Up Down On`);
+      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Swing Up Down On`);
     } else {
       if (this.deviceStatus.fanAutoMode === 0) {
         parameters.fanAutoMode = 3;
@@ -1184,7 +1177,7 @@ export default class IndoorUnitAccessory {
         parameters.fanAutoMode = 1;
       }
       parameters.airSwingUD = this.devConfig?.swingDefaultUD || 2;
-      this.platform.log.debug(`${this.accessory.displayName}: Swing Up Down Off`);
+      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug']g(`${this.accessory.displayName}: Swing Up Down Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
@@ -1200,7 +1193,7 @@ export default class IndoorUnitAccessory {
       } else {
         parameters.fanAutoMode = 3;
       }
-      this.platform.log.debug(`${this.accessory.displayName}: Swing Left Right On`);
+      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Swing Left Right On`);
     } else {
       if (this.deviceStatus.fanAutoMode === 0) {
         parameters.fanAutoMode = 2;
@@ -1208,7 +1201,7 @@ export default class IndoorUnitAccessory {
         parameters.fanAutoMode = 1;
       }
       parameters.airSwingLR = this.devConfig?.swingDefaultLR || 2;
-      this.platform.log.debug(`${this.accessory.displayName}: Swing Left Right Off`);
+      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Swing Left Right Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
@@ -1226,32 +1219,32 @@ export default class IndoorUnitAccessory {
       if (value === 0) {
         // Turn off
         parameters.operate = 0;
-        this.platform.log.debug(`${this.accessory.displayName}: set off`);
+        this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: set off`);
       } else if (value > 0 && value <= 20) {
         parameters.ecoMode = 0;
         parameters.fanSpeed = 1;
-        this.platform.log.debug(`${this.accessory.displayName}: set fan speed 1`);
+        this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: set fan speed 1`);
       } else if (value > 20 && value <= 40) {
         parameters.ecoMode = 0;
         parameters.fanSpeed = 2;
-        this.platform.log.debug(`${this.accessory.displayName}: set fan speed 2`);
+        this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: set fan speed 2`);
       } else if (value > 40 && value <= 60) {
         parameters.ecoMode = 0;
         parameters.fanSpeed = 3;
-        this.platform.log.debug(`${this.accessory.displayName}: set fan speed 3`);
+        this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: set fan speed 3`);
       } else if (value > 60 && value <= 80) {
         parameters.ecoMode = 0;
         parameters.fanSpeed = 4;
-        this.platform.log.debug(`${this.accessory.displayName}: set fan speed 4`);
+        this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: set fan speed 4`);
       } else if (value > 80 && value < 100) {
         parameters.ecoMode = 0;
         parameters.fanSpeed = 5;
-        this.platform.log.debug(`${this.accessory.displayName}: set fan speed 5`);
+        this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: set fan speed 5`);
       } else if (value === 100) {
         // Auto mode
         parameters.ecoMode = 0;
         parameters.fanSpeed = 0;
-        this.platform.log.debug(`${this.accessory.displayName}: set fan speed auto`);
+        this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: set fan speed auto`);
       }
 
       this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
