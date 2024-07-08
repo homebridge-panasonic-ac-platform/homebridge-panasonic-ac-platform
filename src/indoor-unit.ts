@@ -1336,7 +1336,7 @@ export default class IndoorUnitAccessory {
           }
 
           // Send update
-          this.platform.log.debug(`sendDeviceUpdatePayload: ${JSON.stringify(this.sendDeviceUpdatePayload)}`);
+          this.platform.log.debug(`${this.accessory.displayName}: sendDeviceUpdatePayload: ${JSON.stringify(this.sendDeviceUpdatePayload)}`);
           this.platform.comfortCloud.setDeviceStatus(guid, this.sendDeviceUpdatePayload);
 
           // Reset payload
