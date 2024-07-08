@@ -918,67 +918,61 @@ export default class IndoorUnitAccessory {
   }
 
   async setRotationSpeed(value: CharacteristicValue) {
-    // We use timer because HomeKit / Apple Home sends command when moving slider
-    // not only when finish move
-    clearTimeout(this.timerSetFanSpeed);
-    this.timerSetFanSpeed = null;
-    this.timerSetFanSpeed = setTimeout(async () => {
-      this.platform.log.debug(
-        `Accessory: setRotationSpeed() for device '${this.accessory.displayName}'`);
-      const parameters: ComfortCloudDeviceUpdatePayload = {};
-      switch (value) {
-        // See README for the mapping of slider position to Comfort Cloud payload.
-        case 0:
-          // HomeKit independently switches off the accessory
-          // in this case, which triggers setActive().
-          // Nothing to handle here, but documenting for clarity.
-          break;
-        case 1:
-          parameters.ecoMode = 2;
-          this.platform.log.debug(`${this.accessory.displayName}: Quiet Mode`);
-          break;
-        case 2:
-          parameters.ecoMode = 0;
-          parameters.fanSpeed = 1;
-          this.platform.log.debug(`${this.accessory.displayName}: Fan speed 1`);
-          break;
-        case 3:
-          parameters.ecoMode = 0;
-          parameters.fanSpeed = 2;
-          this.platform.log.debug(`${this.accessory.displayName}: Fan speed 2`);
-          break;
-        case 4:
-          parameters.ecoMode = 0;
-          parameters.fanSpeed = 3;
-          this.platform.log.debug(`${this.accessory.displayName}: Fan speed 3`);
-          break;
-        case 5:
-          parameters.ecoMode = 0;
-          parameters.fanSpeed = 4;
-          this.platform.log.debug(`${this.accessory.displayName}: Fan speed 4`);
-          break;
-        case 6:
-          parameters.ecoMode = 0;
-          parameters.fanSpeed = 5;
-          this.platform.log.debug(`${this.accessory.displayName}: Fan speed 5`);
-          break;
-        case 7:
-          parameters.ecoMode = 1;
-          this.platform.log.debug(`${this.accessory.displayName}: Powerful Mode`);
-          break;
-        case 8:
-          parameters.ecoMode = 0;
-          parameters.fanSpeed = 0;
-          this.platform.log.debug(`${this.accessory.displayName}: Auto Mode`);
-          break;
-        default:
-          parameters.ecoMode = 0;
-          parameters.fanSpeed = 0;
-          this.platform.log.debug(`${this.accessory.displayName}: Auto Mode`);
-          break;
-      }
-      this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
-    }, 2000);
+    this.platform.log.debug(
+      `Accessory: setRotationSpeed() for device '${this.accessory.displayName}'`);
+    const parameters: ComfortCloudDeviceUpdatePayload = {};
+    switch (value) {
+      // See README for the mapping of slider position to Comfort Cloud payload.
+      case 0:
+        // HomeKit independently switches off the accessory
+        // in this case, which triggers setActive().
+        // Nothing to handle here, but documenting for clarity.
+        break;
+      case 1:
+        parameters.ecoMode = 2;
+        this.platform.log.debug(`${this.accessory.displayName}: Quiet Mode`);
+        break;
+      case 2:
+        parameters.ecoMode = 0;
+        parameters.fanSpeed = 1;
+        this.platform.log.debug(`${this.accessory.displayName}: Fan speed 1`);
+        break;
+      case 3:
+        parameters.ecoMode = 0;
+        parameters.fanSpeed = 2;
+        this.platform.log.debug(`${this.accessory.displayName}: Fan speed 2`);
+        break;
+      case 4:
+        parameters.ecoMode = 0;
+        parameters.fanSpeed = 3;
+        this.platform.log.debug(`${this.accessory.displayName}: Fan speed 3`);
+        break;
+      case 5:
+        parameters.ecoMode = 0;
+        parameters.fanSpeed = 4;
+        this.platform.log.debug(`${this.accessory.displayName}: Fan speed 4`);
+        break;
+      case 6:
+        parameters.ecoMode = 0;
+        parameters.fanSpeed = 5;
+        this.platform.log.debug(`${this.accessory.displayName}: Fan speed 5`);
+        break;
+      case 7:
+        parameters.ecoMode = 1;
+        this.platform.log.debug(`${this.accessory.displayName}: Powerful Mode`);
+        break;
+      case 8:
+        parameters.ecoMode = 0;
+        parameters.fanSpeed = 0;
+        this.platform.log.debug(`${this.accessory.displayName}: Auto Mode`);
+        break;
+      default:
+        parameters.ecoMode = 0;
+        parameters.fanSpeed = 0;
+        this.platform.log.debug(`${this.accessory.displayName}: Auto Mode`);
+        break;
+    }
+    this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
 
   async setSwingMode(value: CharacteristicValue) {
@@ -1213,49 +1207,42 @@ export default class IndoorUnitAccessory {
     // set Fan speed
     if (value >= 0 && value <= 100) {
 
-      // We use timer because HomeKit / Apple Home sends command when moving slider
-      // not only when finish move
-      clearTimeout(this.timerSetFanSpeed);
-      this.timerSetFanSpeed = null;
+      this.platform.log.debug(`${this.accessory.displayName}: value: ${value}`);
 
-      this.timerSetFanSpeed = setTimeout(async () => {
-        this.platform.log.debug(`${this.accessory.displayName}: value: ${value}`);
+      const parameters: ComfortCloudDeviceUpdatePayload = {};
 
-        const parameters: ComfortCloudDeviceUpdatePayload = {};
+      if (value === 0) {
+        // Turn off
+        parameters.operate = 0;
+        this.platform.log.debug(`${this.accessory.displayName}: set off`);
+      } else if (value > 0 && value <= 20) {
+        parameters.ecoMode = 0;
+        parameters.fanSpeed = 1;
+        this.platform.log.debug(`${this.accessory.displayName}: set fan speed 1`);
+      } else if (value > 20 && value <= 40) {
+        parameters.ecoMode = 0;
+        parameters.fanSpeed = 2;
+        this.platform.log.debug(`${this.accessory.displayName}: set fan speed 2`);
+      } else if (value > 40 && value <= 60) {
+        parameters.ecoMode = 0;
+        parameters.fanSpeed = 3;
+        this.platform.log.debug(`${this.accessory.displayName}: set fan speed 3`);
+      } else if (value > 60 && value <= 80) {
+        parameters.ecoMode = 0;
+        parameters.fanSpeed = 4;
+        this.platform.log.debug(`${this.accessory.displayName}: set fan speed 4`);
+      } else if (value > 80 && value < 100) {
+        parameters.ecoMode = 0;
+        parameters.fanSpeed = 5;
+        this.platform.log.debug(`${this.accessory.displayName}: set fan speed 5`);
+      } else if (value === 100) {
+        // Auto mode
+        parameters.ecoMode = 0;
+        parameters.fanSpeed = 0;
+        this.platform.log.debug(`${this.accessory.displayName}: set fan speed auto`);
+      }
 
-        if (value === 0) {
-          // Turn off
-          parameters.operate = 0;
-          this.platform.log.debug(`${this.accessory.displayName}: set off`);
-        } else if (value > 0 && value <= 20) {
-          parameters.ecoMode = 0;
-          parameters.fanSpeed = 1;
-          this.platform.log.debug(`${this.accessory.displayName}: set fan speed 1`);
-        } else if (value > 20 && value <= 40) {
-          parameters.ecoMode = 0;
-          parameters.fanSpeed = 2;
-          this.platform.log.debug(`${this.accessory.displayName}: set fan speed 2`);
-        } else if (value > 40 && value <= 60) {
-          parameters.ecoMode = 0;
-          parameters.fanSpeed = 3;
-          this.platform.log.debug(`${this.accessory.displayName}: set fan speed 3`);
-        } else if (value > 60 && value <= 80) {
-          parameters.ecoMode = 0;
-          parameters.fanSpeed = 4;
-          this.platform.log.debug(`${this.accessory.displayName}: set fan speed 4`);
-        } else if (value > 80 && value < 100) {
-          parameters.ecoMode = 0;
-          parameters.fanSpeed = 5;
-          this.platform.log.debug(`${this.accessory.displayName}: set fan speed 5`);
-        } else if (value === 100) {
-          // Auto mode
-          parameters.ecoMode = 0;
-          parameters.fanSpeed = 0;
-          this.platform.log.debug(`${this.accessory.displayName}: set fan speed auto`);
-        }
-
-        this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
-      }, 2000);
+      this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
     }
   }
 
@@ -1294,7 +1281,9 @@ export default class IndoorUnitAccessory {
 
   async sendDeviceUpdate(guid: string, payload: ComfortCloudDeviceUpdatePayload = {}) {
     try {
-      // We collect together all parameters sent in a specified time, so as not to send each parameters separately
+      // HomeKit sends commands when a move starts, not when it ends, so there can be several commands during one move.
+      // Users often send several commands at once, e.g. in automation.
+      // Collect together all parameters sent in a specified time, so as not to send each parameters separately.
       this.sendDeviceUpdatePayload = Object.assign(this.sendDeviceUpdatePayload, payload);
 
       clearTimeout(this.timerSendDeviceUpdate);
@@ -1312,7 +1301,7 @@ export default class IndoorUnitAccessory {
               && this.sendDeviceUpdatePayload.operate === 1
               && !Object.prototype.hasOwnProperty.call(this.sendDeviceUpdatePayload, 'fanSpeed')
               && !Object.prototype.hasOwnProperty.call(this.sendDeviceUpdatePayload, 'ecoMode')) {
-            this.platform.log.debug(`Accessory: fanSpeedWorkaround() for device '${this.accessory.displayName}'`);
+  
             const parameters: any = {};
             switch (this.service.getCharacteristic(this.platform.Characteristic.RotationSpeed).value) {
               case 1:
@@ -1341,6 +1330,7 @@ export default class IndoorUnitAccessory {
                 parameters.fanSpeed = 0;
                 break;
             }
+            this.platform.log.debug(`${this.accessory.displayName}: Applying workaround fix for speed and eco mode, adding parameters ${parameters} to ${this.sendDeviceUpdatePayload}.`);
             this.sendDeviceUpdatePayload = Object.assign(this.sendDeviceUpdatePayload, parameters);
           }
 
