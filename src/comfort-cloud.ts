@@ -514,7 +514,7 @@ export default class ComfortCloudApi {
    * @returns A promise of the status of the requested device.
    */
   public getDeviceStatus(deviceGuid: string): Promise<ComfortCloudDeviceStatus> {
-    this.log.debug(`Comfort Cloud: getDeviceStatus() for device GUID '${deviceGuid}'`);
+    this.log.debug(`${deviceGuid}: Comfort Cloud: getDeviceStatus()`);
 
     if (!this.token) {
       return Promise.reject('No auth token available (login probably failed). '
@@ -559,8 +559,8 @@ export default class ComfortCloudApi {
    * @returns
    */
   setDeviceStatus(deviceGuid: string, parameters: ComfortCloudDeviceUpdatePayload) {
-    this.log.debug(`Comfort Cloud: setDeviceStatus() for '${deviceGuid}'`);
-    this.log.debug(JSON.stringify(parameters, null, 2));
+    this.log.debug(`${deviceGuid}: Comfort Cloud: setDeviceStatus()`);
+    this.log.debug(`${deviceGuid}: ${JSON.stringify(parameters, null, 2)}`);
 
     if (!this.token) {
       this.log.error('No auth token available (login probably failed). '
