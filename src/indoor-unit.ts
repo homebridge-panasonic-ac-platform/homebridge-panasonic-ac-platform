@@ -1301,7 +1301,7 @@ export default class IndoorUnitAccessory {
               && this.sendDeviceUpdatePayload.operate === 1
               && !Object.prototype.hasOwnProperty.call(this.sendDeviceUpdatePayload, 'fanSpeed')
               && !Object.prototype.hasOwnProperty.call(this.sendDeviceUpdatePayload, 'ecoMode')) {
-  
+
             const parameters: any = {};
             switch (this.service.getCharacteristic(this.platform.Characteristic.RotationSpeed).value) {
               case 1:
@@ -1330,7 +1330,8 @@ export default class IndoorUnitAccessory {
                 parameters.fanSpeed = 0;
                 break;
             }
-            this.platform.log.debug(`${this.accessory.displayName}: Applying workaround fix for speed and eco mode, adding parameters ${parameters} to ${this.sendDeviceUpdatePayload}.`);
+            this.platform.log.debug(`${this.accessory.displayName}: Applying workaround fix for speed and eco mode,`
+                                    + `adding parameters ${parameters} to ${this.sendDeviceUpdatePayload}.`);
             this.sendDeviceUpdatePayload = Object.assign(this.sendDeviceUpdatePayload, parameters);
           }
 
