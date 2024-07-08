@@ -560,7 +560,7 @@ export default class ComfortCloudApi {
    */
   setDeviceStatus(deviceGuid: string, parameters: ComfortCloudDeviceUpdatePayload) {
     this.log.debug(`${deviceGuid}: Comfort Cloud: setDeviceStatus()`);
-    this.log.debug(`${deviceGuid}:\n${JSON.stringify(parameters, null, 2)}`);
+    this.log.debug(`${deviceGuid}: ${JSON.stringify(parameters)}`);
 
     if (!this.token) {
       this.log.error('No auth token available (login probably failed). '
@@ -593,7 +593,7 @@ export default class ComfortCloudApi {
     })
       .then((response) => {
         this.log.debug(`${deviceGuid}: Comfort Cloud - setDeviceStatus(): Success`);
-        this.log.debug(`${deviceGuid}:\n${JSON.stringify(response.data, null, 2)}`);
+        this.log.debug(`${deviceGuid}: ${JSON.stringify(response.data)}`);
       })
       .catch((error: AxiosError) => {
         this.log.error(`${deviceGuid}: Comfort Cloud - setDeviceStatus(): Error`);
