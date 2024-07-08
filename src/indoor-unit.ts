@@ -460,7 +460,7 @@ export default class IndoorUnitAccessory {
         logOutput += `, Inside Temp. ${this.deviceStatus.insideTemperature}`;
       } else {
         logOutput += ', Inside Temp. not available';
-        this.platform.log.debug('Inside temperature is not available - setting default temperature');
+        this.platform.log.debug(`${this.accessory.displayName}: Inside temperature is not available - setting default temperature`);
         this.service.updateCharacteristic(
           this.platform.Characteristic.CurrentTemperature,
           (this.deviceStatus.operationMode === 3) ? 8 : 30,
@@ -863,7 +863,7 @@ export default class IndoorUnitAccessory {
    */
   async setActive(value: CharacteristicValue) {
 
-    this.platform.log.debug(`Accessory: setActive() for device '${this.accessory.displayName}'`);
+    this.platform.log.debug(`${this.accessory.displayName}: setActive()`);
     const parameters: ComfortCloudDeviceUpdatePayload = {
       operate: value === this.platform.Characteristic.Active.ACTIVE ? 1 : 0,
     };
@@ -877,12 +877,10 @@ export default class IndoorUnitAccessory {
 
     this.sendDeviceUpdate(
       this.accessory.context.device.deviceGuid, parameters);
-    this.platform.log.debug(`${this.accessory.displayName}: ${value === 1 ? 'On' : 'Off'}`);
   }
 
   async setTargetHeaterCoolerState(value: CharacteristicValue) {
-    this.platform.log.debug(
-      `Accessory: setTargetHeaterCoolerState() for device '${this.accessory.displayName}'`);
+    this.platform.log.debug(`${this.accessory.displayName}: setTargetHeaterCoolerState()`);
     const parameters: ComfortCloudDeviceUpdatePayload = {
       operate: 1,
     };
@@ -911,15 +909,14 @@ export default class IndoorUnitAccessory {
         break;
 
       default:
-        this.platform.log.error('Unknown TargetHeaterCoolerState', value);
+        this.platform.log.error(`${this.accessory.displayName}: Unknown TargetHeaterCoolerState`, value);
         return;
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
 
   async setRotationSpeed(value: CharacteristicValue) {
-    this.platform.log.debug(
-      `Accessory: setRotationSpeed() for device '${this.accessory.displayName}'`);
+    this.platform.log.debug(`${this.accessory.displayName}: setRotationSpeed()`);
     const parameters: ComfortCloudDeviceUpdatePayload = {};
     switch (value) {
       // See README for the mapping of slider position to Comfort Cloud payload.
@@ -977,8 +974,7 @@ export default class IndoorUnitAccessory {
 
   async setSwingMode(value: CharacteristicValue) {
 
-    this.platform.log.debug(
-      `Accessory: setSwingMode() for device '${this.accessory.displayName}'`);
+    this.platform.log.debug(`${this.accessory.displayName}: setSwingMode()`);
 
     const parameters: ComfortCloudDeviceUpdatePayload = {};
 
@@ -996,6 +992,7 @@ export default class IndoorUnitAccessory {
 
   // set Power (on/off)
   async setPower(value) {
+    this.platform.log.debug(`${this.accessory.displayName}: setSPower()`);
     const parameters: ComfortCloudDeviceUpdatePayload = {};
     if (value) {
       parameters.operate = 1;
@@ -1009,6 +1006,7 @@ export default class IndoorUnitAccessory {
 
   // set Nanoe
   async setNanoe(value) {
+    this.platform.log.debug(`${this.accessory.displayName}: setNanoe()`);
     const parameters: ComfortCloudDeviceUpdatePayload = {};
     if (value) {
       parameters.nanoe = 2;
@@ -1022,6 +1020,7 @@ export default class IndoorUnitAccessory {
 
   // set Inside Cleaning
   async setInsideCleaning(value) {
+    this.platform.log.debug(`${this.accessory.displayName}: setInsideCleaning()`);
     const parameters: ComfortCloudDeviceUpdatePayload = {};
     if (value) {
       parameters.insideCleaning = 2;
@@ -1035,6 +1034,7 @@ export default class IndoorUnitAccessory {
 
   // set Eco Navi
   async setEcoNavi(value) {
+    this.platform.log.debug(`${this.accessory.displayName}: setEcoNavi()`);
     const parameters: ComfortCloudDeviceUpdatePayload = {};
     if (value) {
       parameters.ecoNavi = 2;
@@ -1048,6 +1048,7 @@ export default class IndoorUnitAccessory {
 
   // set Eco Function
   async setEcoFunction(value) {
+    this.platform.log.debug(`${this.accessory.displayName}: setEcoFunction()`);
     const parameters: ComfortCloudDeviceUpdatePayload = {};
     if (value) {
       parameters.ecoFunctionData = 2;
@@ -1061,6 +1062,7 @@ export default class IndoorUnitAccessory {
 
   // set Cool Mode
   async setCoolMode(value) {
+    this.platform.log.debug(`${this.accessory.displayName}: setCoolMode()`);
     const parameters: ComfortCloudDeviceUpdatePayload = {};
     if (value) {
       parameters.operate = 1;
@@ -1075,6 +1077,7 @@ export default class IndoorUnitAccessory {
 
   // set Heat Mode
   async setHeatMode(value) {
+    this.platform.log.debug(`${this.accessory.displayName}: setHeatMode()`);
     const parameters: ComfortCloudDeviceUpdatePayload = {};
     if (value) {
       parameters.operate = 1;
@@ -1089,6 +1092,7 @@ export default class IndoorUnitAccessory {
 
   // set Dry Mode
   async setDryMode(value) {
+    this.platform.log.debug(`${this.accessory.displayName}: setDryMode()`);
     const parameters: ComfortCloudDeviceUpdatePayload = {};
     if (value) {
       parameters.operate = 1;
@@ -1103,6 +1107,7 @@ export default class IndoorUnitAccessory {
 
   // set Fan Mode
   async setFanMode(value) {
+    this.platform.log.debug(`${this.accessory.displayName}: setFanMode()`);
     const parameters: ComfortCloudDeviceUpdatePayload = {};
     if (value) {
       parameters.operate = 1;
@@ -1117,6 +1122,7 @@ export default class IndoorUnitAccessory {
 
   // set Nanoe Stand Alone Mode
   async setNanoeStandAloneMode(value) {
+    this.platform.log.debug(`${this.accessory.displayName}: setNanoeStandAloneMode()`);
     const parameters: ComfortCloudDeviceUpdatePayload = {};
     if (value) {
       parameters.operate = 1;
@@ -1131,6 +1137,7 @@ export default class IndoorUnitAccessory {
 
   // set Quiet Mode
   async setQuietMode(value) {
+    this.platform.log.debug(`${this.accessory.displayName}: setQuietMode()`);
     const parameters: ComfortCloudDeviceUpdatePayload = {};
     if (value) {
       parameters.ecoMode = 2;
@@ -1144,6 +1151,7 @@ export default class IndoorUnitAccessory {
 
   // set Powerful Mode
   async setPowerfulMode(value) {
+    this.platform.log.debug(`${this.accessory.displayName}: setPowerfulMode()`);
     const parameters: ComfortCloudDeviceUpdatePayload = {};
     if (value) {
       parameters.ecoMode = 1;
@@ -1157,6 +1165,7 @@ export default class IndoorUnitAccessory {
 
   // set Swing Up Down
   async setSwingUpDown(value) {
+    this.platform.log.debug(`${this.accessory.displayName}: setSwingUpDown()`);
     const parameters: ComfortCloudDeviceUpdatePayload = {};
     if (value) {
       // if Swing Left Right is enabled than set Swing Auto (Up Down and Left Right)
@@ -1180,6 +1189,7 @@ export default class IndoorUnitAccessory {
 
   // set Swing Left Right
   async setSwingLeftRight(value) {
+    this.platform.log.debug(`${this.accessory.displayName}: setSwingLeftRight()`);
     const parameters: ComfortCloudDeviceUpdatePayload = {};
     if (value) {
       // if Swing Up Down is enabled than set Swing Auto (Up Down and Left Right)
@@ -1207,7 +1217,7 @@ export default class IndoorUnitAccessory {
     // set Fan speed
     if (value >= 0 && value <= 100) {
 
-      this.platform.log.debug(`${this.accessory.displayName}: value: ${value}`);
+      this.platform.log.debug(`${this.accessory.displayName}: setFanSpeed(), value: ${value}`);
 
       const parameters: ComfortCloudDeviceUpdatePayload = {};
 
