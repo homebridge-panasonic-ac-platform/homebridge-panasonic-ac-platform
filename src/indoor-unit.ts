@@ -1345,9 +1345,9 @@ export default class IndoorUnitAccessory {
           // Refresh device status
           clearTimeout(this.timerSendDeviceUpdateRefresh);
           this.timerSendDeviceUpdateRefresh = null;
-          this.timerSendDeviceUpdateRefresh = setTimeout(this.refreshDeviceStatus.bind(this), 5000);
+          this.timerSendDeviceUpdateRefresh = setTimeout(this.refreshDeviceStatus.bind(this), 7500);
 
-        }, 2000);
+        }, 2500);
       }
 
     } catch (error) {
