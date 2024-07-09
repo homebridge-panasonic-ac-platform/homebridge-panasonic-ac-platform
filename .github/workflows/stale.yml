@@ -15,15 +15,15 @@ jobs:
     - name: Autoclose stale issues.
       uses: actions/stale@v8
       with:
-        days-before-close: 7
-        days-before-stale: 21
-        exempt-issue-labels: 'do-not-remove,in-progress'
-        exempt-pr-labels: 'do-not-remove,in-progress'
+        days-before-close: 5
+        days-before-stale: 10
+        exempt-issue-labels: 'announcement, bug, dependencies, feature request, improvement'
+        exempt-pr-labels: 'announcement, bug, dependencies, feature request, improvement'
         remove-stale-when-updated: true
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         stale-issue-label: 'stale'
-        stale-issue-message: 'This Issue was automatically marked as stale (out of date) because it had no activity recently. It will close in 7 days if there will be no new activity. Thank you for your contribution.'
+        stale-issue-message: 'This Issue was automatically marked as stale (out of date) because it had no activity recently. It will close in 5 days if there will be no new activity. Thank you for your contribution.'
         close-issue-message: 'This Issue has automatically been closed due to no new activities. Once again, thank you for your contribution.'
         stale-pr-label: 'stale'
-        stale-pr-message: 'This Pull Request was automatically marked as stale (out of date) because it had no activity recently. It will close in 7 days if there will be no new activity. Thank you for your contribution.'
+        stale-pr-message: 'This Pull Request was automatically marked as stale (out of date) because it had no activity recently. It will close in 5 days if there will be no new activity. Thank you for your contribution.'
         close-pr-message: 'This Pull Request has automatically been closed due to no new activities. Once again, thank you for your contribution.'
