@@ -307,7 +307,7 @@ https://www.panasonic.com/global/hvac/products/comfort-cloud/how-to-set-up-comfo
 #### Most important changes from version 4.0.0
 
 - Completely new Comfort Cloud API. All versions below 4.0.0 will not work. 
-- Option to add additional sensors, switches and sliders to check and control: Inside and Outside temp., Nanoe, Inside cleaning, Eco Navi, Dry Mode, Fan mode, Quiet Mode, Powerful Mode, Swing Up Down, Swing Left Right, Fan speed and many more.
+- Option to add additional sensors, switches and sliders to check and control: Inside temp., Outside temp., Nanoe, Inside Cleaning, Eco Navi, Dry Mode, Fan Mode, Quiet Mode, Powerful Mode, Swing Up Down, Swing Left Right, Fan speed, and many more.
 - A new way to send parameters to Comfort Cloud, from now on all commands set at short interval of time are collected together and sent as one, not separately as was the case before. This will reduce the number of requests to the server.
 - Workaround for changes in API - values for fanSpeed and ecoMode (Quiet and Powerful modes) are no longer stored in the API after turning off the device.
 - Update App Version to 1.21.0.
