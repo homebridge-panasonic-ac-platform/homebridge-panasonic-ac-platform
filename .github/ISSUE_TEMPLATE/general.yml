@@ -12,7 +12,7 @@ body:
     attributes:
       label: Description
       description: |
-        Pleased provide a clear and concise description. Be sure to include:
+        Provide a clear and concise description. Be sure to include:
         * What is happening?
         * What you expect to happen?
         * Clear steps explaining how to reproduce the problem.
@@ -24,7 +24,8 @@ body:
       label: Logs
       render: code
       description: |
-        Please provide the relevant logs.
+        If relevant to your report, include your logs.
+        * You can enable more logs, set All logs in plugin config and debug mode in Homebridge settings.
         * Keep this short. Do not paste in hundreds of lines repeating the same error.
         * Show the logs from the service being restarted until the error occurs.
         * Remove any sensitive data (like login details).
