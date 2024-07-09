@@ -211,6 +211,12 @@
 							"type": "boolean",
 							"default": false
 						},
+						"exposeAutoMode": {
+							"title": "Expose Auto Mode",
+							"description": "When enabled it will create a switch to control Auto Mode.",
+							"type": "boolean",
+							"default": false
+						},
 						"exposeCoolMode": {
 							"title": "Expose Cool Mode",
 							"description": "When enabled it will create a switch to control Cool Mode.",
@@ -353,6 +359,7 @@
 									"expanded": false,
 									"items": [
 										"devices[].exposePower",
+										"devices[].exposeautoMode",
 										"devices[].exposeCoolMode",
 										"devices[].exposeHeatMode",
 										"devices[].exposeDryMode",

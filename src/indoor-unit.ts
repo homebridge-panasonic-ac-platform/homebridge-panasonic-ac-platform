@@ -23,6 +23,7 @@ export default class IndoorUnitAccessory {
   exposeInsideCleaning;
   exposeEcoNavi;
   exposeEcoFunction;
+  exposeAutoMode;
   exposeCoolMode;
   exposeHeatMode;
   exposeDryMode;
@@ -246,6 +247,23 @@ export default class IndoorUnitAccessory {
       if (removeEcoFunction) {
         this.accessory.removeService(removeEcoFunction);
         this.platform.log.debug(`${this.accessory.displayName}: remove eco function switch`);
+      }
+    }
+
+    // Auto mode
+    if (this.devConfig?.exposeAutoMode) {
+      this.exposeAutoMode = this.accessory.getService(this.accessory.displayName + ' (auto mode)')
+        || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (auto mode)', 'exposeAutoMode');
+      this.exposeAutoMode.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (auto mode)');
+      this.exposeAutoMode
+        .getCharacteristic(this.platform.Characteristic.On)
+        .onSet(this.setAutoMode.bind(this));
+      this.platform.log.debug(`${this.accessory.displayName}: add auto mode switch`);
+    } else {
+      const removeAutoMode = this.accessory.getService(this.accessory.displayName + ' (auto mode)');
+      if (removeAutoMode) {
+        this.accessory.removeService(removeAutoMode);
+        this.platform.log.debug(`${this.accessory.displayName}: remove auto mode switch`);
       }
     }
 
@@ -691,6 +709,15 @@ export default class IndoorUnitAccessory {
         }
       }
 
+      // Auto Mode
+      if (this.exposeAutoMode) {
+        if (this.deviceStatus.operate === 1 && this.deviceStatus.operationMode === 0) {
+          this.exposeAutoMode.updateCharacteristic(this.platform.Characteristic.On, true);
+        } else {
+          this.exposeAutoMode.updateCharacteristic(this.platform.Characteristic.On, false);
+        }
+      }
+
       // Cool Mode
       if (this.exposeCoolMode) {
         if (this.deviceStatus.operate === 1 && this.deviceStatus.operationMode === 2) {
@@ -1051,6 +1078,21 @@ export default class IndoorUnitAccessory {
     } else {
       parameters.ecoFunctionData = 1;
       this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Eco Function Off`);
+    }
+    this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
+  }
+
+  // set Auto Mode
+  async setAutoMode(value) {
+    this.platform.log.debug(`${this.accessory.displayName}: setAutoMode()`);
+    const parameters: ComfortCloudDeviceUpdatePayload = {};
+    if (value) {
+      parameters.operate = 1;
+      parameters.operationMode = 0;
+      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Auto Mode On`);
+    } else {
+      parameters.operate = 0;
+      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Auto Mode Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
