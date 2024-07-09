@@ -22,7 +22,7 @@ body:
     id: logs
     attributes:
       label: Logs
-      render: shell
+      render: bash
       description: |
         Please provide the relevant logs.
         * Keep this short. Do not paste in hundreds of lines repeating the same error.
