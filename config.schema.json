@@ -170,13 +170,13 @@
 							"placeholder": "16"
 						},
 						"exposeInsideTemp": {
-							"title": "Expose Inside Temp",
+							"title": "Expose Inside Temp.",
 							"description": "When enabled it will create a virtual temperature sensor which will display the temperature from inside unit. This can be used for monitoring or automation purposes. Note: It is recomended to use external temperature sensor (not built-in in AC).",
 							"type": "boolean",
 							"default": false
 						},
 						"exposeOutdoorTemp": {
-							"title": "Expose Outdoor Temp",
+							"title": "Expose Outdoor Temp.",
 							"description": "When enabled it will create a virtual temperature sensor which will display the temperature from outdoor unit. This can be used for monitoring or automation purposes. Note: It may be required for the device to be turned on to retrieve the current temperature from the outdoor unit.",
 							"type": "boolean",
 							"default": false
@@ -282,7 +282,7 @@
 			"title": "Account",
 			"description": "Comfort Cloud (Panasonic ID) account details.",
 			"expandable": true,
-			"expanded": true,
+			"expanded": false,
 			"items": [
 				"email",
 				"password",
@@ -291,13 +291,14 @@
 		},
 		{
 			"type": "fieldset",
-			"title": "Advanced",
+			"title": "Logs and debug",
+			"description": "Logs level and other debug options.",
 			"expandable": true,
 			"expanded": false,
 			"items": [
+				"logsLevel",
 				"name",
-				"suppressOutgoingUpdates",
-				"logsLevel"
+				"suppressOutgoingUpdates"
 			]
 		},
 		{
@@ -315,9 +316,10 @@
 						{
 							"type": "fieldset",
 							"title": "Device",
+							"description": "General device settings.",
 							"flex": "1 1 100%",
 							"expandable": true,
-							"expanded": true,
+							"expanded": false,
 							"items": [
 								"devices[].name",
 								"devices[].excludeDevice",
@@ -327,32 +329,79 @@
 						{
 							"type": "fieldset",
 							"title": "Sensors and switches",
+							"description": "Expose additional sensors and switches.",
 							"flex": "1 1 100%",
 							"expandable": true,
 							"expanded": false,
 							"items": [
-								"devices[].exposeInsideTemp",
-								"devices[].exposeOutdoorTemp",
-								"devices[].exposePower",
-								"devices[].exposeNanoe",
-								"devices[].exposeInsideCleaning",
-								"devices[].exposeEcoNavi",
-								"devices[].exposeEcoFunction",
-								"devices[].exposeCoolMode",
-								"devices[].exposeHeatMode",
-								"devices[].exposeDryMode",
-								"devices[].exposeFanMode",
-								"devices[].exposeNanoeStandAloneMode",
-								"devices[].exposeQuietMode",
-								"devices[].exposePowerfulMode",
-								"devices[].exposeSwingUpDown",
-								"devices[].exposeSwingLeftRight",
-								"devices[].exposeFanSpeed"
+								{
+									"type": "section",
+									"title": "Temp. sensors",
+									"flex": "1 1 100%",
+									"expandable": true,
+									"expanded": false,
+									"items": [
+										"devices[].exposeInsideTemp",
+										"devices[].exposeOutdoorTemp"
+									]
+								},
+								{
+									"type": "section",
+									"title": "Mode",
+									"flex": "1 1 100%",
+									"expandable": true,
+									"expanded": false,
+									"items": [
+										"devices[].exposePower",
+										"devices[].exposeCoolMode",
+										"devices[].exposeHeatMode",
+										"devices[].exposeDryMode",
+										"devices[].exposeFanMode",
+										"devices[].exposeNanoeStandAloneMode"
+									]
+								},
+								{
+									"type": "section",
+									"title": "Speed",
+									"flex": "1 1 100%",
+									"expandable": true,
+									"expanded": false,
+									"items": [
+										"devices[].exposeQuietMode",
+										"devices[].exposePowerfulMode",
+										"devices[].exposeFanSpeed"
+									]
+								},
+								{
+									"type": "section",
+									"title": "Swing",
+									"flex": "1 1 100%",
+									"expandable": true,
+									"expanded": false,
+									"items": [
+										"devices[].exposeSwingUpDown",
+										"devices[].exposeSwingLeftRight"
+									]
+								},
+								{
+									"type": "section",
+									"title": "Extra functions",
+									"flex": "1 1 100%",
+									"expandable": true,
+									"expanded": false,
+									"items": [
+										"devices[].exposeNanoe",
+										"devices[].exposeInsideCleaning",
+										"devices[].exposeEcoNavi",
+										"devices[].exposeEcoFunction"
+									]
+								}
 							]
 						},
 						{
 							"type": "fieldset",
 							"title": "Swing (oscilate) desired positions",
+							"description": "Set desired positions for swing mode (up-down and left-right).",
 							"flex": "1 1 100%",
 							"expandable": true,
 							"expanded": false,
