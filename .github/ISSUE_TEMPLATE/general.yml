@@ -1,5 +1,5 @@
 name: General
-description: General report.
+description: General issue report or feature request.
 body:
   - type: markdown
     attributes:
