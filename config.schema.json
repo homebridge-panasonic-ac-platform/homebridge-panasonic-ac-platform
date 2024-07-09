@@ -359,7 +359,7 @@
 									"expanded": false,
 									"items": [
 										"devices[].exposePower",
-										"devices[].exposeautoMode",
+										"devices[].exposeAutoMode",
 										"devices[].exposeCoolMode",
 										"devices[].exposeHeatMode",
 										"devices[].exposeDryMode",
