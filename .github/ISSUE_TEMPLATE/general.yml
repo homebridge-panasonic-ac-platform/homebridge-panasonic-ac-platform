@@ -5,11 +5,9 @@ body:
     attributes:
       value: |
         > [!NOTE]
-        > Useful information that users should know, even when skimming content.
-        IMPORTANT!
-        * Check plugin homepage (readme) first.
-        * Avoid duplicating any existing issues which already track or resolve your problem, search the existing issues first.
-        * Aim to find a descriptive and precise title for your report.
+        > * Check plugin homepage (readme) first.
+        > * Avoid duplicating any existing issues which already track or resolve your problem, search the existing issues first.
+        > * Aim to find a descriptive and precise title for your report.
   - type: textarea
     id: description
     attributes:
