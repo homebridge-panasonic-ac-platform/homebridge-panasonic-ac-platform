@@ -41,6 +41,59 @@ body:
         If relevant to your report, include your device status. 
         * To get device status: enable all logs in plugin config and debug mode in Homebridge setting, device status will be in logs, every time plugin refresh device status.
         * Be sure to remove any sensitive information (passwords, tokens, etc.).
+      placeholder: |
+        {
+          "timestamp": 1720596340738,
+          "permission": 3,
+          "summerHouse": 0,
+          "iAutoX": false,
+          "nanoe": true,
+          "nanoeStandAlone": true,
+          "autoMode": true,
+          "heatMode": true,
+          "fanMode": false,
+          "dryMode": true,
+          "coolMode": true,
+          "ecoNavi": false,
+          "powerfulMode": true,
+          "quietMode": true,
+          "airSwingLR": true,
+          "autoSwingUD": false,
+          "ecoFunction": 0,
+          "temperatureUnit": 0,
+          "modeAvlList": {
+            "autoMode": 1
+          },
+          "nanoeList": {
+            "visualizationShow": 0
+          },
+          "clothesDrying": false,
+          "insideCleaning": false,
+          "fireplace": false,
+          "pairedFlg": false,
+          "parameters": {
+            "operate": 0,
+            "operationMode": 2,
+            "temperatureSet": 16,
+            "fanSpeed": 3,
+            "fanAutoMode": 0,
+            "airSwingLR": 2,
+            "airSwingUD": 2,
+            "ecoMode": 0,
+            "ecoNavi": 0,
+            "nanoe": 2,
+            "lastSettingMode": 0,
+            "iAuto": 0,
+            "airDirection": 0,
+            "insideTemperature": 22,
+            "outTemperature": 126,
+            "airQuality": 0,
+            "ecoFunctionData": 0,
+            "insideCleaning": 0,
+            "fireplace": 0
+          },
+          "deviceNanoe": 1
+        }
     validations:
       required: false    
   - type: textarea
