@@ -536,7 +536,7 @@ export default class ComfortCloudApi {
     })
       .then((response) => {
         this.log.debug(`${deviceName} (${deviceGuid}): Comfort Cloud - getDeviceStatus() : Success`);
-        this.log.debug(`${deviceName} (${deviceGuid}):\n${JSON.stringify(response.data, null, 2)}`);
+        this.log.debug(`${deviceName} (${deviceGuid}) - device status:\n${JSON.stringify(response.data, null, 2)}`);
         return response.data;
       })
       .catch((error: AxiosError) => {
