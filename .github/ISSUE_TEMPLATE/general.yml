@@ -25,20 +25,31 @@ body:
       render: code
       description: |
         If relevant to your report, include your logs.
-        * You can enable more logs, set All logs in plugin config and debug mode in Homebridge settings.
+        * You can enable more logs, set all logs in plugin config and debug mode in Homebridge settings.
         * Keep this short. Do not paste in hundreds of lines repeating the same error.
         * Show the logs from the service being restarted until the error occurs.
         * Remove any sensitive data (like login details).
     validations:
       required: false
   - type: textarea
-    id: json
+    id: device-status
+    attributes:
+      label: Device status
+      render: JSON
+      description: |
+        If relevant to your report, include your device status. 
+        * To get device status: enable all logs in plugin config and debug mode in Homebridge setting, device status will be in logs, every time plugin refresh device status.
+        * Be sure to remove any sensitive information (passwords, tokens, etc.).
+    validations:
+      required: false    
+  - type: textarea
+    id: plugin-config
     attributes:
       label: Plugin config
       render: JSON
       description: |
         If relevant to your report, include your plugin config. 
-        * Be sure to **remove any sensitive information (passwords, tokens, etc.).**
+        * Be sure to remove any sensitive information (passwords, tokens, etc.).
     validations:
       required: false
   - type: input
