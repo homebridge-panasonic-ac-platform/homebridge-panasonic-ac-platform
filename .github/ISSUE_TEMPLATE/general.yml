@@ -4,6 +4,8 @@ body:
   - type: markdown
     attributes:
       value: |
+        > [!NOTE]
+        > Useful information that users should know, even when skimming content.
         IMPORTANT!
         * Check plugin homepage (readme) first.
         * Avoid duplicating any existing issues which already track or resolve your problem, search the existing issues first.
