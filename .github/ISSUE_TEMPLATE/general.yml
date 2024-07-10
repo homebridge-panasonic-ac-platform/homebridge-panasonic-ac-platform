@@ -49,7 +49,7 @@ body:
       value: |
         <details>
         <summary>Device status - example</summary>
-        ```
+        ```JSON
         {
           "timestamp": 1720636844680,
           "permission": 3,
