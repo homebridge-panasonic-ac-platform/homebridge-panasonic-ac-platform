@@ -49,6 +49,7 @@ body:
       value: |
         <details>
         <summary>Device status - example</summary>
+         
           ```json
             {
               "timestamp": 1720636844680,
@@ -103,6 +104,7 @@ body:
               "deviceNanoe": 1
             }
           ```
+          
         </details>
   - type: textarea
     id: plugin-config
