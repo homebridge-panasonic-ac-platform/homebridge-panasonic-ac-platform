@@ -40,7 +40,7 @@ body:
       render: JSON
       description: |
         If relevant to your report, include your device status. 
-        * To get device status: enable all logs in plugin config and debug mode in Homebridge setting, device status will be in logs, every time plugin refresh device status.
+        * To get device status: enable all logs in plugin config and debug mode in Homebridge setting, device status will be in logs every time plugin refresh device status.
         * Be sure to remove any sensitive information (passwords, tokens, etc.).
     validations:
       required: false    
