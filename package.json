@@ -16,8 +16,8 @@
   },
   "homepage": "https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform#readme",
   "engines": {
-    "node": ">=18.0.0",
-    "homebridge": ">=1.8.0"
+    "homebridge": "^1.6.0 || ^2.0.0",
+    "node": "^18.0.0 || ^20.0.0"
   },
   "main": "dist/index.js",
   "scripts": {
