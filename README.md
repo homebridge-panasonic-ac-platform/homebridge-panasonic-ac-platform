@@ -277,7 +277,7 @@ https://www.panasonic.com/global/hvac/products/comfort-cloud/how-to-set-up-comfo
 - This is not the official Panasonic plugin. It uses the official Panasonic API used to support official applications for iOS and Android. Panasonic has not provided an official API to support external plugins, so this method may stop working at any time.
 - Homebridge connect via Internet with Comfort Cloud (Panasonic platform), this solution does not work locally.
 - Despite the efforts made, the operation of the plugin is without any guarantees.
-- All the actions is at your own risk.
+- All actions are at your own risk.
 - All product and company names are trademarks™ or registered® trademarks of their respective holders. Use of them does not imply any affiliation with or endorsement by them.
 
 <details>
