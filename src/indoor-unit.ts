@@ -1005,8 +1005,8 @@ export default class IndoorUnitAccessory {
       this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Swing mode Auto`);
     } else if (value === this.platform.Characteristic.SwingMode.SWING_DISABLED) {
       parameters.fanAutoMode = 1;
-      parameters.airSwingUD = this.devConfig?.swingDefaultUD || 2;
-      parameters.airSwingLR = this.devConfig?.swingDefaultLR || 2;
+      parameters.airSwingUD = (this.devConfig?.swingDefaultUD !== null) ? this.devConfig?.swingDefaultUD : 2;
+      parameters.airSwingLR = (this.devConfig?.swingDefaultLR !== null) ? this.devConfig?.swingDefaultLR : 2;
       this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Swing mode Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
@@ -1218,7 +1218,7 @@ export default class IndoorUnitAccessory {
       } else {
         parameters.fanAutoMode = 1;
       }
-      parameters.airSwingUD = this.devConfig?.swingDefaultUD || 2;
+      parameters.airSwingUD = (this.devConfig?.swingDefaultUD !== null) ? this.devConfig?.swingDefaultUD : 2;
       this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Swing Up Down Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
@@ -1242,7 +1242,7 @@ export default class IndoorUnitAccessory {
       } else {
         parameters.fanAutoMode = 1;
       }
-      parameters.airSwingLR = this.devConfig?.swingDefaultLR || 2;
+      parameters.airSwingLR = (this.devConfig?.swingDefaultLR !== null) ? this.devConfig?.swingDefaultLR : 2;
       this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Swing Left Right Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
