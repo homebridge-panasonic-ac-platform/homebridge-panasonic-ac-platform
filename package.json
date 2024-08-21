@@ -16,13 +16,13 @@
   },
   "homepage": "https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform#readme",
   "engines": {
-    "homebridge": "^1.6.0 || ^2.0.0",
-    "node": "^18.20.4 || ^20.15.1"
+    "node": "^18.20.4 || ^20.16.0 || ^22.6.0",
+    "homebridge": "^1.8.0 || ^2.0.0"
   },
   "main": "dist/index.js",
   "scripts": {
     "clean": "rimraf ./dist",
-    "lint": "eslint src/ --ext .ts --max-warnings=0",
+    "lint": "eslint . --max-warnings=0",
     "build": "npm run clean && tsc",
     "build-watch": "npm run clean && tsc -w",
     "prepublishOnly": "npm run lint && npm run build",
@@ -48,13 +48,15 @@
     "tough-cookie": "^4.1.4"
   },
   "devDependencies": {
-    "@types/node": "^22.0.0",
-    "@typescript-eslint/eslint-plugin": "^7.0.0",
-    "@typescript-eslint/parser": "^7.0.0",
-    "eslint": "^8.13.0",
-    "homebridge": "^1.4.1",
-    "rimraf": "^6.0.0",
-    "ts-node": "^10.7.0",
-    "typescript": "^5.3.3"
+    "@eslint/js": "^9.9.0",
+    "@types/eslint__js": "^8.42.3",
+    "@types/node": "^22.2.0",
+    "eslint": "^9.9.0",
+    "homebridge": "^2.0.0-beta.0",
+    "nodemon": "^3.1.4",
+    "rimraf": "^6.0.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.4",
+    "typescript-eslint": "^8.0.1"
   }
 }
