@@ -22,7 +22,12 @@ export default tseslint.config(
       'no-use-before-define': 'off',
       '@typescript-eslint/no-use-before-define': ['error', { 'classes': false, 'enums': false }],
       '@typescript-eslint/no-unused-vars': ['error', { 'caughtErrors': 'none' }],
-      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/explicit-function-return-type': 'off',
+      '@typescript-eslint/no-non-null-assertion': 'off',
+      '@typescript-eslint/explicit-module-boundary-types': 'off',
+      '@typescript-eslint/semi': ['warn'],
+      '@typescript-eslint/member-delimiter-style': ['warn'],
+      '@typescript-eslint/no-explicit-any': ['off'],
     },
   },
   {
