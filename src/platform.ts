@@ -10,15 +10,15 @@ import {
 } from 'homebridge';
 import axios from 'axios';
 import cheerio from 'cheerio';
-import ComfortCloudApi from './comfort-cloud';
-import IndoorUnitAccessory from './indoor-unit';
-import PanasonicPlatformLogger from './logger';
-import { PanasonicAccessoryContext, PanasonicPlatformConfig } from './types';
+import ComfortCloudApi from './comfort-cloud.js';
+import IndoorUnitAccessory from './indoor-unit.js';
+import PanasonicPlatformLogger from './logger.js';
+import { PanasonicAccessoryContext, PanasonicPlatformConfig } from './types.js';
 import {
   PLATFORM_NAME,
   PLUGIN_NAME,
   APP_VERSION,
-} from './settings';
+} from './settings.js';
 
 
 /**
