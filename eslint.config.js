@@ -8,7 +8,7 @@ export default tseslint.config(
   {
     rules: {
       'quotes': ['error', 'single'],
-      "indent": ["warn", 2, { "SwitchCase": 1 }],
+      'indent': ["warn", 2, { 'SwitchCase': 1 }],
       'linebreak-style': ['error', 'unix'],
       'semi': ['error', 'always'],
       'comma-dangle': ['error', 'always-multiline'],
@@ -22,7 +22,7 @@ export default tseslint.config(
       'no-use-before-define': 'off',
       '@typescript-eslint/no-use-before-define': ['error', { 'classes': false, 'enums': false }],
       '@typescript-eslint/no-unused-vars': ['error', { 'caughtErrors': 'none' }],
-      "@typescript-eslint/no-explicit-any": ["off"],
+      '@typescript-eslint/no-explicit-any': ['off'],
     },
   },
   {
