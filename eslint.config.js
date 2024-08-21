@@ -22,7 +22,7 @@ export default tseslint.config(
       'no-use-before-define': 'off',
       '@typescript-eslint/no-use-before-define': ['error', { 'classes': false, 'enums': false }],
       '@typescript-eslint/no-unused-vars': ['error', { 'caughtErrors': 'none' }],
-      '@typescript-eslint/no-explicit-any': ['off'],
+      '@typescript-eslint/no-explicit-any': 'off',
     },
   },
   {
