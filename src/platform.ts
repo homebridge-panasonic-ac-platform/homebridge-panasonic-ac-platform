@@ -81,6 +81,17 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
     await this.loginAndDiscoverDevices();
   }
 
+  async getAppStoreVersion() {
+    this.log.debug('Attempting to fetch latest Comfort Cloud version from the App Store.');
+    const $ = await cheerio.fromURL('https://apps.apple.com/app/panasonic-comfort-cloud/id1348640525');
+    const matches = $('p.whats-new__latest__version').first().text().match(/\d+(.)\d+(.)\d+/);
+    if (Array.isArray(matches)) {
+      this.log.info(`App Store version: ${matches[0]}.`);
+    } else {
+      this.log.error('Could not find App Store version.');
+    }
+  }
+
   async getAppVersion() {
     this.log.info(`Plugin App version: ${APP_VERSION}.`);
 
