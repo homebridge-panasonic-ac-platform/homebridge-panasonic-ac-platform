@@ -155,7 +155,7 @@ export default class IndoorUnitAccessory {
     if (this.devConfig?.exposeOutdoorTemp) {
       this.exposeOutdoorTemp = this.accessory.getService(this.accessory.displayName + ' out temp')
         || this.accessory.addService(this.platform.Service.TemperatureSensor, this.accessory.displayName + ' out temp', 'exposeOutdoorTemp');
-      this.exposeOutdoorTemp.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' out temp)';
+      this.exposeOutdoorTemp.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' out temp');
       this.platform.log.debug(`${this.accessory.displayName}: add outdoor temp sensor`);
     } else {
       const removeOutdoorTemp = this.accessory.getService(this.accessory.displayName + ' out temp');
