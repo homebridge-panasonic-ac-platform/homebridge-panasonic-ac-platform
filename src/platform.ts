@@ -108,9 +108,6 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
         const matches = textContent.match(/['"](\d+\.\d+\.\d+)['"]/);
         if (Array.isArray(matches) && (1 in matches)) {
           this.log.info(`Play Store version: ${matches[1]}.`);
-          if (matches[1] !== settings_1.APP_VERSION) {
-            this.log.error(`Plugin App version is ${settings_1.APP_VERSION}. You may experience issues.`);
-          }
         }
       }
     });
