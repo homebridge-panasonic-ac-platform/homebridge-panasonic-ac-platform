@@ -8,7 +8,6 @@ import {
   PlatformConfig,
   Service,
 } from 'homebridge';
-import axios from 'axios';
 import * as cheerio from 'cheerio';
 import ComfortCloudApi from './comfort-cloud';
 import IndoorUnitAccessory from './indoor-unit';
