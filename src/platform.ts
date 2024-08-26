@@ -8,7 +8,6 @@ import {
   PlatformConfig,
   Service,
 } from 'homebridge';
-import axios from 'axios';
 import * as cheerio from 'cheerio';
 import ComfortCloudApi from './comfort-cloud';
 import IndoorUnitAccessory from './indoor-unit';
@@ -77,79 +76,42 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
   }
 
   async configurePlugin() {
-    await this.getAppVersion();
+    this.log.info(`Plugin app version: ${APP_VERSION}.`);
+    await this.getAppStoreVersion();
+    //await this.getPlayStoreVersion();
     await this.loginAndDiscoverDevices();
   }
 
-  async getAppVersion() {
-    this.log.info(`Plugin App version: ${APP_VERSION}.`);
-
-    const getPlayStoreVersion = async () => {
-      this.log.debug('Attempting to fetch latest Comfort Cloud version from the Play Store.');
-      let foundVersion = false;
-      const response = await axios.request({
-        method: 'get',
-        url: 'https://play.google.com/store/apps/details?id=com.panasonic.ACCsmart',
-      });
-      const $ = cheerio.load(response.data);
-      // version data is not displayed in clear text on the page, but instead included in some cryptic JS function call.
-      // The function call is `AF_initDataCallback()`, but there are many of them. The function call additionally contains
-      // (several) references to the app store page for the app in other languages, so it also contains the package name
-      // which allows us to further narrow it down
-      $('script').each((idx, script) => {
-        const textContent = $(script).text();
-        const isCallback = textContent.includes('AF_initDataCallback(') && textContent.includes('com.panasonic.ACCsmart');
-        if (isCallback) {
-          // finally, the version number is of the format major.minor.patch, surrounded by quotation marks. If we find that
-          // we pray it's actually the number and not something else...
-          const matches = textContent.match(/['"](\d+\.\d+\.\d+)['"]/);
-          if (Array.isArray(matches) && (1 in matches)) {
-            this.log.info(`The latest Play Store version is ${matches[1]}.`);
-            if (matches[1] !== APP_VERSION) {
-              this.log.error(`Plugin App version is ${APP_VERSION}. You may experience issues.`);
-            }
-            foundVersion = true;
-            return;
-          }
-        }
-      });
-      if (!foundVersion) {
-        throw new Error('Could not find latest app version.');
-      }
-    };
-
-    const getAppStoreVersion = async () => {
-      this.log.debug('Attempting to fetch latest Comfort Cloud version from the App Store.');
-      const response = await axios.request({
-        method: 'get',
-        url: 'https://apps.apple.com/app/panasonic-comfort-cloud/id1348640525',
-      });
-      const $ = cheerio.load(response.data);
-      const paragraphs = $('p.whats-new__latest__version');
-      paragraphs.each((idx, p) => {
-        // One or more digit(s), followed by ., followed by one or more digit(s),
-        // followed by ., followed by one or more digit(s)
-        const matches = $(p).text().match(/\d+(.)\d+(.)\d+/);
-        if (Array.isArray(matches)) {
-          this.log.info(`The latest App Store version: ${matches[0]}.`);
-        } else {
-          this.log.error('Could not find latest App Store version.');
-        }
-      });
-    };
-
-    try {
-      await getPlayStoreVersion();
-    } catch (error) {
-      this.log.error('Could not fetch latest app version from Play Store. Trying App Store.');
-      this.log.debug(JSON.stringify(error, null, 2));
-      try {
-        await getAppStoreVersion();
-      } catch (error) {
-        this.log.error('Could not fetch latest app version from App Store.');
-        this.log.debug(JSON.stringify(error, null, 2));
-      }
+  async getAppStoreVersion() {
+    this.log.debug('Attempting to fetch latest Comfort Cloud version from the App Store.');
+    const $ = await cheerio.fromURL('https://apps.apple.com/app/panasonic-comfort-cloud/id1348640525');
+    const matches = $('p.whats-new__latest__version').first().text().match(/\d+(.)\d+(.)\d+/);
+    if (Array.isArray(matches)) {
+      this.log.info(`App Store app version: ${matches[0]}.`);
+    } else {
+      this.log.error('Could not find App Store app version.');
     }
+  }
+
+  async getPlayStoreVersion() {
+    // Version data is not displayed in clear text on the page, but instead included in some cryptic JS function call.
+    // The function call is `AF_initDataCallback()`, but there are many of them.
+    // The function call additionally contains (several) references to the app store page for the app in other languages,
+    // so it also contains the package name which allows us to further narrow it down.
+    // Finally, the version number is of the format major.minor.patch, surrounded by quotation marks.
+    this.log.debug('Attempting to fetch latest Comfort Cloud version from the Play Store.');
+    const $ = await cheerio.fromURL('https://play.google.com/store/apps/details?id=com.panasonic.ACCsmart');
+
+    $('script').each((idx, script) => {
+      const textContent = $(script).text();
+      const isCallback = textContent.includes('AF_initDataCallback(') && textContent.includes('com.panasonic.ACCsmart');
+      if (isCallback) {
+        const matches = textContent.match(/['"](\d+\.\d+\.\d+)['"]/);
+        if (Array.isArray(matches) && (1 in matches)) {
+          this.log.info(`Play Store app version: ${matches[1]}.`);
+        }
+      }
+    });
   }
 
   async loginAndDiscoverDevices() {
