@@ -94,23 +94,23 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
 
   async getPlayStoreVersion() {
     // Version data is not displayed in clear text on the page, but instead included in some cryptic JS function call.
-    // The function call is `AF_initDataCallback()`, but there are many of them. 
-    // The function call additionally contains (several) references to the app store page for the app in other languages, 
-    // so it also contains the package name which allows us to further narrow it down. 
+    // The function call is `AF_initDataCallback()`, but there are many of them.
+    // The function call additionally contains (several) references to the app store page for the app in other languages,
+    // so it also contains the package name which allows us to further narrow it down.
     // Finally, the version number is of the format major.minor.patch, surrounded by quotation marks.
-    this.log.debug('Attempting to fetch latest Comfort Cloud version from the Play Store.');    
+    this.log.debug('Attempting to fetch latest Comfort Cloud version from the Play Store.');
     const $ = await cheerio.fromURL('https://play.google.com/store/apps/details?id=com.panasonic.ACCsmart');
-    
+
     $('script').each((idx, script) => {
       const textContent = $(script).text();
       const isCallback = textContent.includes('AF_initDataCallback(') && textContent.includes('com.panasonic.ACCsmart');
       if (isCallback) {
         const matches = textContent.match(/['"](\d+\.\d+\.\d+)['"]/);
         if (Array.isArray(matches) && (1 in matches)) {
-            this.log.info(`Play Store version: ${matches[1]}.`);
-            if (matches[1] !== settings_1.APP_VERSION) {
-                this.log.error(`Plugin App version is ${settings_1.APP_VERSION}. You may experience issues.`);
-            }
+          this.log.info(`Play Store version: ${matches[1]}.`);
+          if (matches[1] !== settings_1.APP_VERSION) {
+            this.log.error(`Plugin App version is ${settings_1.APP_VERSION}. You may experience issues.`);
+          }
         }
       }
     });
