@@ -78,7 +78,6 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
   async configurePlugin() {
     this.log.info(`Plugin app version: ${APP_VERSION}.`);
     await this.getAppStoreVersion();
-    //await this.getPlayStoreVersion();
     await this.loginAndDiscoverDevices();
   }
 
@@ -90,6 +89,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
       this.log.info(`App Store app version: ${matches[0]}.`);
     } else {
       this.log.error('Could not find App Store app version.');
+      await this.getPlayStoreVersion();
     }
   }
 
