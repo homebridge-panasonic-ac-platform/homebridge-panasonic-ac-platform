@@ -1,3 +1,9 @@
+> [!NOTE]
+>
+> Version 5.0.0 brings support for Homebridge v2.0.0.
+>
+> This requires some breaking changes - after the update may be required to remove some or all devices (especially those to which additional switches have been added) from cache (in Homebridge settings).
+
 <img src="https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/blob/master/logo.png" width="100px"></img>
 
 # Homebridge Panasonic AC Platform
