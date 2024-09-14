@@ -216,7 +216,7 @@ For the built-in slider (not additional), the following mapping applies:
 - Restart Internet routers.
 - Restart Homebridge or plugin bridge.
 - Remove one or move device from Homebridge cache (Homebridge settings > remove one device from cache).
-- Set Logs Level to all (in plugin config) and enable debug mode (in Homebridge settings) - this will include more detailed information in the log.
+- Set Logs Level to all (in plugin config) and enable debug mode (in Homebridge settings) / child bridge settings - this will include more detailed information in the log.
 
 </details>
 
