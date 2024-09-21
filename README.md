@@ -199,6 +199,7 @@ For the built-in slider (not additional), the following mapping applies:
 <summary><b>Refreshing data of devices</b></summary>
 
 - The data is refreshed automatically: every 10 minutes when the device is turned on and every 60 minutes when it is turned off. Data is also refreshed every time the state of the device is changed using HomeKit / Apple Home.
+- Why isn't refreshing more often? Each refresh is a connection to the Panasonic server and too many connections result in IP blocking.
 - Temperature from outdoor unit is only available when device is on. 
 
 </details>
