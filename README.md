@@ -1,9 +1,3 @@
-> [!NOTE]
->
-> Version 5.0.0 brings support for Homebridge v2.0.0.
->
-> This requires some breaking changes - after the update may be required to remove some or all devices (especially those to which additional switches have been added) from cache (in Homebridge settings).
-
 <img src="https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/blob/master/logo.png" width="100px"></img>
 
 # Homebridge Panasonic AC Platform
@@ -268,25 +262,6 @@ https://www.panasonic.com/global/hvac/products/comfort-cloud/how-to-set-up-comfo
 
 </details>
 
-## Contributing and support
-
-- Test/use the plugin and report issues and share feedback: [Issues](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/issues).
-- Contribute with your own bug fixes, code clean-ups, or additional features: [Pull Requests](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/pulls).
-- Develop: [developers.md](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/blob/master/docs/developers.md).
-- Check Comfort Cloud app, how it works and how it comunicates with server: [app.md](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/blob/master/docs/app.md).
-
-## Acknowledgements
-- Thanks to [embee8](https://github.com/embee8) for creating this plugin.
-- Thanks to everyone helping in the development of this plugin and obtaining new Comfort Cloud API.
-- Thanks to the team behind Homebridge. Your efforts do not go unnoticed.
-
-## Disclaimer
-- This is not the official Panasonic plugin. It uses the official Panasonic API used to support official applications for iOS and Android. Panasonic has not provided an official API to support external plugins, so this method may stop working at any time.
-- Homebridge connect via Internet with Comfort Cloud (Panasonic platform), this solution does not work locally.
-- Despite the efforts made, the operation of the plugin is without any guarantees.
-- All actions are at your own risk.
-- All product and company names are trademarks™ or registered® trademarks of their respective holders. Use of them does not imply any affiliation with or endorsement by them.
-
 <details>
 <summary><b>Alternatives to this plugin</b></summary>
 
@@ -310,14 +285,41 @@ https://www.panasonic.com/global/hvac/products/comfort-cloud/how-to-set-up-comfo
 
 </details>
 
+## Contributing and support
+
+- Test/use the plugin and report issues and share feedback: [Issues](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/issues).
+- Contribute with your own bug fixes, code clean-ups, or additional features: [Pull Requests](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/pulls).
+- Develop: [developers.md](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/blob/master/docs/developers.md).
+- Check Comfort Cloud app, how it works and how it comunicates with server: [app.md](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/blob/master/docs/app.md).
+
+## Acknowledgements
+- Thanks to [embee8](https://github.com/embee8) for creating this plugin.
+- Thanks to everyone helping in the development of this plugin and obtaining new Comfort Cloud API.
+- Thanks to the team behind Homebridge. Your efforts do not go unnoticed.
+
+## Disclaimer
+- This is not the official Panasonic plugin. It uses the official Panasonic API used to support official applications for iOS and Android. Panasonic has not provided an official API to support external plugins, so this method may stop working at any time.
+- Homebridge connect via Internet with Comfort Cloud (Panasonic platform), this solution does not work locally.
+- Despite the efforts made, the operation of the plugin is without any guarantees.
+- All actions are at your own risk.
+- All product and company names are trademarks™ or registered® trademarks of their respective holders. Use of them does not imply any affiliation with or endorsement by them.
+
 ## Changelog
 
-#### Most important changes from version 4.0.0
+#### Version 5.0.0
+- Support for Homebridge v2.0.0.
+- Fix the display of the latest version from the App Store and Play Store. 
+- Dependencies updates.
 
-- Support for Homebridge v2.0.0. 
+#### Version 4.0.0
+
+<details><summary><b>Most important changes from version 4.0.0</b></summary>
+
 - Completely new Comfort Cloud API. All versions below 4.0.0 will not work. 
 - Option to add additional sensors, switches and sliders to check and control: Inside temp., Outside temp., Nanoe, Inside Cleaning, Eco Navi, Dry Mode, Fan Mode, Quiet Mode, Powerful Mode, Swing Up Down, Swing Left Right, Fan speed, and many more.
 - A new way to send parameters to Comfort Cloud, from now on all commands set at short interval of time are collected together and sent as one, not separately as was the case before. This will reduce the number of requests to the server.
 - Workaround for changes in API - values for fanSpeed and ecoMode (Quiet and Powerful modes) are no longer stored in the API after turning off the device.
 - Update App Version to 1.21.1.
 - Fixed small bugs, dependency updates, etc.
+
+</details>
