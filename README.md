@@ -294,8 +294,8 @@ https://www.panasonic.com/global/hvac/products/comfort-cloud/how-to-set-up-comfo
 
 ## Acknowledgements
 - Thanks to [embee8](https://github.com/embee8) for creating this plugin.
-- Thanks to everyone helping in the development of this plugin and obtaining new Comfort Cloud API.
-- Thanks to the team behind Homebridge. Your efforts do not go unnoticed.
+- Thanks to everyone helping in the development and obtaining new Comfort Cloud API.
+- Thanks to the team behind Homebridge - your efforts do not go unnoticed.
 
 ## Disclaimer
 - This is not the official Panasonic plugin. It uses the official Panasonic API used to support official applications for iOS and Android. Panasonic has not provided an official API to support external plugins, so this method may stop working at any time.
