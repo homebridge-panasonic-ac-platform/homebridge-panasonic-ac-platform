@@ -77,6 +77,9 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
 
   async configurePlugin() {
     this.log.info(`Plugin app version: ${APP_VERSION}.`);
+    if (this.platformConfig.overwriteVersion) {
+      this.log.info(`Overwrite Version: ${this.platformConfig.overwriteVersion}.`);
+    }
     await this.getAppStoreVersion();
     await this.loginAndDiscoverDevices();
   }

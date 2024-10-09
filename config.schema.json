@@ -36,6 +36,14 @@
 				"placeholder": "Panasonic AC Platform",
 				"required": true
 			},
+			"overwriteVersion": {
+				"title": "Overwrite Version",
+				"description": "Overwrite version - must be equal to newest Panasonic Comfort Cloud app version from App Store or Play Store. E.G: 1.21.1 .",
+				"type": "string",
+				"default": "",
+				"placeholder": "",
+				"required": false
+			},
 			"suppressOutgoingUpdates": {
 				"title": "Suppress outgoing devices updates",
 				"description": "When enabled, changes in the Home app will not be sent to Comfort Cloud. Useful for testing your installation without constantly switching the state of your AC.",
@@ -304,7 +312,8 @@
 			"items": [
 				"logsLevel",
 				"name",
-				"suppressOutgoingUpdates"
+				"suppressOutgoingUpdates",
+				"overwriteVersion"
 			]
 		},
 		{
