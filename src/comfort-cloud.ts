@@ -639,7 +639,7 @@ export default class ComfortCloudApi {
       'X-APP-TIMESTAMP': (new Date()).toISOString().replace(/-/g, '')
         .replace('T', ' ').slice(0, 17),
       'X-APP-TYPE': '1',
-      'X-APP-VERSION': APP_VERSION,
+      'X-APP-VERSION': this.config.overwriteVersion || APP_VERSION,
       'X-CFC-API-KEY': '0',
     };
   }
