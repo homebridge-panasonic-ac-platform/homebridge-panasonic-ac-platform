@@ -155,9 +155,8 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
             28800 * 1000,
           );
         } else if (error.message === 'Request failed with status code 401') {
-          this.log.error('Incorect login and/or password. '
-                         + 'Correct login and/or password in plugin settings '
-                         + 'and restart Homebridge. ');
+          this.log.error('Incorect login / password or incorect app version.'
+                         + 'Enter the correct values in the plugin settings and restart.');
           this.log.error('Next login attempt in 8 hours.');
           clearTimeout(this._loginRetryTimeout);
           this._loginRetryTimeout = setTimeout(
