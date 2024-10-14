@@ -200,7 +200,7 @@ export default class IndoorUnitAccessory {
     }
 
     // Inside cleaning
-    if (this.deviceStatusFull?.insideCleaning && this.devConfig?.exposeInsideCleaning) {
+    if (this.devConfig?.exposeInsideCleaning) {
       this.exposeInsideCleaning = this.accessory.getService(this.accessory.displayName + ' inside cleaning')
         || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' inside cleaning', 'exposeInsideCleaning');
       this.exposeInsideCleaning.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' inside cleaning');
