@@ -1,3 +1,7 @@
+> [!CAUTION]
+>
+> Panasonic changed the API, again.. All plugins stopped working. The official Comfort Cloud apps are working.
+
 <img src="https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/blob/master/logo.png" width="100px"></img>
 
 # Homebridge Panasonic AC Platform
