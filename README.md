@@ -1,6 +1,6 @@
 > [!CAUTION]
 >
-> Panasonic changed the API, again.. This plugin stopped working. The official Comfort Cloud apps are working.
+> This plugin is no longer maintained. The main reason are constant changes of the API by Comfort Cloud. Currently, the plugin does not work - it requires changes to support the new API.
 
 <img src="https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/blob/master/logo.png" width="100px"></img>
 
