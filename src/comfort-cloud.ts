@@ -123,7 +123,7 @@ export default class ComfortCloudApi {
       },
       params: {
         'scope': 'openid offline_access comfortcloud.control a2w.control',
-        'audience': 'https://digital.panasonic.com/' + APP_CLIENT_ID +'/api/v1/',
+        'audience': 'https://digital.panasonic.com/' + APP_CLIENT_ID + '/api/v1/',
         'protocol': 'oauth2',
         'response_type': 'code',
         'code_challenge': code_challenge,
@@ -188,7 +188,7 @@ export default class ComfortCloudApi {
         'tenant': 'pdpauthglb-a1',
         'response_type': 'code',
         'scope': 'openid offline_access comfortcloud.control a2w.control',
-        'audience': 'https://digital.panasonic.com/' + APP_CLIENT_ID +'/api/v1/',
+        'audience': 'https://digital.panasonic.com/' + APP_CLIENT_ID + '/api/v1/',
         '_csrf': this.csrf,
         'state': this.state,
         '_intstate': 'deprecated',
@@ -441,9 +441,9 @@ export default class ComfortCloudApi {
       // Show UTC and Local time
       const now = new Date();
       const utcDate = now.getUTCFullYear() + '-' + pad2(now.getUTCMonth() + 1) + '-' + pad2(now.getUTCDate())
-          + ' ' + pad2(now.getUTCHours()) + ':' + pad2(now.getUTCMinutes()) + ':' + pad2(now.getUTCSeconds());
+        + ' ' + pad2(now.getUTCHours()) + ':' + pad2(now.getUTCMinutes()) + ':' + pad2(now.getUTCSeconds());
       const localDate = now.getFullYear() + '-' + pad2(now.getMonth() + 1) + '-' + pad2(now.getDate())
-          + ' ' + pad2(now.getHours()) + ':' + pad2(now.getMinutes()) + ':' + pad2(now.getSeconds());
+        + ' ' + pad2(now.getHours()) + ':' + pad2(now.getMinutes()) + ':' + pad2(now.getSeconds());
       this.log.debug('UTC date: ' + utcDate);
       this.log.debug('Local date: ' + localDate);
 
@@ -542,7 +542,7 @@ export default class ComfortCloudApi {
       .catch((error: AxiosError) => {
         this.log.error(`Comfort Cloud - getDeviceStatus() for GUID '${deviceGuid}': Error`);
         this.log.error('Try restarting the AC (turn it off from the power completely'
-                       +' and turn it on again) and Internet router and Homebridge.');
+          + ' and turn it on again) and Internet router and Homebridge.');
         this.log.error('Turn on debug for more info.');
         this.handleNetworkRequestError(error);
         return Promise.reject(`${deviceName} (${deviceGuid}): Comfort Cloud - getDeviceStatus() : Error`);
@@ -640,9 +640,29 @@ export default class ComfortCloudApi {
         .replace('T', ' ').slice(0, 17),
       'X-APP-TYPE': '1',
       'X-APP-VERSION': this.config.overwriteVersion || APP_VERSION,
-      'X-CFC-API-KEY': '0',
+      'X-CFC-API-KEY': this.getCfcApiKey() ?? '0',
     };
   }
+
+  getCfcApiKey(): string | undefined {
+    try {
+      const timestampMs = Date.now().toString();
+      const input = 'Comfort Cloud'
+        + '521325fb2dd486bf4831b47644317fca'
+        + timestampMs
+        + 'Bearer '
+        + this.token;
+
+      const shaObj = new jsSHA('SHA-256', 'TEXT');
+      shaObj.update(input);
+      const hashStr = shaObj.getHash('HEX');
+      return hashStr.slice(0, 9) + 'cfc' + hashStr.slice(9);
+    } catch (error) {
+      this.log.error('Failed to generate API key', error);
+      return undefined;
+    }
+  }
+
 }
 
 
