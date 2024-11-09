@@ -636,8 +636,7 @@ export default class ComfortCloudApi {
       'Content-Type': 'application/json',
       'User-Agent': 'G-RAC',
       'X-APP-NAME': 'Comfort Cloud',
-      'X-APP-TIMESTAMP': (new Date()).toISOString().replace(/-/g, '')
-        .replace('T', ' ').slice(0, 17),
+      'X-APP-TIMESTAMP': this.getCurrentTimestamp(),
       'X-APP-TYPE': '1',
       'X-APP-VERSION': this.config.overwriteVersion || APP_VERSION,
       'X-CFC-API-KEY': this.getCfcApiKey() ?? '0',
@@ -646,12 +645,17 @@ export default class ComfortCloudApi {
 
   getCfcApiKey(): string | undefined {
     try {
-      const timestampMs = Date.now().toString();
+      // Parse the timestamp in 'YYYY-MM-DD HH:MM:SS' format and convert to UTC milliseconds
+      const timestamp = this.getCurrentTimestamp();
+      this.log.debug('Timestamp used for key generation and header: ' + timestamp);
+      const date = new Date(timestamp + ' UTC'); // Added UTC to ensure consistent timezone handling
+      const timestampMs = date.getTime().toString();
+
       const input = 'Comfort Cloud'
-        + '521325fb2dd486bf4831b47644317fca'
-        + timestampMs
-        + 'Bearer '
-        + this.token;
+                   + '521325fb2dd486bf4831b47644317fca'
+                   + timestampMs
+                   + 'Bearer '
+                   + this.token;
 
       const shaObj = new jsSHA('SHA-256', 'TEXT');
       shaObj.update(input);
@@ -661,6 +665,16 @@ export default class ComfortCloudApi {
       this.log.error('Failed to generate API key', error);
       return undefined;
     }
+  }
+
+  getCurrentTimestamp(): string {
+    const now = new Date();
+    return now.getUTCFullYear()
+           + '-' + (now.getUTCMonth() + 1).toString().padStart(2, '0')
+           + '-' + now.getUTCDate().toString().padStart(2, '0')
+           + ' ' + now.getUTCHours().toString().padStart(2, '0')
+           + ':' + now.getUTCMinutes().toString().padStart(2, '0')
+           + ':' + now.getUTCSeconds().toString().padStart(2, '0');
   }
 
 }
