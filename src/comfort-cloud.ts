@@ -640,25 +640,25 @@ export default class ComfortCloudApi {
         .replace('T', ' ').slice(0, 17),
       'X-APP-TYPE': '1',
       'X-APP-VERSION': this.config.overwriteVersion || APP_VERSION,
-      'X-CFC-API-KEY': this.getCfcApiKey() ?? '0'
+      'X-CFC-API-KEY': this.getCfcApiKey() ?? '0',
     };
   }
 
   getCfcApiKey(): string | undefined {
     try {
       const timestampMs = Date.now().toString();
-      const input = 'Comfort Cloud' +
-        '521325fb2dd486bf4831b47644317fca' +
-        timestampMs +
-        'Bearer ' +
-        this.token;
+      const input = 'Comfort Cloud'
+        + '521325fb2dd486bf4831b47644317fca'
+        + timestampMs
+        + 'Bearer '
+        + this.token;
 
       const shaObj = new jsSHA('SHA-256', 'TEXT');
       shaObj.update(input);
       const hashStr = shaObj.getHash('HEX');
       return hashStr.slice(0, 9) + 'cfc' + hashStr.slice(9);
     } catch (error) {
-      this.log.error("Failed to generate API key", error);
+      this.log.error('Failed to generate API key', error);
       return undefined;
     }
   }
