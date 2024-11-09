@@ -658,7 +658,7 @@ export default class ComfortCloudApi {
       const hashStr = shaObj.getHash('HEX');
       return hashStr.slice(0, 9) + 'cfc' + hashStr.slice(9);
     } catch (error) {
-      this.log.error("Failed to generate API key", error);
+      this.log.error('Failed to generate API key', error);
       return undefined;
     }
   }
