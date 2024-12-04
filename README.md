@@ -201,6 +201,22 @@ For the built-in slider (not additional), the following mapping applies:
 
 </details>
 
+<details>
+<summary><b>Siri and voice commands</b></summary>
+
+If everything works properly and you can control devices using the Apple Home application, you can also control it using Siri. Commands fully depend on Apple.
+
+Examples of commands:
+- Hey Siri, turn on [device name] 
+- Hey Siri, [device name] , turn off
+- Hey Siri, [device name] , set [auto, heat, cool] mode
+- Hey Siri, [device name] , set rotation speed to [value from 1 to 8]
+
+You can also combine several commands into one:
+- Hey Siri, [device name] , set [auto, heat, cool] mode and rotation speed to [value from 1 to 8]
+
+</details>
+
 
 ## Troubleshooting
 
@@ -233,22 +249,6 @@ Remove device from Homebridge cache (Homebridge settings > remove one device fro
 - Comfort Cloud updates data only from time to time, the same plugin, which is why the temperature in the Panasonic Comfort Cloud application may be different than in HomeKit / Apple Home. You can force refresh in Panasonic app by pulling down the screen. 
 - For these reasons, it is not recommended to use built-in sensors for automation. Instead, it is advisable to use an external sensor.
 - So what are these built-in sensors for? Internal sensor is for two simple automations that every AC have built-in: for cooling mode turn off cooling when the room temperature (internal sensor) is equal to or lower than the set, and for heating mode when it is equal or higher. Outdoor sensor is for detecting when AC should run defrost. 
-</details>
-
-<details>
-<summary><b>Siri and voice commands</b></summary>
-
-If everything works properly and you can control devices using the Apple Home application, you can also control it using Siri. Commands fully depend on Apple.
-
-Examples of commands:
-- Hey Siri, turn on [device name] 
-- Hey Siri, [device name] , turn off
-- Hey Siri, [device name] , set [auto, heat, cool] mode
-- Hey Siri, [device name] , set rotation speed to [value from 1 to 8]
-
-You can also combine several commands into one:
-- Hey Siri, [device name] , set [auto, heat, cool] mode and rotation speed to [value from 1 to 8]
-
 </details>
 
 <details>
