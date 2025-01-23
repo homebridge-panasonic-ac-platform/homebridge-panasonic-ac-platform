@@ -230,8 +230,8 @@ You can also combine several commands into one:
 - Disconnect each Comfort Cloud device (like AC) from the power and turn it on again (or restart WiFi in them).
 - Restart Internet routers.
 - Restart Homebridge or plugin bridge.
-- Remove one or move device from Homebridge cache (Homebridge settings > remove one device from cache).
-- Set Logs Level to all (in plugin config) and enable debug mode (in Homebridge settings) / child bridge settings - this will include more detailed information in the log.
+- Remove one or more plugin devices from Homebridge cache (Homebridge settings > remove one device from cache).
+- Set Logs Level to all (in plugin config) and enable debug mode (in Homebridge settings / child bridge settings) - this will include more detailed information in the log.
 
 </details>
 
