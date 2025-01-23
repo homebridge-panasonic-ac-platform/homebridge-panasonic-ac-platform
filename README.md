@@ -221,11 +221,12 @@ You can also combine several commands into one:
 ## Troubleshooting
 
 <details>
-<summary><b>Plugin doesn't work</b></summary>
+<summary><b>General - plugin doesn't work, crashes or restarts Homebridge, etc.</b></summary>
 
 - Make sure that you can successfully log in and control each device via Panasonic Comfort Cloud application.
 - Accept all terms, conditions, etc in Panasonic Comfort Cloud app.
 - Update plugin, Homebridge and all its components and Apple hubs to the newest versions.
+- Disable other Homebridge plugins to make sure that they are not causing the problem.
 - Disconnect each Comfort Cloud device (like AC) from the power and turn it on again (or restart WiFi in them).
 - Restart Internet routers.
 - Restart Homebridge or plugin bridge.
