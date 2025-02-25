@@ -391,17 +391,17 @@ export default class ComfortCloudApi {
       const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
       let bits = 0;
       let value = 0;
-      let bytes = [];
+      const bytes = [];
   
       for (let i = 0; i < base32.length; i++) {
-          const char = base32.charAt(i).toUpperCase();
-          value = (value << 5) | alphabet.indexOf(char);
-          bits += 5;
-  
-          if (bits >= 8) {
-              bits -= 8;
-              bytes.push((value >>> bits) & 0xff);
-          }
+        const char = base32.charAt(i).toUpperCase();
+        value = (value << 5) | alphabet.indexOf(char);
+        bits += 5;
+
+        if (bits >= 8) {
+            bits -= 8;
+            bytes.push((value >>> bits) & 0xff);
+        }
       }
       return bytes;
     }
@@ -410,8 +410,8 @@ export default class ComfortCloudApi {
     function intToBytes(num) {
       const bytes = new Array(8);
       for (let i = 7; i >= 0; i--) {
-          bytes[i] = num & 0xff;
-          num = num >>> 8;
+        bytes[i] = num & 0xff;
+        num = num >>> 8;
       }
       return bytes;
     }
@@ -428,23 +428,22 @@ export default class ComfortCloudApi {
       padded = padded.concat([0, 0, 0, 0, (len >>> 24) & 0xff, (len >>> 16) & 0xff, (len >>> 8) & 0xff, len & 0xff]);
   
       for (let i = 0; i < padded.length; i += 64) {
-          let w = new Array(80);
-          for (let t = 0; t < 16; t++) {
-              w[t] = (padded[i + t * 4] << 24) | (padded[i + t * 4 + 1] << 16) |
-                     (padded[i + t * 4 + 2] << 8) | padded[i + t * 4 + 3];
-          }
-          for (let t = 16; t < 80; t++) {
-              w[t] = rotateLeft(w[t - 3] ^ w[t - 8] ^ w[t - 14] ^ w[t - 16], 1);
-          }
-  
-          let a = h0, b = h1, c = h2, d = h3, e = h4;
-          for (let t = 0; t < 80; t++) {
-              const f = t < 20 ? (b & c) | (~b & d) : t < 40 ? b ^ c ^ d : t < 60 ? (b & c) | (b & d) | (c & d) : b ^ c ^ d;
-              const k = [0x5A827999, 0x6ED9EBA1, 0x8F1BBCDC, 0xCA62C1D6][Math.floor(t / 20)];
-              const temp = (rotateLeft(a, 5) + f + e + k + w[t]) >>> 0;
-              e = d; d = c; c = rotateLeft(b, 30); b = a; a = temp;
-          }
-          h0 = (h0 + a) >>> 0; h1 = (h1 + b) >>> 0; h2 = (h2 + c) >>> 0; h3 = (h3 + d) >>> 0; h4 = (h4 + e) >>> 0;
+        let w = new Array(80);
+        for (let t = 0; t < 16; t++) {
+          w[t] = (padded[i + t * 4] << 24) | (padded[i + t * 4 + 1] << 16) | (padded[i + t * 4 + 2] << 8) | padded[i + t * 4 + 3];
+        }
+        for (let t = 16; t < 80; t++) {
+          w[t] = rotateLeft(w[t - 3] ^ w[t - 8] ^ w[t - 14] ^ w[t - 16], 1);
+        }
+
+        let a = h0, b = h1, c = h2, d = h3, e = h4;
+        for (let t = 0; t < 80; t++) {
+          const f = t < 20 ? (b & c) | (~b & d) : t < 40 ? b ^ c ^ d : t < 60 ? (b & c) | (b & d) | (c & d) : b ^ c ^ d;
+          const k = [0x5A827999, 0x6ED9EBA1, 0x8F1BBCDC, 0xCA62C1D6][Math.floor(t / 20)];
+          const temp = (rotateLeft(a, 5) + f + e + k + w[t]) >>> 0;
+          e = d; d = c; c = rotateLeft(b, 30); b = a; a = temp;
+        }
+        h0 = (h0 + a) >>> 0; h1 = (h1 + b) >>> 0; h2 = (h2 + c) >>> 0; h3 = (h3 + d) >>> 0; h4 = (h4 + e) >>> 0;
       }
   
       return [(h0 >>> 24) & 0xff, (h0 >>> 16) & 0xff, (h0 >>> 8) & 0xff, h0 & 0xff,
@@ -478,17 +477,17 @@ export default class ComfortCloudApi {
       const time = Math.floor(epoch / timeStep);
       const timeBytes = intToBytes(time);
   
-      // Oblicz HMAC-SHA1
+      // Calculate HMAC-SHA1
       const hmac = hmacSha1(secretBytes, timeBytes);
   
       // Dynamiczne obcinanie
       const offset = hmac[hmac.length - 1] & 0xf;
       const binary = ((hmac[offset] & 0x7f) << 24) |
-                    ((hmac[offset + 1] & 0xff) << 16) |
-                    ((hmac[offset + 2] & 0xff) << 8) |
-                    (hmac[offset + 3] & 0xff);
+        ((hmac[offset + 1] & 0xff) << 16) |
+        ((hmac[offset + 2] & 0xff) << 8) |
+        (hmac[offset + 3] & 0xff);
   
-      // Wygeneruj 6-cyfrowy kod
+      // Generate a 6-digit code
       const code = (binary % 1000000).toString().padStart(6, '0');
       return code;
     }
