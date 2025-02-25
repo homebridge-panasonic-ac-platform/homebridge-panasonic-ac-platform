@@ -254,7 +254,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
         if (devicesToExclude.length > 0) {
           cloudDevices = cloudDevices.filter(cloudDevice =>
             !devicesToExclude.includes(cloudDevice.deviceGuid) 
-            && !devicesToExclude.includes(cloudDevice.deviceName);
+            && !devicesToExclude.includes(cloudDevice.deviceName)
           );
           this.log.info(`Excluded devices: ${devicesToExclude.length}.`);
         }
