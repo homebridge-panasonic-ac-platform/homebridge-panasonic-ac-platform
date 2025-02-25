@@ -467,16 +467,16 @@ export default class ComfortCloudApi {
       while (keyBytes.length < blockSize) {
         keyBytes.push(0);
       }
-  
+
       const oKeyPad = keyBytes.map(b => b ^ 0x5c);
       const iKeyPad = keyBytes.map(b => b ^ 0x36);
-  
+
       const inner = iKeyPad.concat(message);
       const innerHash = sha1(inner);
       const outer = oKeyPad.concat(innerHash);
       return sha1(outer);
     }
-    
+
     // Generate TOTP code
     function generateTOTP(base32Secret) {
       const secretBytes = base32ToBytes(base32Secret);
@@ -484,17 +484,17 @@ export default class ComfortCloudApi {
       const epoch = Math.floor(Date.now() / 1000);
       const time = Math.floor(epoch / timeStep);
       const timeBytes = intToBytes(time);
-  
+
       // Calculate HMAC-SHA1
       const hmac = hmacSha1(secretBytes, timeBytes);
-  
+
       // Dynamiczne obcinanie
       const offset = hmac[hmac.length - 1] & 0xf;
-      const binary = ((hmac[offset] & 0x7f) << 24) |
-        ((hmac[offset + 1] & 0xff) << 16) |
-        ((hmac[offset + 2] & 0xff) << 8) |
-        (hmac[offset + 3] & 0xff);
-  
+      const binary = ((hmac[offset] & 0x7f) << 24)
+        | ((hmac[offset + 1] & 0xff) << 16) 
+        | ((hmac[offset + 2] & 0xff) << 8) 
+        | (hmac[offset + 3] & 0xff);
+
       // Generate a 6-digit code
       const code = (binary % 1000000).toString().padStart(6, '0');
       return code;
