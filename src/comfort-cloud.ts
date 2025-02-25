@@ -400,7 +400,7 @@ export default class ComfortCloudApi {
 
         if (bits >= 8) {
           bits -= 8;
-          let bytes: number[] = [];
+          const bytes: number[] = [];
           bytes.push((value >>> bits) & 0xff);
         }
       }
