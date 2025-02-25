@@ -73,15 +73,14 @@ export default class ComfortCloudApi {
     this.log.debug(`app_client_id: ${app_client_id}`);
 
     function generateRandomString(length) {
-      let result = '';
       const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-      const charactersLength = characters.length;
+      let result = '';
       for (let i = 0; i < length; i++) {
-        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        result += characters[Math.floor(Math.random() * characters.length)];
       }
       return result;
     }
-
+​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​
     function getQuerystringParameterFromHeaderEntryUrl(response, headerEntry, querystringParameter, baseUrl) {
       const headerEntryValue = response.headers[headerEntry];
       const parsedUrl = new URL(headerEntryValue.startsWith('/') ? baseUrl + headerEntryValue : headerEntryValue);
@@ -100,13 +99,10 @@ export default class ComfortCloudApi {
     async function sha256Hash(buffer) {
       // If the buffer is no longer in ArrayBuffer or Uint8Array format, we convert it
       const data = buffer instanceof ArrayBuffer ? buffer : new Uint8Array(buffer).buffer;
-
       // SHA-256 hash calculation
       const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-
       // Conversion of the result to Uint8Array (equivalent to .digest() without arguments)
       const hashArray = new Uint8Array(hashBuffer);
-
       return hashArray;
     }
 
