@@ -235,7 +235,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
             cloudDevices.every(cloudDevice =>
               cloudDevice.deviceName !== configDevice.name
               && cloudDevice.deviceGuid !== configDevice.name
-            );
+            )
           );
           .map(device => device.name);
 
