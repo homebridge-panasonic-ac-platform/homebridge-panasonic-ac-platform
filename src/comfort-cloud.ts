@@ -747,7 +747,7 @@ export default class ComfortCloudApi {
       // Convert to hexadecimal string
       const hashStr = Math.abs(hash).toString(16);
 
-      return hashStr.padEnd(9, '0')slice(0, 9) + 'cfc' + hashStr.slice(9);
+      return hashStr.padEnd(9, '0').slice(0, 9) + 'cfc' + hashStr.slice(9);
     } catch (error) {
       this.log.error('Failed to generate API key', error);
       return undefined;
