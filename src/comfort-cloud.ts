@@ -392,20 +392,20 @@ export default class ComfortCloudApi {
       let bits = 0;
       let value = 0;
       const bytes = [];
-  
+
       for (let i = 0; i < base32.length; i++) {
         const char = base32.charAt(i).toUpperCase();
         value = (value << 5) | alphabet.indexOf(char);
         bits += 5;
 
         if (bits >= 8) {
-            bits -= 8;
-            bytes.push((value >>> bits) & 0xff);
+          bits -= 8;
+          bytes.push((value >>> bits) & 0xff);
         }
       }
       return bytes;
     }
-    
+
     // Converting a number to bytes (for a timer)
     function intToBytes(num) {
       const bytes = new Array(8);
@@ -415,20 +415,24 @@ export default class ComfortCloudApi {
       }
       return bytes;
     }
-    
+
     // SHA1
     function sha1(msg) {
-      function rotateLeft(n, s) { return (n << s) | (n >>> (32 - s)); }
+      function rotateLeft(n, s) { 
+        return (n << s) | (n >>> (32 - s));
+      }
       let h0 = 0x67452301, h1 = 0xEFCDAB89, h2 = 0x98BADCFE, h3 = 0x10325476, h4 = 0xC3D2E1F0;
-  
+
       let padded = msg.slice();
       padded.push(0x80);
-      while ((padded.length % 64) !== 56) padded.push(0);
+      while ((padded.length % 64) !== 56) {
+        padded.push(0);
+      }
       const len = msg.length * 8;
       padded = padded.concat([0, 0, 0, 0, (len >>> 24) & 0xff, (len >>> 16) & 0xff, (len >>> 8) & 0xff, len & 0xff]);
-  
+
       for (let i = 0; i < padded.length; i += 64) {
-        let w = new Array(80);
+        const w = new Array(80);
         for (let t = 0; t < 16; t++) {
           w[t] = (padded[i + t * 4] << 24) | (padded[i + t * 4 + 1] << 16) | (padded[i + t * 4 + 2] << 8) | padded[i + t * 4 + 3];
         }
