@@ -242,7 +242,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
         if (missingDevices.length > 0) {
           this.log.info(
             `Devices in config not found in Comfort Cloud: ${missingDevices.length}. `
-            + `Details: ${missingDevices.join(', ')}`;
+            + `Details: ${missingDevices.join(', ')}`
           );
         }
 
