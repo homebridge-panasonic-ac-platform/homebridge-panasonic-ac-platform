@@ -505,7 +505,7 @@ export default class ComfortCloudApi {
     if (this.config.key2fa && this.config.key2fa.length === 32) {
 
       // Show UTC time
-      this.log.debug('UTC date: ' + getCurrentTimestamp());
+      this.log.debug('UTC date: ' + this.getCurrentTimestamp());
 
       // Generate 6 digit PIN code calculated by key
       const key2fa = this.config.key2fa;
