@@ -100,13 +100,13 @@ export default class ComfortCloudApi {
     async function sha256Hash(buffer) {
       // If the buffer is no longer in ArrayBuffer or Uint8Array format, we convert it
       const data = buffer instanceof ArrayBuffer ? buffer : new Uint8Array(buffer).buffer;
-      
+
       // SHA-256 hash calculation
       const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-      
+
       // Conversion of the result to Uint8Array (equivalent to .digest() without arguments)
       const hashArray = new Uint8Array(hashBuffer);
-      
+
       return hashArray;
     }
 
@@ -711,14 +711,14 @@ export default class ComfortCloudApi {
     // Converting text to ArrayBuffer
     const encoder = new TextEncoder();
     const data = encoder.encode(text);
-    
+
     // SHA-256 hash calculation
     const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-    
+
     // Converting the result to a hexadecimal string
     const hashArray = Array.from(new Uint8Array(hashBuffer));
     const hashHex = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
-    
+
     return hashHex;
   }
 
@@ -736,7 +736,7 @@ export default class ComfortCloudApi {
                    + 'Bearer '
                    + this.token;
 
-      const shaObj = sha256('TEXT');
+      const shaObj = this.sha256('TEXT');
       shaObj.update(input);
       const hashStr = shaObj.getHash('HEX');
       return hashStr.slice(0, 9) + 'cfc' + hashStr.slice(9);
