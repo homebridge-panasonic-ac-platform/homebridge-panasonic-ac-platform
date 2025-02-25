@@ -222,7 +222,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
 
       // Get devices from plugin configuration
       const configDevices = this.platformConfig.devices || [];
-      const configDevicesCount = devicesConfig.length;
+      const configDevicesCount = configDevices.length;
 
       // Check if there is at least one device added to plugin config
       if (configDevicesCount > 0) {
@@ -231,25 +231,25 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
 
         // Find devices in config that don't exist in Comfort Cloud
         const missingDevices = configDevices
-          .filter(configDevice => 
-            cloudDevices.every(cloudDevice => 
-              cloudDevice.deviceName !== configDevice.name && 
-              cloudDevice.deviceGuid !== configDevice.name
-            )
-          )
+          .filter(configDevice =>
+            cloudDevices.every(cloudDevice =>
+              cloudDevice.deviceName !== configDevice.name
+              && cloudDevice.deviceGuid !== configDevice.name
+            );
+          );
           .map(device => device.name);
 
         if (missingDevices.length > 0) {
           this.log.info(
-            `Devices in config not found in Comfort Cloud: ${missingDevices.length}. ` +
-            `Details: ${missingDevices.join(', ')}`
+            `Devices in config not found in Comfort Cloud: ${missingDevices.length}. `
+            + `Details: ${missingDevices.join(', ')}`
           );
         }
 
         // Exclude by individual device config
         const devicesToExclude = configDevices
-        .filter(device => device.excludeDevice === true)
-        .map(device => device.name);
+          .filter(device => device.excludeDevice === true)
+          .map(device => device.name);
 
         if (devicesToExclude.length > 0) {
           cloudDevices = cloudDevices.filter(cloudDevice => 
