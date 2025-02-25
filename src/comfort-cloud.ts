@@ -1,5 +1,4 @@
 import PanasonicPlatformLogger from './logger';
-import axios, { AxiosError } from 'axios';
 import {
   APP_VERSION,
   APP_CLIENT_ID,
@@ -13,13 +12,12 @@ import {
   ComfortCloudGroupResponse,
   PanasonicPlatformConfig,
 } from './types';
+import axios, { AxiosError } from 'axios';
+import { CookieJar } from 'tough-cookie';
+import { wrapper } from 'axios-cookiejar-support';
 import jsSHA from 'jssha';
 import crypto from 'crypto';
 import * as cheerio from 'cheerio';
-
-
-import { wrapper } from 'axios-cookiejar-support';
-import { CookieJar } from 'tough-cookie';
 
 /**
  * This class exposes login, device status fetching, and device status update functions.
