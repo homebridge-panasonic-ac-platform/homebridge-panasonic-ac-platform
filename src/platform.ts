@@ -234,15 +234,15 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
           .filter(configDevice =>
             cloudDevices.every(cloudDevice =>
               cloudDevice.deviceName !== configDevice.name
-              && cloudDevice.deviceGuid !== configDevice.name
-            )
+              && cloudDevice.deviceGuid !== configDevice.name,
+            ),
           )
           .map(device => device.name);
 
         if (missingDevices.length > 0) {
           this.log.info(
             `Devices in config not found in Comfort Cloud: ${missingDevices.length}. `
-            + `Details: ${missingDevices.join(', ')}`
+            + `Details: ${missingDevices.join(', ')}`,
           );
         }
 
@@ -253,7 +253,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
 
         if (devicesToExclude.length > 0) {
           cloudDevices = cloudDevices.filter(cloudDevice =>
-            !devicesToExclude.includes(cloudDevice.deviceGuid) 
+            !devicesToExclude.includes(cloudDevice.deviceGuid)
             && !devicesToExclude.includes(cloudDevice.deviceName),
           );
           this.log.info(`Excluded devices: ${devicesToExclude.length}.`);
