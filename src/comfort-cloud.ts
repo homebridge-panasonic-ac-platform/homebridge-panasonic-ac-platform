@@ -16,7 +16,7 @@ import axios, { AxiosError } from 'axios';
 import { CookieJar } from 'tough-cookie';
 import { wrapper } from 'axios-cookiejar-support';
 import * as cheerio from 'cheerio';
-import jsSHA from 'jssha';
+//import jsSHA from 'jssha';
 import crypto from 'crypto';
 
 /**
