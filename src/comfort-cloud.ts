@@ -418,7 +418,7 @@ export default class ComfortCloudApi {
 
     // SHA1
     function sha1(msg) {
-      function rotateLeft(n, s) { 
+      function rotateLeft(n, s) {
         return (n << s) | (n >>> (32 - s));
       }
       let h0 = 0x67452301, h1 = 0xEFCDAB89, h2 = 0x98BADCFE, h3 = 0x10325476, h4 = 0xC3D2E1F0;
@@ -449,20 +449,24 @@ export default class ComfortCloudApi {
         }
         h0 = (h0 + a) >>> 0; h1 = (h1 + b) >>> 0; h2 = (h2 + c) >>> 0; h3 = (h3 + d) >>> 0; h4 = (h4 + e) >>> 0;
       }
-  
+
       return [(h0 >>> 24) & 0xff, (h0 >>> 16) & 0xff, (h0 >>> 8) & 0xff, h0 & 0xff,
-              (h1 >>> 24) & 0xff, (h1 >>> 16) & 0xff, (h1 >>> 8) & 0xff, h1 & 0xff,
-              (h2 >>> 24) & 0xff, (h2 >>> 16) & 0xff, (h2 >>> 8) & 0xff, h2 & 0xff,
-              (h3 >>> 24) & 0xff, (h3 >>> 16) & 0xff, (h3 >>> 8) & 0xff, h3 & 0xff,
-              (h4 >>> 24) & 0xff, (h4 >>> 16) & 0xff, (h4 >>> 8) & 0xff, h4 & 0xff];
+        (h1 >>> 24) & 0xff, (h1 >>> 16) & 0xff, (h1 >>> 8) & 0xff, h1 & 0xff,
+        (h2 >>> 24) & 0xff, (h2 >>> 16) & 0xff, (h2 >>> 8) & 0xff, h2 & 0xff,
+        (h3 >>> 24) & 0xff, (h3 >>> 16) & 0xff, (h3 >>> 8) & 0xff, h3 & 0xff,
+        (h4 >>> 24) & 0xff, (h4 >>> 16) & 0xff, (h4 >>> 8) & 0xff, h4 & 0xff];
     }
-    
+
     // HMAC-SHA1
     function hmacSha1(key, message) {
       const blockSize = 64;
       let keyBytes = key.slice();
-      if (keyBytes.length > blockSize) keyBytes = sha1(keyBytes);
-      while (keyBytes.length < blockSize) keyBytes.push(0);
+      if (keyBytes.length > blockSize) {
+        keyBytes = sha1(keyBytes);
+      }
+      while (keyBytes.length < blockSize) {
+        keyBytes.push(0);
+      }
   
       const oKeyPad = keyBytes.map(b => b ^ 0x5c);
       const iKeyPad = keyBytes.map(b => b ^ 0x36);
