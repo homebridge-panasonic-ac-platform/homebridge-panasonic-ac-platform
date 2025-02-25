@@ -102,22 +102,10 @@ export default class ComfortCloudApi {
       return crypto.createHash('sha256').update(buffer).digest();
     }
 
-    // async function sha256Hash(buffer) {
-    //   // If the buffer is no longer in ArrayBuffer or Uint8Array format, we convert it
-    //   const data = buffer instanceof ArrayBuffer ? buffer : new Uint8Array(buffer).buffer;
-    //   // SHA-256 hash calculation
-    //   const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-    //   // Conversion of the result to Uint8Array (equivalent to .digest() without arguments)
-    //   const hashArray = new Uint8Array(hashBuffer);
-    //   return hashArray;
-    // }
-
     const code_verifier = base64URLEncode(crypto.randomBytes(32));
-    //const code_verifier = base64URLEncode(crypto.getRandomValues(new Uint8Array(32)));
     this.log.debug(`code_verifier: ${code_verifier}`);
 
     const code_challenge = base64URLEncode(sha256(code_verifier));
-    //const code_challenge = base64URLEncode(sha256Hash(code_verifier));
     this.log.debug(`code_challenge: ${code_challenge}`);
 
     const state = generateRandomString(20);
@@ -711,21 +699,6 @@ export default class ComfortCloudApi {
     };
   }
 
-  // async sha256(text) {
-  //   // Converting text to ArrayBuffer
-  //   const encoder = new TextEncoder();
-  //   const data = encoder.encode(text);
-
-  //   // SHA-256 hash calculation
-  //   const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-
-  //   // Converting the result to a hexadecimal string
-  //   const hashArray = Array.from(new Uint8Array(hashBuffer));
-  //   const hashHex = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
-
-  //   return hashHex;
-  // }
-
   getCfcApiKey(): string | undefined {
     try {
       // Parse the timestamp in 'YYYY-MM-DD HH:MM:SS' format and convert to UTC milliseconds
@@ -739,19 +712,6 @@ export default class ComfortCloudApi {
                    + timestampMs
                    + 'Bearer '
                    + this.token;
-
-      // // hash
-      // let hash = 0;
-      // for (let i = 0; i < input.length; i++) {
-      //   const char = input.charCodeAt(i);
-      //   hash = ((hash << 5) - hash) + char;
-      //   hash = hash & hash; // Konwersja na 32 bity
-      // }
-
-      // // Convert to hexadecimal string
-      // const hashStr = Math.abs(hash).toString(16);
-
-      // return hashStr.padEnd(9, '0').slice(0, 9) + 'cfc' + hashStr.slice(9);
 
       const shaObj = new jsSHA('SHA-256', 'TEXT');
       shaObj.update(input);
