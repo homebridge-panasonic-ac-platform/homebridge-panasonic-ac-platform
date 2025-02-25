@@ -501,22 +501,11 @@ export default class ComfortCloudApi {
       return code;
     }
 
-    // Show number with 2 digits (prepend 0 to numbers from 0 to 9)
-    function pad2(number) {
-      return (number < 10 ? '0' : '') + number;
-    }
-
     // Check if the key is given and if it has 32 characters
     if (this.config.key2fa && this.config.key2fa.length === 32) {
 
-      // Show UTC and Local time
-      const now = new Date();
-      const utcDate = now.getUTCFullYear() + '-' + pad2(now.getUTCMonth() + 1) + '-' + pad2(now.getUTCDate())
-        + ' ' + pad2(now.getUTCHours()) + ':' + pad2(now.getUTCMinutes()) + ':' + pad2(now.getUTCSeconds());
-      const localDate = now.getFullYear() + '-' + pad2(now.getMonth() + 1) + '-' + pad2(now.getDate())
-        + ' ' + pad2(now.getHours()) + ':' + pad2(now.getMinutes()) + ':' + pad2(now.getSeconds());
-      this.log.debug('UTC date: ' + utcDate);
-      this.log.debug('Local date: ' + localDate);
+      // Show UTC time
+      this.log.debug('UTC date: ' + getCurrentTimestamp());
 
       // Generate 6 digit PIN code calculated by key
       const key2fa = this.config.key2fa;
