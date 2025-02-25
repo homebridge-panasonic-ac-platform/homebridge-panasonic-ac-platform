@@ -745,7 +745,7 @@ export default class ComfortCloudApi {
       const data = encoder.encode(input);
 
       // Generate SHA-256 hash using Web Crypto API
-      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+      const hashBuffer = crypto.subtle.digest('SHA-256', data);
 
       // Convert the hash to a hexadecimal string
       const hashArray = Array.from(new Uint8Array(hashBuffer));
