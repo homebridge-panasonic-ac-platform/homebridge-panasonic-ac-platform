@@ -1,5 +1,4 @@
 import PanasonicPlatformLogger from './logger';
-import axios, { AxiosError } from 'axios';
 import {
   APP_VERSION,
   APP_CLIENT_ID,
@@ -13,13 +12,12 @@ import {
   ComfortCloudGroupResponse,
   PanasonicPlatformConfig,
 } from './types';
+import axios, { AxiosError } from 'axios';
+import { CookieJar } from 'tough-cookie';
+import { wrapper } from 'axios-cookiejar-support';
 import jsSHA from 'jssha';
 import crypto from 'crypto';
 import * as cheerio from 'cheerio';
-
-
-import { wrapper } from 'axios-cookiejar-support';
-import { CookieJar } from 'tough-cookie';
 
 /**
  * This class exposes login, device status fetching, and device status update functions.
@@ -48,10 +46,14 @@ export default class ComfortCloudApi {
   async login() {
     this.log.debug('Comfort Cloud: login()');
 
-    // 2 FA TOTP
-    // This is not necessary for know, it only calculate PIN, but Panasonic API not require it yet.
-    await this.setup2fa();
+    // 2 FA TOTP (not necessary for know, it only calculate PIN, but Panasonic API not require it yet).
 
+    // Check if the key is given and if it has 32 characters
+    if (this.config.key2fa && this.config.key2fa.length === 32) {
+      await this.setup2fa();
+    } else {
+      this.log.debug('No 2FA key or incorrect key (not necessary for know).');
+    }
 
     // NEW API - START ----------------------------------------------------------------------------------
 
@@ -63,7 +65,6 @@ export default class ComfortCloudApi {
     // https://github.com/lostfields/python-panasonic-comfort-cloud
     // https://github.com/craibo/panasonic_cc/
     // https://github.com/little-quokka/python-panasonic-comfort-cloud/
-
 
     // STEP 0 - prepare ---------------------------------------------------------------
 
@@ -386,75 +387,129 @@ export default class ComfortCloudApi {
 
   async setup2fa() {
 
-    function dec2hex(s) {
-      return (s < 15.5 ? '0' : '') + Math.round(s).toString(16);
-    }
+    // Decoding Base32 to bytes
+    function base32ToBytes(base32) {
+      const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+      let bits = 0;
+      let value = 0;
+      const bytes = [];
 
-    function hex2dec(s) {
-      return parseInt(s, 16);
-    }
-
-    function leftpad(str, len, pad) {
-      if (len + 1 >= str.length) {
-        str = Array(len + 1 - str.length).join(pad) + str;
-      }
-      return str;
-    }
-
-    function base32tohex(base32) {
-      const base32chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
-      let bits = '';
-      let hex = '';
       for (let i = 0; i < base32.length; i++) {
-        const val = base32chars.indexOf(base32.charAt(i).toUpperCase());
-        bits += leftpad(val.toString(2), 5, '0');
+        const char = base32.charAt(i).toUpperCase();
+        value = (value << 5) | alphabet.indexOf(char);
+        bits += 5;
+
+        if (bits >= 8) {
+          bits -= 8;
+          const bytes: number[] = [];
+          bytes.push((value >>> bits) & 0xff);
+        }
       }
-      for (let i = 0; i + 4 <= bits.length; i += 4) {
-        const chunk = bits.substr(i, 4);
-        hex = hex + parseInt(chunk, 2).toString(16);
+      return bytes;
+    }
+
+    // Converting a number to bytes (for a timer)
+    function intToBytes(num) {
+      const bytes = new Array(8);
+      for (let i = 7; i >= 0; i--) {
+        bytes[i] = num & 0xff;
+        num = num >>> 8;
       }
-      return hex;
+      return bytes;
     }
 
-    function generate2fa(secret) {
-      const key = base32tohex(secret);
-      const epoch = Math.round(new Date().getTime() / 1000.0);
-      const hextime = leftpad(dec2hex(Math.floor(epoch / 30)), 16, '0');
-      const shaObj = new jsSHA('SHA-1', 'HEX');
-      shaObj.setHMACKey(key, 'HEX');
-      shaObj.update(hextime);
-      const hmac = shaObj.getHMAC('HEX');
-      const offset = hex2dec(hmac.substring(hmac.length - 1));
-      let otp = (hex2dec(hmac.substr(offset * 2, 8)) & hex2dec('7fffffff')) + '';
-      otp = (otp).substring(otp.length - 6, 10);
-      return otp;
+    // SHA1
+    function sha1(msg) {
+      function rotateLeft(n, s) {
+        return (n << s) | (n >>> (32 - s));
+      }
+      let h0 = 0x67452301, h1 = 0xEFCDAB89, h2 = 0x98BADCFE, h3 = 0x10325476, h4 = 0xC3D2E1F0;
+
+      let padded = msg.slice();
+      padded.push(0x80);
+      while ((padded.length % 64) !== 56) {
+        padded.push(0);
+      }
+      const len = msg.length * 8;
+      padded = padded.concat([0, 0, 0, 0, (len >>> 24) & 0xff, (len >>> 16) & 0xff, (len >>> 8) & 0xff, len & 0xff]);
+
+      for (let i = 0; i < padded.length; i += 64) {
+        const w = new Array(80);
+        for (let t = 0; t < 16; t++) {
+          w[t] = (padded[i + t * 4] << 24) | (padded[i + t * 4 + 1] << 16) | (padded[i + t * 4 + 2] << 8) | padded[i + t * 4 + 3];
+        }
+        for (let t = 16; t < 80; t++) {
+          w[t] = rotateLeft(w[t - 3] ^ w[t - 8] ^ w[t - 14] ^ w[t - 16], 1);
+        }
+
+        let a = h0, b = h1, c = h2, d = h3, e = h4;
+        for (let t = 0; t < 80; t++) {
+          const f = t < 20 ? (b & c) | (~b & d) : t < 40 ? b ^ c ^ d : t < 60 ? (b & c) | (b & d) | (c & d) : b ^ c ^ d;
+          const k = [0x5A827999, 0x6ED9EBA1, 0x8F1BBCDC, 0xCA62C1D6][Math.floor(t / 20)];
+          const temp = (rotateLeft(a, 5) + f + e + k + w[t]) >>> 0;
+          e = d; d = c; c = rotateLeft(b, 30); b = a; a = temp;
+        }
+        h0 = (h0 + a) >>> 0; h1 = (h1 + b) >>> 0; h2 = (h2 + c) >>> 0; h3 = (h3 + d) >>> 0; h4 = (h4 + e) >>> 0;
+      }
+
+      return [(h0 >>> 24) & 0xff, (h0 >>> 16) & 0xff, (h0 >>> 8) & 0xff, h0 & 0xff,
+        (h1 >>> 24) & 0xff, (h1 >>> 16) & 0xff, (h1 >>> 8) & 0xff, h1 & 0xff,
+        (h2 >>> 24) & 0xff, (h2 >>> 16) & 0xff, (h2 >>> 8) & 0xff, h2 & 0xff,
+        (h3 >>> 24) & 0xff, (h3 >>> 16) & 0xff, (h3 >>> 8) & 0xff, h3 & 0xff,
+        (h4 >>> 24) & 0xff, (h4 >>> 16) & 0xff, (h4 >>> 8) & 0xff, h4 & 0xff];
     }
 
-    // Show number with 2 digits (prepend 0 to numbers from 0 to 9)
-    function pad2(number) {
-      return (number < 10 ? '0' : '') + number;
+    // HMAC-SHA1
+    function hmacSha1(key, message) {
+      const blockSize = 64;
+      let keyBytes = key.slice();
+      if (keyBytes.length > blockSize) {
+        keyBytes = sha1(keyBytes);
+      }
+      while (keyBytes.length < blockSize) {
+        keyBytes.push(0);
+      }
+
+      const oKeyPad = keyBytes.map(b => b ^ 0x5c);
+      const iKeyPad = keyBytes.map(b => b ^ 0x36);
+
+      const inner = iKeyPad.concat(message);
+      const innerHash = sha1(inner);
+      const outer = oKeyPad.concat(innerHash);
+      return sha1(outer);
     }
 
-    // Check if the key is given and if it has 32 characters
-    if (this.config.key2fa && this.config.key2fa.length === 32) {
+    // Generate TOTP code
+    function generateTOTP(base32Secret) {
+      const secretBytes = base32ToBytes(base32Secret);
+      const timeStep = 30; // Standardowy interwał 30 sekund
+      const epoch = Math.floor(Date.now() / 1000);
+      const time = Math.floor(epoch / timeStep);
+      const timeBytes = intToBytes(time);
 
-      // Show UTC and Local time
-      const now = new Date();
-      const utcDate = now.getUTCFullYear() + '-' + pad2(now.getUTCMonth() + 1) + '-' + pad2(now.getUTCDate())
-        + ' ' + pad2(now.getUTCHours()) + ':' + pad2(now.getUTCMinutes()) + ':' + pad2(now.getUTCSeconds());
-      const localDate = now.getFullYear() + '-' + pad2(now.getMonth() + 1) + '-' + pad2(now.getDate())
-        + ' ' + pad2(now.getHours()) + ':' + pad2(now.getMinutes()) + ':' + pad2(now.getSeconds());
-      this.log.debug('UTC date: ' + utcDate);
-      this.log.debug('Local date: ' + localDate);
+      // Calculate HMAC-SHA1
+      const hmac = hmacSha1(secretBytes, timeBytes);
 
-      // Generate 6 digit PIN code calculated by key
-      const key2fa = this.config.key2fa;
-      const key2fa_masked = key2fa.replace(key2fa.substring(4, 28), '(...)');
-      const code2fa = generate2fa(key2fa);
-      this.log.info('2FA TOTP, for key: ' + key2fa_masked + ', PIN code: ' + code2fa);
-    } else {
-      this.log.debug('No 2FA key or incorrect key');
+      // Dynamiczne obcinanie
+      const offset = hmac[hmac.length - 1] & 0xf;
+      const binary = ((hmac[offset] & 0x7f) << 24)
+        | ((hmac[offset + 1] & 0xff) << 16)
+        | ((hmac[offset + 2] & 0xff) << 8)
+        | (hmac[offset + 3] & 0xff);
+
+      // Generate a 6-digit code
+      const code = (binary % 1000000).toString().padStart(6, '0');
+      return code;
     }
+
+    // Show UTC time
+    this.log.debug('UTC date: ' + this.getCurrentTimestamp());
+
+    // Generate 6 digit PIN code calculated by key
+    const key2fa = this.config.key2fa;
+    const key2fa_masked = key2fa.replace(key2fa.substring(4, 28), '(...)');
+    const code2fa = generateTOTP(key2fa);
+    this.log.info('2FA TOTP, for key: ' + key2fa_masked + ', PIN code: ' + code2fa);
   }
 
   // Get devices ----------------------------------------------------------------------------------
