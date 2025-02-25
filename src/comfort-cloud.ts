@@ -707,7 +707,7 @@ export default class ComfortCloudApi {
     };
   }
 
-  async function sha256(text) {
+  async sha256(text) {
     // Converting text to ArrayBuffer
     const encoder = new TextEncoder();
     const data = encoder.encode(text);
