@@ -47,7 +47,7 @@ export default class ComfortCloudApi {
     this.log.debug('Comfort Cloud: login()');
 
     // 2 FA TOTP (not necessary for know, it only calculate PIN, but Panasonic API not require it yet).
-   
+
     // Check if the key is given and if it has 32 characters
     if (this.config.key2fa && this.config.key2fa.length === 32) {
       await this.setup2fa();
