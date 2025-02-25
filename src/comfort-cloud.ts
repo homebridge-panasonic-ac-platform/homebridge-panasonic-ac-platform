@@ -400,6 +400,7 @@ export default class ComfortCloudApi {
 
         if (bits >= 8) {
           bits -= 8;
+          let bytes: number[] = [];
           bytes.push((value >>> bits) & 0xff);
         }
       }
@@ -491,8 +492,8 @@ export default class ComfortCloudApi {
       // Dynamiczne obcinanie
       const offset = hmac[hmac.length - 1] & 0xf;
       const binary = ((hmac[offset] & 0x7f) << 24)
-        | ((hmac[offset + 1] & 0xff) << 16) 
-        | ((hmac[offset + 2] & 0xff) << 8) 
+        | ((hmac[offset + 1] & 0xff) << 16)
+        | ((hmac[offset + 2] & 0xff) << 8)
         | (hmac[offset + 3] & 0xff);
 
       // Generate a 6-digit code
