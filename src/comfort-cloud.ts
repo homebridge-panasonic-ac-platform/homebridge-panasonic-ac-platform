@@ -46,10 +46,14 @@ export default class ComfortCloudApi {
   async login() {
     this.log.debug('Comfort Cloud: login()');
 
-    // 2 FA TOTP
-    // This is not necessary for know, it only calculate PIN, but Panasonic API not require it yet.
-    await this.setup2fa();
-
+    // 2 FA TOTP (not necessary for know, it only calculate PIN, but Panasonic API not require it yet).
+   
+    // Check if the key is given and if it has 32 characters
+    if (this.config.key2fa && this.config.key2fa.length === 32) {
+      await this.setup2fa();
+    } else {
+      this.log.debug('No 2FA key or incorrect key (not necessary for know).');
+    }
 
     // NEW API - START ----------------------------------------------------------------------------------
 
@@ -61,7 +65,6 @@ export default class ComfortCloudApi {
     // https://github.com/lostfields/python-panasonic-comfort-cloud
     // https://github.com/craibo/panasonic_cc/
     // https://github.com/little-quokka/python-panasonic-comfort-cloud/
-
 
     // STEP 0 - prepare ---------------------------------------------------------------
 
@@ -499,20 +502,14 @@ export default class ComfortCloudApi {
       return code;
     }
 
-    // Check if the key is given and if it has 32 characters
-    if (this.config.key2fa && this.config.key2fa.length === 32) {
+    // Show UTC time
+    this.log.debug('UTC date: ' + this.getCurrentTimestamp());
 
-      // Show UTC time
-      this.log.debug('UTC date: ' + this.getCurrentTimestamp());
-
-      // Generate 6 digit PIN code calculated by key
-      const key2fa = this.config.key2fa;
-      const key2fa_masked = key2fa.replace(key2fa.substring(4, 28), '(...)');
-      const code2fa = generateTOTP(key2fa);
-      this.log.info('2FA TOTP, for key: ' + key2fa_masked + ', PIN code: ' + code2fa);
-    } else {
-      this.log.debug('No 2FA key or incorrect key');
-    }
+    // Generate 6 digit PIN code calculated by key
+    const key2fa = this.config.key2fa;
+    const key2fa_masked = key2fa.replace(key2fa.substring(4, 28), '(...)');
+    const code2fa = generateTOTP(key2fa);
+    this.log.info('2FA TOTP, for key: ' + key2fa_masked + ', PIN code: ' + code2fa);
   }
 
   // Get devices ----------------------------------------------------------------------------------
