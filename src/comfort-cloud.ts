@@ -736,10 +736,18 @@ export default class ComfortCloudApi {
                    + 'Bearer '
                    + this.token;
 
-      const shaObj = this.sha256('TEXT');
-      shaObj.update(input);
-      const hashStr = shaObj.getHash('HEX');
-      return hashStr.slice(0, 9) + 'cfc' + hashStr.slice(9);
+      // hash
+      let hash = 0;
+      for (let i = 0; i < input.length; i++) {
+        const char = input.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash = hash & hash; // Konwersja na 32 bity
+      }
+
+      // Convert to hexadecimal string
+      const hashStr = Math.abs(hash).toString(16);
+
+      return hashStr.padEnd(9, '0')slice(0, 9) + 'cfc' + hashStr.slice(9);
     } catch (error) {
       this.log.error('Failed to generate API key', error);
       return undefined;
