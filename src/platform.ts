@@ -214,57 +214,55 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
     this.log.debug('Discovering devices on Comfort Cloud.');
 
     try {
-      let comfortCloudDevices = await this.comfortCloud.getDevices();
-      const comfortCloudDevicesCount = Object.keys(comfortCloudDevices).length;
-      this.log.info(`Comfort Cloud total devices: ${comfortCloudDevicesCount}.`);
-      this.log.debug(`Comfort Cloud devices: ${JSON.stringify(comfortCloudDevices)}`);
+      // Fetch devices from Comfort Cloud
+      let cloudDevices = await this.comfortCloud.getDevices();
+      const cloudDevicesCount = Object.keys(cloudDevices).length;
+      this.log.info(`Comfort Cloud total devices: ${cloudDevicesCount}.`);
+      this.log.debug(`Comfort Cloud devices: ${JSON.stringify(cloudDevices, null, 2)}`);
 
-      const devicesConfig = this.platformConfig.devices;
-
-      let devicesConfigCount = 0;
-      if (devicesConfig) {
-        devicesConfigCount = Object.keys(devicesConfig).length;
-      }
+      // Get devices from plugin configuration
+      const configDevices = this.platformConfig.devices || [];
+      const configDevicesCount = devicesConfig.length;
 
       // Check if there is at least one device added to plugin config
-      if (devicesConfigCount > 0) {
-        this.log.info(`Plugin config total devices: ${devicesConfigCount}.`);
-        this.log.debug(`Plugin config devices: ${JSON.stringify(devicesConfig)}.`);
+      if (configDevicesCount > 0) {
+        this.log.info(`Plugin config total devices: ${configDevicesCount}.`);
+        this.log.debug(`Plugin config devices: ${JSON.stringify(configDevices, null, 2)}.`);
 
-        // List all devices added to config but not finded in Comfort Cloud.
-        let devicesConfigFiltered = devicesConfig.filter(array => comfortCloudDevices.every(
-          filter => (!(filter.deviceName === array.name || filter.deviceGuid === array.name))));
-        // Make array
-        devicesConfigFiltered = devicesConfigFiltered.map(el => el.name);
-        // Count array
-        const devicesConfigFilteredCount = Object.keys(devicesConfigFiltered).length;
-        // Show information if there is at least one device that was not found in Comfort Cloud.
-        if (devicesConfigFilteredCount > 0) {
-          this.log.info(`Devices added to config but not finded in Comfort Cloud: ${devicesConfigFilteredCount}. Details: ${devicesConfigFiltered}.`);
+        // Find devices in config that don't exist in Comfort Cloud
+        const missingDevices = configDevices
+          .filter(configDevice => 
+            cloudDevices.every(cloudDevice => 
+              cloudDevice.deviceName !== configDevice.name && 
+              cloudDevice.deviceGuid !== configDevice.name
+            )
+          )
+          .map(device => device.name);
+
+        if (missingDevices.length > 0) {
+          this.log.info(
+            `Devices in config not found in Comfort Cloud: ${missingDevices.length}. ` +
+            `Details: ${missingDevices.join(', ')}`
+          );
+        }
+
+        // Exclude by individual device config
+        const devicesToExclude = configDevices
+        .filter(device => device.excludeDevice === true)
+        .map(device => device.name);
+
+        if (devicesToExclude.length > 0) {
+          cloudDevices = cloudDevices.filter(cloudDevice => 
+            !devicesToExclude.includes(cloudDevice.deviceGuid) && 
+            !devicesToExclude.includes(cloudDevice.deviceName)
+          );
+          this.log.info(`Excluded devices: ${devicesToExclude.length}.`);
         }
       }
-
-      // Exclude by individual device config
-      if (this.platformConfig.devices) {
-        let devConfigExcludeList = this.platformConfig.devices;
-        devConfigExcludeList = devConfigExcludeList.filter(el => (el.excludeDevice === true));
-        devConfigExcludeList = devConfigExcludeList.map(item => item.name);
-
-        // exclude by serial number
-        comfortCloudDevices = comfortCloudDevices.filter(el => !devConfigExcludeList.includes(el.deviceGuid));
-        //exclude by name
-        comfortCloudDevices = comfortCloudDevices.filter(el => !devConfigExcludeList.includes(el.deviceName));
-      }
-
-      const comfortCloudDevicesAfterExclude = Object.keys(comfortCloudDevices).length;
-      const excludedDevicesCount = comfortCloudDevicesCount - comfortCloudDevicesAfterExclude;
-      if (excludedDevicesCount > 0) {
-        this.log.info(`Excluded devices: ${excludedDevicesCount}.`);
-      }
-
+      
       // Loop over the discovered (indoor) devices and register each
       // one if it has not been registered before.
-      for (const device of comfortCloudDevices) {
+      for (const device of cloudDevices) {
 
         // Generate a unique id for the accessory.
         // This should be generated from something globally unique,
@@ -311,9 +309,9 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
 
         if (cachedAccessory.context.device) {
           const guid = cachedAccessory.context.device.deviceGuid;
-          const comfortCloudDevice = comfortCloudDevices.find(device => device.deviceGuid === guid);
+          const cloudDevice = cloudDevices.find(device => device.deviceGuid === guid);
 
-          if (comfortCloudDevice === undefined) {
+          if (cloudDevice === undefined) {
             // This cached devices does not exist on the Comfort Cloud account (anymore).
 
             this.log.info(`Removing device '${cachedAccessory.displayName}' (${guid}) `
