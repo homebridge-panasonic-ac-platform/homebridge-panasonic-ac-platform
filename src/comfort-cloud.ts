@@ -16,6 +16,8 @@ import axios, { AxiosError } from 'axios';
 import { CookieJar } from 'tough-cookie';
 import { wrapper } from 'axios-cookiejar-support';
 import * as cheerio from 'cheerio';
+//import jsSHA from 'jssha';
+import crypto from 'crypto';
 
 /**
  * This class exposes login, device status fetching, and device status update functions.
@@ -96,20 +98,26 @@ export default class ComfortCloudApi {
         .replace(/=/g, '');
     }
 
-    async function sha256Hash(buffer) {
-      // If the buffer is no longer in ArrayBuffer or Uint8Array format, we convert it
-      const data = buffer instanceof ArrayBuffer ? buffer : new Uint8Array(buffer).buffer;
-      // SHA-256 hash calculation
-      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-      // Conversion of the result to Uint8Array (equivalent to .digest() without arguments)
-      const hashArray = new Uint8Array(hashBuffer);
-      return hashArray;
+    function sha256(buffer) {
+      return crypto.createHash('sha256').update(buffer).digest();
     }
 
-    const code_verifier = base64URLEncode(crypto.getRandomValues(new Uint8Array(32)));
+    // async function sha256Hash(buffer) {
+    //   // If the buffer is no longer in ArrayBuffer or Uint8Array format, we convert it
+    //   const data = buffer instanceof ArrayBuffer ? buffer : new Uint8Array(buffer).buffer;
+    //   // SHA-256 hash calculation
+    //   const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    //   // Conversion of the result to Uint8Array (equivalent to .digest() without arguments)
+    //   const hashArray = new Uint8Array(hashBuffer);
+    //   return hashArray;
+    // }
+
+    const code_verifier = base64URLEncode(crypto.randomBytes(32));
+    //const code_verifier = base64URLEncode(crypto.getRandomValues(new Uint8Array(32)));
     this.log.debug(`code_verifier: ${code_verifier}`);
 
-    const code_challenge = base64URLEncode(sha256Hash(code_verifier));
+    const code_challenge = base64URLEncode(sha256(code_verifier));
+    //const code_challenge = base64URLEncode(sha256Hash(code_verifier));
     this.log.debug(`code_challenge: ${code_challenge}`);
 
     const state = generateRandomString(20);
@@ -703,20 +711,20 @@ export default class ComfortCloudApi {
     };
   }
 
-  async sha256(text) {
-    // Converting text to ArrayBuffer
-    const encoder = new TextEncoder();
-    const data = encoder.encode(text);
+  // async sha256(text) {
+  //   // Converting text to ArrayBuffer
+  //   const encoder = new TextEncoder();
+  //   const data = encoder.encode(text);
 
-    // SHA-256 hash calculation
-    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  //   // SHA-256 hash calculation
+  //   const hashBuffer = await crypto.subtle.digest('SHA-256', data);
 
-    // Converting the result to a hexadecimal string
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    const hashHex = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
+  //   // Converting the result to a hexadecimal string
+  //   const hashArray = Array.from(new Uint8Array(hashBuffer));
+  //   const hashHex = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
 
-    return hashHex;
-  }
+  //   return hashHex;
+  // }
 
   getCfcApiKey(): string | undefined {
     try {
