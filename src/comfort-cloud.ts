@@ -80,7 +80,7 @@ export default class ComfortCloudApi {
       }
       return result;
     }
-    
+
     function getQuerystringParameterFromHeaderEntryUrl(response, headerEntry, querystringParameter, baseUrl) {
       const headerEntryValue = response.headers[headerEntry];
       const parsedUrl = new URL(headerEntryValue.startsWith('/') ? baseUrl + headerEntryValue : headerEntryValue);
