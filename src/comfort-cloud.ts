@@ -16,7 +16,7 @@ import axios, { AxiosError } from 'axios';
 import { CookieJar } from 'tough-cookie';
 import { wrapper } from 'axios-cookiejar-support';
 import * as cheerio from 'cheerio';
-//import jsSHA from 'jssha';
+import jsSHA from 'jssha';
 import crypto from 'crypto';
 
 /**
@@ -740,18 +740,23 @@ export default class ComfortCloudApi {
                    + 'Bearer '
                    + this.token;
 
-      // hash
-      let hash = 0;
-      for (let i = 0; i < input.length; i++) {
-        const char = input.charCodeAt(i);
-        hash = ((hash << 5) - hash) + char;
-        hash = hash & hash; // Konwersja na 32 bity
-      }
+      // // hash
+      // let hash = 0;
+      // for (let i = 0; i < input.length; i++) {
+      //   const char = input.charCodeAt(i);
+      //   hash = ((hash << 5) - hash) + char;
+      //   hash = hash & hash; // Konwersja na 32 bity
+      // }
 
-      // Convert to hexadecimal string
-      const hashStr = Math.abs(hash).toString(16);
+      // // Convert to hexadecimal string
+      // const hashStr = Math.abs(hash).toString(16);
 
-      return hashStr.padEnd(9, '0').slice(0, 9) + 'cfc' + hashStr.slice(9);
+      // return hashStr.padEnd(9, '0').slice(0, 9) + 'cfc' + hashStr.slice(9);
+
+      const shaObj = new jsSHA('SHA-256', 'TEXT');
+      shaObj.update(input);
+      const hashStr = shaObj.getHash('HEX');
+      return hashStr.slice(0, 9) + 'cfc' + hashStr.slice(9);
     } catch (error) {
       this.log.error('Failed to generate API key', error);
       return undefined;
