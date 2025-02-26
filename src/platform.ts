@@ -216,17 +216,15 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
     try {
       // Fetch devices from Comfort Cloud
       let cloudDevices = await this.comfortCloud.getDevices();
-      const cloudDevicesCount = Object.keys(cloudDevices).length;
-      this.log.info(`Comfort Cloud total devices: ${cloudDevicesCount}.`);
+      this.log.info(`Comfort Cloud total devices: ${Object.keys(cloudDevices).length}.`);
       this.log.debug(`Comfort Cloud devices: ${JSON.stringify(cloudDevices, null, 2)}`);
 
       // Get devices from plugin configuration
       const configDevices = this.platformConfig.devices.filter(device => device.name && device.name !== '') || [];
-      const configDevicesCount = configDevices.length;
 
       // Check if there is at least one device added to plugin config
-      if (configDevicesCount > 0) {
-        this.log.info(`Plugin config total devices: ${configDevicesCount}.`);
+      if (configDevices.length > 0) {
+        this.log.info(`Plugin config total devices: ${configDevices.length}.`);
         this.log.debug(`Plugin config devices: ${JSON.stringify(configDevices, null, 2)}.`);
 
         // Find devices in config that don't exist in Comfort Cloud
@@ -240,9 +238,9 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
           .map(device => device.name);
 
         if (missingDevices.length > 0) {
-          this.log.info(
-            `Devices in config not found in Comfort Cloud: ${missingDevices.length}. `
-            + `Details: ${missingDevices.join(', ')}`,
+          this.log.info('Devices added to plugin config but not found'
+            + `in Comfort Cloud: ${missingDevices.length}. `
+            + `Missing devices: ${missingDevices.join(', ')}.`,
           );
         }
 
@@ -256,8 +254,13 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
             !devicesToExclude.includes(cloudDevice.deviceGuid)
             && !devicesToExclude.includes(cloudDevice.deviceName),
           );
-          this.log.info(`Excluded devices: ${devicesToExclude.length}.`);
+          this.log.info('Devices added to Comfort Cloud but excluded'
+            + `in plugin config: ${devicesToExclude.length}. `
+            + `Devices to exclude: ${devicesToExclude.join(', ')}.`,
+          );
         }
+      } else {
+        this.log.info('Plugin config total devices: 0.');
       }
 
       // Loop over the discovered (indoor) devices and register each
