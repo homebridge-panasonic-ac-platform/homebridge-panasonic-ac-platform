@@ -258,6 +258,8 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
           );
           this.log.info(`Excluded devices: ${devicesToExclude.length}.`);
         }
+      } else {
+        this.log.info(`Plugin config total devices: 0.`);
       }
 
       // Loop over the discovered (indoor) devices and register each
