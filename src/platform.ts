@@ -240,9 +240,9 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
           .map(device => device.name);
 
         if (missingDevices.length > 0) {
-          this.log.info(
-            `Devices in config not found in Comfort Cloud: ${missingDevices.length}. `
-            + `Details: ${missingDevices.join(', ')}`,
+          this.log.info(`Devices added to plugin config but not found`
+            + `in Comfort Cloud: ${missingDevices.length}. `
+            + `Missing devices: ${missingDevices.join(', ')}.`,
           );
         }
 
@@ -256,10 +256,13 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
             !devicesToExclude.includes(cloudDevice.deviceGuid)
             && !devicesToExclude.includes(cloudDevice.deviceName),
           );
-          this.log.info(`Excluded devices: ${devicesToExclude.length}.`);
+          this.log.info(`Devices added to Comfort Cloud but excluded`
+            + `in plugin config: ${devicesToExclude.length}. `
+            + `Devices to exclude: ${devicesToExclude.join(', ')}.`,
+          );
         }
       } else {
-        this.log.info(`Plugin config total devices: 0.`);
+        this.log.info('Plugin config total devices: 0.');
       }
 
       // Loop over the discovered (indoor) devices and register each
