@@ -220,7 +220,8 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
       this.log.debug(`Comfort Cloud devices: ${JSON.stringify(cloudDevices, null, 2)}`);
 
       // Get devices from plugin configuration
-      const configDevices = this.platformConfig.devices.filter(device => device.name && device.name !== '') || [];
+      const configDevices = (this.platformConfig?.devices || []).filter(device => device.name && device.name !== '');
+​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​
 
       // Check if there is at least one device added to plugin config
       if (configDevices.length > 0) {
