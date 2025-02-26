@@ -221,7 +221,6 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
 
       // Get devices from plugin configuration
       const configDevices = (this.platformConfig?.devices || []).filter(device => device.name && device.name !== '');
-​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​
 
       // Check if there is at least one device added to plugin config
       if (configDevices.length > 0) {
