@@ -254,8 +254,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
             !devicesToExclude.includes(cloudDevice.deviceGuid)
             && !devicesToExclude.includes(cloudDevice.deviceName),
           );
-          this.log.info('Devices added to Comfort Cloud but excluded'
-            + `in plugin config: ${devicesToExclude.length}. `
+          this.log.info(`Devices added to plugin config to exclude: ${devicesToExclude.length}. `
             + `Devices to exclude: ${devicesToExclude.join(', ')}.`,
           );
         }
