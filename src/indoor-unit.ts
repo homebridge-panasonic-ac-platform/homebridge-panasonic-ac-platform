@@ -567,14 +567,14 @@ export default class IndoorUnitAccessory {
 
   // set Power (on/off)
   async setPower(value) {
-    this.platform.log.debug(`${this.accessory.displayName}: setSPower()`);
+    this.platform.log.debug(`${this.accessory.displayName}: setPower()`);
     const parameters: ComfortCloudDeviceUpdatePayload = {};
     if (value) {
       parameters.operate = 1;
-      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Nanoe On`);
+      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Power On`);
     } else {
       parameters.operate = 0;
-      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Nanoe Off`);
+      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Power Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
