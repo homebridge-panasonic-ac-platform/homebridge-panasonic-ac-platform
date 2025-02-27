@@ -511,26 +511,11 @@ export default class IndoorUnitAccessory {
       // Check status only when device is on
       if (this.exposeFanSpeed) {
         if (this.deviceStatus.operate === 1) {
-          if (this.deviceStatus.fanSpeed === 1) {
-            this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.On, true);
-            this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.RotationSpeed, 10);
-          } else if (this.deviceStatus.fanSpeed === 2) {
-            this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.On, true);
-            this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.RotationSpeed, 30);
-          } else if (this.deviceStatus.fanSpeed === 3) {
-            this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.On, true);
-            this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.RotationSpeed, 50);
-          } else if (this.deviceStatus.fanSpeed === 4) {
-            this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.On, true);
-            this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.RotationSpeed, 70);
-          } else if (this.deviceStatus.fanSpeed === 5) {
-            this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.On, true);
-            this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.RotationSpeed, 90);
-          } else {
-            // Auto mode
-            this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.On, true);
-            this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.RotationSpeed, 100);
-          }
+          const speedMap = {1: 10, 2: 30, 3: 50, 4: 70, 5: 90};
+          const rotationSpeed = speedMap[this.deviceStatus.fanSpeed] || 100; // 100 for Auto Mode
+          this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.On, true);
+          this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.RotationSpeed, rotationSpeed);
+​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​
         } else {
           this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.On, false);
           this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.RotationSpeed, 0);
@@ -647,56 +632,27 @@ export default class IndoorUnitAccessory {
     this.platform.log.debug(`${this.accessory.displayName}: setRotationSpeed()`);
     const parameters: ComfortCloudDeviceUpdatePayload = {};
     switch (value) {
-      // See README for the mapping of slider position to Comfort Cloud payload.
-      case 0:
-        // HomeKit independently switches off the accessory
-        // in this case, which triggers setActive().
-        // Nothing to handle here, but documenting for clarity.
-        break;
-      case 1:
+      case 0: break; // HomeKit handles off state
+      case 1: 
         parameters.ecoMode = 2;
         this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Quiet Mode`);
         break;
-      case 2:
+      case 2: case 3: case 4: case 5: case 6:
         parameters.ecoMode = 0;
-        parameters.fanSpeed = 1;
-        this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Fan speed 1`);
-        break;
-      case 3:
-        parameters.ecoMode = 0;
-        parameters.fanSpeed = 2;
-        this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Fan speed 2`);
-        break;
-      case 4:
-        parameters.ecoMode = 0;
-        parameters.fanSpeed = 3;
-        this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Fan speed 3`);
-        break;
-      case 5:
-        parameters.ecoMode = 0;
-        parameters.fanSpeed = 4;
-        this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Fan speed 4`);
-        break;
-      case 6:
-        parameters.ecoMode = 0;
-        parameters.fanSpeed = 5;
-        this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Fan speed 5`);
+        parameters.fanSpeed = value - 1;
+        this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Fan speed ${value - 1}`);
         break;
       case 7:
         parameters.ecoMode = 1;
         this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Powerful Mode`);
         break;
-      case 8:
+      case 8: case default:
         parameters.ecoMode = 0;
         parameters.fanSpeed = 0;
         this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Auto Mode`);
         break;
-      default:
-        parameters.ecoMode = 0;
-        parameters.fanSpeed = 0;
-        this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Auto Mode`);
-        break;
-    }
+      }
+
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
 
@@ -957,7 +913,7 @@ export default class IndoorUnitAccessory {
   // set Fan speed
   async setFanSpeed(value) {
 
-    // set Fan speed
+    // check if value is between 0 and 100
     if (value >= 0 && value <= 100) {
 
       this.platform.log.debug(`${this.accessory.displayName}: setFanSpeed(), value: ${value}`);
@@ -965,35 +921,21 @@ export default class IndoorUnitAccessory {
       const parameters: ComfortCloudDeviceUpdatePayload = {};
 
       if (value === 0) {
-        // Turn off
         parameters.operate = 0;
-        this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: set off`);
-      } else if (value > 0 && value <= 20) {
-        parameters.ecoMode = 0;
-        parameters.fanSpeed = 1;
-        this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: set fan speed 1`);
-      } else if (value > 20 && value <= 40) {
-        parameters.ecoMode = 0;
-        parameters.fanSpeed = 2;
-        this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: set fan speed 2`);
-      } else if (value > 40 && value <= 60) {
-        parameters.ecoMode = 0;
-        parameters.fanSpeed = 3;
-        this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: set fan speed 3`);
-      } else if (value > 60 && value <= 80) {
-        parameters.ecoMode = 0;
-        parameters.fanSpeed = 4;
-        this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: set fan speed 4`);
-      } else if (value > 80 && value < 100) {
-        parameters.ecoMode = 0;
-        parameters.fanSpeed = 5;
-        this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: set fan speed 5`);
       } else if (value === 100) {
-        // Auto mode
         parameters.ecoMode = 0;
         parameters.fanSpeed = 0;
-        this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: set fan speed auto`);
+      } else {
+        parameters.ecoMode = 0;
+        parameters.fanSpeed = Math.ceil(value / 20);
       }
+      
+      const logLevel = this.platform.platformConfig.logsLevel >= 1 ? 'info' : 'debug';
+      const message = value === 0 ? 'set off' : 
+                     value === 100 ? 'set fan speed auto' : 
+                     `set fan speed ${parameters.fanSpeed}`;
+      this.platform.log[logLevel](`${this.accessory.displayName}: ${message}`);
+​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​
 
       this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
     }
@@ -1056,33 +998,14 @@ export default class IndoorUnitAccessory {
               && !Object.prototype.hasOwnProperty.call(this.sendDeviceUpdatePayload, 'ecoMode')) {
 
             const parameters: any = {};
-            switch (this.service.getCharacteristic(this.platform.Characteristic.RotationSpeed).value) {
-              case 1:
-                parameters.ecoMode = 2;
-                break;
-              case 2:
-                parameters.fanSpeed = 1;
-                break;
-              case 3:
-                parameters.fanSpeed = 2;
-                break;
-              case 4:
-                parameters.fanSpeed = 3;
-                break;
-              case 5:
-                parameters.fanSpeed = 4;
-                break;
-              case 6:
-                parameters.fanSpeed = 5;
-                break;
-              case 7:
-                parameters.ecoMode = 1;
-                break;
-              default:
-                parameters.ecoMode = 0;
-                parameters.fanSpeed = 0;
-                break;
-            }
+            const speed = this.service.getCharacteristic(this.platform.Characteristic.RotationSpeed).value;
+
+            // speed 1 = Quiet Mode (parameter 2), speed 7 = Powerful Mode (parameter 1)
+            parameters.ecoMode = speed === 1 ? 2 : speed === 7 ? 1 : 0;
+
+            // calculate speed
+            parameters.fanSpeed = speed >= 2 && speed <= 6 ? speed - 1 : 0;
+​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​
             this.platform.log.debug(`${this.accessory.displayName}: Applying workaround fix for speed and eco mode, `
                                     + `adding parameters ${JSON.stringify(parameters)} to ${JSON.stringify(this.sendDeviceUpdatePayload)}.`);
             this.sendDeviceUpdatePayload = Object.assign(this.sendDeviceUpdatePayload, parameters);
