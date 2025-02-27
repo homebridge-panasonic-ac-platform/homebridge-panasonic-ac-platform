@@ -370,171 +370,38 @@ export default class IndoorUnitAccessory {
           .updateValue(this.platform.Characteristic.SwingMode.SWING_DISABLED);
       }
 
-      // Power (on/off)
-      if (this.exposePower) {
-        if (this.deviceStatus.operate === 1) {
-          this.exposePower.updateCharacteristic(this.platform.Characteristic.On, true);
-        } else {
-          this.exposePower.updateCharacteristic(this.platform.Characteristic.On, false);
-        }
+      // Expose additional features
+      const updateChar = (expose, condition) => expose?.updateCharacteristic(this.platform.Characteristic.On, condition);
+      const isOn = this.deviceStatus.operate === 1;
+      
+      updateChar(this.exposePower, isOn);
+      updateChar(this.exposeNanoe, this.deviceStatus.nanoe === 2);
+      updateChar(this.exposeInsideCleaning, this.deviceStatus.insideCleaning === 2);
+      updateChar(this.exposeEcoNavi, this.deviceStatus.ecoNavi === 2);
+      updateChar(this.exposeEcoFunction, this.deviceStatus.ecoFunctionData === 2);
+      updateChar(this.exposeAutoMode, isOn && this.deviceStatus.operationMode === 0);
+      updateChar(this.exposeCoolMode, isOn && this.deviceStatus.operationMode === 2);
+      updateChar(this.exposeHeatMode, isOn && this.deviceStatus.operationMode === 3);
+      updateChar(this.exposeDryMode, isOn && this.deviceStatus.operationMode === 1);
+      updateChar(this.exposeFanMode, isOn && this.deviceStatus.operationMode === 4 && this.deviceStatus.lastSettingMode === 1);
+      updateChar(this.exposeNanoeStandAloneMode, isOn && this.deviceStatus.operationMode === 4 && this.deviceStatus.lastSettingMode === 2);
+      updateChar(this.exposeSwingUpDown, [0, 2].includes(this.deviceStatus.fanAutoMode));
+      updateChar(this.exposeSwingLeftRight, [0, 3].includes(this.deviceStatus.fanAutoMode));
+      
+      if (isOn) {
+        updateChar(this.exposeQuietMode, this.deviceStatus.ecoMode === 2);
+        updateChar(this.exposePowerfulMode, this.deviceStatus.ecoMode === 1);
       }
 
-      // Nanoe
-      if (this.exposeNanoe) {
-        if (this.deviceStatus.nanoe === 2) {
-          this.exposeNanoe.updateCharacteristic(this.platform.Characteristic.On, true);
-        } else {
-          this.exposeNanoe.updateCharacteristic(this.platform.Characteristic.On, false);
-        }
-      }
-
-      // Inside Cleaning
-      if (this.exposeInsideCleaning) {
-        if (this.deviceStatus.insideCleaning === 2) {
-          this.exposeInsideCleaning.updateCharacteristic(this.platform.Characteristic.On, true);
-        } else {
-          this.exposeInsideCleaning.updateCharacteristic(this.platform.Characteristic.On, false);
-        }
-      }
-
-      // Eco Navi
-      if (this.exposeEcoNavi) {
-        if (this.deviceStatus.ecoNavi === 2) {
-          this.exposeEcoNavi.updateCharacteristic(this.platform.Characteristic.On, true);
-        } else {
-          this.exposeEcoNavi.updateCharacteristic(this.platform.Characteristic.On, false);
-        }
-      }
-
-      // Eco Function
-      if (this.exposeEcoFunction) {
-        if (this.deviceStatus.ecoFunctionData === 2) {
-          this.exposeEcoFunction.updateCharacteristic(this.platform.Characteristic.On, true);
-        } else {
-          this.exposeEcoFunction.updateCharacteristic(this.platform.Characteristic.On, false);
-        }
-      }
-
-      // Auto Mode
-      if (this.exposeAutoMode) {
-        if (this.deviceStatus.operate === 1 && this.deviceStatus.operationMode === 0) {
-          this.exposeAutoMode.updateCharacteristic(this.platform.Characteristic.On, true);
-        } else {
-          this.exposeAutoMode.updateCharacteristic(this.platform.Characteristic.On, false);
-        }
-      }
-
-      // Cool Mode
-      if (this.exposeCoolMode) {
-        if (this.deviceStatus.operate === 1 && this.deviceStatus.operationMode === 2) {
-          this.exposeCoolMode.updateCharacteristic(this.platform.Characteristic.On, true);
-        } else {
-          this.exposeCoolMode.updateCharacteristic(this.platform.Characteristic.On, false);
-        }
-      }
-
-      // Heat Mode
-      if (this.exposeHeatMode) {
-        if (this.deviceStatus.operate === 1 && this.deviceStatus.operationMode === 3) {
-          this.exposeHeatMode.updateCharacteristic(this.platform.Characteristic.On, true);
-        } else {
-          this.exposeHeatMode.updateCharacteristic(this.platform.Characteristic.On, false);
-        }
-      }
-
-      // Dry Mode
-      if (this.exposeDryMode) {
-        if (this.deviceStatus.operate === 1 && this.deviceStatus.operationMode === 1) {
-          this.exposeDryMode.updateCharacteristic(this.platform.Characteristic.On, true);
-        } else {
-          this.exposeDryMode.updateCharacteristic(this.platform.Characteristic.On, false);
-        }
-      }
-
-      // Fan Mode
-      if (this.exposeFanMode) {
-        if (this.deviceStatus.operate === 1 && this.deviceStatus.operationMode === 4 && this.deviceStatus.lastSettingMode === 1) {
-          this.exposeFanMode.updateCharacteristic(this.platform.Characteristic.On, true);
-        } else {
-          this.exposeFanMode.updateCharacteristic(this.platform.Characteristic.On, false);
-        }
-      }
-
-      // Nanoe Stand Alone Mode
-      if (this.exposeNanoeStandAloneMode) {
-        if (this.deviceStatus.operate === 1 && this.deviceStatus.operationMode === 4 && this.deviceStatus.lastSettingMode === 2) {
-          this.exposeNanoeStandAloneMode.updateCharacteristic(this.platform.Characteristic.On, true);
-        } else {
-          this.exposeNanoeStandAloneMode.updateCharacteristic(this.platform.Characteristic.On, false);
-        }
-      }
-
-      // Quiet Mode (speed)
-      // Check status only when device is on
-      if (this.exposeQuietMode && this.deviceStatus.operate === 1) {
-        if (this.deviceStatus.ecoMode === 2) {
-          this.exposeQuietMode.updateCharacteristic(this.platform.Characteristic.On, true);
-        } else {
-          this.exposeQuietMode.updateCharacteristic(this.platform.Characteristic.On, false);
-        }
-      }
-
-      // Powerful Mode (speed)
-      // Check status only when device is on
-      if (this.exposePowerfulMode && this.deviceStatus.operate === 1) {
-        if (this.deviceStatus.ecoMode === 1) {
-          this.exposePowerfulMode.updateCharacteristic(this.platform.Characteristic.On, true);
-        } else {
-          this.exposePowerfulMode.updateCharacteristic(this.platform.Characteristic.On, false);
-        }
-      }
-
-      // Swing Up Down
-      if (this.exposeSwingUpDown) {
-        if (this.deviceStatus.fanAutoMode === 0 || this.deviceStatus.fanAutoMode === 2 ) {
-          this.exposeSwingUpDown.updateCharacteristic(this.platform.Characteristic.On, true);
-        } else {
-          this.exposeSwingUpDown.updateCharacteristic(this.platform.Characteristic.On, false);
-        }
-      }
-
-      // Swing Left Right
-      if (this.exposeSwingLeftRight) {
-        if (this.deviceStatus.fanAutoMode === 0 || this.deviceStatus.fanAutoMode === 3 ) {
-          this.exposeSwingLeftRight.updateCharacteristic(this.platform.Characteristic.On, true);
-        } else {
-          this.exposeSwingLeftRight.updateCharacteristic(this.platform.Characteristic.On, false);
-        }
-      }
-
-      // Fan speed
-      // Check status only when device is on
+      // Expose fan speed
       if (this.exposeFanSpeed) {
-        if (this.deviceStatus.operate === 1) {
-          if (this.deviceStatus.fanSpeed === 1) {
-            this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.On, true);
-            this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.RotationSpeed, 10);
-          } else if (this.deviceStatus.fanSpeed === 2) {
-            this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.On, true);
-            this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.RotationSpeed, 30);
-          } else if (this.deviceStatus.fanSpeed === 3) {
-            this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.On, true);
-            this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.RotationSpeed, 50);
-          } else if (this.deviceStatus.fanSpeed === 4) {
-            this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.On, true);
-            this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.RotationSpeed, 70);
-          } else if (this.deviceStatus.fanSpeed === 5) {
-            this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.On, true);
-            this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.RotationSpeed, 90);
-          } else {
-            // Auto mode
-            this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.On, true);
-            this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.RotationSpeed, 100);
-          }
-        } else {
-          this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.On, false);
-          this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.RotationSpeed, 0);
-        }
+        const isOn = this.deviceStatus.operate === 1;
+        const fanSpeed = this.deviceStatus.fanSpeed;
+        const speedMap = { 1: 10, 2: 30, 3: 50, 4: 70, 5: 90 };
+        const rotationSpeed = isOn ? (speedMap[fanSpeed] || 100) : 0;
+      
+        this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.On, isOn);
+        this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.RotationSpeed, rotationSpeed);
       }
 
       // Cooling Threshold Temperature (optional)
