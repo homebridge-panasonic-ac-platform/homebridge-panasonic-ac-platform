@@ -476,26 +476,28 @@ export default class IndoorUnitAccessory {
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
 
-  // Configuration map for different modes
-  const MODE_CONFIGS = {
-    setPower: { key: 'operate', on: 1, off: 0 },
-    setNanoe: { key: 'nanoe', on: 2, off: 1 },
-    setInsideCleaning: { key: 'insideCleaning', on: 2, off: 1 },
-    setEcoNavi: { key: 'ecoNavi', on: 2, off: 1 },
-    setEcoFunction: { key: 'ecoFunctionData', on: 2, off: 1 },
-    setAutoMode: { key: 'operationMode', on: 0, off: 0, operate: true },
-    setCoolMode: { key: 'operationMode', on: 2, off: 0, operate: true },
-    setHeatMode: { key: 'operationMode', on: 3, off: 0, operate: true },
-    setDryMode: { key: 'operationMode', on: 1, off: 0, operate: true },
-    setFanMode: { key: 'operationMode', on: 4, off: 0, operate: true },
-    setNanoeStandAloneMode: { key: 'operationMode', on: 5, off: 0, operate: true },
-    setQuietMode: { key: 'ecoMode', on: 2, off: 0 },
-    setPowerfulMode: { key: 'ecoMode', on: 1, off: 0 }
-  };
+  
   
   // Helper
   async setMode(modeName: string, value: boolean) {
     this.platform.log.debug(`${this.accessory.displayName}: ${modeName}()`);
+
+    // Configuration map for different modes
+    const MODE_CONFIGS = {
+      setPower: { key: 'operate', on: 1, off: 0 },
+      setNanoe: { key: 'nanoe', on: 2, off: 1 },
+      setInsideCleaning: { key: 'insideCleaning', on: 2, off: 1 },
+      setEcoNavi: { key: 'ecoNavi', on: 2, off: 1 },
+      setEcoFunction: { key: 'ecoFunctionData', on: 2, off: 1 },
+      setAutoMode: { key: 'operationMode', on: 0, off: 0, operate: true },
+      setCoolMode: { key: 'operationMode', on: 2, off: 0, operate: true },
+      setHeatMode: { key: 'operationMode', on: 3, off: 0, operate: true },
+      setDryMode: { key: 'operationMode', on: 1, off: 0, operate: true },
+      setFanMode: { key: 'operationMode', on: 4, off: 0, operate: true },
+      setNanoeStandAloneMode: { key: 'operationMode', on: 5, off: 0, operate: true },
+      setQuietMode: { key: 'ecoMode', on: 2, off: 0 },
+      setPowerfulMode: { key: 'ecoMode', on: 1, off: 0 }
+    };
     
     const config = MODE_CONFIGS[modeName];
     const parameters: ComfortCloudDeviceUpdatePayload = {};
