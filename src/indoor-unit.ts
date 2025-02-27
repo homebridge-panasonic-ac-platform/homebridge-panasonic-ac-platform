@@ -124,8 +124,8 @@ export default class IndoorUnitAccessory {
       })
       .onSet(this.setThresholdTemperature.bind(this));
 
-    // Helper function to manage optional services
-    const manageService = (exposeFlag, serviceName, serviceType, setter) => {
+    // Helper function to manage optional services (setter is optional)
+    const manageService = (exposeFlag, serviceName, serviceType, setter = null) => {
       const fullName = `${this.accessory.displayName} ${serviceName}`;
       if (exposeFlag) {
         const service = this.accessory.getService(fullName) || this.accessory.addService(serviceType, fullName, serviceName);
@@ -141,7 +141,7 @@ export default class IndoorUnitAccessory {
         }
       }
     };
-    
+
     // Additional Sensors and Switches
     manageService(this.devConfig?.exposeInsideTemp, 'inside temp', this.platform.Service.TemperatureSensor);
     manageService(this.devConfig?.exposeOutdoorTemp, 'out temp', this.platform.Service.TemperatureSensor);
