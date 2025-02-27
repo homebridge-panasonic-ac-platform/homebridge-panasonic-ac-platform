@@ -257,10 +257,10 @@ export default class IndoorUnitAccessory {
         let sliderValue = 8; // default AUTO
 
         if (this.deviceStatus.ecoMode === 2) {
-          sliderValue = 1;  // Quiet Mode
+          sliderValue = 1; // Quiet Mode
           logOutput += ', Speed 1 (Quiet Mode)';
         } else if (this.deviceStatus.ecoMode === 1) {
-          sliderValue = 7;  // Powerful Mode
+          sliderValue = 7; // Powerful Mode
           logOutput += ', Speed 5 (Powerful Mode)';
         } else if (this.deviceStatus.ecoMode === 0) {
           const fanSpeedMap = { 0: 8, 1: 2, 2: 3, 3: 4, 4: 5, 5: 6 };
