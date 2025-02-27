@@ -646,7 +646,12 @@ export default class IndoorUnitAccessory {
         parameters.ecoMode = 1;
         this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Powerful Mode`);
         break;
-      case 8: case default:
+      case 8: 
+        parameters.ecoMode = 0;
+        parameters.fanSpeed = 0;
+        this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Auto Mode`);
+        break;
+      default:
         parameters.ecoMode = 0;
         parameters.fanSpeed = 0;
         this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Auto Mode`);
