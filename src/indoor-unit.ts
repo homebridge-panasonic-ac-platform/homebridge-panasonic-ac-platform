@@ -125,7 +125,12 @@ export default class IndoorUnitAccessory {
       .onSet(this.setThresholdTemperature.bind(this));
 
     // Helper function to manage optional services (setter is optional)
-    const manageService = (exposeFlag, serviceName, serviceType, setter = null) => {
+    const manageService = (
+      exposeFlag: boolean | undefined,
+      serviceName: string,
+      serviceType: any, // Replace with proper Homebridge Service type if available
+      setter: ((value: any) => Promise<void>) | null = null
+    ) => {
       const fullName = `${this.accessory.displayName} ${serviceName}`;
       if (exposeFlag) {
         const service = this.accessory.getService(fullName) || this.accessory.addService(serviceType, fullName, serviceName);
