@@ -2,7 +2,7 @@ import { Service, PlatformAccessory, CharacteristicValue, CharacteristicSetCallb
 import PanasonicPlatform from './platform';
 import { ComfortCloudDeviceUpdatePayload, PanasonicAccessoryContext } from './types';
 
-// Add interface to fix 'parameters' type error
+// Define the interface for device status
 interface ComfortCloudDeviceStatus {
   parameters: {
     operate: number;
@@ -26,7 +26,7 @@ export default class IndoorUnitAccessory {
   private sendDeviceUpdatePayload: ComfortCloudDeviceUpdatePayload = {};
   private timers: { [key: string]: NodeJS.Timeout | null } = {};
   private devConfig: any;
-  private deviceStatus: any;
+  private deviceStatus: ComfortCloudDeviceStatus['parameters'];
 
   constructor(
     private readonly platform: PanasonicPlatform,
@@ -107,7 +107,8 @@ export default class IndoorUnitAccessory {
   ) {
     const serviceName = `${this.accessory.displayName} ${nameSuffix}`;
     if (this.devConfig?.[configKey]) {
-      const service = this.accessory.getService(serviceName) || this.accessory.addService(serviceType, serviceName, configKey);
+      const service = this.accessory.getService(serviceName) || 
+        this.accessory.addService(serviceType, serviceName, configKey);
       service.setCharacteristic(this.platform.Characteristic.ConfiguredName, serviceName);
       if (onSet) {
         service.getCharacteristic(this.platform.Characteristic.On).onSet(onSet);
@@ -125,7 +126,7 @@ export default class IndoorUnitAccessory {
 
   async refreshDeviceStatus() {
     try {
-      const statusResponse = await this.platform.comfortCloud.getDeviceStatus(
+      const statusResponse: ComfortCloudDeviceStatus = await this.platform.comfortCloud.getDeviceStatus(
         this.accessory.context.device.deviceGuid,
         this.accessory.displayName
       );
@@ -175,12 +176,16 @@ export default class IndoorUnitAccessory {
         this.deviceStatus.operate === 1 && this.deviceStatus.ecoMode === 2);
       this.updateOptional('exposePowerfulMode', 'On', 
         this.deviceStatus.operate === 1 && this.deviceStatus.ecoMode === 1);
-      this.updateOptional('exposeSwingUpDown', 'On', [0, 2].includes(this.deviceStatus.fanAutoMode));
-      this.updateOptional('exposeSwingLeftRight', 'On', [0, 3].includes(this.deviceStatus.fanAutoMode));
+      this.updateOptional('exposeSwingUpDown', 'On', 
+        [0, 2].includes(this.deviceStatus.fanAutoMode));
+      this.updateOptional('exposeSwingLeftRight', 'On', 
+        [0, 3].includes(this.deviceStatus.fanAutoMode));
       this.updateFanSpeed();
 
-      this.service.updateCharacteristic(this.platform.Characteristic.HeatingThresholdTemperature, setTemp);
-      this.service.updateCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature, setTemp);
+      this.service.updateCharacteristic(
+        this.platform.Characteristic.HeatingThresholdTemperature, setTemp);
+      this.service.updateCharacteristic(
+        this.platform.Characteristic.CoolingThresholdTemperature, setTemp);
 
       this.scheduleRefresh();
     } catch (error) {
@@ -195,7 +200,8 @@ export default class IndoorUnitAccessory {
   private updateOptional(configKey: string, charName: string, value: any) {
     if (this.devConfig?.[configKey] && value !== null) {
       const serviceName = `${this.accessory.displayName} ${configKey.split('expose')[1].toLowerCase()}`;
-      this.accessory.getService(serviceName)?.updateCharacteristic(this.platform.Characteristic[charName], value);
+      this.accessory.getService(serviceName)?.updateCharacteristic(
+        this.platform.Characteristic[charName], value);
     }
   }
 
@@ -203,8 +209,10 @@ export default class IndoorUnitAccessory {
     const states = {
       0: [this.platform.Characteristic.TargetHeaterCoolerState.AUTO, 
         currentTemp < setTemp ? 1 : currentTemp > setTemp ? 2 : 0],
-      2: [this.platform.Characteristic.TargetHeaterCoolerState.COOL, currentTemp > setTemp ? 2 : 0],
-      3: [this.platform.Characteristic.TargetHeaterCoolerState.HEAT, currentTemp < setTemp ? 1 : 0],
+      2: [this.platform.Characteristic.TargetHeaterCoolerState.COOL, 
+        currentTemp > setTemp ? 2 : 0],
+      3: [this.platform.Characteristic.TargetHeaterCoolerState.HEAT, 
+        currentTemp < setTemp ? 1 : 0],
       1: [this.platform.Characteristic.TargetHeaterCoolerState.AUTO, 0], // Dry mode
       4: [this.platform.Characteristic.TargetHeaterCoolerState.AUTO, 0], // Fan mode
     };
@@ -230,7 +238,8 @@ export default class IndoorUnitAccessory {
     if (this.devConfig?.exposeFanSpeed && this.deviceStatus.operate === 1) {
       const fanService = this.accessory.getService(`${this.accessory.displayName} fan speed`);
       fanService?.updateCharacteristic(this.platform.Characteristic.On, true);
-      const fanSpeedValue = this.deviceStatus.fanSpeed === 0 ? 100 : this.deviceStatus.fanSpeed * 20 - 10;
+      const fanSpeedValue = this.deviceStatus.fanSpeed === 0 ? 100 : 
+        this.deviceStatus.fanSpeed * 20 - 10;
       fanService?.updateCharacteristic(this.platform.Characteristic.RotationSpeed, fanSpeedValue);
     } else {
       this.updateOptional('exposeFanSpeed', 'On', false);
@@ -317,32 +326,50 @@ export default class IndoorUnitAccessory {
   }
   
   async setAutoMode(value: CharacteristicValue, callback?: CharacteristicSetCallback) { 
-    await this.sendDeviceUpdate({ operate: value ? 1 : 0, operationMode: value ? 0 : undefined }); 
+    await this.sendDeviceUpdate({ 
+      operate: value ? 1 : 0, 
+      operationMode: value ? 0 : undefined 
+    }); 
     callback?.(); 
   }
   
   async setCoolMode(value: CharacteristicValue, callback?: CharacteristicSetCallback) { 
-    await this.sendDeviceUpdate({ operate: value ? 1 : 0, operationMode: value ? 2 : undefined }); 
+    await this.sendDeviceUpdate({ 
+      operate: value ? 1 : 0, 
+      operationMode: value ? 2 : undefined 
+    }); 
     callback?.(); 
   }
   
   async setHeatMode(value: CharacteristicValue, callback?: CharacteristicSetCallback) { 
-    await this.sendDeviceUpdate({ operate: value ? 1 : 0, operationMode: value ? 3 : undefined }); 
+    await this.sendDeviceUpdate({ 
+      operate: value ? 1 : 0, 
+      operationMode: value ? 3 : undefined 
+    }); 
     callback?.(); 
   }
   
   async setDryMode(value: CharacteristicValue, callback?: CharacteristicSetCallback) { 
-    await this.sendDeviceUpdate({ operate: value ? 1 : 0, operationMode: value ? 1 : undefined }); 
+    await this.sendDeviceUpdate({ 
+      operate: value ? 1 : 0, 
+      operationMode: value ? 1 : undefined 
+    }); 
     callback?.(); 
   }
   
   async setFanMode(value: CharacteristicValue, callback?: CharacteristicSetCallback) { 
-    await this.sendDeviceUpdate({ operate: value ? 1 : 0, operationMode: value ? 4 : undefined }); 
+    await this.sendDeviceUpdate({ 
+      operate: value ? 1 : 0, 
+      operationMode: value ? 4 : undefined 
+    }); 
     callback?.(); 
   }
   
   async setNanoeStandAloneMode(value: CharacteristicValue, callback?: CharacteristicSetCallback) { 
-    await this.sendDeviceUpdate({ operate: value ? 1 : 0, operationMode: value ? 5 : undefined }); 
+    await this.sendDeviceUpdate({ 
+      operate: value ? 1 : 0, 
+      operationMode: value ? 5 : undefined 
+    }); 
     callback?.(); 
   }
   
@@ -399,7 +426,8 @@ export default class IndoorUnitAccessory {
               this.sendDeviceUpdatePayload.operate === 1 &&
               !('fanSpeed' in this.sendDeviceUpdatePayload) && 
               !('ecoMode' in this.sendDeviceUpdatePayload)) {
-            const speed = this.service.getCharacteristic(this.platform.Characteristic.RotationSpeed).value as number;
+            const speed = this.service.getCharacteristic(
+              this.platform.Characteristic.RotationSpeed).value as number;
             const speedParams = { 1: { ecoMode: 2 }, 7: { ecoMode: 1 } }[speed] || 
               { ecoMode: 0, fanSpeed: [2, 3, 4, 5, 6].includes(speed) ? speed - 1 : 0 };
             this.sendDeviceUpdatePayload = { ...this.sendDeviceUpdatePayload, ...speedParams };
@@ -411,7 +439,8 @@ export default class IndoorUnitAccessory {
           );
           this.sendDeviceUpdatePayload = {};
           this.clearTimer('timerSendDeviceUpdateRefresh');
-          this.timers.timerSendDeviceUpdateRefresh = setTimeout(this.refreshDeviceStatus.bind(this), 7500);
+          this.timers.timerSendDeviceUpdateRefresh = setTimeout(
+            this.refreshDeviceStatus.bind(this), 7500);
         }, 2500);
       }
     } catch (error) {
