@@ -373,7 +373,7 @@ export default class IndoorUnitAccessory {
       // Expose additional features
       const updateChar = (expose, condition) => expose?.updateCharacteristic(this.platform.Characteristic.On, condition);
       const isOn = this.deviceStatus.operate === 1;
-      
+
       updateChar(this.exposePower, isOn);
       updateChar(this.exposeNanoe, this.deviceStatus.nanoe === 2);
       updateChar(this.exposeInsideCleaning, this.deviceStatus.insideCleaning === 2);
@@ -387,7 +387,7 @@ export default class IndoorUnitAccessory {
       updateChar(this.exposeNanoeStandAloneMode, isOn && this.deviceStatus.operationMode === 4 && this.deviceStatus.lastSettingMode === 2);
       updateChar(this.exposeSwingUpDown, [0, 2].includes(this.deviceStatus.fanAutoMode));
       updateChar(this.exposeSwingLeftRight, [0, 3].includes(this.deviceStatus.fanAutoMode));
-      
+
       if (isOn) {
         updateChar(this.exposeQuietMode, this.deviceStatus.ecoMode === 2);
         updateChar(this.exposePowerfulMode, this.deviceStatus.ecoMode === 1);
@@ -399,7 +399,7 @@ export default class IndoorUnitAccessory {
         const fanSpeed = this.deviceStatus.fanSpeed;
         const speedMap = { 1: 10, 2: 30, 3: 50, 4: 70, 5: 90 };
         const rotationSpeed = isOn ? (speedMap[fanSpeed] || 100) : 0;
-      
+
         this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.On, isOn);
         this.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.RotationSpeed, rotationSpeed);
       }
