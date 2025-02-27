@@ -51,27 +51,78 @@ export default class IndoorUnitAccessory {
       .setCharacteristic(this.platform.Characteristic.Model, accessory.context.device?.deviceModuleNumber || 'Unknown')
       .setCharacteristic(this.platform.Characteristic.SerialNumber, accessory.context.device?.deviceGuid || 'Unknown');
 
-    // Heater-Cooler Service
-    this.service = this.accessory.getService(this.platform.Service.HeaterCooler) 
+    // Heater Cooler
+    // https://developers.homebridge.io/#/service/HeaterCooler
+    this.service = this.accessory.getService(this.platform.Service.HeaterCooler)
       || this.accessory.addService(this.platform.Service.HeaterCooler);
 
+    // Characteristics configuration
+    // Each service must implement at-minimum the "required characteristics"
+    // See https://developers.homebridge.io/#/service/HeaterCooler
+
+    // Name (optional)
+    // This is what is displayed as the default name on the Home app
+    this.service.setCharacteristic(
+      this.platform.Characteristic.Name,
+      accessory.context.device?.deviceName || 'Unnamed',
+    );
+
+    // Active (required)
     this.service
-      .setCharacteristic(this.platform.Characteristic.Name, accessory.context.device?.deviceName || 'Unnamed')
       .getCharacteristic(this.platform.Characteristic.Active)
-        .onSet(this.setActive.bind(this))
+      .onSet(this.setActive.bind(this));
+
+    // Current Temperature (required)
+    this.service
       .getCharacteristic(this.platform.Characteristic.CurrentTemperature)
-        .setProps({ minValue: -100, maxValue: 100, minStep: 0.01 })
+      .setProps({
+        minValue: -100,
+        maxValue: 100,
+        minStep: 0.01,
+      });
+
+    // Current Heater-Cooler State (required, but doesn't require a setter)
+
+    // Target Heater-Cooler State (required)
+    this.service
       .getCharacteristic(this.platform.Characteristic.TargetHeaterCoolerState)
-        .onSet(this.setTargetHeaterCoolerState.bind(this))
+      .onSet(this.setTargetHeaterCoolerState.bind(this));
+
+    // Rotation Speed (optional)
+    this.service
       .getCharacteristic(this.platform.Characteristic.RotationSpeed)
-        .setProps({ minValue: 0, maxValue: 8, minStep: 1 })
-        .onSet(this.setRotationSpeed.bind(this))
+      .setProps({
+        minValue: 0,
+        maxValue: 8,
+        minStep: 1,
+      })
+      .onSet(this.setRotationSpeed.bind(this));
+
+    // Swing Mode (optional)
+    this.service
       .getCharacteristic(this.platform.Characteristic.SwingMode)
-        .onSet(this.setSwingMode.bind(this))
+      .onSet(this.setSwingMode.bind(this));
+
+    // Cooling Threshold Temperature (optional)
+    this.service
       .getCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature)
-        .setProps({ minValue: 16, maxValue: 30, minStep: 0.5 }).onSet(this.setThresholdTemperature.bind(this))
+      .setProps({
+        minValue: 16,
+        maxValue: 30,
+        minStep: 0.5,
+      })
+      .onSet(this.setThresholdTemperature.bind(this));
+
+    // Heating Threshold Temperature (optional)
+
+    this.service
       .getCharacteristic(this.platform.Characteristic.HeatingThresholdTemperature)
-        .setProps({ minValue: this.devConfig?.minHeatingTemperature || 16, maxValue: 30, minStep: 0.5 }).onSet(this.setThresholdTemperature.bind(this));
+      .setProps({
+        minValue: this.devConfig?.minHeatingTemperature || 16,
+        maxValue: 30,
+        minStep: 0.5,
+      })
+      .onSet(this.setThresholdTemperature.bind(this));
 
     // Helper function to manage optional services
     const manageService = (exposeFlag, serviceName, serviceType, setter) => {
