@@ -2,7 +2,6 @@ import { Service, PlatformAccessory, CharacteristicValue, CharacteristicSetCallb
 import PanasonicPlatform from './platform';
 import { ComfortCloudDeviceUpdatePayload, PanasonicAccessoryContext } from './types';
 
-// Define the interface for device status
 interface ComfortCloudDeviceStatus {
   parameters: {
     operate: number;
@@ -26,7 +25,7 @@ export default class IndoorUnitAccessory {
   private sendDeviceUpdatePayload: ComfortCloudDeviceUpdatePayload = {};
   private timers: { [key: string]: NodeJS.Timeout | null } = {};
   private devConfig: any;
-  private deviceStatus: ComfortCloudDeviceStatus['parameters'];
+  private deviceStatus?: ComfortCloudDeviceStatus['parameters']; // Made optional with ?
 
   constructor(
     private readonly platform: PanasonicPlatform,
@@ -222,6 +221,7 @@ export default class IndoorUnitAccessory {
   }
 
   private updateRotationSpeed() {
+    if (!this.deviceStatus) return;
     let speed = 8; // Auto
     if (this.deviceStatus.ecoMode === 2) {
       speed = 1; // Quiet
@@ -235,6 +235,7 @@ export default class IndoorUnitAccessory {
   }
 
   private updateFanSpeed() {
+    if (!this.deviceStatus) return;
     if (this.devConfig?.exposeFanSpeed && this.deviceStatus.operate === 1) {
       const fanService = this.accessory.getService(`${this.accessory.displayName} fan speed`);
       fanService?.updateCharacteristic(this.platform.Characteristic.On, true);
@@ -384,6 +385,7 @@ export default class IndoorUnitAccessory {
   }
   
   async setSwingUpDown(value: CharacteristicValue, callback?: CharacteristicSetCallback) {
+    if (!this.deviceStatus) return;
     await this.sendDeviceUpdate({
       fanAutoMode: value ? (this.deviceStatus.fanAutoMode === 3 ? 0 : 2) : 
         (this.deviceStatus.fanAutoMode === 0 ? 3 : 1),
@@ -393,6 +395,7 @@ export default class IndoorUnitAccessory {
   }
   
   async setSwingLeftRight(value: CharacteristicValue, callback?: CharacteristicSetCallback) {
+    if (!this.deviceStatus) return;
     await this.sendDeviceUpdate({
       fanAutoMode: value ? (this.deviceStatus.fanAutoMode === 2 ? 0 : 3) : 
         (this.deviceStatus.fanAutoMode === 0 ? 2 : 1),
