@@ -2,35 +2,56 @@ import { Service, PlatformAccessory, CharacteristicValue } from 'homebridge';
 import PanasonicPlatform from './platform';
 import { ComfortCloudDeviceUpdatePayload } from './types';
 
+// Assuming ComfortCloudDeviceStatus has a parameters property; adjust if different
+interface ComfortCloudDeviceStatus {
+  parameters: {
+    operate: number;
+    insideTemperature: number;
+    outTemperature: number;
+    operationMode: number;
+    temperatureSet: number;
+    fanSpeed: number;
+    ecoMode: number;
+    fanAutoMode: number;
+    nanoe?: number;
+    insideCleaning?: number;
+    ecoNavi?: number;
+    ecoFunctionData?: number;
+    lastSettingMode?: number;
+  };
+}
+
 export default class IndoorUnitAccessory {
   private service: Service;
   private sendPayload: ComfortCloudDeviceUpdatePayload = {};
   private timers: { [key: string]: NodeJS.Timeout } = {};
   private devConfig: any;
-  private deviceStatus: any;
+  private deviceStatus: ComfortCloudDeviceStatus['parameters'] | undefined;
   private optionalServices: { [key: string]: Service } = {};
 
   constructor(private platform: PanasonicPlatform, private accessory: PlatformAccessory) {
-    this.devConfig = platform.platformConfig.devices?.find(d => 
-      d.name === accessory.context.device?.deviceName || d.name === accessory.context.device?.deviceGuid);
+    this.devConfig = this.platform.platformConfig.devices?.find(
+      d => d.name === this.accessory.context.device?.deviceName || d.name === this.accessory.context.device?.deviceGuid
+    );
 
     // Accessory Information
-    this.accessory.getService(this.platform.Service.AccessoryInformation)!
+    const infoService = this.accessory.getService(this.platform.Service.AccessoryInformation)!;
+    infoService
       .setCharacteristic(this.platform.Characteristic.Manufacturer, 'Panasonic')
-      .setCharacteristic(this.platform.Characteristic.Model, accessory.context.device?.deviceModuleNumber || 'Unknown')
-      .setCharacteristic(this.platform.Characteristic.SerialNumber, accessory.context.device?.deviceGuid || 'Unknown');
+      .setCharacteristic(this.platform.Characteristic.Model, this.accessory.context.device?.deviceModuleNumber || 'Unknown')
+      .setCharacteristic(this.platform.Characteristic.SerialNumber, this.accessory.context.device?.deviceGuid || 'Unknown');
 
     // HeaterCooler Service
     this.service = this.accessory.getService(this.platform.Service.HeaterCooler) || 
       this.accessory.addService(this.platform.Service.HeaterCooler);
-    this.service.setCharacteristic(this.platform.Characteristic.Name, accessory.context.device?.deviceName || 'Unnamed')
-      .getCharacteristic(this.platform.Characteristic.Active).onSet(this.setActive.bind(this))
-      .getCharacteristic(this.platform.Characteristic.CurrentTemperature).setProps({ minValue: -100, maxValue: 100, minStep: 0.01 })
-      .getCharacteristic(this.platform.Characteristic.TargetHeaterCoolerState).onSet(this.setTargetHeaterCoolerState.bind(this))
-      .getCharacteristic(this.platform.Characteristic.RotationSpeed).setProps({ minValue: 0, maxValue: 8, minStep: 1 }).onSet(this.setRotationSpeed.bind(this))
-      .getCharacteristic(this.platform.Characteristic.SwingMode).onSet(this.setSwingMode.bind(this))
-      .getCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature).setProps({ minValue: 16, maxValue: 30, minStep: 0.5 }).onSet(this.setThresholdTemperature.bind(this))
-      .getCharacteristic(this.platform.Characteristic.HeatingThresholdTemperature).setProps({ minValue: this.devConfig?.minHeatingTemperature || 16, maxValue: 30, minStep: 0.5 }).onSet(this.setThresholdTemperature.bind(this));
+    this.service.setCharacteristic(this.platform.Characteristic.Name, this.accessory.context.device?.deviceName || 'Unnamed');
+    this.service.getCharacteristic(this.platform.Characteristic.Active).onSet(this.setActive.bind(this));
+    this.service.getCharacteristic(this.platform.Characteristic.CurrentTemperature).setProps({ minValue: -100, maxValue: 100, minStep: 0.01 });
+    this.service.getCharacteristic(this.platform.Characteristic.TargetHeaterCoolerState).onSet(this.setTargetHeaterCoolerState.bind(this));
+    this.service.getCharacteristic(this.platform.Characteristic.RotationSpeed).setProps({ minValue: 0, maxValue: 8, minStep: 1 }).onSet(this.setRotationSpeed.bind(this));
+    this.service.getCharacteristic(this.platform.Characteristic.SwingMode).onSet(this.setSwingMode.bind(this));
+    this.service.getCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature).setProps({ minValue: 16, maxValue: 30, minStep: 0.5 }).onSet(this.setThresholdTemperature.bind(this));
+    this.service.getCharacteristic(this.platform.Characteristic.HeatingThresholdTemperature).setProps({ minValue: this.devConfig?.minHeatingTemperature || 16, maxValue: 30, minStep: 0.5 }).onSet(this.setThresholdTemperature.bind(this));
 
     // Setup optional features
     this.setupOptionalFeatures();
@@ -83,8 +104,8 @@ export default class IndoorUnitAccessory {
       const status = await this.platform.comfortCloud.getDeviceStatus(this.accessory.context.device.deviceGuid, this.accessory.displayName);
       this.deviceStatus = status.parameters;
 
-      const active = this.deviceStatus.operate === 1 ? 1 : 0;
-      this.service.updateCharacteristic(this.platform.Characteristic.Active, active);
+      const activeState = this.deviceStatus.operate === 1 ? this.platform.Characteristic.Active.ACTIVE : this.platform.Characteristic.Active.INACTIVE;
+      this.service.updateCharacteristic(this.platform.Characteristic.Active, activeState);
       const temp = this.deviceStatus.insideTemperature < 126 ? this.deviceStatus.insideTemperature : (this.deviceStatus.operationMode === 3 ? 8 : 30);
       this.service.updateCharacteristic(this.platform.Characteristic.CurrentTemperature, temp);
 
@@ -96,13 +117,20 @@ export default class IndoorUnitAccessory {
       const setTemp = this.deviceStatus.temperatureSet;
       if (this.deviceStatus.operationMode === 0) {
         this.service.updateCharacteristic(this.platform.Characteristic.CurrentHeaterCoolerState, 
-          currentTemp < setTemp ? 1 : currentTemp > setTemp ? 2 : 0);
+          currentTemp < setTemp ? this.platform.Characteristic.CurrentHeaterCoolerState.HEATING : 
+          currentTemp > setTemp ? this.platform.Characteristic.CurrentHeaterCoolerState.COOLING : 
+          this.platform.Characteristic.CurrentHeaterCoolerState.IDLE);
       } else if (this.deviceStatus.operationMode === 3) {
-        this.service.updateCharacteristic(this.platform.Characteristic.CurrentHeaterCoolerState, currentTemp < setTemp ? 1 : 0);
+        this.service.updateCharacteristic(this.platform.Characteristic.CurrentHeaterCoolerState, 
+          currentTemp < setTemp ? this.platform.Characteristic.CurrentHeaterCoolerState.HEATING : 
+          this.platform.Characteristic.CurrentHeaterCoolerState.IDLE);
       } else if (this.deviceStatus.operationMode === 2) {
-        this.service.updateCharacteristic(this.platform.Characteristic.CurrentHeaterCoolerState, currentTemp > setTemp ? 2 : 0);
+        this.service.updateCharacteristic(this.platform.Characteristic.CurrentHeaterCoolerState, 
+          currentTemp > setTemp ? this.platform.Characteristic.CurrentHeaterCoolerState.COOLING : 
+          this.platform.Characteristic.CurrentHeaterCoolerState.IDLE);
       } else {
-        this.service.updateCharacteristic(this.platform.Characteristic.CurrentHeaterCoolerState, 0);
+        this.service.updateCharacteristic(this.platform.Characteristic.CurrentHeaterCoolerState, 
+          this.platform.Characteristic.CurrentHeaterCoolerState.IDLE);
       }
 
       // Rotation Speed
@@ -111,7 +139,9 @@ export default class IndoorUnitAccessory {
       this.service.updateCharacteristic(this.platform.Characteristic.RotationSpeed, speed);
 
       // Swing Mode
-      this.service.updateCharacteristic(this.platform.Characteristic.SwingMode, this.deviceStatus.fanAutoMode !== 1 ? 1 : 0);
+      this.service.updateCharacteristic(this.platform.Characteristic.SwingMode, 
+        this.deviceStatus.fanAutoMode !== 1 ? this.platform.Characteristic.SwingMode.SWING_ENABLED : 
+        this.platform.Characteristic.SwingMode.SWING_DISABLED);
 
       // Threshold Temperatures
       this.service.updateCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature, setTemp);
@@ -121,22 +151,22 @@ export default class IndoorUnitAccessory {
       this.optionalServices.exposeInsideTemp?.updateCharacteristic(this.platform.Characteristic.CurrentTemperature, temp);
       this.optionalServices.exposeOutdoorTemp?.updateCharacteristic(this.platform.Characteristic.CurrentTemperature, 
         this.deviceStatus.outTemperature < 126 ? this.deviceStatus.outTemperature : temp);
-      this.optionalServices.exposePower?.updateCharacteristic(this.platform.Characteristic.On, active);
+      this.optionalServices.exposePower?.updateCharacteristic(this.platform.Characteristic.On, activeState === 1);
       this.optionalServices.exposeNanoe?.updateCharacteristic(this.platform.Characteristic.On, this.deviceStatus.nanoe === 2);
       this.optionalServices.exposeInsideCleaning?.updateCharacteristic(this.platform.Characteristic.On, this.deviceStatus.insideCleaning === 2);
       this.optionalServices.exposeEcoNavi?.updateCharacteristic(this.platform.Characteristic.On, this.deviceStatus.ecoNavi === 2);
       this.optionalServices.exposeEcoFunction?.updateCharacteristic(this.platform.Characteristic.On, this.deviceStatus.ecoFunctionData === 2);
-      this.optionalServices.exposeAutoMode?.updateCharacteristic(this.platform.Characteristic.On, active && this.deviceStatus.operationMode === 0);
-      this.optionalServices.exposeCoolMode?.updateCharacteristic(this.platform.Characteristic.On, active && this.deviceStatus.operationMode === 2);
-      this.optionalServices.exposeHeatMode?.updateCharacteristic(this.platform.Characteristic.On, active && this.deviceStatus.operationMode === 3);
-      this.optionalServices.exposeDryMode?.updateCharacteristic(this.platform.Characteristic.On, active && this.deviceStatus.operationMode === 1);
-      this.optionalServices.exposeFanMode?.updateCharacteristic(this.platform.Characteristic.On, active && this.deviceStatus.operationMode === 4 && this.deviceStatus.lastSettingMode === 1);
-      this.optionalServices.exposeNanoeStandAloneMode?.updateCharacteristic(this.platform.Characteristic.On, active && this.deviceStatus.operationMode === 4 && this.deviceStatus.lastSettingMode === 2);
-      this.optionalServices.exposeQuietMode?.updateCharacteristic(this.platform.Characteristic.On, active && this.deviceStatus.ecoMode === 2);
-      this.optionalServices.exposePowerfulMode?.updateCharacteristic(this.platform.Characteristic.On, active && this.deviceStatus.ecoMode === 1);
+      this.optionalServices.exposeAutoMode?.updateCharacteristic(this.platform.Characteristic.On, activeState === 1 && this.deviceStatus.operationMode === 0);
+      this.optionalServices.exposeCoolMode?.updateCharacteristic(this.platform.Characteristic.On, activeState === 1 && this.deviceStatus.operationMode === 2);
+      this.optionalServices.exposeHeatMode?.updateCharacteristic(this.platform.Characteristic.On, activeState === 1 && this.deviceStatus.operationMode === 3);
+      this.optionalServices.exposeDryMode?.updateCharacteristic(this.platform.Characteristic.On, activeState === 1 && this.deviceStatus.operationMode === 1);
+      this.optionalServices.exposeFanMode?.updateCharacteristic(this.platform.Characteristic.On, activeState === 1 && this.deviceStatus.operationMode === 4 && this.deviceStatus.lastSettingMode === 1);
+      this.optionalServices.exposeNanoeStandAloneMode?.updateCharacteristic(this.platform.Characteristic.On, activeState === 1 && this.deviceStatus.operationMode === 4 && this.deviceStatus.lastSettingMode === 2);
+      this.optionalServices.exposeQuietMode?.updateCharacteristic(this.platform.Characteristic.On, activeState === 1 && this.deviceStatus.ecoMode === 2);
+      this.optionalServices.exposePowerfulMode?.updateCharacteristic(this.platform.Characteristic.On, activeState === 1 && this.deviceStatus.ecoMode === 1);
       this.optionalServices.exposeSwingUpDown?.updateCharacteristic(this.platform.Characteristic.On, this.deviceStatus.fanAutoMode === 0 || this.deviceStatus.fanAutoMode === 2);
       this.optionalServices.exposeSwingLeftRight?.updateCharacteristic(this.platform.Characteristic.On, this.deviceStatus.fanAutoMode === 0 || this.deviceStatus.fanAutoMode === 3);
-      if (this.optionalServices.exposeFanSpeed && active) {
+      if (this.optionalServices.exposeFanSpeed && activeState === 1) {
         const fanSpeed = this.deviceStatus.fanSpeed;
         this.optionalServices.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.On, true);
         this.optionalServices.exposeFanSpeed.updateCharacteristic(this.platform.Characteristic.RotationSpeed, 
@@ -149,16 +179,21 @@ export default class IndoorUnitAccessory {
       this.platform.log.error('Status refresh failed:', e);
     }
     clearTimeout(this.timers.refresh);
-    this.timers.refresh = setTimeout(this.refreshDeviceStatus.bind(this), active ? 10 * 60 * 1000 : 60 * 60 * 1000);
+    this.timers.refresh = setTimeout(this.refreshDeviceStatus.bind(this), 
+      this.service.getCharacteristic(this.platform.Characteristic.Active).value === this.platform.Characteristic.Active.ACTIVE ? 10 * 60 * 1000 : 60 * 60 * 1000);
   }
 
   async setActive(value: CharacteristicValue) {
-    this.sendDeviceUpdate({ operate: value === 1 ? 1 : 0 });
+    this.sendDeviceUpdate({ operate: value === this.platform.Characteristic.Active.ACTIVE ? 1 : 0 });
   }
 
   async setTargetHeaterCoolerState(value: CharacteristicValue) {
-    const modes = { 0: 0, 1: 2, 2: 3 }; // AUTO, COOL, HEAT
-    this.sendDeviceUpdate({ operate: 1, operationMode: modes[value as number] ?? (this.platform.platformConfig.autoMode === 'fan' ? 4 : 1) });
+    const modes = {
+      [this.platform.Characteristic.TargetHeaterCoolerState.AUTO]: this.platform.platformConfig.autoMode === 'fan' ? 4 : this.platform.platformConfig.autoMode === 'dry' ? 1 : 0,
+      [this.platform.Characteristic.TargetHeaterCoolerState.COOL]: 2,
+      [this.platform.Characteristic.TargetHeaterCoolerState.HEAT]: 3
+    };
+    this.sendDeviceUpdate({ operate: 1, operationMode: modes[value as number] });
   }
 
   async setRotationSpeed(value: CharacteristicValue) {
@@ -168,7 +203,11 @@ export default class IndoorUnitAccessory {
   }
 
   async setSwingMode(value: CharacteristicValue) {
-    this.sendDeviceUpdate({ fanAutoMode: value === 1 ? 0 : 1, airSwingUD: value === 0 ? (this.devConfig?.swingDefaultUD ?? 2) : undefined, airSwingLR: value === 0 ? (this.devConfig?.swingDefaultLR ?? 2) : undefined });
+    this.sendDeviceUpdate({ 
+      fanAutoMode: value === this.platform.Characteristic.SwingMode.SWING_ENABLED ? 0 : 1, 
+      airSwingUD: value === this.platform.Characteristic.SwingMode.SWING_DISABLED ? (this.devConfig?.swingDefaultUD ?? 2) : undefined, 
+      airSwingLR: value === this.platform.Characteristic.SwingMode.SWING_DISABLED ? (this.devConfig?.swingDefaultLR ?? 2) : undefined 
+    });
   }
 
   async setThresholdTemperature(value: CharacteristicValue) {
@@ -189,10 +228,16 @@ export default class IndoorUnitAccessory {
   async setQuietMode(value: CharacteristicValue) { this.sendDeviceUpdate({ ecoMode: value ? 2 : 0 }); }
   async setPowerfulMode(value: CharacteristicValue) { this.sendDeviceUpdate({ ecoMode: value ? 1 : 0 }); }
   async setSwingUpDown(value: CharacteristicValue) {
-    this.sendDeviceUpdate({ fanAutoMode: value ? (this.deviceStatus.fanAutoMode === 3 ? 0 : 2) : (this.deviceStatus.fanAutoMode === 0 ? 3 : 1), airSwingUD: !value ? (this.devConfig?.swingDefaultUD ?? 2) : undefined });
+    this.sendDeviceUpdate({ 
+      fanAutoMode: value ? (this.deviceStatus?.fanAutoMode === 3 ? 0 : 2) : (this.deviceStatus?.fanAutoMode === 0 ? 3 : 1), 
+      airSwingUD: !value ? (this.devConfig?.swingDefaultUD ?? 2) : undefined 
+    });
   }
   async setSwingLeftRight(value: CharacteristicValue) {
-    this.sendDeviceUpdate({ fanAutoMode: value ? (this.deviceStatus.fanAutoMode === 2 ? 0 : 3) : (this.deviceStatus.fanAutoMode === 0 ? 2 : 1), airSwingLR: !value ? (this.devConfig?.swingDefaultLR ?? 2) : undefined });
+    this.sendDeviceUpdate({ 
+      fanAutoMode: value ? (this.deviceStatus?.fanAutoMode === 2 ? 0 : 3) : (this.deviceStatus?.fanAutoMode === 0 ? 2 : 1), 
+      airSwingLR: !value ? (this.devConfig?.swingDefaultLR ?? 2) : undefined 
+    });
   }
   async setFanSpeed(value: CharacteristicValue) {
     const v = value as number;
