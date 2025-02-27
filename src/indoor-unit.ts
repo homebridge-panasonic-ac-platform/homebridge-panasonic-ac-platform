@@ -647,56 +647,29 @@ export default class IndoorUnitAccessory {
     this.platform.log.debug(`${this.accessory.displayName}: setRotationSpeed()`);
     const parameters: ComfortCloudDeviceUpdatePayload = {};
     switch (value) {
-      // See README for the mapping of slider position to Comfort Cloud payload.
       case 0:
-        // HomeKit independently switches off the accessory
-        // in this case, which triggers setActive().
-        // Nothing to handle here, but documenting for clarity.
         break;
       case 1:
         parameters.ecoMode = 2;
-        this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Quiet Mode`);
         break;
-      case 2:
+      case 2: case 3: case 4: case 5: case 6:
         parameters.ecoMode = 0;
-        parameters.fanSpeed = 1;
-        this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Fan speed 1`);
-        break;
-      case 3:
-        parameters.ecoMode = 0;
-        parameters.fanSpeed = 2;
-        this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Fan speed 2`);
-        break;
-      case 4:
-        parameters.ecoMode = 0;
-        parameters.fanSpeed = 3;
-        this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Fan speed 3`);
-        break;
-      case 5:
-        parameters.ecoMode = 0;
-        parameters.fanSpeed = 4;
-        this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Fan speed 4`);
-        break;
-      case 6:
-        parameters.ecoMode = 0;
-        parameters.fanSpeed = 5;
-        this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Fan speed 5`);
+        parameters.fanSpeed = value - 1;
         break;
       case 7:
         parameters.ecoMode = 1;
-        this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Powerful Mode`);
         break;
       case 8:
-        parameters.ecoMode = 0;
-        parameters.fanSpeed = 0;
-        this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Auto Mode`);
-        break;
       default:
         parameters.ecoMode = 0;
         parameters.fanSpeed = 0;
-        this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Auto Mode`);
         break;
     }
+    
+    this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](
+      `${this.accessory.displayName}: ${['', 'Quiet Mode', 'Fan speed 1', 'Fan speed 2', 
+      'Fan speed 3', 'Fan speed 4', 'Fan speed 5', 'Powerful Mode', 'Auto Mode'][value] || 'Auto Mode'}`
+    );
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
 
