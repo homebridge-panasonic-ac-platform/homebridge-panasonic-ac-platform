@@ -1,4 +1,4 @@
-import { Service, PlatformAccessory, CharacteristicValue } from 'homebridge';
+import { Service, PlatformAccessory, CharacteristicValue, CharacteristicSetCallback } from 'homebridge';
 import PanasonicPlatform from './platform';
 import { ComfortCloudDeviceUpdatePayload, PanasonicAccessoryContext } from './types';
 
@@ -17,18 +17,16 @@ export default class IndoorUnitAccessory {
       item => item.name === (accessory.context.device?.deviceName || accessory.context.device?.deviceGuid)
     );
 
-    // Accessory Information
     this.accessory.getService(this.platform.Service.AccessoryInformation)!
       .setCharacteristic(this.platform.Characteristic.Manufacturer, 'Panasonic')
       .setCharacteristic(this.platform.Characteristic.Model, accessory.context.device?.deviceModuleNumber || 'Unknown')
       .setCharacteristic(this.platform.Characteristic.SerialNumber, accessory.context.device?.deviceGuid || 'Unknown');
 
-    // Heater Cooler Service
     this.service = this.accessory.getService(this.platform.Service.HeaterCooler) ||
       this.accessory.addService(this.platform.Service.HeaterCooler);
     this.service.setCharacteristic(this.platform.Characteristic.Name, accessory.context.device?.deviceName || 'Unnamed');
 
-    // Core Characteristics
+    // Core Characteristics z poprawnym typem
     this.setupCharacteristic('Active', this.setActive.bind(this), { minValue: 0, maxValue: 1 });
     this.setupCharacteristic('CurrentTemperature', null, { minValue: -100, maxValue: 100, minStep: 0.01 });
     this.setupCharacteristic('TargetHeaterCoolerState', this.setTargetHeaterCoolerState.bind(this));
@@ -60,13 +58,13 @@ export default class IndoorUnitAccessory {
     this.refreshDeviceStatus();
   }
 
-  private setupCharacteristic(name: string, onSet: Function | null, props?: any) {
+  private setupCharacteristic(name: string, onSet: ((value: CharacteristicValue, callback?: CharacteristicSetCallback) => void | Promise<void>) | null, props?: any) {
     const char = this.service.getCharacteristic(this.platform.Characteristic[name]);
     if (props) char.setProps(props);
     if (onSet) char.onSet(onSet);
   }
 
-  private setupOptionalService(configKey: string, serviceType: any, nameSuffix: string, onSet?: Function, isFan = false) {
+  private setupOptionalService(configKey: string, serviceType: any, nameSuffix: string, onSet?: (value: CharacteristicValue, callback?: CharacteristicSetCallback) => void | Promise<void>, isFan = false) {
     const serviceName = `${this.accessory.displayName} ${nameSuffix}`;
     if (this.devConfig?.[configKey]) {
       const service = this.accessory.getService(serviceName) || this.accessory.addService(serviceType, serviceName, configKey);
@@ -182,68 +180,76 @@ export default class IndoorUnitAccessory {
     }
   }
 
-  async setActive(value: CharacteristicValue) {
-    this.sendDeviceUpdate({ operate: value === 1 ? 1 : 0 });
+  async setActive(value: CharacteristicValue, callback?: CharacteristicSetCallback) {
+    await this.sendDeviceUpdate({ operate: value === 1 ? 1 : 0 });
+    callback?.();
   }
 
-  async setTargetHeaterCoolerState(value: CharacteristicValue) {
+  async setTargetHeaterCoolerState(value: CharacteristicValue, callback?: CharacteristicSetCallback) {
     const modes = {
       [this.platform.Characteristic.TargetHeaterCoolerState.AUTO]: this.platform.platformConfig.autoMode === 'fan' ? 4 : this.platform.platformConfig.autoMode === 'dry' ? 1 : 0,
       [this.platform.Characteristic.TargetHeaterCoolerState.COOL]: 2,
       [this.platform.Characteristic.TargetHeaterCoolerState.HEAT]: 3,
     };
-    this.sendDeviceUpdate({ operate: 1, operationMode: modes[value as number] });
+    await this.sendDeviceUpdate({ operate: 1, operationMode: modes[value as number] });
+    callback?.();
   }
 
-  async setRotationSpeed(value: CharacteristicValue) {
+  async setRotationSpeed(value: CharacteristicValue, callback?: CharacteristicSetCallback) {
     const v = value as number;
     const params: ComfortCloudDeviceUpdatePayload = v === 1 ? { ecoMode: 2 } : v === 7 ? { ecoMode: 1 } : { ecoMode: 0, fanSpeed: { 2: 1, 3: 2, 4: 3, 5: 4, 6: 5, 8: 0 }[v] || 0 };
-    this.sendDeviceUpdate(params);
+    await this.sendDeviceUpdate(params);
+    callback?.();
   }
 
-  async setSwingMode(value: CharacteristicValue) {
-    this.sendDeviceUpdate({
+  async setSwingMode(value: CharacteristicValue, callback?: CharacteristicSetCallback) {
+    await this.sendDeviceUpdate({
       fanAutoMode: value === 1 ? 0 : 1,
       ...(value === 0 && { airSwingUD: this.devConfig?.swingDefaultUD ?? 2, airSwingLR: this.devConfig?.swingDefaultLR ?? 2 })
     });
+    callback?.();
   }
 
-  async setPower(value: CharacteristicValue) { this.sendDeviceUpdate({ operate: value ? 1 : 0 }); }
-  async setNanoe(value: CharacteristicValue) { this.sendDeviceUpdate({ nanoe: value ? 2 : 1 }); }
-  async setInsideCleaning(value: CharacteristicValue) { this.sendDeviceUpdate({ insideCleaning: value ? 2 : 1 }); }
-  async setEcoNavi(value: CharacteristicValue) { this.sendDeviceUpdate({ ecoNavi: value ? 2 : 1 }); }
-  async setEcoFunction(value: CharacteristicValue) { this.sendDeviceUpdate({ ecoFunctionData: value ? 2 : 1 }); }
-  async setAutoMode(value: CharacteristicValue) { this.sendDeviceUpdate({ operate: value ? 1 : 0, operationMode: value ? 0 : undefined }); }
-  async setCoolMode(value: CharacteristicValue) { this.sendDeviceUpdate({ operate: value ? 1 : 0, operationMode: value ? 2 : undefined }); }
-  async setHeatMode(value: CharacteristicValue) { this.sendDeviceUpdate({ operate: value ? 1 : 0, operationMode: value ? 3 : undefined }); }
-  async setDryMode(value: CharacteristicValue) { this.sendDeviceUpdate({ operate: value ? 1 : 0, operationMode: value ? 1 : undefined }); }
-  async setFanMode(value: CharacteristicValue) { this.sendDeviceUpdate({ operate: value ? 1 : 0, operationMode: value ? 4 : undefined }); }
-  async setNanoeStandAloneMode(value: CharacteristicValue) { this.sendDeviceUpdate({ operate: value ? 1 : 0, operationMode: value ? 5 : undefined }); }
-  async setQuietMode(value: CharacteristicValue) { this.sendDeviceUpdate({ ecoMode: value ? 2 : 0 }); }
-  async setPowerfulMode(value: CharacteristicValue) { this.sendDeviceUpdate({ ecoMode: value ? 1 : 0 }); }
-  async setSwingUpDown(value: CharacteristicValue) {
-    this.sendDeviceUpdate({
+  async setPower(value: CharacteristicValue, callback?: CharacteristicSetCallback) { await this.sendDeviceUpdate({ operate: value ? 1 : 0 }); callback?.(); }
+  async setNanoe(value: CharacteristicValue, callback?: CharacteristicSetCallback) { await this.sendDeviceUpdate({ nanoe: value ? 2 : 1 }); callback?.(); }
+  async setInsideCleaning(value: CharacteristicValue, callback?: CharacteristicSetCallback) { await this.sendDeviceUpdate({ insideCleaning: value ? 2 : 1 }); callback?.(); }
+  async setEcoNavi(value: CharacteristicValue, callback?: CharacteristicSetCallback) { await this.sendDeviceUpdate({ ecoNavi: value ? 2 : 1 }); callback?.(); }
+  async setEcoFunction(value: CharacteristicValue, callback?: CharacteristicSetCallback) { await this.sendDeviceUpdate({ ecoFunctionData: value ? 2 : 1 }); callback?.(); }
+  async setAutoMode(value: CharacteristicValue, callback?: CharacteristicSetCallback) { await this.sendDeviceUpdate({ operate: value ? 1 : 0, operationMode: value ? 0 : undefined }); callback?.(); }
+  async setCoolMode(value: CharacteristicValue, callback?: CharacteristicSetCallback) { await this.sendDeviceUpdate({ operate: value ? 1 : 0, operationMode: value ? 2 : undefined }); callback?.(); }
+  async setHeatMode(value: CharacteristicValue, callback?: CharacteristicSetCallback) { await this.sendDeviceUpdate({ operate: value ? 1 : 0, operationMode: value ? 3 : undefined }); callback?.(); }
+  async setDryMode(value: CharacteristicValue, callback?: CharacteristicSetCallback) { await this.sendDeviceUpdate({ operate: value ? 1 : 0, operationMode: value ? 1 : undefined }); callback?.(); }
+  async setFanMode(value: CharacteristicValue, callback?: CharacteristicSetCallback) { await this.sendDeviceUpdate({ operate: value ? 1 : 0, operationMode: value ? 4 : undefined }); callback?.(); }
+  async setNanoeStandAloneMode(value: CharacteristicValue, callback?: CharacteristicSetCallback) { await this.sendDeviceUpdate({ operate: value ? 1 : 0, operationMode: value ? 5 : undefined }); callback?.(); }
+  async setQuietMode(value: CharacteristicValue, callback?: CharacteristicSetCallback) { await this.sendDeviceUpdate({ ecoMode: value ? 2 : 0 }); callback?.(); }
+  async setPowerfulMode(value: CharacteristicValue, callback?: CharacteristicSetCallback) { await this.sendDeviceUpdate({ ecoMode: value ? 1 : 0 }); callback?.(); }
+  async setSwingUpDown(value: CharacteristicValue, callback?: CharacteristicSetCallback) {
+    await this.sendDeviceUpdate({
       fanAutoMode: value ? (this.deviceStatus.fanAutoMode === 3 ? 0 : 2) : (this.deviceStatus.fanAutoMode === 0 ? 3 : 1),
       ...(!value && { airSwingUD: this.devConfig?.swingDefaultUD ?? 2 })
     });
+    callback?.();
   }
-  async setSwingLeftRight(value: CharacteristicValue) {
-    this.sendDeviceUpdate({
+  async setSwingLeftRight(value: CharacteristicValue, callback?: CharacteristicSetCallback) {
+    await this.sendDeviceUpdate({
       fanAutoMode: value ? (this.deviceStatus.fanAutoMode === 2 ? 0 : 3) : (this.deviceStatus.fanAutoMode === 0 ? 2 : 1),
       ...(!value && { airSwingLR: this.devConfig?.swingDefaultLR ?? 2 })
     });
+    callback?.();
   }
-  async setFanSpeed(value: CharacteristicValue) {
+  async setFanSpeed(value: CharacteristicValue, callback?: CharacteristicSetCallback) {
     const v = value as number;
     const params: ComfortCloudDeviceUpdatePayload = v === 0 ? { operate: 0 } : {
       ecoMode: 0,
       fanSpeed: v <= 20 ? 1 : v <= 40 ? 2 : v <= 60 ? 3 : v <= 80 ? 4 : v < 100 ? 5 : 0
     };
-    this.sendDeviceUpdate(params);
+    await this.sendDeviceUpdate(params);
+    callback?.();
   }
 
-  async setThresholdTemperature(value: CharacteristicValue) {
-    this.sendDeviceUpdate({ temperatureSet: value as number });
+  async setThresholdTemperature(value: CharacteristicValue, callback?: CharacteristicSetCallback) {
+    await this.sendDeviceUpdate({ temperatureSet: value as number });
+    callback?.();
   }
 
   async sendDeviceUpdate(payload: ComfortCloudDeviceUpdatePayload) {
