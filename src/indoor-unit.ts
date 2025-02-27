@@ -34,7 +34,7 @@ export default class IndoorUnitAccessory {
     this.setupCharacteristic('SwingMode', this.setSwingMode.bind(this));
     this.setupCharacteristic('CoolingThresholdTemperature', this.setThresholdTemperature.bind(this), { minValue: 16, maxValue: 30, minStep: 0.5 });
     this.setupCharacteristic('HeatingThresholdTemperature', this.setThresholdTemperature.bind(this),
-                             { minValue: this.devConfig?.minHeatingTemperature || 16, maxValue: 30, minStep: 0.5 });
+      { minValue: this.devConfig?.minHeatingTemperature || 16, maxValue: 30, minStep: 0.5 });
 
     // Optional Features
     this.setupOptionalService('exposeInsideTemp', this.platform.Service.TemperatureSensor, 'inside temp');
@@ -59,14 +59,25 @@ export default class IndoorUnitAccessory {
     this.refreshDeviceStatus();
   }
 
-  private setupCharacteristic(name: string, onSet: ((value: CharacteristicValue, callback?: CharacteristicSetCallback) => void | Promise<void>) | null, props?: any) {
+  private setupCharacteristic(
+    name: string, 
+    onSet: ((value: CharacteristicValue, callback?: CharacteristicSetCallback) => void | Promise<void>) | null, props?: any) {
     const char = this.service.getCharacteristic(this.platform.Characteristic[name]);
-    if (props) char.setProps(props);
-    if (onSet) char.onSet(onSet);
+    if (props) {
+      char.setProps(props);\
+    }
+    if (onSet) {
+      char.onSet(onSet);
+    }
   }
 
-  private setupOptionalService(configKey: string, serviceType: any, nameSuffix: string, onSet?: (value: CharacteristicValue,
-                                                                                                 callback?: CharacteristicSetCallback) => void | Promise<void>, isFan = false) {
+  private setupOptionalService(
+    configKey: string,
+    serviceType: any,
+    nameSuffix: string,
+    onSet?: (value: CharacteristicValue,
+    callback?: CharacteristicSetCallback) => void | Promise<void>, isFan = false) {
+
     const serviceName = `${this.accessory.displayName} ${nameSuffix}`;
     if (this.devConfig?.[configKey]) {
       const service = this.accessory.getService(serviceName) || this.accessory.addService(serviceType, serviceName, configKey);
