@@ -228,17 +228,16 @@ export default class IndoorUnitAccessory {
   
         this.service.updateCharacteristic(
           this.platform.Characteristic.TargetHeaterCoolerState,
-          this.platform.Characteristic.TargetHeaterCoolerState[target]
+          this.platform.Characteristic.TargetHeaterCoolerState[target],
         );
   
         this.service.updateCharacteristic(
           this.platform.Characteristic.CurrentHeaterCoolerState,
-          this.platform.Characteristic.CurrentHeaterCoolerState[current]
+          this.platform.Characteristic.CurrentHeaterCoolerState[current],
         );
       } else {
         this.platform.log.error(`Unknown operation mode: '${operationMode}'`);
       }
-​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​
 
       // Rotation Speed
       /**
@@ -342,9 +341,9 @@ export default class IndoorUnitAccessory {
       // Cooling Threshold Temperature (optional)
       // Heating Threshold Temperature (optional)
       this.service.getCharacteristic(this.platform.Characteristic.HeatingThresholdTemperature)
-        .updateValue(setTemperature);
+        .updateValue(setTemp);
       this.service.getCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature)
-        .updateValue(setTemperature);
+        .updateValue(setTemp);
 
       // log
       if (this.platform.platformConfig.logsLevel >= 1) {
