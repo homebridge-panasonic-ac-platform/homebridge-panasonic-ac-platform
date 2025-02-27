@@ -166,7 +166,7 @@ export default class IndoorUnitAccessory {
       this.exposeFanSpeed = manageService(true, 'fan speed', this.platform.Service.Fan);
       this.exposeFanSpeed.getCharacteristic(this.platform.Characteristic.RotationSpeed).onSet(this.setFanSpeed.bind(this));
     } else {
-      manageService(false, 'fan speed');
+      manageService(false, 'fan speed', this.platform.Service.Fan);
     }
 
     // Update characteristic values asynchronously instead of using onGet handlers
