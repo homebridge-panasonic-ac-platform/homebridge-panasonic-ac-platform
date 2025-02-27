@@ -32,7 +32,7 @@ export default class IndoorUnitAccessory {
     private readonly accessory: PlatformAccessory<PanasonicAccessoryContext>,
   ) {
     this.devConfig = this.platform.platformConfig.devices?.find(
-      item => item.name === (accessory.context.device?.deviceName || accessory.context.device?.deviceGuid,)
+      item => item.name === (accessory.context.device?.deviceName || accessory.context.device?.deviceGuid),
     );
 
     this.accessory.getService(this.platform.Service.AccessoryInformation)!
