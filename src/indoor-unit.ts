@@ -50,21 +50,29 @@ export default class IndoorUnitAccessory {
       ?.setCharacteristic(this.platform.Characteristic.Manufacturer, 'Panasonic')
       .setCharacteristic(this.platform.Characteristic.Model, accessory.context.device?.deviceModuleNumber || 'Unknown')
       .setCharacteristic(this.platform.Characteristic.SerialNumber, accessory.context.device?.deviceGuid || 'Unknown');
-    
+
     // Heater-Cooler Service
     this.service = this.accessory.getService(this.platform.Service.HeaterCooler) 
       || this.accessory.addService(this.platform.Service.HeaterCooler);
-    
+
     this.service
       .setCharacteristic(this.platform.Characteristic.Name, accessory.context.device?.deviceName || 'Unnamed')
-      .getCharacteristic(this.platform.Characteristic.Active).onSet(this.setActive.bind(this))
-      .getCharacteristic(this.platform.Characteristic.CurrentTemperature).setProps({ minValue: -100, maxValue: 100, minStep: 0.01 })
-      .getCharacteristic(this.platform.Characteristic.TargetHeaterCoolerState).onSet(this.setTargetHeaterCoolerState.bind(this))
-      .getCharacteristic(this.platform.Characteristic.RotationSpeed).setProps({ minValue: 0, maxValue: 8, minStep: 1 }).onSet(this.setRotationSpeed.bind(this))
-      .getCharacteristic(this.platform.Characteristic.SwingMode).onSet(this.setSwingMode.bind(this))
-      .getCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature).setProps({ minValue: 16, maxValue: 30, minStep: 0.5 }).onSet(this.setThresholdTemperature.bind(this))
-      .getCharacteristic(this.platform.Characteristic.HeatingThresholdTemperature).setProps({ minValue: this.devConfig?.minHeatingTemperature || 16, maxValue: 30, minStep: 0.5 }).onSet(this.setThresholdTemperature.bind(this));
-    
+      .getCharacteristic(this.platform.Characteristic.Active)
+        .onSet(this.setActive.bind(this))
+      .getCharacteristic(this.platform.Characteristic.CurrentTemperature)
+        .setProps({ minValue: -100, maxValue: 100, minStep: 0.01 })
+      .getCharacteristic(this.platform.Characteristic.TargetHeaterCoolerState)
+        .onSet(this.setTargetHeaterCoolerState.bind(this))
+      .getCharacteristic(this.platform.Characteristic.RotationSpeed)
+        .setProps({ minValue: 0, maxValue: 8, minStep: 1 })
+        .onSet(this.setRotationSpeed.bind(this))
+      .getCharacteristic(this.platform.Characteristic.SwingMode)
+        .onSet(this.setSwingMode.bind(this))
+      .getCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature)
+        .setProps({ minValue: 16, maxValue: 30, minStep: 0.5 }).onSet(this.setThresholdTemperature.bind(this))
+      .getCharacteristic(this.platform.Characteristic.HeatingThresholdTemperature)
+        .setProps({ minValue: this.devConfig?.minHeatingTemperature || 16, maxValue: 30, minStep: 0.5 }).onSet(this.setThresholdTemperature.bind(this));
+
     // Helper function to manage optional services
     const manageService = (exposeFlag, serviceName, serviceType, setter) => {
       const fullName = `${this.accessory.displayName} ${serviceName}`;
