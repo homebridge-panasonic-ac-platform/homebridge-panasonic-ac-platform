@@ -475,8 +475,6 @@ export default class IndoorUnitAccessory {
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
-
-  
   
   // Helper
   async setMode(modeName: string, value: boolean) {
@@ -496,40 +494,68 @@ export default class IndoorUnitAccessory {
       setFanMode: { key: 'operationMode', on: 4, off: 0, operate: true },
       setNanoeStandAloneMode: { key: 'operationMode', on: 5, off: 0, operate: true },
       setQuietMode: { key: 'ecoMode', on: 2, off: 0 },
-      setPowerfulMode: { key: 'ecoMode', on: 1, off: 0 }
+      setPowerfulMode: { key: 'ecoMode', on: 1, off: 0 },
     };
-    
+
     const config = MODE_CONFIGS[modeName];
     const parameters: ComfortCloudDeviceUpdatePayload = {};
-    
+
     if (config.operate) {
       parameters.operate = value ? 1 : 0;
-      if (value) parameters[config.key] = config.on;
+      if (value) {
+        parameters[config.key] = config.on;
+      }
     } else {
       parameters[config.key] = value ? config.on : config.off;
     }
-  
+
     const logLevel = this.platform.platformConfig.logsLevel >= 1 ? 'info' : 'debug';
     const state = value ? 'On' : 'Off';
     this.platform.log[logLevel](`${this.accessory.displayName}: ${modeName.replace('set', '')} ${state}`);
-    
+
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
   
   // Use for all methods
-  async setPower(value: boolean) { await this.setMode('setPower', value); }
-  async setNanoe(value: boolean) { await this.setMode('setNanoe', value); }
-  async setInsideCleaning(value: boolean) { await this.setMode('setInsideCleaning', value); }
-  async setEcoNavi(value: boolean) { await this.setMode('setEcoNavi', value); }
-  async setEcoFunction(value: boolean) { await this.setMode('setEcoFunction', value); }
-  async setAutoMode(value: boolean) { await this.setMode('setAutoMode', value); }
-  async setCoolMode(value: boolean) { await this.setMode('setCoolMode', value); }
-  async setHeatMode(value: boolean) { await this.setMode('setHeatMode', value); }
-  async setDryMode(value: boolean) { await this.setMode('setDryMode', value); }
-  async setFanMode(value: boolean) { await this.setMode('setFanMode', value); }
-  async setNanoeStandAloneMode(value: boolean) { await this.setMode('setNanoeStandAloneMode', value); }
-  async setQuietMode(value: boolean) { await this.setMode('setQuietMode', value); }
-  async setPowerfulMode(value: boolean) { await this.setMode('setPowerfulMode', value); }
+  async setPower(value: boolean) {
+    await this.setMode('setPower', value);
+  }
+  async setNanoe(value: boolean) {
+    await this.setMode('setNanoe', value);
+  }
+  async setInsideCleaning(value: boolean) {
+    await this.setMode('setInsideCleaning', value);
+  }
+  async setEcoNavi(value: boolean) {
+    await this.setMode('setEcoNavi', value);
+  }
+  async setEcoFunction(value: boolean) {
+    await this.setMode('setEcoFunction', value);
+  }
+  async setAutoMode(value: boolean) {
+    await this.setMode('setAutoMode', value);
+  }
+  async setCoolMode(value: boolean) {
+    await this.setMode('setCoolMode', value);
+  }
+  async setHeatMode(value: boolean) {
+    await this.setMode('setHeatMode', value);
+  }
+  async setDryMode(value: boolean) {
+    await this.setMode('setDryMode', value);
+  }
+  async setFanMode(value: boolean) {
+    await this.setMode('setFanMode', value);
+  }
+  async setNanoeStandAloneMode(value: boolean) {
+    await this.setMode('setNanoeStandAloneMode', value);
+  }
+  async setQuietMode(value: boolean) {
+    await this.setMode('setQuietMode', value);
+  }
+  async setPowerfulMode(value: boolean) {
+    await this.setMode('setPowerfulMode', value);
+  }
 
   // set Swing Up Down
   async setSwingUpDown(value) {
