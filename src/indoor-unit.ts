@@ -32,7 +32,7 @@ export default class IndoorUnitAccessory {
     private readonly accessory: PlatformAccessory<PanasonicAccessoryContext>,
   ) {
     this.devConfig = this.platform.platformConfig.devices?.find(
-      item => item.name === (accessory.context.device?.deviceName || accessory.context.device?.deviceGuid)
+      item => item.name === (accessory.context.device?.deviceName || accessory.context.device?.deviceGuid,)
     );
 
     this.accessory.getService(this.platform.Service.AccessoryInformation)!
@@ -49,34 +49,34 @@ export default class IndoorUnitAccessory {
     this.setupCharacteristic('TargetHeaterCoolerState', this.setTargetHeaterCoolerState.bind(this));
     this.setupCharacteristic('RotationSpeed', this.setRotationSpeed.bind(this), { minValue: 0, maxValue: 8, minStep: 1 });
     this.setupCharacteristic('SwingMode', this.setSwingMode.bind(this));
-    this.setupCharacteristic('CoolingThresholdTemperature', this.setThresholdTemperature.bind(this), 
+    this.setupCharacteristic('CoolingThresholdTemperature', this.setThresholdTemperature.bind(this),
       { minValue: 16, maxValue: 30, minStep: 0.5 });
-    this.setupCharacteristic('HeatingThresholdTemperature', this.setThresholdTemperature.bind(this), 
+    this.setupCharacteristic('HeatingThresholdTemperature', this.setThresholdTemperature.bind(this),
       { minValue: this.devConfig?.minHeatingTemperature || 16, maxValue: 30, minStep: 0.5 });
 
     this.setupOptionalService('exposeInsideTemp', this.platform.Service.TemperatureSensor, 'inside temp');
     this.setupOptionalService('exposeOutdoorTemp', this.platform.Service.TemperatureSensor, 'out temp');
     this.setupOptionalService('exposePower', this.platform.Service.Switch, 'power', this.setPower.bind(this));
     this.setupOptionalService('exposeNanoe', this.platform.Service.Switch, 'nanoe', this.setNanoe.bind(this));
-    this.setupOptionalService('exposeInsideCleaning', this.platform.Service.Switch, 'inside cleaning', 
+    this.setupOptionalService('exposeInsideCleaning', this.platform.Service.Switch, 'inside cleaning',
       this.setInsideCleaning.bind(this));
     this.setupOptionalService('exposeEcoNavi', this.platform.Service.Switch, 'eco navi', this.setEcoNavi.bind(this));
-    this.setupOptionalService('exposeEcoFunction', this.platform.Service.Switch, 'eco function', 
+    this.setupOptionalService('exposeEcoFunction', this.platform.Service.Switch, 'eco function',
       this.setEcoFunction.bind(this));
     this.setupOptionalService('exposeAutoMode', this.platform.Service.Switch, 'auto mode', this.setAutoMode.bind(this));
     this.setupOptionalService('exposeCoolMode', this.platform.Service.Switch, 'cool mode', this.setCoolMode.bind(this));
     this.setupOptionalService('exposeHeatMode', this.platform.Service.Switch, 'heat mode', this.setHeatMode.bind(this));
     this.setupOptionalService('exposeDryMode', this.platform.Service.Switch, 'dry mode', this.setDryMode.bind(this));
     this.setupOptionalService('exposeFanMode', this.platform.Service.Switch, 'fan mode', this.setFanMode.bind(this));
-    this.setupOptionalService('exposeNanoeStandAloneMode', this.platform.Service.Switch, 'nanoe stand alone mode', 
+    this.setupOptionalService('exposeNanoeStandAloneMode', this.platform.Service.Switch, 'nanoe stand alone mode',
       this.setNanoeStandAloneMode.bind(this));
-    this.setupOptionalService('exposeQuietMode', this.platform.Service.Switch, 'quiet mode', 
+    this.setupOptionalService('exposeQuietMode', this.platform.Service.Switch, 'quiet mode',
       this.setQuietMode.bind(this));
-    this.setupOptionalService('exposePowerfulMode', this.platform.Service.Switch, 'powerful mode', 
+    this.setupOptionalService('exposePowerfulMode', this.platform.Service.Switch, 'powerful mode',
       this.setPowerfulMode.bind(this));
-    this.setupOptionalService('exposeSwingUpDown', this.platform.Service.Switch, 'swing up down', 
+    this.setupOptionalService('exposeSwingUpDown', this.platform.Service.Switch, 'swing up down',
       this.setSwingUpDown.bind(this));
-    this.setupOptionalService('exposeSwingLeftRight', this.platform.Service.Switch, 'swing left right', 
+    this.setupOptionalService('exposeSwingLeftRight', this.platform.Service.Switch, 'swing left right',
       this.setSwingLeftRight.bind(this));
     this.setupOptionalService('exposeFanSpeed', this.platform.Service.Fan, 'fan speed', this.setFanSpeed.bind(this), true);
 
