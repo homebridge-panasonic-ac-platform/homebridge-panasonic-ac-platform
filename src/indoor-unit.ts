@@ -14,7 +14,7 @@ export default class IndoorUnitAccessory {
     private readonly accessory: PlatformAccessory<PanasonicAccessoryContext>,
   ) {
     this.devConfig = this.platform.platformConfig.devices?.find(
-      item => item.name === (accessory.context.device?.deviceName || accessory.context.device?.deviceGuid)
+      item => item.name === (accessory.context.device?.deviceName || accessory.context.device?.deviceGuid),
     );
 
     this.accessory.getService(this.platform.Service.AccessoryInformation)!
@@ -22,8 +22,8 @@ export default class IndoorUnitAccessory {
       .setCharacteristic(this.platform.Characteristic.Model, accessory.context.device?.deviceModuleNumber || 'Unknown')
       .setCharacteristic(this.platform.Characteristic.SerialNumber, accessory.context.device?.deviceGuid || 'Unknown');
 
-    this.service = this.accessory.getService(this.platform.Service.HeaterCooler) ||
-      this.accessory.addService(this.platform.Service.HeaterCooler);
+    this.service = this.accessory.getService(this.platform.Service.HeaterCooler)
+      || this.accessory.addService(this.platform.Service.HeaterCooler);
     this.service.setCharacteristic(this.platform.Characteristic.Name, accessory.context.device?.deviceName || 'Unnamed');
 
     // Core Characteristics z poprawnym typem
@@ -33,7 +33,8 @@ export default class IndoorUnitAccessory {
     this.setupCharacteristic('RotationSpeed', this.setRotationSpeed.bind(this), { minValue: 0, maxValue: 8, minStep: 1 });
     this.setupCharacteristic('SwingMode', this.setSwingMode.bind(this));
     this.setupCharacteristic('CoolingThresholdTemperature', this.setThresholdTemperature.bind(this), { minValue: 16, maxValue: 30, minStep: 0.5 });
-    this.setupCharacteristic('HeatingThresholdTemperature', this.setThresholdTemperature.bind(this), { minValue: this.devConfig?.minHeatingTemperature || 16, maxValue: 30, minStep: 0.5 });
+    this.setupCharacteristic('HeatingThresholdTemperature', this.setThresholdTemperature.bind(this),
+                             { minValue: this.devConfig?.minHeatingTemperature || 16, maxValue: 30, minStep: 0.5 });
 
     // Optional Features
     this.setupOptionalService('exposeInsideTemp', this.platform.Service.TemperatureSensor, 'inside temp');
@@ -64,7 +65,8 @@ export default class IndoorUnitAccessory {
     if (onSet) char.onSet(onSet);
   }
 
-  private setupOptionalService(configKey: string, serviceType: any, nameSuffix: string, onSet?: (value: CharacteristicValue, callback?: CharacteristicSetCallback) => void | Promise<void>, isFan = false) {
+  private setupOptionalService(configKey: string, serviceType: any, nameSuffix: string, onSet?: (value: CharacteristicValue,
+                                                                                                 callback?: CharacteristicSetCallback) => void | Promise<void>, isFan = false) {
     const serviceName = `${this.accessory.displayName} ${nameSuffix}`;
     if (this.devConfig?.[configKey]) {
       const service = this.accessory.getService(serviceName) || this.accessory.addService(serviceType, serviceName, configKey);
