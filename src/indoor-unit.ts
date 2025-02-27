@@ -124,7 +124,7 @@ export default class IndoorUnitAccessory {
       }
     };
 
-    // Additional Sensors and Switches
+    // Expose additional features
     manageService(this.devConfig?.exposeInsideTemp, 'inside temp', this.platform.Service.TemperatureSensor);
     manageService(this.devConfig?.exposeOutdoorTemp, 'out temp', this.platform.Service.TemperatureSensor);
     manageService(this.devConfig?.exposePower, 'power', this.platform.Service.Switch, this.setPower);
@@ -476,7 +476,7 @@ export default class IndoorUnitAccessory {
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
 
-  // Helper
+  // Expose additional features - helper function
   async setMode(modeName: string, value: boolean) {
     this.platform.log.debug(`${this.accessory.displayName}: ${modeName}()`);
 
@@ -516,7 +516,7 @@ export default class IndoorUnitAccessory {
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
 
-  // Use for all methods
+  // Expose additional features
   async setPower(value: boolean) {
     await this.setMode('setPower', value);
   }
@@ -572,95 +572,51 @@ export default class IndoorUnitAccessory {
   // set Swing Up Down
   async setSwingUpDown(value) {
     this.platform.log.debug(`${this.accessory.displayName}: setSwingUpDown()`);
-    const parameters: ComfortCloudDeviceUpdatePayload = {};
-    if (value) {
-      // if Swing Left Right is enabled than set Swing Auto (Up Down and Left Right)
-      if (this.deviceStatus.fanAutoMode === 3) {
-        parameters.fanAutoMode = 0;
-      } else {
-        parameters.fanAutoMode = 2;
-      }
-      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Swing Up Down On`);
-    } else {
-      if (this.deviceStatus.fanAutoMode === 0) {
-        parameters.fanAutoMode = 3;
-      } else {
-        parameters.fanAutoMode = 1;
-      }
-      parameters.airSwingUD = (this.devConfig?.swingDefaultUD !== null) ? this.devConfig?.swingDefaultUD : 2;
-      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Swing Up Down Off`);
-    }
-    this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
+    const params = {
+      fanAutoMode: value ? (this.deviceStatus.fanAutoMode === 3 ? 0 : 2) : (this.deviceStatus.fanAutoMode === 0 ? 3 : 1),
+      ...(!value && { airSwingUD: this.devConfig?.swingDefaultUD ?? 2 })
+    };
+    this.platform.log[this.platform.platformConfig.logsLevel >= 1 ? 'info' : 'debug'](
+      `${this.accessory.displayName}: Swing Up Down ${value ? 'On' : 'Off'}`
+    );
+    this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, params);
   }
 
   // set Swing Left Right
   async setSwingLeftRight(value) {
     this.platform.log.debug(`${this.accessory.displayName}: setSwingLeftRight()`);
-    const parameters: ComfortCloudDeviceUpdatePayload = {};
-    if (value) {
-      // if Swing Up Down is enabled than set Swing Auto (Up Down and Left Right)
-      if (this.deviceStatus.fanAutoMode === 2) {
-        parameters.fanAutoMode = 0;
-      } else {
-        parameters.fanAutoMode = 3;
-      }
-      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Swing Left Right On`);
-    } else {
-      if (this.deviceStatus.fanAutoMode === 0) {
-        parameters.fanAutoMode = 2;
-      } else {
-        parameters.fanAutoMode = 1;
-      }
-      parameters.airSwingLR = (this.devConfig?.swingDefaultLR !== null) ? this.devConfig?.swingDefaultLR : 2;
-      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Swing Left Right Off`);
-    }
-    this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
+    const params = {
+      fanAutoMode: value ? (this.deviceStatus.fanAutoMode === 2 ? 0 : 3) : (this.deviceStatus.fanAutoMode === 0 ? 2 : 1),
+      ...(!value && { airSwingLR: this.devConfig?.swingDefaultLR ?? 2 })
+    };
+    this.platform.log[this.platform.platformConfig.logsLevel >= 1 ? 'info' : 'debug'](
+      `${this.accessory.displayName}: Swing Left Right ${value ? 'On' : 'Off'}`
+    );
+    this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, params);
   }
-
-  // set Fan speed
+  
   async setFanSpeed(value) {
-
-    // set Fan speed
     if (value >= 0 && value <= 100) {
-
       this.platform.log.debug(`${this.accessory.displayName}: setFanSpeed(), value: ${value}`);
-
-      const parameters: ComfortCloudDeviceUpdatePayload = {};
-
+    
+      const parameters = { ecoMode: 0 };
+      const logLevel = this.platform.platformConfig.logsLevel >= 1 ? 'info' : 'debug';
+    
       if (value === 0) {
-        // Turn off
         parameters.operate = 0;
-        this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: set off`);
-      } else if (value > 0 && value <= 20) {
-        parameters.ecoMode = 0;
-        parameters.fanSpeed = 1;
-        this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: set fan speed 1`);
-      } else if (value > 20 && value <= 40) {
-        parameters.ecoMode = 0;
-        parameters.fanSpeed = 2;
-        this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: set fan speed 2`);
-      } else if (value > 40 && value <= 60) {
-        parameters.ecoMode = 0;
-        parameters.fanSpeed = 3;
-        this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: set fan speed 3`);
-      } else if (value > 60 && value <= 80) {
-        parameters.ecoMode = 0;
-        parameters.fanSpeed = 4;
-        this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: set fan speed 4`);
-      } else if (value > 80 && value < 100) {
-        parameters.ecoMode = 0;
-        parameters.fanSpeed = 5;
-        this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: set fan speed 5`);
+        this.platform.log[logLevel](`${this.accessory.displayName}: set off`);
       } else if (value === 100) {
-        // Auto mode
-        parameters.ecoMode = 0;
         parameters.fanSpeed = 0;
-        this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: set fan speed auto`);
+        this.platform.log[logLevel](`${this.accessory.displayName}: set fan speed auto`);
+      } else {
+        parameters.fanSpeed = Math.ceil(value / 20);
+        this.platform.log[logLevel](`${this.accessory.displayName}: set fan speed ${parameters.fanSpeed}`);
       }
-
+    
       this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
     }
   }
+  
 
   // ===============================================================================================================================================
 
