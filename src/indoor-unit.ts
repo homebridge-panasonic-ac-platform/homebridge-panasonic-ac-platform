@@ -60,7 +60,7 @@ export default class IndoorUnitAccessory {
   }
 
   private setupCharacteristic(
-    name: string, 
+    name: string,
     onSet: ((value: CharacteristicValue, callback?: CharacteristicSetCallback) => void | Promise<void>) | null, props?: any) {
     const char = this.service.getCharacteristic(this.platform.Characteristic[name]);
     if (props) {
@@ -84,18 +84,22 @@ export default class IndoorUnitAccessory {
       service.setCharacteristic(this.platform.Characteristic.ConfiguredName, serviceName);
       if (onSet) {
         service.getCharacteristic(this.platform.Characteristic.On).onSet(onSet);
-        if (isFan) service.getCharacteristic(this.platform.Characteristic.RotationSpeed).onSet(onSet);
+        if (isFan) {
+          service.getCharacteristic(this.platform.Characteristic.RotationSpeed).onSet(onSet);
+        }
       }
     } else {
       const service = this.accessory.getService(serviceName);
-      if (service) this.accessory.removeService(service);
+      if (service) {
+        this.accessory.removeService(service);
+      }
     }
   }
 
   async refreshDeviceStatus() {
     try {
       this.deviceStatus = (await this.platform.comfortCloud.getDeviceStatus(
-        this.accessory.context.device.deviceGuid, this.accessory.displayName
+        this.accessory.context.device.deviceGuid, this.accessory.displayName,
       )).parameters;
 
       this.updateCharacteristic('Active', this.deviceStatus.operate === 1 ? 1 : 0);
