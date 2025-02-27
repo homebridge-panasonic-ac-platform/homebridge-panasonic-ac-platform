@@ -64,7 +64,7 @@ export default class IndoorUnitAccessory {
     onSet: ((value: CharacteristicValue, callback?: CharacteristicSetCallback) => void | Promise<void>) | null, props?: any) {
     const char = this.service.getCharacteristic(this.platform.Characteristic[name]);
     if (props) {
-      char.setProps(props);\
+      char.setProps(props);
     }
     if (onSet) {
       char.onSet(onSet);
