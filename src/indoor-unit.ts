@@ -476,192 +476,97 @@ export default class IndoorUnitAccessory {
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
 
-  // set Power (on/off)
-  async setPower(value) {
-    this.platform.log.debug(`${this.accessory.displayName}: setPower()`);
+  // Helper
+  async setMode(modeName: string, value: boolean) {
+    this.platform.log.debug(`${this.accessory.displayName}: ${modeName}()`);
+
+    // Configuration map for different modes
+    const MODE_CONFIGS = {
+      setPower: { key: 'operate', on: 1, off: 0 },
+      setNanoe: { key: 'nanoe', on: 2, off: 1 },
+      setInsideCleaning: { key: 'insideCleaning', on: 2, off: 1 },
+      setEcoNavi: { key: 'ecoNavi', on: 2, off: 1 },
+      setEcoFunction: { key: 'ecoFunctionData', on: 2, off: 1 },
+      setAutoMode: { key: 'operationMode', on: 0, off: 0, operate: true },
+      setCoolMode: { key: 'operationMode', on: 2, off: 0, operate: true },
+      setHeatMode: { key: 'operationMode', on: 3, off: 0, operate: true },
+      setDryMode: { key: 'operationMode', on: 1, off: 0, operate: true },
+      setFanMode: { key: 'operationMode', on: 4, off: 0, operate: true },
+      setNanoeStandAloneMode: { key: 'operationMode', on: 5, off: 0, operate: true },
+      setQuietMode: { key: 'ecoMode', on: 2, off: 0 },
+      setPowerfulMode: { key: 'ecoMode', on: 1, off: 0 },
+    };
+
+    const config = MODE_CONFIGS[modeName];
     const parameters: ComfortCloudDeviceUpdatePayload = {};
-    if (value) {
-      parameters.operate = 1;
-      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Power On`);
+
+    if (config.operate) {
+      parameters.operate = value ? 1 : 0;
+      if (value) {
+        parameters[config.key] = config.on;
+      }
     } else {
-      parameters.operate = 0;
-      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Power Off`);
+      parameters[config.key] = value ? config.on : config.off;
     }
+
+    const logLevel = this.platform.platformConfig.logsLevel >= 1 ? 'info' : 'debug';
+    const state = value ? 'On' : 'Off';
+    this.platform.log[logLevel](`${this.accessory.displayName}: ${modeName.replace('set', '')} ${state}`);
+
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
 
-  // set Nanoe
-  async setNanoe(value) {
-    this.platform.log.debug(`${this.accessory.displayName}: setNanoe()`);
-    const parameters: ComfortCloudDeviceUpdatePayload = {};
-    if (value) {
-      parameters.nanoe = 2;
-      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Nanoe On`);
-    } else {
-      parameters.nanoe = 1;
-      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Nanoe Off`);
-    }
-    this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
+  // Use for all methods
+  async setPower(value: boolean) {
+    await this.setMode('setPower', value);
   }
 
-  // set Inside Cleaning
-  async setInsideCleaning(value) {
-    this.platform.log.debug(`${this.accessory.displayName}: setInsideCleaning()`);
-    const parameters: ComfortCloudDeviceUpdatePayload = {};
-    if (value) {
-      parameters.insideCleaning = 2;
-      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Inside Cleaning On`);
-    } else {
-      parameters.insideCleaning = 1;
-      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Inside Cleaning Off`);
-    }
-    this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
+  async setNanoe(value: boolean) {
+    await this.setMode('setNanoe', value);
   }
 
-  // set Eco Navi
-  async setEcoNavi(value) {
-    this.platform.log.debug(`${this.accessory.displayName}: setEcoNavi()`);
-    const parameters: ComfortCloudDeviceUpdatePayload = {};
-    if (value) {
-      parameters.ecoNavi = 2;
-      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Eco Navi On`);
-    } else {
-      parameters.ecoNavi = 1;
-      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Eco Navi Off`);
-    }
-    this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
+  async setInsideCleaning(value: boolean) {
+    await this.setMode('setInsideCleaning', value);
   }
 
-  // set Eco Function
-  async setEcoFunction(value) {
-    this.platform.log.debug(`${this.accessory.displayName}: setEcoFunction()`);
-    const parameters: ComfortCloudDeviceUpdatePayload = {};
-    if (value) {
-      parameters.ecoFunctionData = 2;
-      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Eco Function On`);
-    } else {
-      parameters.ecoFunctionData = 1;
-      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Eco Function Off`);
-    }
-    this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
+  async setEcoNavi(value: boolean) {
+    await this.setMode('setEcoNavi', value);
   }
 
-  // set Auto Mode
-  async setAutoMode(value) {
-    this.platform.log.debug(`${this.accessory.displayName}: setAutoMode()`);
-    const parameters: ComfortCloudDeviceUpdatePayload = {};
-    if (value) {
-      parameters.operate = 1;
-      parameters.operationMode = 0;
-      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Auto Mode On`);
-    } else {
-      parameters.operate = 0;
-      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Auto Mode Off`);
-    }
-    this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
+  async setEcoFunction(value: boolean) {
+    await this.setMode('setEcoFunction', value);
   }
 
-  // set Cool Mode
-  async setCoolMode(value) {
-    this.platform.log.debug(`${this.accessory.displayName}: setCoolMode()`);
-    const parameters: ComfortCloudDeviceUpdatePayload = {};
-    if (value) {
-      parameters.operate = 1;
-      parameters.operationMode = 2;
-      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Cool Mode On`);
-    } else {
-      parameters.operate = 0;
-      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Cool Mode Off`);
-    }
-    this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
+  async setAutoMode(value: boolean) {
+    await this.setMode('setAutoMode', value);
   }
 
-  // set Heat Mode
-  async setHeatMode(value) {
-    this.platform.log.debug(`${this.accessory.displayName}: setHeatMode()`);
-    const parameters: ComfortCloudDeviceUpdatePayload = {};
-    if (value) {
-      parameters.operate = 1;
-      parameters.operationMode = 3;
-      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Heat Mode On`);
-    } else {
-      parameters.operate = 0;
-      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Heat Mode Off`);
-    }
-    this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
+  async setCoolMode(value: boolean) {
+    await this.setMode('setCoolMode', value);
   }
 
-  // set Dry Mode
-  async setDryMode(value) {
-    this.platform.log.debug(`${this.accessory.displayName}: setDryMode()`);
-    const parameters: ComfortCloudDeviceUpdatePayload = {};
-    if (value) {
-      parameters.operate = 1;
-      parameters.operationMode = 1;
-      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Dry Mode On`);
-    } else {
-      parameters.operate = 0;
-      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Dry Mode Off`);
-    }
-    this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
+  async setHeatMode(value: boolean) {
+    await this.setMode('setHeatMode', value);
   }
 
-  // set Fan Mode
-  async setFanMode(value) {
-    this.platform.log.debug(`${this.accessory.displayName}: setFanMode()`);
-    const parameters: ComfortCloudDeviceUpdatePayload = {};
-    if (value) {
-      parameters.operate = 1;
-      parameters.operationMode = 4;
-      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Fan Mode On`);
-    } else {
-      parameters.operate = 0;
-      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Fan Mode Off`);
-    }
-    this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
+  async setDryMode(value: boolean) {
+    await this.setMode('setDryMode', value);
   }
 
-  // set Nanoe Stand Alone Mode
-  async setNanoeStandAloneMode(value) {
-    this.platform.log.debug(`${this.accessory.displayName}: setNanoeStandAloneMode()`);
-    const parameters: ComfortCloudDeviceUpdatePayload = {};
-    if (value) {
-      parameters.operate = 1;
-      parameters.operationMode = 5;
-      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Nanoe Stand Alone Mode On`);
-    } else {
-      parameters.operate = 0;
-      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Nanoe Stand Alone Mode Off`);
-    }
-    this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
+  async setFanMode(value: boolean) {
+    await this.setMode('setFanMode', value);
   }
 
-  // set Quiet Mode
-  async setQuietMode(value) {
-    this.platform.log.debug(`${this.accessory.displayName}: setQuietMode()`);
-    const parameters: ComfortCloudDeviceUpdatePayload = {};
-    if (value) {
-      parameters.ecoMode = 2;
-      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Quiet Mode On`);
-    } else {
-      parameters.ecoMode = 0;
-      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Quiet Mode Off`);
-    }
-    this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
+  async setNanoeStandAloneMode(value: boolean) {
+    await this.setMode('setNanoeStandAloneMode', value);
   }
 
-  // set Powerful Mode
-  async setPowerfulMode(value) {
-    this.platform.log.debug(`${this.accessory.displayName}: setPowerfulMode()`);
-    const parameters: ComfortCloudDeviceUpdatePayload = {};
-    if (value) {
-      parameters.ecoMode = 1;
-      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Powerful Mode On`);
-    } else {
-      parameters.ecoMode = 0;
-      this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Powerful Mode Off`);
-    }
-    this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
+  async setQuietMode(value: boolean) {
+    await this.setMode('setQuietMode', value);
+  }
+
+  async setPowerfulMode(value: boolean) {
+    await this.setMode('setPowerfulMode', value);
   }
 
   // set Swing Up Down
