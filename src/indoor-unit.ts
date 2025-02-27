@@ -475,7 +475,7 @@ export default class IndoorUnitAccessory {
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
-  
+
   // Helper
   async setMode(modeName: string, value: boolean) {
     this.platform.log.debug(`${this.accessory.displayName}: ${modeName}()`);
@@ -515,44 +515,56 @@ export default class IndoorUnitAccessory {
 
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
-  
+
   // Use for all methods
   async setPower(value: boolean) {
     await this.setMode('setPower', value);
   }
+
   async setNanoe(value: boolean) {
     await this.setMode('setNanoe', value);
   }
+
   async setInsideCleaning(value: boolean) {
     await this.setMode('setInsideCleaning', value);
   }
+
   async setEcoNavi(value: boolean) {
     await this.setMode('setEcoNavi', value);
   }
+
   async setEcoFunction(value: boolean) {
     await this.setMode('setEcoFunction', value);
   }
+
   async setAutoMode(value: boolean) {
     await this.setMode('setAutoMode', value);
   }
+
   async setCoolMode(value: boolean) {
     await this.setMode('setCoolMode', value);
   }
+
   async setHeatMode(value: boolean) {
     await this.setMode('setHeatMode', value);
   }
+
   async setDryMode(value: boolean) {
     await this.setMode('setDryMode', value);
   }
+
   async setFanMode(value: boolean) {
     await this.setMode('setFanMode', value);
   }
+
   async setNanoeStandAloneMode(value: boolean) {
     await this.setMode('setNanoeStandAloneMode', value);
   }
+
   async setQuietMode(value: boolean) {
     await this.setMode('setQuietMode', value);
   }
+
   async setPowerfulMode(value: boolean) {
     await this.setMode('setPowerfulMode', value);
   }
