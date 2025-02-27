@@ -129,13 +129,15 @@ export default class IndoorUnitAccessory {
       exposeFlag: boolean | undefined,
       serviceName: string,
       serviceType: any, // Replace with proper Homebridge Service type if available
-      setter: ((value: any) => Promise<void>) | null = null
+      setter: ((value: any) => Promise<void>) | null = null,
     ) => {
       const fullName = `${this.accessory.displayName} ${serviceName}`;
       if (exposeFlag) {
         const service = this.accessory.getService(fullName) || this.accessory.addService(serviceType, fullName, serviceName);
         service.setCharacteristic(this.platform.Characteristic.ConfiguredName, fullName);
-        if (setter) service.getCharacteristic(this.platform.Characteristic.On).onSet(setter.bind(this));
+        if (setter) {
+          service.getCharacteristic(this.platform.Characteristic.On).onSet(setter.bind(this));
+        }
         this.platform.log.debug(`${this.accessory.displayName}: add ${serviceName}`);
         return service;
       } else {
@@ -160,7 +162,7 @@ export default class IndoorUnitAccessory {
     manageService(this.devConfig?.exposeHeatMode, 'heat mode', this.platform.Service.Switch, this.setHeatMode);
     manageService(this.devConfig?.exposeDryMode, 'dry mode', this.platform.Service.Switch, this.setDryMode);
     manageService(this.devConfig?.exposeFanMode, 'fan mode', this.platform.Service.Switch, this.setFanMode);
-    
+
     // Fan Speed (special case with RotationSpeed)
     if (this.devConfig?.exposeFanSpeed) {
       this.exposeFanSpeed = manageService(true, 'fan speed', this.platform.Service.Fan);
