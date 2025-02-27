@@ -225,12 +225,12 @@ export default class IndoorUnitAccessory {
       if (modes[operationMode]) {
         const { log, target, current } = modes[operationMode];
         logOutput += `, ${log}`;
-  
+
         this.service.updateCharacteristic(
           this.platform.Characteristic.TargetHeaterCoolerState,
           this.platform.Characteristic.TargetHeaterCoolerState[target],
         );
-  
+
         this.service.updateCharacteristic(
           this.platform.Characteristic.CurrentHeaterCoolerState,
           this.platform.Characteristic.CurrentHeaterCoolerState[current],
