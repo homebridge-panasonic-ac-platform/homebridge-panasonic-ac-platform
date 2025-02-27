@@ -572,31 +572,35 @@ export default class IndoorUnitAccessory {
   // set Swing Up Down
   async setSwingUpDown(value) {
     this.platform.log.debug(`${this.accessory.displayName}: setSwingUpDown()`);
-    const params = {
+    const parameters: ComfortCloudDeviceUpdatePayload = {};
+    parameters = {
       fanAutoMode: value ? (this.deviceStatus.fanAutoMode === 3 ? 0 : 2) : (this.deviceStatus.fanAutoMode === 0 ? 3 : 1),
       ...(!value && { airSwingUD: this.devConfig?.swingDefaultUD ?? 2 }),
     };
     this.platform.log[this.platform.platformConfig.logsLevel >= 1 ? 'info' : 'debug'](
       `${this.accessory.displayName}: Swing Up Down ${value ? 'On' : 'Off'}`);
-    this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, params);
+    this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
 
   // set Swing Left Right
   async setSwingLeftRight(value) {
     this.platform.log.debug(`${this.accessory.displayName}: setSwingLeftRight()`);
-    const params = {
+    const parameters: ComfortCloudDeviceUpdatePayload = {};
+    parameters = {
       fanAutoMode: value ? (this.deviceStatus.fanAutoMode === 2 ? 0 : 3) : (this.deviceStatus.fanAutoMode === 0 ? 2 : 1),
       ...(!value && { airSwingLR: this.devConfig?.swingDefaultLR ?? 2 }),
     };
     this.platform.log[this.platform.platformConfig.logsLevel >= 1 ? 'info' : 'debug'](
       `${this.accessory.displayName}: Swing Left Right ${value ? 'On' : 'Off'}`);
-    this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, params);
+    this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
   
   async setFanSpeed(value) {
     if (value >= 0 && value <= 100) {
       this.platform.log.debug(`${this.accessory.displayName}: setFanSpeed(), value: ${value}`);
-  
+
+      const parameters: ComfortCloudDeviceUpdatePayload = {};
+
       if (value === 0) {
         parameters.operate = 0;
         this.platform.log[logLevel](`${this.accessory.displayName}: set off`);
