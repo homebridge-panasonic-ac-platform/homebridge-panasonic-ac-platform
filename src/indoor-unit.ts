@@ -574,11 +574,10 @@ export default class IndoorUnitAccessory {
     this.platform.log.debug(`${this.accessory.displayName}: setSwingUpDown()`);
     const params = {
       fanAutoMode: value ? (this.deviceStatus.fanAutoMode === 3 ? 0 : 2) : (this.deviceStatus.fanAutoMode === 0 ? 3 : 1),
-      ...(!value && { airSwingUD: this.devConfig?.swingDefaultUD ?? 2 })
+      ...(!value && { airSwingUD: this.devConfig?.swingDefaultUD ?? 2 }),
     };
     this.platform.log[this.platform.platformConfig.logsLevel >= 1 ? 'info' : 'debug'](
-      `${this.accessory.displayName}: Swing Up Down ${value ? 'On' : 'Off'}`
-    );
+      `${this.accessory.displayName}: Swing Up Down ${value ? 'On' : 'Off'}`);
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, params);
   }
 
@@ -587,11 +586,10 @@ export default class IndoorUnitAccessory {
     this.platform.log.debug(`${this.accessory.displayName}: setSwingLeftRight()`);
     const params = {
       fanAutoMode: value ? (this.deviceStatus.fanAutoMode === 2 ? 0 : 3) : (this.deviceStatus.fanAutoMode === 0 ? 2 : 1),
-      ...(!value && { airSwingLR: this.devConfig?.swingDefaultLR ?? 2 })
+      ...(!value && { airSwingLR: this.devConfig?.swingDefaultLR ?? 2 }),
     };
     this.platform.log[this.platform.platformConfig.logsLevel >= 1 ? 'info' : 'debug'](
-      `${this.accessory.displayName}: Swing Left Right ${value ? 'On' : 'Off'}`
-    );
+      `${this.accessory.displayName}: Swing Left Right ${value ? 'On' : 'Off'}`);
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, params);
   }
   
