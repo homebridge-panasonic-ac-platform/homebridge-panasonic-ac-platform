@@ -62,26 +62,14 @@ export default class IndoorUnitAccessory {
 
     // Name (optional)
     // This is what is displayed as the default name on the Home app
-    this.service.setCharacteristic(
-      this.platform.Characteristic.Name,
-      accessory.context.device?.deviceName || 'Unnamed',
-    );
+    this.service.setCharacteristic(this.platform.Characteristic.Name, accessory.context.device?.deviceName || 'Unnamed');
 
     // Active (required)
-    this.service
-      .getCharacteristic(this.platform.Characteristic.Active)
-      .onSet(this.setActive.bind(this));
+    this.service.getCharacteristic(this.platform.Characteristic.Active).onSet(this.setActive.bind(this));
 
     // Current Temperature (required)
-    this.service
-      .getCharacteristic(this.platform.Characteristic.CurrentTemperature)
-      .setProps({
-        minValue: -100,
-        maxValue: 100,
-        minStep: 0.01,
-      });
-
-    // Current Heater-Cooler State (required, but doesn't require a setter)
+    this.service.getCharacteristic(this.platform.Characteristic.CurrentTemperature)
+      .setProps({minValue: -100, maxValue: 100,minStep: 0.01,});
 
     // Target Heater-Cooler State (required)
     this.service
@@ -91,11 +79,7 @@ export default class IndoorUnitAccessory {
     // Rotation Speed (optional)
     this.service
       .getCharacteristic(this.platform.Characteristic.RotationSpeed)
-      .setProps({
-        minValue: 0,
-        maxValue: 8,
-        minStep: 1,
-      })
+      .setProps({minValue: 0, maxValue: 8, minStep: 1,})
       .onSet(this.setRotationSpeed.bind(this));
 
     // Swing Mode (optional)
@@ -106,22 +90,13 @@ export default class IndoorUnitAccessory {
     // Cooling Threshold Temperature (optional)
     this.service
       .getCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature)
-      .setProps({
-        minValue: 16,
-        maxValue: 30,
-        minStep: 0.5,
-      })
+      .setProps({minValue: 16, maxValue: 30, minStep: 0.5,})
       .onSet(this.setThresholdTemperature.bind(this));
 
     // Heating Threshold Temperature (optional)
-
     this.service
       .getCharacteristic(this.platform.Characteristic.HeatingThresholdTemperature)
-      .setProps({
-        minValue: this.devConfig?.minHeatingTemperature || 16,
-        maxValue: 30,
-        minStep: 0.5,
-      })
+      .setProps({minValue: this.devConfig?.minHeatingTemperature || 16, maxValue: 30, minStep: 0.5,})
       .onSet(this.setThresholdTemperature.bind(this));
 
     // Helper function to manage optional services (setter is optional)
