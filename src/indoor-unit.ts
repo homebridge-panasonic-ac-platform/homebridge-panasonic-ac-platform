@@ -210,99 +210,33 @@ export default class IndoorUnitAccessory {
       }
 
       // Current Heater-Cooler State and Target Heater-Cooler State
-      const currentTemperature = this.service.getCharacteristic(
-        this.platform.Characteristic.CurrentTemperature).value as number;
-      const setTemperature = this.deviceStatus.temperatureSet;
+      const currentTemp = this.service.getCharacteristic(this.platform.Characteristic.CurrentTemperature).value as number;
+      const setTemp = this.deviceStatus.temperatureSet;
+      const { operationMode } = this.deviceStatus;
 
-      switch (this.deviceStatus.operationMode) {
-        // Auto
-        case 0:
-          logOutput += ', Auto Mode';
-          // Set target state and current state (based on current temperature)
-          this.service.updateCharacteristic(
-            this.platform.Characteristic.TargetHeaterCoolerState,
-            this.platform.Characteristic.TargetHeaterCoolerState.AUTO,
-          );
+      const modes = {
+        0: { log: 'Auto Mode', target: 'AUTO', current: currentTemp < setTemp ? 'HEATING' : currentTemp > setTemp ? 'COOLING' : 'IDLE' },
+        3: { log: 'Heat Mode', target: 'HEAT', current: currentTemp < setTemp ? 'HEATING' : 'IDLE' },
+        2: { log: 'Cool Mode', target: 'COOL', current: currentTemp > setTemp ? 'COOLING' : 'IDLE' },
+        1: { log: 'Dry Mode', target: 'AUTO', current: 'IDLE' },
+        4: { log: 'Fan Mode', target: 'AUTO', current: 'IDLE' },
+      };
 
-          if (currentTemperature < setTemperature) {
-            this.service.getCharacteristic(this.platform.Characteristic.CurrentHeaterCoolerState)
-              .updateValue(this.platform.Characteristic.CurrentHeaterCoolerState.HEATING);
-          } else if (currentTemperature > setTemperature) {
-            this.service.getCharacteristic(this.platform.Characteristic.CurrentHeaterCoolerState)
-              .updateValue(this.platform.Characteristic.CurrentHeaterCoolerState.COOLING);
-          } else {
-            this.service.getCharacteristic(this.platform.Characteristic.CurrentHeaterCoolerState)
-              .updateValue(this.platform.Characteristic.CurrentHeaterCoolerState.IDLE);
-          }
-          break;
+      if (modes[operationMode]) {
+        const { log, target, current } = modes[operationMode];
+        logOutput += `, ${log}`;
 
-        // Heat
-        case 3:
-          logOutput += ', Heat Mode';
-          this.service.updateCharacteristic(
-            this.platform.Characteristic.TargetHeaterCoolerState,
-            this.platform.Characteristic.TargetHeaterCoolerState.HEAT,
-          );
+        this.service.updateCharacteristic(
+          this.platform.Characteristic.TargetHeaterCoolerState,
+          this.platform.Characteristic.TargetHeaterCoolerState[target],
+        );
 
-          if (currentTemperature < setTemperature) {
-            this.service.getCharacteristic(this.platform.Characteristic.CurrentHeaterCoolerState)
-              .updateValue(this.platform.Characteristic.CurrentHeaterCoolerState.HEATING);
-          } else {
-            this.service.getCharacteristic(this.platform.Characteristic.CurrentHeaterCoolerState)
-              .updateValue(this.platform.Characteristic.CurrentHeaterCoolerState.IDLE);
-          }
-          break;
-
-        // Cool
-        case 2:
-          logOutput += ', Cool Mode';
-          this.service.updateCharacteristic(
-            this.platform.Characteristic.TargetHeaterCoolerState,
-            this.platform.Characteristic.TargetHeaterCoolerState.COOL,
-          );
-
-          if (currentTemperature > setTemperature) {
-            this.service.getCharacteristic(this.platform.Characteristic.CurrentHeaterCoolerState)
-              .updateValue(this.platform.Characteristic.CurrentHeaterCoolerState.COOLING);
-          } else {
-            this.service.getCharacteristic(this.platform.Characteristic.CurrentHeaterCoolerState)
-              .updateValue(this.platform.Characteristic.CurrentHeaterCoolerState.IDLE);
-          }
-          break;
-
-        // Dry (Dehumidifier)
-        case 1:
-          logOutput += ', Dry Mode';
-          // TODO - improvement: Can we reflect this better/properly in Homebridge?
-          // Could add a https://developers.homebridge.io/#/service/HumidifierDehumidifier service
-          // to the accessory, but need to check what this implies for the UI.
-          this.service.getCharacteristic(this.platform.Characteristic.CurrentHeaterCoolerState)
-            .updateValue(this.platform.Characteristic.CurrentHeaterCoolerState.IDLE);
-          this.service.updateCharacteristic(
-            this.platform.Characteristic.TargetHeaterCoolerState,
-            // TODO - improvement: AUTO isn't a perfect match, but using it for now.
-            this.platform.Characteristic.TargetHeaterCoolerState.AUTO,
-          );
-          break;
-
-        // Fan
-        case 4:
-          logOutput += ', Fan Mode';
-          // TODO - improvement: Same as above, related to:
-          // https://developers.homebridge.io/#/service/Fan
-          this.service.getCharacteristic(this.platform.Characteristic.CurrentHeaterCoolerState)
-            .updateValue(this.platform.Characteristic.CurrentHeaterCoolerState.IDLE);
-          this.service.updateCharacteristic(
-            this.platform.Characteristic.TargetHeaterCoolerState,
-            // TODO - improvement: AUTO isn't a perfect match, but using it for now.
-            this.platform.Characteristic.TargetHeaterCoolerState.AUTO,
-          );
-          break;
-
-        default:
-          this.platform.log.error(
-            `Unknown TargetHeaterCoolerState state: '${this.deviceStatus.operationMode}'`);
-          break;
+        this.service.updateCharacteristic(
+          this.platform.Characteristic.CurrentHeaterCoolerState,
+          this.platform.Characteristic.CurrentHeaterCoolerState[current],
+        );
+      } else {
+        this.platform.log.error(`Unknown operation mode: '${operationMode}'`);
       }
 
       // Rotation Speed
@@ -407,9 +341,9 @@ export default class IndoorUnitAccessory {
       // Cooling Threshold Temperature (optional)
       // Heating Threshold Temperature (optional)
       this.service.getCharacteristic(this.platform.Characteristic.HeatingThresholdTemperature)
-        .updateValue(setTemperature);
+        .updateValue(setTemp);
       this.service.getCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature)
-        .updateValue(setTemperature);
+        .updateValue(setTemp);
 
       // log
       if (this.platform.platformConfig.logsLevel >= 1) {
