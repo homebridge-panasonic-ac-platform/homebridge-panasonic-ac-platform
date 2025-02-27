@@ -598,10 +598,7 @@ export default class IndoorUnitAccessory {
   async setFanSpeed(value) {
     if (value >= 0 && value <= 100) {
       this.platform.log.debug(`${this.accessory.displayName}: setFanSpeed(), value: ${value}`);
-    
-      const parameters = { ecoMode: 0 };
-      const logLevel = this.platform.platformConfig.logsLevel >= 1 ? 'info' : 'debug';
-    
+  
       if (value === 0) {
         parameters.operate = 0;
         this.platform.log[logLevel](`${this.accessory.displayName}: set off`);
@@ -612,11 +609,10 @@ export default class IndoorUnitAccessory {
         parameters.fanSpeed = Math.ceil(value / 20);
         this.platform.log[logLevel](`${this.accessory.displayName}: set fan speed ${parameters.fanSpeed}`);
       }
-    
+
       this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
     }
   }
-  
 
   // ===============================================================================================================================================
 
