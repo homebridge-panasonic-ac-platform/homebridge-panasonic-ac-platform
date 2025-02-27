@@ -86,7 +86,7 @@ export default class IndoorUnitAccessory {
   private setupCharacteristic(
     name: string,
     onSet: ((value: CharacteristicValue, callback?: CharacteristicSetCallback) => void | Promise<void>) | null,
-    props?: any
+    props?: any,
   ) {
     const char = this.service.getCharacteristic(this.platform.Characteristic[name]);
     if (props) {
@@ -102,12 +102,12 @@ export default class IndoorUnitAccessory {
     serviceType: any,
     nameSuffix: string,
     onSet?: (value: CharacteristicValue, callback?: CharacteristicSetCallback) => void | Promise<void>,
-    isFan = false
+    isFan = false,
   ) {
     const serviceName = `${this.accessory.displayName} ${nameSuffix}`;
     if (this.devConfig?.[configKey]) {
-      const service = this.accessory.getService(serviceName) || 
-        this.accessory.addService(serviceType, serviceName, configKey);
+      const service = this.accessory.getService(serviceName)
+        || this.accessory.addService(serviceType, serviceName, configKey);
       service.setCharacteristic(this.platform.Characteristic.ConfiguredName, serviceName);
       if (onSet) {
         service.getCharacteristic(this.platform.Characteristic.On).onSet(onSet);
@@ -127,18 +127,18 @@ export default class IndoorUnitAccessory {
     try {
       const statusResponse: ComfortCloudDeviceStatus = await this.platform.comfortCloud.getDeviceStatus(
         this.accessory.context.device.deviceGuid,
-        this.accessory.displayName
+        this.accessory.displayName,
       );
       this.deviceStatus = statusResponse.parameters;
 
       this.updateCharacteristic('Active', this.deviceStatus.operate === 1 ? 1 : 0);
       const insideTemp = this.deviceStatus.insideTemperature < 126 
-        ? this.deviceStatus.insideTemperature 
+        ? this.deviceStatus.insideTemperature
         : (this.deviceStatus.operationMode === 3 ? 8 : 30);
       this.updateCharacteristic('CurrentTemperature', insideTemp);
-      this.updateOptional('exposeInsideTemp', 'CurrentTemperature', 
+      this.updateOptional('exposeInsideTemp', 'CurrentTemperature',
         this.deviceStatus.insideTemperature < 126 ? this.deviceStatus.insideTemperature : null);
-      this.updateOptional('exposeOutdoorTemp', 'CurrentTemperature', 
+      this.updateOptional('exposeOutdoorTemp', 'CurrentTemperature',
         this.deviceStatus.outTemperature < 126 ? this.deviceStatus.outTemperature : null);
 
       const currentTemp = this.service.getCharacteristic(
