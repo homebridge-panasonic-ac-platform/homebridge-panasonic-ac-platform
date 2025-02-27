@@ -99,7 +99,7 @@ export default class IndoorUnitAccessory {
       .setProps({minValue: this.devConfig?.minHeatingTemperature || 16, maxValue: 30, minStep: 0.5})
       .onSet(this.setThresholdTemperature.bind(this));
 
-    // Helper function to manage optional services (setter is optional)
+    // Expose additional features - helper function
     const manageService = (
       exposeFlag: boolean | undefined,
       serviceName: string,
@@ -124,7 +124,7 @@ export default class IndoorUnitAccessory {
       }
     };
 
-    // Additional Sensors and Switches
+    // Expose additional features
     manageService(this.devConfig?.exposeInsideTemp, 'inside temp', this.platform.Service.TemperatureSensor);
     manageService(this.devConfig?.exposeOutdoorTemp, 'out temp', this.platform.Service.TemperatureSensor);
     manageService(this.devConfig?.exposePower, 'power', this.platform.Service.Switch, this.setPower);
@@ -476,7 +476,7 @@ export default class IndoorUnitAccessory {
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
 
-  // Helper
+  // Expose additional features - helper function
   async setMode(modeName: string, value: boolean) {
     this.platform.log.debug(`${this.accessory.displayName}: ${modeName}()`);
 
@@ -516,7 +516,7 @@ export default class IndoorUnitAccessory {
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
 
-  // Use for all methods
+  // Expose additional features
   async setPower(value: boolean) {
     await this.setMode('setPower', value);
   }
