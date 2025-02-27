@@ -254,43 +254,20 @@ export default class IndoorUnitAccessory {
 
       // Check status only when device is on
       if (this.deviceStatus.operate === 1) {
-        // Default to AUTO mode
-        let sliderValue = 8;
+        let sliderValue = 8; // default AUTO
 
         if (this.deviceStatus.ecoMode === 2) {
-          sliderValue = 1;
+          sliderValue = 1;  // Quiet Mode
           logOutput += ', Speed 1 (Quiet Mode)';
         } else if (this.deviceStatus.ecoMode === 1) {
-          sliderValue = 7;
+          sliderValue = 7;  // Powerful Mode
           logOutput += ', Speed 5 (Powerful Mode)';
         } else if (this.deviceStatus.ecoMode === 0) {
-          switch (this.deviceStatus.fanSpeed) {
-            case 1:
-              sliderValue = 2;
-              logOutput += ', Speed 1';
-              break;
-            case 2:
-              sliderValue = 3;
-              logOutput += ', Speed 2';
-              break;
-            case 3:
-              sliderValue = 4;
-              logOutput += ', Speed 3';
-              break;
-            case 4:
-              sliderValue = 5;
-              logOutput += ', Speed 4';
-              break;
-            case 5:
-              sliderValue = 6;
-              logOutput += ', Speed 5';
-              break;
-            case 0:
-              sliderValue = 8;
-              logOutput += ', Speed Auto';
-              break;
-          }
+          const fanSpeedMap = { 0: 8, 1: 2, 2: 3, 3: 4, 4: 5, 5: 6 };
+          sliderValue = fanSpeedMap[this.deviceStatus.fanSpeed] || 8;
+          logOutput += `, Speed ${this.deviceStatus.fanSpeed || 'Auto'}`;
         }
+
         this.service.getCharacteristic(this.platform.Characteristic.RotationSpeed)
           .updateValue(sliderValue);
       }
