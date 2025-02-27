@@ -46,398 +46,63 @@ export default class IndoorUnitAccessory {
     }
 
     // Accessory Information
-    // https://developers.homebridge.io/#/service/AccessoryInformation
     this.accessory.getService(this.platform.Service.AccessoryInformation)
-      ?.setCharacteristic(
-        this.platform.Characteristic.Manufacturer,
-        'Panasonic',
-      )
-      .setCharacteristic(
-        this.platform.Characteristic.Model,
-        accessory.context.device?.deviceModuleNumber || 'Unknown',
-      )
-      .setCharacteristic(
-        this.platform.Characteristic.SerialNumber,
-        accessory.context.device?.deviceGuid || 'Unknown',
-      );
-
-    // Heater Cooler
-    // https://developers.homebridge.io/#/service/HeaterCooler
-    this.service = this.accessory.getService(this.platform.Service.HeaterCooler)
+      ?.setCharacteristic(this.platform.Characteristic.Manufacturer, 'Panasonic')
+      .setCharacteristic(this.platform.Characteristic.Model, accessory.context.device?.deviceModuleNumber || 'Unknown')
+      .setCharacteristic(this.platform.Characteristic.SerialNumber, accessory.context.device?.deviceGuid || 'Unknown');
+    
+    // Heater-Cooler Service
+    this.service = this.accessory.getService(this.platform.Service.HeaterCooler) 
       || this.accessory.addService(this.platform.Service.HeaterCooler);
-
-    // Characteristics configuration
-    // Each service must implement at-minimum the "required characteristics"
-    // See https://developers.homebridge.io/#/service/HeaterCooler
-
-    // Name (optional)
-    // This is what is displayed as the default name on the Home app
-    this.service.setCharacteristic(
-      this.platform.Characteristic.Name,
-      accessory.context.device?.deviceName || 'Unnamed',
-    );
-
-    // Active (required)
+    
     this.service
-      .getCharacteristic(this.platform.Characteristic.Active)
-      .onSet(this.setActive.bind(this));
-
-    // Current Temperature (required)
-    this.service
-      .getCharacteristic(this.platform.Characteristic.CurrentTemperature)
-      .setProps({
-        minValue: -100,
-        maxValue: 100,
-        minStep: 0.01,
-      });
-
-    // Current Heater-Cooler State (required, but doesn't require a setter)
-
-    // Target Heater-Cooler State (required)
-    this.service
-      .getCharacteristic(this.platform.Characteristic.TargetHeaterCoolerState)
-      .onSet(this.setTargetHeaterCoolerState.bind(this));
-
-    // Rotation Speed (optional)
-    this.service
-      .getCharacteristic(this.platform.Characteristic.RotationSpeed)
-      .setProps({
-        minValue: 0,
-        maxValue: 8,
-        minStep: 1,
-      })
-      .onSet(this.setRotationSpeed.bind(this));
-
-    // Swing Mode (optional)
-    this.service
-      .getCharacteristic(this.platform.Characteristic.SwingMode)
-      .onSet(this.setSwingMode.bind(this));
-
-    // Cooling Threshold Temperature (optional)
-    this.service
-      .getCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature)
-      .setProps({
-        minValue: 16,
-        maxValue: 30,
-        minStep: 0.5,
-      })
-      .onSet(this.setThresholdTemperature.bind(this));
-
-    // Heating Threshold Temperature (optional)
-
-    this.service
-      .getCharacteristic(this.platform.Characteristic.HeatingThresholdTemperature)
-      .setProps({
-        minValue: this.devConfig?.minHeatingTemperature || 16,
-        maxValue: 30,
-        minStep: 0.5,
-      })
-      .onSet(this.setThresholdTemperature.bind(this));
-
-
-    // Additional sensors and switches
-
-    // Inside temp.
-    if (this.devConfig?.exposeInsideTemp) {
-      this.exposeInsideTemp = this.accessory.getService(this.accessory.displayName + ' inside temp')
-        || this.accessory.addService(this.platform.Service.TemperatureSensor, this.accessory.displayName + ' inside temp', 'exposeInsideTemp');
-      this.exposeInsideTemp.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' inside temp');
-      this.platform.log.debug(`${this.accessory.displayName}: add inside temp sensor`);
-    } else {
-      const removeInsideTemp = this.accessory.getService(this.accessory.displayName + ' inside temp');
-      if (removeInsideTemp) {
-        this.accessory.removeService(removeInsideTemp);
-        this.platform.log.debug(`${this.accessory.displayName}: remove inside temp sensor`);
+      .setCharacteristic(this.platform.Characteristic.Name, accessory.context.device?.deviceName || 'Unnamed')
+      .getCharacteristic(this.platform.Characteristic.Active).onSet(this.setActive.bind(this))
+      .getCharacteristic(this.platform.Characteristic.CurrentTemperature).setProps({ minValue: -100, maxValue: 100, minStep: 0.01 })
+      .getCharacteristic(this.platform.Characteristic.TargetHeaterCoolerState).onSet(this.setTargetHeaterCoolerState.bind(this))
+      .getCharacteristic(this.platform.Characteristic.RotationSpeed).setProps({ minValue: 0, maxValue: 8, minStep: 1 }).onSet(this.setRotationSpeed.bind(this))
+      .getCharacteristic(this.platform.Characteristic.SwingMode).onSet(this.setSwingMode.bind(this))
+      .getCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature).setProps({ minValue: 16, maxValue: 30, minStep: 0.5 }).onSet(this.setThresholdTemperature.bind(this))
+      .getCharacteristic(this.platform.Characteristic.HeatingThresholdTemperature).setProps({ minValue: this.devConfig?.minHeatingTemperature || 16, maxValue: 30, minStep: 0.5 }).onSet(this.setThresholdTemperature.bind(this));
+    
+    // Helper function to manage optional services
+    const manageService = (exposeFlag, serviceName, serviceType, setter) => {
+      const fullName = `${this.accessory.displayName} ${serviceName}`;
+      if (exposeFlag) {
+        const service = this.accessory.getService(fullName) || this.accessory.addService(serviceType, fullName, serviceName);
+        service.setCharacteristic(this.platform.Characteristic.ConfiguredName, fullName);
+        if (setter) service.getCharacteristic(this.platform.Characteristic.On).onSet(setter.bind(this));
+        this.platform.log.debug(`${this.accessory.displayName}: add ${serviceName}`);
+        return service;
+      } else {
+        const service = this.accessory.getService(fullName);
+        if (service) {
+          this.accessory.removeService(service);
+          this.platform.log.debug(`${this.accessory.displayName}: remove ${serviceName}`);
+        }
       }
-    }
-
-    // Outdoor temp.
-    if (this.devConfig?.exposeOutdoorTemp) {
-      this.exposeOutdoorTemp = this.accessory.getService(this.accessory.displayName + ' out temp')
-        || this.accessory.addService(this.platform.Service.TemperatureSensor, this.accessory.displayName + ' out temp', 'exposeOutdoorTemp');
-      this.exposeOutdoorTemp.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' out temp');
-      this.platform.log.debug(`${this.accessory.displayName}: add outdoor temp sensor`);
-    } else {
-      const removeOutdoorTemp = this.accessory.getService(this.accessory.displayName + ' out temp');
-      if (removeOutdoorTemp) {
-        this.accessory.removeService(removeOutdoorTemp);
-        this.platform.log.debug(`${this.accessory.displayName}: remove outdoor temp sensor`);
-      }
-    }
-
-    // Power (on/off)
-    if (this.devConfig?.exposePower) {
-      this.exposePower = this.accessory.getService(this.accessory.displayName + ' power')
-        || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' power', 'exposePower');
-      this.exposePower.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' power');
-      this.exposePower
-        .getCharacteristic(this.platform.Characteristic.On)
-        .onSet(this.setPower.bind(this));
-      this.platform.log.debug(`${this.accessory.displayName}: add power (on/off) switch`);
-    } else {
-      const removePower = this.accessory.getService(this.accessory.displayName + ' power');
-      if (removePower) {
-        this.accessory.removeService(removePower);
-        this.platform.log.debug(`${this.accessory.displayName}: remove power (on/off) switch`);
-      }
-    }
-
-    // Nanoe
-    if (this.devConfig?.exposeNanoe) {
-      this.exposeNanoe = this.accessory.getService(this.accessory.displayName + ' nanoe')
-        || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' nanoe', 'exposeNanoe');
-      this.exposeNanoe.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' nanoe');
-      this.exposeNanoe
-        .getCharacteristic(this.platform.Characteristic.On)
-        .onSet(this.setNanoe.bind(this));
-      this.platform.log.debug(`${this.accessory.displayName}: add nanoe switch`);
-    } else {
-      const removeNanoe = this.accessory.getService(this.accessory.displayName + ' nanoe');
-      if (removeNanoe) {
-        this.accessory.removeService(removeNanoe);
-        this.platform.log.debug(`${this.accessory.displayName}: remove nanoe switch`);
-      }
-    }
-
-    // Inside cleaning
-    if (this.devConfig?.exposeInsideCleaning) {
-      this.exposeInsideCleaning = this.accessory.getService(this.accessory.displayName + ' inside cleaning')
-        || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' inside cleaning', 'exposeInsideCleaning');
-      this.exposeInsideCleaning.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' inside cleaning');
-      this.exposeInsideCleaning
-        .getCharacteristic(this.platform.Characteristic.On)
-        .onSet(this.setInsideCleaning.bind(this));
-      this.platform.log.debug(`${this.accessory.displayName}: add inside cleaning switch`);
-    } else {
-      const removeInsideCleaning = this.accessory.getService(this.accessory.displayName + ' inside cleaning');
-      if (removeInsideCleaning) {
-        this.accessory.removeService(removeInsideCleaning);
-        this.platform.log.debug(`${this.accessory.displayName}: remove inside cleaning switch`);
-      }
-    }
-
-    // Eco Navi
-    if (this.devConfig?.exposeEcoNavi) {
-      this.exposeEcoNavi = this.accessory.getService(this.accessory.displayName + ' eco navi')
-        || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' eco navi', 'exposeEcoNavi');
-      this.exposeEcoNavi.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' eco navi');
-      this.exposeEcoNavi
-        .getCharacteristic(this.platform.Characteristic.On)
-        .onSet(this.setEcoNavi.bind(this));
-      this.platform.log.debug(`${this.accessory.displayName}: add eco navi switch`);
-    } else {
-      const removeEcoNavi = this.accessory.getService(this.accessory.displayName + ' eco navi');
-      if (removeEcoNavi) {
-        this.accessory.removeService(removeEcoNavi);
-        this.platform.log.debug(`${this.accessory.displayName}: remove eco navi switch`);
-      }
-    }
-
-    // Eco Function
-    if (this.devConfig?.exposeEcoFunction) {
-      this.exposeEcoFunction = this.accessory.getService(this.accessory.displayName + ' eco function')
-        || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' eco function', 'exposeEcoFunction');
-      this.exposeEcoFunction.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' eco function');
-      this.exposeEcoFunction
-        .getCharacteristic(this.platform.Characteristic.On)
-        .onSet(this.setEcoFunction.bind(this));
-      this.platform.log.debug(`${this.accessory.displayName}: add eco function switch`);
-    } else {
-      const removeEcoFunction = this.accessory.getService(this.accessory.displayName + ' eco function');
-      if (removeEcoFunction) {
-        this.accessory.removeService(removeEcoFunction);
-        this.platform.log.debug(`${this.accessory.displayName}: remove eco function switch`);
-      }
-    }
-
-    // Auto mode
-    if (this.devConfig?.exposeAutoMode) {
-      this.exposeAutoMode = this.accessory.getService(this.accessory.displayName + ' auto mode')
-        || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' auto mode', 'exposeAutoMode');
-      this.exposeAutoMode.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' auto mode');
-      this.exposeAutoMode
-        .getCharacteristic(this.platform.Characteristic.On)
-        .onSet(this.setAutoMode.bind(this));
-      this.platform.log.debug(`${this.accessory.displayName}: add auto mode switch`);
-    } else {
-      const removeAutoMode = this.accessory.getService(this.accessory.displayName + ' auto mode');
-      if (removeAutoMode) {
-        this.accessory.removeService(removeAutoMode);
-        this.platform.log.debug(`${this.accessory.displayName}: remove auto mode switch`);
-      }
-    }
-
-    // Cool mode
-    if (this.devConfig?.exposeCoolMode) {
-      this.exposeCoolMode = this.accessory.getService(this.accessory.displayName + ' cool mode')
-        || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' cool mode', 'exposeCoolMode');
-      this.exposeCoolMode.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' cool mode');
-      this.exposeCoolMode
-        .getCharacteristic(this.platform.Characteristic.On)
-        .onSet(this.setCoolMode.bind(this));
-      this.platform.log.debug(`${this.accessory.displayName}: add cool mode switch`);
-    } else {
-      const removeCoolMode = this.accessory.getService(this.accessory.displayName + ' cool mode');
-      if (removeCoolMode) {
-        this.accessory.removeService(removeCoolMode);
-        this.platform.log.debug(`${this.accessory.displayName}: remove cool mode switch`);
-      }
-    }
-
-    // Heat mode
-    if (this.devConfig?.exposeHeatMode) {
-      this.exposeHeatMode = this.accessory.getService(this.accessory.displayName + ' heat mode')
-        || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' heat mode', 'exposeHeatMode');
-      this.exposeHeatMode.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' heat mode');
-      this.exposeHeatMode
-        .getCharacteristic(this.platform.Characteristic.On)
-        .onSet(this.setHeatMode.bind(this));
-      this.platform.log.debug(`${this.accessory.displayName}: add heat mode switch`);
-    } else {
-      const removeHeatMode = this.accessory.getService(this.accessory.displayName + ' heat mode');
-      if (removeHeatMode) {
-        this.accessory.removeService(removeHeatMode);
-        this.platform.log.debug(`${this.accessory.displayName}: remove heat mode switch`);
-      }
-    }
-
-    // Dry mode
-    if (this.devConfig?.exposeDryMode) {
-      this.exposeDryMode = this.accessory.getService(this.accessory.displayName + ' dry mode')
-        || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' dry mode', 'exposeDryMode');
-      this.exposeDryMode.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' dry mode');
-      this.exposeDryMode
-        .getCharacteristic(this.platform.Characteristic.On)
-        .onSet(this.setDryMode.bind(this));
-      this.platform.log.debug(`${this.accessory.displayName}: add dry mode switch`);
-    } else {
-      const removeDryMode = this.accessory.getService(this.accessory.displayName + ' dry mode');
-      if (removeDryMode) {
-        this.accessory.removeService(removeDryMode);
-        this.platform.log.debug(`${this.accessory.displayName}: remove dry mode switch`);
-      }
-    }
-
-    // Fan Mode
-    if (this.devConfig?.exposeFanMode) {
-      this.exposeFanMode = this.accessory.getService(this.accessory.displayName + ' fan mode')
-        || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' fan mode', 'exposeFanMode');
-      this.exposeFanMode.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' fan mode');
-      this.exposeFanMode
-        .getCharacteristic(this.platform.Characteristic.On)
-        .onSet(this.setFanMode.bind(this));
-      this.platform.log.debug(`${this.accessory.displayName}: add fan mode switch`);
-    } else {
-      const removeFanMode = this.accessory.getService(this.accessory.displayName + ' fan mode');
-      if (removeFanMode) {
-        this.accessory.removeService(removeFanMode);
-        this.platform.log.debug(`${this.accessory.displayName}: remove fan mode switch`);
-      }
-    }
-
-    // Nanoe Stand Alone Mode
-    if (this.devConfig?.exposeNanoeStandAloneMode) {
-      this.exposeNanoeStandAloneMode = this.accessory.getService(this.accessory.displayName + ' nanoe stand alone mode')
-        || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' nanoe stand alone mode', 'exposeNanoeStandAloneMode');
-      this.exposeNanoeStandAloneMode.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' nanoe stand alone mode');
-      this.exposeNanoeStandAloneMode
-        .getCharacteristic(this.platform.Characteristic.On)
-        .onSet(this.setNanoeStandAloneMode.bind(this));
-      this.platform.log.debug(`${this.accessory.displayName}: add nanoe stand alone mode switch`);
-    } else {
-      const removeNanoeStandAloneMode = this.accessory.getService(this.accessory.displayName + ' nanoe stand alone mode');
-      if (removeNanoeStandAloneMode) {
-        this.accessory.removeService(removeNanoeStandAloneMode);
-        this.platform.log.debug(`${this.accessory.displayName}: remove nanoe stand alone mode switch`);
-      }
-    }
-
-    // Quiet Mode
-    if (this.devConfig?.exposeQuietMode) {
-      this.exposeQuietMode = this.accessory.getService(this.accessory.displayName + ' quiet mode')
-        || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' quiet mode', 'exposeQuietMode');
-      this.exposeQuietMode.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' quiet mode');
-      this.exposeQuietMode
-        .getCharacteristic(this.platform.Characteristic.On)
-        .onSet(this.setQuietMode.bind(this));
-      this.platform.log.debug(`${this.accessory.displayName}: add quiet mode switch`);
-    } else {
-      const removeQuietMode = this.accessory.getService(this.accessory.displayName + ' quiet mode');
-      if (removeQuietMode) {
-        this.accessory.removeService(removeQuietMode);
-        this.platform.log.debug(`${this.accessory.displayName}: remove quiet mode switch`);
-      }
-    }
-
-    // Powerful mode
-    if (this.devConfig?.exposePowerfulMode) {
-      this.exposePowerfulMode = this.accessory.getService(this.accessory.displayName + ' powerful mode')
-        || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' powerful mode', 'exposePowerfulMode');
-      this.exposePowerfulMode.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' powerful mode');
-      this.exposePowerfulMode
-        .getCharacteristic(this.platform.Characteristic.On)
-        .onSet(this.setPowerfulMode.bind(this));
-      this.platform.log.debug(`${this.accessory.displayName}: add powerful mode switch`);
-    } else {
-      const removePowerfulMode = this.accessory.getService(this.accessory.displayName + ' powerful mode');
-      if (removePowerfulMode) {
-        this.accessory.removeService(removePowerfulMode);
-        this.platform.log.debug(`${this.accessory.displayName}: remove powerful mode switch`);
-      }
-    }
-
-    // Swing Up Down
-    if (this.devConfig?.exposeSwingUpDown) {
-      this.exposeSwingUpDown = this.accessory.getService(this.accessory.displayName + ' swing up down')
-        || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' swing up down', 'exposeSwingUpDown');
-      this.exposeSwingUpDown.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' swing up down');
-      this.exposeSwingUpDown
-        .getCharacteristic(this.platform.Characteristic.On)
-        .onSet(this.setSwingUpDown.bind(this));
-      this.platform.log.debug(`${this.accessory.displayName}: add swing up down switch`);
-    } else {
-      const removeSwingUpDown = this.accessory.getService(this.accessory.displayName + ' swing up down');
-      if (removeSwingUpDown) {
-        this.accessory.removeService(removeSwingUpDown);
-        this.platform.log.debug(`${this.accessory.displayName}: remove swing up down switch`);
-      }
-    }
-
-    // Swing Left Right
-    if (this.devConfig?.exposeSwingLeftRight) {
-      this.exposeSwingLeftRight = this.accessory.getService(this.accessory.displayName + ' swing left right')
-        || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' swing left right', 'exposeSwingLeftRight');
-      this.exposeSwingLeftRight.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' swing left right');
-      this.exposeSwingLeftRight
-        .getCharacteristic(this.platform.Characteristic.On)
-        .onSet(this.setSwingLeftRight.bind(this));
-      this.platform.log.debug(`${this.accessory.displayName}: add swing left right switch`);
-    } else {
-      const removeSwingLeftRight = this.accessory.getService(this.accessory.displayName + ' swing left right');
-      if (removeSwingLeftRight) {
-        this.accessory.removeService(removeSwingLeftRight);
-        this.platform.log.debug(`${this.accessory.displayName}: remove swing left right switch`);
-      }
-    }
-
-    // Fan speed
+    };
+    
+    // Additional Sensors and Switches
+    manageService(this.devConfig?.exposeInsideTemp, 'inside temp', this.platform.Service.TemperatureSensor);
+    manageService(this.devConfig?.exposeOutdoorTemp, 'out temp', this.platform.Service.TemperatureSensor);
+    manageService(this.devConfig?.exposePower, 'power', this.platform.Service.Switch, this.setPower);
+    manageService(this.devConfig?.exposeNanoe, 'nanoe', this.platform.Service.Switch, this.setNanoe);
+    manageService(this.devConfig?.exposeInsideCleaning, 'inside cleaning', this.platform.Service.Switch, this.setInsideCleaning);
+    manageService(this.devConfig?.exposeEcoNavi, 'eco navi', this.platform.Service.Switch, this.setEcoNavi);
+    manageService(this.devConfig?.exposeEcoFunction, 'eco function', this.platform.Service.Switch, this.setEcoFunction);
+    manageService(this.devConfig?.exposeAutoMode, 'auto mode', this.platform.Service.Switch, this.setAutoMode);
+    manageService(this.devConfig?.exposeCoolMode, 'cool mode', this.platform.Service.Switch, this.setCoolMode);
+    manageService(this.devConfig?.exposeHeatMode, 'heat mode', this.platform.Service.Switch, this.setHeatMode);
+    manageService(this.devConfig?.exposeDryMode, 'dry mode', this.platform.Service.Switch, this.setDryMode);
+    manageService(this.devConfig?.exposeFanMode, 'fan mode', this.platform.Service.Switch, this.setFanMode);
+    
+    // Fan Speed (special case with RotationSpeed)
     if (this.devConfig?.exposeFanSpeed) {
-      this.exposeFanSpeed = this.accessory.getService(this.accessory.displayName + ' fan speed')
-        || this.accessory.addService(this.platform.Service.Fan, this.accessory.displayName + ' fan speed', 'exposeFanSpeed');
-      this.exposeFanSpeed.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' fan speed');
-      this.exposeFanSpeed
-        .getCharacteristic(this.platform.Characteristic.On)
-        .onSet(this.setFanSpeed.bind(this));
-      this.exposeFanSpeed
-        .getCharacteristic(this.platform.Characteristic.RotationSpeed)
-        .onSet(this.setFanSpeed.bind(this));
-      this.platform.log.debug(`${this.accessory.displayName}: add fan speed slider`);
+      this.exposeFanSpeed = manageService(true, 'fan speed', this.platform.Service.Fan);
+      this.exposeFanSpeed.getCharacteristic(this.platform.Characteristic.RotationSpeed).onSet(this.setFanSpeed.bind(this));
     } else {
-      const removeFanSpeed = this.accessory.getService(this.accessory.displayName + ' fan speed');
-      if (removeFanSpeed) {
-        this.accessory.removeService(removeFanSpeed);
-        this.platform.log.debug(`${this.accessory.displayName}: remove fan speed slider`);
-      }
+      manageService(false, 'fan speed');
     }
 
     // Update characteristic values asynchronously instead of using onGet handlers
