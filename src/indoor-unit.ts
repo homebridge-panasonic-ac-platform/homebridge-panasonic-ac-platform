@@ -390,34 +390,19 @@ export default class IndoorUnitAccessory {
     const parameters: ComfortCloudDeviceUpdatePayload = {
       operate: 1,
     };
-    switch (value) {
-      case this.platform.Characteristic.TargetHeaterCoolerState.AUTO:
-        if (this.platform.platformConfig.autoMode === 'fan') {
-          parameters.operationMode = 4;
-          this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Fan Mode`);
-        } else if (this.platform.platformConfig.autoMode === 'dry') {
-          parameters.operationMode = 1;
-          this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Dry mode`);
-        } else {
-          parameters.operationMode = 0;
-          this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Auto mode`);
-        }
-        break;
+    const modes = {
+      [this.platform.Characteristic.TargetHeaterCoolerState.AUTO]: {fan: 4, dry: 1}[this.platform.platformConfig.autoMode] || 0,
+      [this.platform.Characteristic.TargetHeaterCoolerState.COOL]: 2,
+      [this.platform.Characteristic.TargetHeaterCoolerState.HEAT]: 3,
+    };
 
-      case this.platform.Characteristic.TargetHeaterCoolerState.COOL:
-        parameters.operationMode = 2;
-        this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Mode Cool`);
-        break;
-
-      case this.platform.Characteristic.TargetHeaterCoolerState.HEAT:
-        parameters.operationMode = 3;
-        this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Mode Heat`);
-        break;
-
-      default:
-        this.platform.log.error(`${this.accessory.displayName}: Unknown TargetHeaterCoolerState`, value);
-        return;
+    if (!(value in modes)) {
+      this.platform.log.error(`${this.accessory.displayName}: Unknown TargetHeaterCoolerState`, value);
     }
+
+    parameters.operationMode = modes[value];
+    this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Mode ${['Auto','Dry','Cool','Heat','Fan'][modes[value]]}`);
+​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
   }
 
