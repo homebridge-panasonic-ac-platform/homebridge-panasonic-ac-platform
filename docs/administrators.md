@@ -19,3 +19,6 @@ Note: Workflows will produce an error if you try to re-publish the same version 
 To find out which versions have already been uploaded and with what tags, check the:
 - [npm package's versions page](https://www.npmjs.com/package/homebridge-panasonic-ac-platform?activeTab=versions)
 - [GitHub releases](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/releases)
+
+### Dependabot
+From time to time dependabot adds new PR with updates to the dependency version. If PR has passed the tests, you can merge it without the risk that something will not work. When you merge one PR added by Dependabot, wait before merging another one because after each merge other PRs goes through the tests again.
