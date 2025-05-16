@@ -369,7 +369,7 @@ export default class IndoorUnitAccessory {
 
     this.timerRefreshDeviceStatus = setTimeout(
       this.refreshDeviceStatus.bind(this),
-      isActive ? this.intervalOn : this.intervalOff
+      isActive ? intervalOn : intervalOff,
     );
   }
 
