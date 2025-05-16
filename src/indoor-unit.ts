@@ -360,9 +360,17 @@ export default class IndoorUnitAccessory {
     // 10 minutes when device is on, 60 minutes device is off
     clearTimeout(this.timerRefreshDeviceStatus);
     this.timerRefreshDeviceStatus = null;
+
+    const isActive = this.service.getCharacteristic(this.platform.Characteristic.Active).value === 1;
+
+    // refresh interval, default 10 minutes when device is on and 60 minutes when off
+    const intervalOn = this.devConfig?.refreshWhenOn ?? 600000;
+    const intervalOff = this.devConfig?.refreshWhenOff ?? 3600000;
+
     this.timerRefreshDeviceStatus = setTimeout(
       this.refreshDeviceStatus.bind(this),
-      (this.service.getCharacteristic(this.platform.Characteristic.Active).value === 1) ? 10 * 60 * 1000 : 60 * 60 * 1000);
+      isActive ? this.intervalOn : this.intervalOff
+    );
   }
 
   // ===============================================================================================================================================
