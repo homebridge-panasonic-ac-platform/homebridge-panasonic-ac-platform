@@ -367,7 +367,7 @@ export default class IndoorUnitAccessory {
     if ((isActive === true && refreshWhenOn !== 0) || (isActive === false && refreshWhenOff !== 0)) {
       this.timerRefreshDeviceStatus = setTimeout(
         this.refreshDeviceStatus.bind(this),
-        isActive ? refreshWhenOn : refreshWnenOff,
+        isActive ? refreshWhenOn * 60000 : refreshWhenOff * 60000,
       );
     }
   }
