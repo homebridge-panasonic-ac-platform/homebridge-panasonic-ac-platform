@@ -356,6 +356,7 @@ export default class IndoorUnitAccessory {
       */
     }
 
+    // Set refresh inteval
     clearTimeout(this.timerRefreshDeviceStatus);
     this.timerRefreshDeviceStatus = null;
 
@@ -363,7 +364,7 @@ export default class IndoorUnitAccessory {
     const refreshWhenOn = this.devConfig?.refreshWhenOn ?? 10;
     const refreshWhenOff = this.devConfig?.refreshWhenOff ?? 60;
 
-    if ((isActive === true && refreshWhenOn !== 0) || (isActive === false && refreshWhenOff !== 0) {
+    if ((isActive === true && refreshWhenOn !== 0) || (isActive === false && refreshWhenOff !== 0)) {
       this.timerRefreshDeviceStatus = setTimeout(
         this.refreshDeviceStatus.bind(this),
         isActive ? refreshWhenOn * 60000 : refreshWnenOff * 60000,
