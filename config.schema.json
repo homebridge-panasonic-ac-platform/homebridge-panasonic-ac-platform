@@ -95,7 +95,7 @@
 						},
 						"refreshWhenOn": {
 							"title": "Refresh interval (on)",
-							"description": "Refresh interval when device is turned on",
+							"description": "Refresh interval when device is turned on. In minutes. 0 = disabled.",
 							"type": "integer",
 							"default": 10,
 							"enum": [0, 5, 10, 30, 60, 120, 240]
@@ -103,7 +103,7 @@
 						},
 						"refreshWhenOff": {
 							"title": "Refresh interval (on)",
-							"description": "Refresh interval when device is turned on",
+							"description": "Refresh interval when device is turned on. In minutes. 0 = disabled.",
 							"type": "integer",
 							"default": 10,
 							"enum": [0, 5, 10, 30, 60, 120, 240]
@@ -354,7 +354,9 @@
 							"items": [
 								"devices[].name",
 								"devices[].excludeDevice",
-								"devices[].minHeatingTemperature"
+								"devices[].minHeatingTemperature",
+								"devices[].refreshWhenOn",
+								"devices[].refreshWhenOff",
 							]
 						},
 						{
