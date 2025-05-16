@@ -98,7 +98,7 @@
 							"description": "Refresh interval when device is turned on. In minutes. 0 = disabled.",
 							"type": "integer",
 							"default": 10,
-							"enum": [0, 1, 2, 5, 10, 30, 60, 120, 240]
+							"enum": [0, 1, 2, 5, 10, 30, 60, 120, 240],
 							"required": true
 						},
 						"refreshWhenOff": {
@@ -106,7 +106,7 @@
 							"description": "Refresh interval when device is turned on. In minutes. 0 = disabled.",
 							"type": "integer",
 							"default": 60,
-							"enum": [0, 1, 2, 5, 10, 30, 60, 120, 240]
+							"enum": [0, 1, 2, 5, 10, 30, 60, 120, 240],
 							"required": true
 						},
 						"swingDefaultUD": {
@@ -356,7 +356,7 @@
 								"devices[].excludeDevice",
 								"devices[].minHeatingTemperature",
 								"devices[].refreshWhenOn",
-								"devices[].refreshWhenOff",
+								"devices[].refreshWhenOff"
 							]
 						},
 						{
