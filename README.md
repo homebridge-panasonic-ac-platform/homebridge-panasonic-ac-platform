@@ -101,6 +101,12 @@ Device name (as it is in Comfort Cloud account) or serial (E.G.: CS-Z50VKEW+2462
 * `excludeDevice` (boolean):
 Exclude device from Homebridge and HomeKit (it will stay in Comfort Cloud).
 
+* `refreshWhenOn` (integer):
+Refresh interval when device is turned on. In minutes. 0 = disabled.
+
+* `refreshWhenOff` (integer):
+Refresh interval when device is turned off. In minutes. 0 = disabled.
+
 * `minHeatingTemperature` (integer):
 The default heating temperature range is 16-30°C. Some Panasonic ACs have an additional heating mode for the range of 8-15°C. You can use this setting to adjust the minimum value. Leave it empty to use the default value.
 
@@ -195,7 +201,7 @@ For the built-in slider (not additional), the following mapping applies:
 <details>
 <summary><b>Refreshing data of devices</b></summary>
 
-- The data is refreshed automatically: every 10 minutes when the device is turned on and every 60 minutes when it is turned off. Data is also refreshed every time the state of the device is changed using HomeKit / Apple Home.
+- The data is refreshed automatically (you can set time in config). Data is also refreshed every time the state of the device is changed using HomeKit / Apple Home.
 - Why isn't refreshing more often? Each refresh is a connection to the Panasonic server and too many connections result in IP blocking.
 - Temperature from outdoor unit is only available when device is on. 
 

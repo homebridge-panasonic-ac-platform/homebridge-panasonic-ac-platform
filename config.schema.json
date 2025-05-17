@@ -93,6 +93,22 @@
 							"type": "boolean",
 							"default": false
 						},
+						"refreshWhenOn": {
+							"title": "Refresh interval (on)",
+							"description": "Refresh interval when device is turned on. In minutes. 0 = disabled.",
+							"type": "integer",
+							"default": 10,
+							"enum": [0, 1, 2, 5, 10, 30, 60, 120, 240],
+							"required": true
+						},
+						"refreshWhenOff": {
+							"title": "Refresh interval (on)",
+							"description": "Refresh interval when device is turned on. In minutes. 0 = disabled.",
+							"type": "integer",
+							"default": 60,
+							"enum": [0, 1, 2, 5, 10, 30, 60, 120, 240],
+							"required": true
+						},
 						"swingDefaultUD": {
 							"title": "Swing Mode Default Position (Up-Down)",
 							"description": "Desired position of the Up-Down flaps when swing is switched off.",
@@ -338,7 +354,9 @@
 							"items": [
 								"devices[].name",
 								"devices[].excludeDevice",
-								"devices[].minHeatingTemperature"
+								"devices[].minHeatingTemperature",
+								"devices[].refreshWhenOn",
+								"devices[].refreshWhenOff"
 							]
 						},
 						{

@@ -356,13 +356,20 @@ export default class IndoorUnitAccessory {
       */
     }
 
-    // Schedule continuous device updates on the first run
-    // 10 minutes when device is on, 60 minutes device is off
+    // Set refresh inteval
     clearTimeout(this.timerRefreshDeviceStatus);
     this.timerRefreshDeviceStatus = null;
-    this.timerRefreshDeviceStatus = setTimeout(
-      this.refreshDeviceStatus.bind(this),
-      (this.service.getCharacteristic(this.platform.Characteristic.Active).value === 1) ? 10 * 60 * 1000 : 60 * 60 * 1000);
+
+    const isActive = this.service.getCharacteristic(this.platform.Characteristic.Active).value === 1;
+    const refreshWhenOn = this.devConfig?.refreshWhenOn ?? 10;
+    const refreshWhenOff = this.devConfig?.refreshWhenOff ?? 60;
+
+    if ((isActive === true && refreshWhenOn !== 0) || (isActive === false && refreshWhenOff !== 0)) {
+      this.timerRefreshDeviceStatus = setTimeout(
+        this.refreshDeviceStatus.bind(this),
+        isActive ? refreshWhenOn * 60000 : refreshWhenOff * 60000,
+      );
+    }
   }
 
   // ===============================================================================================================================================
