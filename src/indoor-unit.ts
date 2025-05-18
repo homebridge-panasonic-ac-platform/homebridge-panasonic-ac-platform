@@ -148,7 +148,7 @@ export default class IndoorUnitAccessory {
 
     if (this.devConfig?.exposeInsideTemp) {
       this.exposeInsideTemp.getCharacteristic(this.platform.Characteristic.CurrentTemperature)
-      .setProps({minValue: -100, maxValue: 100, minStep: 0.01});
+        .setProps({minValue: -100, maxValue: 100, minStep: 0.01});
     }
 
     // Update characteristic values asynchronously instead of using onGet handlers
