@@ -146,6 +146,11 @@ export default class IndoorUnitAccessory {
       manageService(false, 'fan speed', this.platform.Service.Fan);
     }
 
+    if (this.devConfig?.exposeInsideTemp) {
+      this.exposeInsideTemp.getCharacteristic(this.platform.Characteristic.CurrentTemperature)
+        .setProps({minValue: -100, maxValue: 100, minStep: 0.01});
+    }
+
     // Update characteristic values asynchronously instead of using onGet handlers
     this.refreshDeviceStatus();
   }
