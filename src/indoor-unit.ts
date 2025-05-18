@@ -125,8 +125,6 @@ export default class IndoorUnitAccessory {
     };
 
     // Expose additional features
-    //manageService(this.devConfig?.exposeInsideTemp, 'inside temp', this.platform.Service.TemperatureSensor);
-    manageService(this.devConfig?.exposeOutdoorTemp, 'out temp', this.platform.Service.TemperatureSensor);
     manageService(this.devConfig?.exposePower, 'power', this.platform.Service.Switch, this.setPower);
     manageService(this.devConfig?.exposeNanoe, 'nanoe', this.platform.Service.Switch, this.setNanoe);
     manageService(this.devConfig?.exposeInsideCleaning, 'inside cleaning', this.platform.Service.Switch, this.setInsideCleaning);
@@ -146,12 +144,22 @@ export default class IndoorUnitAccessory {
       manageService(false, 'fan speed', this.platform.Service.Fan);
     }
 
+    // inside temp
     if (this.devConfig?.exposeInsideTemp) {
       this.exposeInsideTemp = manageService(true, 'inside temp', this.platform.Service.TemperatureSensor);
       this.exposeInsideTemp.getCharacteristic(this.platform.Characteristic.CurrentTemperature)
         .setProps({minValue: -100, maxValue: 100, minStep: 0.01});
     } else {
-      manageService(false, 'inaide temp', this.platform.Service.TemperatureSensor);
+      manageService(false, 'inside temp', this.platform.Service.TemperatureSensor);
+    }
+
+    // out temp
+    if (this.devConfig?.exposeOutdoorTemp) {
+      this.exposeOutdoorTemp = manageService(true, 'out temp', this.platform.Service.TemperatureSensor);
+      this.exposeOutdoorTemp.getCharacteristic(this.platform.Characteristic.CurrentTemperature)
+        .setProps({minValue: -100, maxValue: 100, minStep: 0.01});
+    } else {
+      manageService(false, 'out temp', this.platform.Service.TemperatureSensor);
     }
 
     // Update characteristic values asynchronously instead of using onGet handlers
