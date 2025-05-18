@@ -125,7 +125,7 @@ export default class IndoorUnitAccessory {
     };
 
     // Expose additional features
-    manageService(this.devConfig?.exposeInsideTemp, 'inside temp', this.platform.Service.TemperatureSensor);
+    //manageService(this.devConfig?.exposeInsideTemp, 'inside temp', this.platform.Service.TemperatureSensor);
     manageService(this.devConfig?.exposeOutdoorTemp, 'out temp', this.platform.Service.TemperatureSensor);
     manageService(this.devConfig?.exposePower, 'power', this.platform.Service.Switch, this.setPower);
     manageService(this.devConfig?.exposeNanoe, 'nanoe', this.platform.Service.Switch, this.setNanoe);
@@ -140,15 +140,18 @@ export default class IndoorUnitAccessory {
 
     // Fan Speed (special case with RotationSpeed)
     if (this.devConfig?.exposeFanSpeed) {
-      this.exposeFanSpeed = manageService(true, 'fan speed', this.platform.Service.Fan);
+      this.exposeFanSpeed = manageService(true, 'fan speed', this.platform.Service.TemperatureSensor);
       this.exposeFanSpeed.getCharacteristic(this.platform.Characteristic.RotationSpeed).onSet(this.setFanSpeed.bind(this));
     } else {
       manageService(false, 'fan speed', this.platform.Service.Fan);
     }
 
     if (this.devConfig?.exposeInsideTemp) {
+      this.exposeInsideTemp = manageService(true, 'inside temp', this.platform.Service.TemperatureSensor);
       this.exposeInsideTemp.getCharacteristic(this.platform.Characteristic.CurrentTemperature)
         .setProps({minValue: -100, maxValue: 100, minStep: 0.01});
+    } else {
+      manageService(false, 'inaide temp', this.platform.Service.TemperatureSensor);
     }
 
     // Update characteristic values asynchronously instead of using onGet handlers
