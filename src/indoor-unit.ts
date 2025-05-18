@@ -193,7 +193,7 @@ export default class IndoorUnitAccessory {
 
       // Inside temperature for virtual sensor
       //if (this.exposeInsideTemp && this.deviceStatus.insideTemperature < 126) {
-        this.exposeInsideTemp?.updateCharacteristic(this.platform.Characteristic.CurrentTemperature, this.deviceStatus.insideTemperature);
+      this.exposeInsideTemp?.updateCharacteristic(this.platform.Characteristic.CurrentTemperature, this.deviceStatus.insideTemperature);
       //}
 
       // Outdoor temperature for logs
@@ -206,7 +206,7 @@ export default class IndoorUnitAccessory {
       // Outdoor temperature for virtual sensor
       // Only check and set if the user wants to display the virtual sensor showing temp from outdoor unit.
       //if (this.exposeOutdoorTemp && this.deviceStatus.outTemperature < 126) {
-        this.exposeOutdoorTemp?.updateCharacteristic(this.platform.Characteristic.CurrentTemperature, this.deviceStatus.outTemperature);
+      this.exposeOutdoorTemp?.updateCharacteristic(this.platform.Characteristic.CurrentTemperature, this.deviceStatus.outTemperature);
       //}
 
       // Current Heater-Cooler State and Target Heater-Cooler State
