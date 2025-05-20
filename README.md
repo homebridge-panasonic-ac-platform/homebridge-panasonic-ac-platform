@@ -26,7 +26,7 @@ This plugin can be easily installed through Homebridge UI or via [NPM](https://w
 
     npm install -g homebridge-panasonic-ac-platform
 
-Node v20 or higher is required.
+Node v20.19.0 or above is required.
 
 ## Configure plugin
 Configure the plugin through the settings UI or in the JSON editor.
