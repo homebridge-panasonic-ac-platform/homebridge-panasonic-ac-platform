@@ -293,6 +293,8 @@ https://www.panasonic.com/global/hvac/products/comfort-cloud/how-to-set-up-comfo
         
   - Any Zigbee IR blaster. You can easily add Zigbee support to Homebridge. Just connect the Conbee stick, enable the support in hb-config (Extra packages / deCONZ), install the appropriate plugin (E.G.: [homebridge-deconz](https://github.com/ebaauw/homebridge-deconz)) and add the selected IR blaster.
 
+    TIP: You can turn off the beep sound in the internal unit that appears on every IR signal receive. In most air conditioning, to do this, hold down the auto on/off button in the internal unit until you hear 4 beeps, then release the button, single press AC reset button on remote, single press the auto on/off button again on the air conditioning - short signal means a sound turned off, a long one means a sound turned on.
+
 </details>
 
 ## Contributing and support
