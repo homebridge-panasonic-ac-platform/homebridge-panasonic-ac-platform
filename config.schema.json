@@ -102,8 +102,8 @@
 							"required": true
 						},
 						"refreshWhenOff": {
-							"title": "Refresh interval (on)",
-							"description": "Refresh interval when device is turned on. In minutes. 0 = disabled.",
+							"title": "Refresh interval (off)",
+							"description": "Refresh interval when device is turned off. In minutes. 0 = disabled.",
 							"type": "integer",
 							"default": 60,
 							"enum": [0, 1, 2, 5, 10, 30, 60, 120, 240],
