@@ -107,7 +107,7 @@ export default class IndoorUnitAccessory {
       setter: ((value: any) => Promise<void>) | null = null,
     ) => {
       const exposeFlag = this.devConfig?.[flagKey];
-      const serviceType = this.platform.Service.[serviceTypeKey];
+      const serviceType = this.platform.Service[serviceTypeKey];
       const fullName = `${this.accessory.displayName} ${serviceName}`;
 
       if (exposeFlag) {
