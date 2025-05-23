@@ -101,18 +101,18 @@ export default class IndoorUnitAccessory {
 
     // Expose additional features - helper function
     const manageService = (
-      flagKey: keyof typeof this.devConfig,
+      flagKey: string,
       serviceName: string,
-      serviceTypeKey: keyof typeof this.platform.Service,
+      serviceTypeKey: string,
       setter: ((value: any) => Promise<void>) | null = null,
     ) => {
       const exposeFlag = this.devConfig?.[flagKey];
-      const serviceType = this.platform.Service[serviceTypeKey];
+      const serviceType = this.platform.Service.[serviceTypeKey];
       const fullName = `${this.accessory.displayName} ${serviceName}`;
 
       if (exposeFlag) {
-        const service = this.accessory.getService(fullName) ||
-                    this.accessory.addService(serviceType, fullName, serviceName);
+        const service = this.accessory.getService(fullName)
+          || this.accessory.addService(serviceType, fullName, serviceName);
 
         service.setCharacteristic(this.platform.Characteristic.ConfiguredName, fullName);
     
