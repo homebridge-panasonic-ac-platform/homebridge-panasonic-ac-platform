@@ -138,7 +138,7 @@ export default class IndoorUnitAccessory {
     manageService(this.devConfig?.exposeFanSpeed, 'fan speed', this.platform.Service.Fan);
     manageService(this.devConfig?.exposeInsideTemp, 'inside temp', this.platform.Service.TemperatureSensor);
     manageService(this.devConfig?.exposeOutdoorTemp, 'out temp', this.platform.Service.TemperatureSensor);
-    
+
     // Fan Speed - special case
     if (this.devConfig?.exposeFanSpeed) {
       this.exposeFanSpeed.getCharacteristic(this.platform.Characteristic.RotationSpeed).onSet(this.setFanSpeed.bind(this));
