@@ -115,7 +115,7 @@ export default class IndoorUnitAccessory {
           || this.accessory.addService(serviceType, fullName, serviceName);
 
         service.setCharacteristic(this.platform.Characteristic.ConfiguredName, fullName);
-    
+
         if (setter) {
           service.getCharacteristic(this.platform.Characteristic.On).onSet(setter.bind(this));
         }
