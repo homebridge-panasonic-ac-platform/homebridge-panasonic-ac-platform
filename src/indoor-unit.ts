@@ -135,31 +135,25 @@ export default class IndoorUnitAccessory {
     manageService(this.devConfig?.exposeHeatMode, 'heat mode', this.platform.Service.Switch, this.setHeatMode);
     manageService(this.devConfig?.exposeDryMode, 'dry mode', this.platform.Service.Switch, this.setDryMode);
     manageService(this.devConfig?.exposeFanMode, 'fan mode', this.platform.Service.Switch, this.setFanMode);
-
-    // Fan Speed (special case with RotationSpeed)
+    manageService(this.devConfig?.exposeFanSpeed, 'fan speed', this.platform.Service.Fan);
+    manageService(this.devConfig?.exposeInsideTemp, 'inside temp', this.platform.Service.TemperatureSensor);
+    manageService(this.devConfig?.exposeOutdoorTemp, 'out temp', this.platform.Service.TemperatureSensor);
+    
+    // Fan Speed - special case
     if (this.devConfig?.exposeFanSpeed) {
-      this.exposeFanSpeed = manageService(true, 'fan speed', this.platform.Service.TemperatureSensor);
       this.exposeFanSpeed.getCharacteristic(this.platform.Characteristic.RotationSpeed).onSet(this.setFanSpeed.bind(this));
-    } else {
-      manageService(false, 'fan speed', this.platform.Service.Fan);
     }
 
-    // inside temp
+    // inside temp - special case
     if (this.devConfig?.exposeInsideTemp) {
-      this.exposeInsideTemp = manageService(true, 'inside temp', this.platform.Service.TemperatureSensor);
       this.exposeInsideTemp.getCharacteristic(this.platform.Characteristic.CurrentTemperature)
         .setProps({minValue: -100, maxValue: 100, minStep: 0.01});
-    } else {
-      manageService(false, 'inside temp', this.platform.Service.TemperatureSensor);
     }
 
-    // out temp
+    // out temp - special case
     if (this.devConfig?.exposeOutdoorTemp) {
-      this.exposeOutdoorTemp = manageService(true, 'out temp', this.platform.Service.TemperatureSensor);
       this.exposeOutdoorTemp.getCharacteristic(this.platform.Characteristic.CurrentTemperature)
         .setProps({minValue: -100, maxValue: 100, minStep: 0.01});
-    } else {
-      manageService(false, 'out temp', this.platform.Service.TemperatureSensor);
     }
 
     // Update characteristic values asynchronously instead of using onGet handlers
