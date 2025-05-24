@@ -109,6 +109,8 @@ export default class IndoorUnitAccessory {
       const fullName = `${this.accessory.displayName} ${serviceName}`;
       if (exposeFlag) {
         const service = this.accessory.getService(fullName) || this.accessory.addService(serviceType, fullName, serviceName);
+        service.getCharacteristic(this.platform.Characteristic.ConfiguredName)
+          || service.addCharacteristic(this.platform.Characteristic.ConfiguredName);
         service.setCharacteristic(this.platform.Characteristic.ConfiguredName, fullName);
         if (setter) {
           service.getCharacteristic(this.platform.Characteristic.On).onSet(setter.bind(this));
