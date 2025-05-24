@@ -707,12 +707,11 @@ export default class ComfortCloudApi {
           + timestampMs
           + 'Bearer '
           + this.token;
-      const shaObj = new jsSHA.default('SHA-256', 'TEXT');
+      const shaObj = new jsSHA('SHA-256', 'TEXT');
       shaObj.update(input);
       const hashStr = shaObj.getHash('HEX');
       return hashStr.slice(0, 9) + 'cfc' + hashStr.slice(9);
-    }
-    catch (error) {
+    } catch (error) {
       this.log.error('Failed to generate CfcApiKey key', error);
       return undefined;
     }
