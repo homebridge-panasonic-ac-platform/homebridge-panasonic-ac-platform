@@ -90,6 +90,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
     const matches = $('p.whats-new__latest__version').first().text().match(/\d+(.)\d+(.)\d+/);
     if (Array.isArray(matches)) {
       this.log.info(`App Store app version: ${matches[0]}.`);
+      this.platformConfig.latestAppVersion = matches[0];
     } else {
       this.log.error('Could not find App Store app version.');
       await this.getPlayStoreVersion();
