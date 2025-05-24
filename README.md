@@ -90,7 +90,7 @@ Configure the plugin through the settings UI or in the JSON editor.
 When enabled, changes in the Home app will not be sent to Comfort Cloud. Useful for testing your installation without constantly switching the state of your AC.
 
 * `overWriteVersion` (string):
-Overwrite version - must be equal to newest Panasonic Comfort Cloud app version from App Store or Play Store. E.G: 1.21.1 .
+Must be equal to newest Panasonic Comfort Cloud app version from App Store or Play Store. E.G: 2.1.0. Leave empty to automaticaly detect version.
 
 * `logsLevel` (integer):
 Logs level. 0 - only errors and important info, 1 - standard, 2 - all (including debug). Note: to see debug messages in logs it is also required to enable Debug in Homebridge Settings.
