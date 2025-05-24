@@ -142,7 +142,7 @@ export default class IndoorUnitAccessory {
     manageService('exposeHeatMode', 'heat mode', 'Switch', this.setHeatMode);
     manageService('exposeDryMode', 'dry mode', 'Switch', this.setDryMode);
     manageService('exposeFanMode', 'fan mode', 'Switch', this.setFanMode);
-    manageService('exposeFanSpeed', 'fan speed', 'Fan');
+    manageService('exposeFanSpeed', 'fan speed', 'Fan', this.setFanSpeed);
     manageService('exposeInsideTemp', 'inside temp', 'TemperatureSensor');
     manageService('exposeOutdoorTemp', 'out temp', 'TemperatureSensor');
 
