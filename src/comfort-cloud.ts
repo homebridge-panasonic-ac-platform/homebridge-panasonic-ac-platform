@@ -696,26 +696,26 @@ export default class ComfortCloudApi {
   }
 
   getCfcApiKey() {
-      try {
-          // Parse date in 'YYYY-MM-DD HH:MM:SS' format and convert to timestamp (UTC milliseconds)
-          const date = new Date().toISOString().replace('T', ' ').slice(0, 19);
-          this.log.debug('Date used for CfcApiKey generation: ' + date);
-          const dateUTC = new Date(date + ' UTC');
-          const timestampMs = dateUTC.getTime().toString();
-          const input = 'Comfort Cloud'
-              + '521325fb2dd486bf4831b47644317fca'
-              + timestampMs
-              + 'Bearer '
-              + this.token;
-          const shaObj = new jssha_1.default('SHA-256', 'TEXT');
-          shaObj.update(input);
-          const hashStr = shaObj.getHash('HEX');
-          return hashStr.slice(0, 9) + 'cfc' + hashStr.slice(9);
-      }
-      catch (error) {
-          this.log.error('Failed to generate CfcApiKey key', error);
-          return undefined;
-      }
+    try {
+      // Parse date in 'YYYY-MM-DD HH:MM:SS' format and convert to timestamp (UTC milliseconds)
+      const date = new Date().toISOString().replace('T', ' ').slice(0, 19);
+      this.log.debug('Date used for CfcApiKey generation: ' + date);
+      const dateUTC = new Date(date + ' UTC');
+      const timestampMs = dateUTC.getTime().toString();
+      const input = 'Comfort Cloud'
+          + '521325fb2dd486bf4831b47644317fca'
+          + timestampMs
+          + 'Bearer '
+          + this.token;
+      const shaObj = new jsSHA.default('SHA-256', 'TEXT');
+      shaObj.update(input);
+      const hashStr = shaObj.getHash('HEX');
+      return hashStr.slice(0, 9) + 'cfc' + hashStr.slice(9);
+    }
+    catch (error) {
+      this.log.error('Failed to generate CfcApiKey key', error);
+      return undefined;
+    }
   }
 
 }
