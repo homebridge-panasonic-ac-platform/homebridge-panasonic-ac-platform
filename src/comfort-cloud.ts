@@ -690,7 +690,7 @@ export default class ComfortCloudApi {
       'X-APP-NAME': 'Comfort Cloud',
       'X-APP-TIMESTAMP': new Date().toISOString().replace('T', ' ').slice(0, 19),
       'X-APP-TYPE': '1',
-      'X-APP-VERSION': this.config.overwriteVersion || APP_VERSION,
+      'X-APP-VERSION': this.config.overwriteVersion || this.config.latestAppVersion || APP_VERSION,
       'X-CFC-API-KEY': this.getCfcApiKey() ?? '0',
     };
   }
