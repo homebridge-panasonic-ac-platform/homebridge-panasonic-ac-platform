@@ -499,7 +499,7 @@ export default class ComfortCloudApi {
     }
 
     // Show UTC time
-    this.log.debug('UTC date: ' + new Date().toISOString().replace('T', ' ').slice(0, 19););
+    this.log.debug('UTC date: ' + new Date().toISOString().replace('T', ' ').slice(0, 19));
 
     // Generate 6 digit PIN code calculated by key
     const key2fa = this.config.key2fa;
