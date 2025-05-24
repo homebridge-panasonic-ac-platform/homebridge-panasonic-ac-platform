@@ -101,26 +101,18 @@ export default class IndoorUnitAccessory {
 
     // Expose additional features - helper function
     const manageService = (
-      flagKey: string,
+      exposeFlag: boolean | undefined,
       serviceName: string,
-      serviceTypeKey: string,
+      serviceType: any, // Replace with proper Homebridge Service type if available
       setter: ((value: any) => Promise<void>) | null = null,
     ) => {
-      const exposeFlag = this.devConfig?.[flagKey];
-      const serviceType = this.platform.Service[serviceTypeKey];
-      //const serviceName = flagKey.replace(/^expose/, '').match(/[A-Z][a-z]*/g)?.map(w => w.toLowerCase()).join(' ') || '';
       const fullName = `${this.accessory.displayName} ${serviceName}`;
-
       if (exposeFlag) {
-        const service = this.accessory.getService(fullName)
-          || this.accessory.addService(serviceType, fullName, serviceName);
-
+        const service = this.accessory.getService(fullName) || this.accessory.addService(serviceType, fullName, serviceName);
         service.setCharacteristic(this.platform.Characteristic.ConfiguredName, fullName);
-
         if (setter) {
           service.getCharacteristic(this.platform.Characteristic.On).onSet(setter.bind(this));
         }
-
         this.platform.log.debug(`${this.accessory.displayName}: add ${serviceName}`);
         return service;
       } else {
@@ -133,35 +125,41 @@ export default class IndoorUnitAccessory {
     };
 
     // Expose additional features
-    manageService('exposePower', 'power', 'Switch', this.setPower);
-    manageService('exposeNanoe', 'nanoe', 'Switch', this.setNanoe);
-    manageService('exposeInsideCleaning', 'inside cleaning', 'Switch', this.setInsideCleaning);
-    manageService('exposeEcoNavi', 'eco navi', 'Switch', this.setEcoNavi);
-    manageService('exposeEcoFunction', 'eco function', 'Switch', this.setEcoFunction);
-    manageService('exposeAutoMode', 'auto mode', 'Switch', this.setAutoMode);
-    manageService('exposeCoolMode', 'cool mode', 'Switch', this.setCoolMode);
-    manageService('exposeHeatMode', 'heat mode', 'Switch', this.setHeatMode);
-    manageService('exposeDryMode', 'dry mode', 'Switch', this.setDryMode);
-    manageService('exposeFanMode', 'fan mode', 'Switch', this.setFanMode);
-    manageService('exposeFanSpeed', 'fan speed', 'Fan', this.setFanSpeed);
-    manageService('exposeInsideTemp', 'inside temp', 'TemperatureSensor');
-    manageService('exposeOutdoorTemp', 'out temp', 'TemperatureSensor');
+    manageService(this.devConfig?.exposePower, 'power', this.platform.Service.Switch, this.setPower);
+    manageService(this.devConfig?.exposeNanoe, 'nanoe', this.platform.Service.Switch, this.setNanoe);
+    manageService(this.devConfig?.exposeInsideCleaning, 'inside cleaning', this.platform.Service.Switch, this.setInsideCleaning);
+    manageService(this.devConfig?.exposeEcoNavi, 'eco navi', this.platform.Service.Switch, this.setEcoNavi);
+    manageService(this.devConfig?.exposeEcoFunction, 'eco function', this.platform.Service.Switch, this.setEcoFunction);
+    manageService(this.devConfig?.exposeAutoMode, 'auto mode', this.platform.Service.Switch, this.setAutoMode);
+    manageService(this.devConfig?.exposeCoolMode, 'cool mode', this.platform.Service.Switch, this.setCoolMode);
+    manageService(this.devConfig?.exposeHeatMode, 'heat mode', this.platform.Service.Switch, this.setHeatMode);
+    manageService(this.devConfig?.exposeDryMode, 'dry mode', this.platform.Service.Switch, this.setDryMode);
+    manageService(this.devConfig?.exposeFanMode, 'fan mode', this.platform.Service.Switch, this.setFanMode);
 
-    // Fan Speed - special case
+    // Fan Speed (special case with RotationSpeed)
     if (this.devConfig?.exposeFanSpeed) {
+      this.exposeFanSpeed = manageService(true, 'fan speed', this.platform.Service.TemperatureSensor);
       this.exposeFanSpeed.getCharacteristic(this.platform.Characteristic.RotationSpeed).onSet(this.setFanSpeed.bind(this));
+    } else {
+      manageService(false, 'fan speed', this.platform.Service.Fan);
     }
 
-    // inside temp - special case
+    // inside temp
     if (this.devConfig?.exposeInsideTemp) {
+      this.exposeInsideTemp = manageService(true, 'inside temp', this.platform.Service.TemperatureSensor);
       this.exposeInsideTemp.getCharacteristic(this.platform.Characteristic.CurrentTemperature)
         .setProps({minValue: -100, maxValue: 100, minStep: 0.01});
+    } else {
+      manageService(false, 'inside temp', this.platform.Service.TemperatureSensor);
     }
 
-    // out temp - special case
+    // out temp
     if (this.devConfig?.exposeOutdoorTemp) {
+      this.exposeOutdoorTemp = manageService(true, 'out temp', this.platform.Service.TemperatureSensor);
       this.exposeOutdoorTemp.getCharacteristic(this.platform.Characteristic.CurrentTemperature)
         .setProps({minValue: -100, maxValue: 100, minStep: 0.01});
+    } else {
+      manageService(false, 'out temp', this.platform.Service.TemperatureSensor);
     }
 
     // Update characteristic values asynchronously instead of using onGet handlers
