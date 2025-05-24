@@ -108,6 +108,7 @@ export default class IndoorUnitAccessory {
     ) => {
       const exposeFlag = this.devConfig?.[flagKey];
       const serviceType = this.platform.Service[serviceTypeKey];
+      //const serviceName = flagKey.replace(/^expose/, '').match(/[A-Z][a-z]*/g)?.map(w => w.toLowerCase()).join(' ') || '';
       const fullName = `${this.accessory.displayName} ${serviceName}`;
 
       if (exposeFlag) {
