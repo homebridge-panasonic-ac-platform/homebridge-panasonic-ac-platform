@@ -687,7 +687,7 @@ export default class ComfortCloudApi {
       'Content-Type': 'application/json',
       'User-Agent': 'G-RAC',
       'X-APP-NAME': 'Comfort Cloud',
-      'X-APP-TIMESTAMP': this.getCurrentTimestamp(),
+      'X-APP-TIMESTAMP': new Date().toISOString().replace('T', ' ').slice(0, 19),
       'X-APP-TYPE': '1',
       'X-APP-VERSION': this.config.overwriteVersion || APP_VERSION,
       'X-CFC-API-KEY': this.getCfcApiKey() ?? '0',
