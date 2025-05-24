@@ -47,7 +47,6 @@ export default class ComfortCloudApi {
     this.log.debug('Comfort Cloud: login()');
 
     // 2 FA TOTP (not necessary for know, it only calculate PIN, but Panasonic API not require it yet).
-
     // Check if the key is given and if it has 32 characters
     if (this.config.key2fa && this.config.key2fa.length === 32) {
       await this.setup2fa();
@@ -67,12 +66,6 @@ export default class ComfortCloudApi {
     // https://github.com/little-quokka/python-panasonic-comfort-cloud/
 
     // STEP 0 - prepare ---------------------------------------------------------------
-
-    const auth0client = AUTH_0_CLIENT;
-    this.log.debug(`auth0client: ${auth0client}`);
-
-    const app_client_id = APP_CLIENT_ID;
-    this.log.debug(`app_client_id: ${app_client_id}`);
 
     function generateRandomString(length) {
       const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -101,6 +94,9 @@ export default class ComfortCloudApi {
     function sha256(buffer) {
       return crypto.createHash('sha256').update(buffer).digest();
     }
+
+    this.log.debug(`auth0client: ${AUTH_0_CLIENT}`);
+    this.log.debug(`app_client_id: ${APP_CLIENT_ID}`);
 
     const code_verifier = base64URLEncode(crypto.randomBytes(32));
     this.log.debug(`code_verifier: ${code_verifier}`);
@@ -504,7 +500,7 @@ export default class ComfortCloudApi {
     }
 
     // Show UTC time
-    this.log.debug('UTC date: ' + this.getCurrentTimestamp());
+    this.log.debug('UTC date: ' + new Date().toISOString().replace('T', ' ').slice(0, 19));
 
     // Generate 6 digit PIN code calculated by key
     const key2fa = this.config.key2fa;
@@ -692,45 +688,33 @@ export default class ComfortCloudApi {
       'Content-Type': 'application/json',
       'User-Agent': 'G-RAC',
       'X-APP-NAME': 'Comfort Cloud',
-      'X-APP-TIMESTAMP': this.getCurrentTimestamp(),
+      'X-APP-TIMESTAMP': new Date().toISOString().replace('T', ' ').slice(0, 19),
       'X-APP-TYPE': '1',
       'X-APP-VERSION': this.config.overwriteVersion || APP_VERSION,
       'X-CFC-API-KEY': this.getCfcApiKey() ?? '0',
     };
   }
 
-  getCfcApiKey(): string | undefined {
+  getCfcApiKey() {
     try {
-      // Parse the timestamp in 'YYYY-MM-DD HH:MM:SS' format and convert to UTC milliseconds
-      const timestamp = this.getCurrentTimestamp();
-      this.log.debug('Timestamp used for key generation and header: ' + timestamp);
-      const date = new Date(timestamp + ' UTC'); // Added UTC to ensure consistent timezone handling
-      const timestampMs = date.getTime().toString();
-
+      // Parse date in 'YYYY-MM-DD HH:MM:SS' format and convert to timestamp (UTC milliseconds)
+      const date = new Date().toISOString().replace('T', ' ').slice(0, 19);
+      this.log.debug('Date used for CfcApiKey generation: ' + date);
+      const dateUTC = new Date(date + ' UTC');
+      const timestampMs = dateUTC.getTime().toString();
       const input = 'Comfort Cloud'
-                   + '521325fb2dd486bf4831b47644317fca'
-                   + timestampMs
-                   + 'Bearer '
-                   + this.token;
-
+          + '521325fb2dd486bf4831b47644317fca'
+          + timestampMs
+          + 'Bearer '
+          + this.token;
       const shaObj = new jsSHA('SHA-256', 'TEXT');
       shaObj.update(input);
       const hashStr = shaObj.getHash('HEX');
       return hashStr.slice(0, 9) + 'cfc' + hashStr.slice(9);
     } catch (error) {
-      this.log.error('Failed to generate API key', error);
+      this.log.error('Failed to generate CfcApiKey key', error);
       return undefined;
     }
-  }
-
-  getCurrentTimestamp(): string {
-    const now = new Date();
-    return now.getUTCFullYear()
-           + '-' + (now.getUTCMonth() + 1).toString().padStart(2, '0')
-           + '-' + now.getUTCDate().toString().padStart(2, '0')
-           + ' ' + now.getUTCHours().toString().padStart(2, '0')
-           + ':' + now.getUTCMinutes().toString().padStart(2, '0')
-           + ':' + now.getUTCSeconds().toString().padStart(2, '0');
   }
 
 }
