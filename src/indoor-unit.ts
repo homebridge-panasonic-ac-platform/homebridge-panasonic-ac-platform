@@ -13,7 +13,7 @@ export default class IndoorUnitAccessory {
   timerSendDeviceUpdate;
   timerSendDeviceUpdateRefresh;
   timerSetFanSpeed;
-  devConfig;
+  deviceConfig;
   deviceStatusFull;
   deviceStatus;
   exposeInsideTemp;
@@ -41,7 +41,7 @@ export default class IndoorUnitAccessory {
   ) {
     // Individual config for each device (if exists).
     if (this.platform.platformConfig.devices) {
-      this.devConfig = this.platform.platformConfig.devices.find((item) => item.name === accessory.context.device?.deviceName)
+      this.deviceConfig = this.platform.platformConfig.devices.find((item) => item.name === accessory.context.device?.deviceName)
       || this.platform.platformConfig.devices.find((item) => item.name === accessory.context.device?.deviceGuid);
     }
 
@@ -96,7 +96,7 @@ export default class IndoorUnitAccessory {
     // Heating Threshold Temperature (optional)
     this.service
       .getCharacteristic(this.platform.Characteristic.HeatingThresholdTemperature)
-      .setProps({minValue: this.devConfig?.minHeatingTemperature || 16, maxValue: 30, minStep: 0.5})
+      .setProps({minValue: this.deviceConfig?.minHeatingTemperature || 16, maxValue: 30, minStep: 0.5})
       .onSet(this.setThresholdTemperature.bind(this));
 
     // Expose additional features - helper function
@@ -125,27 +125,27 @@ export default class IndoorUnitAccessory {
     };
 
     // Expose additional features
-    manageService(this.devConfig?.exposePower, 'power', this.platform.Service.Switch, this.setPower);
-    manageService(this.devConfig?.exposeNanoe, 'nanoe', this.platform.Service.Switch, this.setNanoe);
-    manageService(this.devConfig?.exposeInsideCleaning, 'inside cleaning', this.platform.Service.Switch, this.setInsideCleaning);
-    manageService(this.devConfig?.exposeEcoNavi, 'eco navi', this.platform.Service.Switch, this.setEcoNavi);
-    manageService(this.devConfig?.exposeEcoFunction, 'eco function', this.platform.Service.Switch, this.setEcoFunction);
-    manageService(this.devConfig?.exposeAutoMode, 'auto mode', this.platform.Service.Switch, this.setAutoMode);
-    manageService(this.devConfig?.exposeCoolMode, 'cool mode', this.platform.Service.Switch, this.setCoolMode);
-    manageService(this.devConfig?.exposeHeatMode, 'heat mode', this.platform.Service.Switch, this.setHeatMode);
-    manageService(this.devConfig?.exposeDryMode, 'dry mode', this.platform.Service.Switch, this.setDryMode);
-    manageService(this.devConfig?.exposeFanMode, 'fan mode', this.platform.Service.Switch, this.setFanMode);
+    manageService(this.deviceConfig?.exposePower, 'power', this.platform.Service.Switch, this.setPower);
+    manageService(this.deviceConfig?.exposeNanoe, 'nanoe', this.platform.Service.Switch, this.setNanoe);
+    manageService(this.deviceConfig?.exposeInsideCleaning, 'inside cleaning', this.platform.Service.Switch, this.setInsideCleaning);
+    manageService(this.deviceConfig?.exposeEcoNavi, 'eco navi', this.platform.Service.Switch, this.setEcoNavi);
+    manageService(this.deviceConfig?.exposeEcoFunction, 'eco function', this.platform.Service.Switch, this.setEcoFunction);
+    manageService(this.deviceConfig?.exposeAutoMode, 'auto mode', this.platform.Service.Switch, this.setAutoMode);
+    manageService(this.deviceConfig?.exposeCoolMode, 'cool mode', this.platform.Service.Switch, this.setCoolMode);
+    manageService(this.deviceConfig?.exposeHeatMode, 'heat mode', this.platform.Service.Switch, this.setHeatMode);
+    manageService(this.deviceConfig?.exposeDryMode, 'dry mode', this.platform.Service.Switch, this.setDryMode);
+    manageService(this.deviceConfig?.exposeFanMode, 'fan mode', this.platform.Service.Switch, this.setFanMode);
 
-    // Fan Speed (special case with RotationSpeed)
-    if (this.devConfig?.exposeFanSpeed) {
-      this.exposeFanSpeed = manageService(true, 'fan speed', this.platform.Service.TemperatureSensor);
+    // Fan Speed
+    if (this.deviceConfig?.exposeFanSpeed) {
+      this.exposeFanSpeed = manageService(true, 'fan speed', this.platform.Service.Fan);
       this.exposeFanSpeed.getCharacteristic(this.platform.Characteristic.RotationSpeed).onSet(this.setFanSpeed.bind(this));
     } else {
       manageService(false, 'fan speed', this.platform.Service.Fan);
     }
 
-    // inside temp
-    if (this.devConfig?.exposeInsideTemp) {
+    // Inside Temp.
+    if (this.deviceConfig?.exposeInsideTemp) {
       this.exposeInsideTemp = manageService(true, 'inside temp', this.platform.Service.TemperatureSensor);
       this.exposeInsideTemp.getCharacteristic(this.platform.Characteristic.CurrentTemperature)
         .setProps({minValue: -100, maxValue: 100, minStep: 0.01});
@@ -153,8 +153,8 @@ export default class IndoorUnitAccessory {
       manageService(false, 'inside temp', this.platform.Service.TemperatureSensor);
     }
 
-    // out temp
-    if (this.devConfig?.exposeOutdoorTemp) {
+    // Outdoor Temp.
+    if (this.deviceConfig?.exposeOutdoorTemp) {
       this.exposeOutdoorTemp = manageService(true, 'out temp', this.platform.Service.TemperatureSensor);
       this.exposeOutdoorTemp.getCharacteristic(this.platform.Characteristic.CurrentTemperature)
         .setProps({minValue: -100, maxValue: 100, minStep: 0.01});
@@ -377,8 +377,8 @@ export default class IndoorUnitAccessory {
     this.timerRefreshDeviceStatus = null;
 
     const isActive = this.service.getCharacteristic(this.platform.Characteristic.Active).value === 1;
-    const refreshWhenOn = this.devConfig?.refreshWhenOn ?? 10;
-    const refreshWhenOff = this.devConfig?.refreshWhenOff ?? 60;
+    const refreshWhenOn = this.deviceConfig?.refreshWhenOn ?? 10;
+    const refreshWhenOff = this.deviceConfig?.refreshWhenOff ?? 60;
 
     if ((isActive === true && refreshWhenOn !== 0) || (isActive === false && refreshWhenOff !== 0)) {
       this.timerRefreshDeviceStatus = setTimeout(
@@ -492,8 +492,8 @@ export default class IndoorUnitAccessory {
       this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Swing mode Auto`);
     } else if (value === this.platform.Characteristic.SwingMode.SWING_DISABLED) {
       parameters.fanAutoMode = 1;
-      parameters.airSwingUD = (this.devConfig?.swingDefaultUD !== null) ? this.devConfig?.swingDefaultUD : 2;
-      parameters.airSwingLR = (this.devConfig?.swingDefaultLR !== null) ? this.devConfig?.swingDefaultLR : 2;
+      parameters.airSwingUD = (this.deviceConfig?.swingDefaultUD !== null) ? this.deviceConfig?.swingDefaultUD : 2;
+      parameters.airSwingLR = (this.deviceConfig?.swingDefaultLR !== null) ? this.deviceConfig?.swingDefaultLR : 2;
       this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Swing mode Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
@@ -610,7 +610,7 @@ export default class IndoorUnitAccessory {
       } else {
         parameters.fanAutoMode = 1;
       }
-      parameters.airSwingUD = (this.devConfig?.swingDefaultUD !== null) ? this.devConfig?.swingDefaultUD : 2;
+      parameters.airSwingUD = (this.deviceConfig?.swingDefaultUD !== null) ? this.deviceConfig?.swingDefaultUD : 2;
       this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Swing Up Down Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
@@ -634,7 +634,7 @@ export default class IndoorUnitAccessory {
       } else {
         parameters.fanAutoMode = 1;
       }
-      parameters.airSwingLR = (this.devConfig?.swingDefaultLR !== null) ? this.devConfig?.swingDefaultLR : 2;
+      parameters.airSwingLR = (this.deviceConfig?.swingDefaultLR !== null) ? this.deviceConfig?.swingDefaultLR : 2;
       this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Swing Left Right Off`);
     }
     this.sendDeviceUpdate(this.accessory.context.device.deviceGuid, parameters);
