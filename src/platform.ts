@@ -96,10 +96,10 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
     this.platformConfig.finalAppVersion = this.platformConfig.overwriteVersion || this.platformConfig.appStoreAppVersion || APP_VERSION;
     let logOutput = '';
     if (this.platformConfig.overwriteVersion) {
-        logOutput += `Overwrite version (plugin config): ${this.platformConfig.overwriteVersion}. `;
+      logOutput += `Overwrite version (plugin config): ${this.platformConfig.overwriteVersion}. `;
     }
     if (this.platformConfig.appStoreAppVersion) {
-        logOutput += `App Store version: ${this.platformConfig.appStoreAppVersion}. `;
+      logOutput += `App Store version: ${this.platformConfig.appStoreAppVersion}. `;
     }
     logOutput += `Built-in app version: ${APP_VERSION}. `;
     logOutput += `Version to use: ${this.platformConfig.finalAppVersion}.`;
