@@ -1,6 +1,5 @@
 import PanasonicPlatformLogger from './logger';
 import {
-  APP_VERSION,
   APP_CLIENT_ID,
   AUTH_0_CLIENT,
   REDIRECT_URI,
