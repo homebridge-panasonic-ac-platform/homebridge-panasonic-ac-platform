@@ -86,6 +86,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
     const $ = await cheerio.fromURL('https://apps.apple.com/app/panasonic-comfort-cloud/id1348640525');
     const matches = $('p.whats-new__latest__version').first().text().match(/\d+(.)\d+(.)\d+/);
     if (Array.isArray(matches)) {
+      this.log.debug('Fetch latest Comfort Cloud version from the App Store - Success');
       this.platformConfig.appStoreAppVersion = matches[0];
     } else {
       this.log.error('Could not find App Store app version.');
