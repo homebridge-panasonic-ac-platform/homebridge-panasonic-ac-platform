@@ -1,6 +1,5 @@
 import PanasonicPlatformLogger from './logger';
 import {
-  APP_VERSION,
   APP_CLIENT_ID,
   AUTH_0_CLIENT,
   REDIRECT_URI,
@@ -690,7 +689,7 @@ export default class ComfortCloudApi {
       'X-APP-NAME': 'Comfort Cloud',
       'X-APP-TIMESTAMP': new Date().toISOString().replace('T', ' ').slice(0, 19),
       'X-APP-TYPE': '1',
-      'X-APP-VERSION': this.config.overwriteVersion || this.config.latestAppVersion || APP_VERSION,
+      'X-APP-VERSION': this.config.finalAppVersion,
       'X-CFC-API-KEY': this.getCfcApiKey() ?? '0',
     };
   }
