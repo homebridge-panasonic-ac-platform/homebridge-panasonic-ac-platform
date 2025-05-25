@@ -486,7 +486,7 @@ export default class ComfortCloudApi {
       // Calculate HMAC-SHA1
       const hmac = hmacSha1(secretBytes, timeBytes);
 
-      // Dynamiczne obcinanie
+      // Dynamic cutting
       const offset = hmac[hmac.length - 1] & 0xf;
       const binary = ((hmac[offset] & 0x7f) << 24)
         | ((hmac[offset + 1] & 0xff) << 16)
