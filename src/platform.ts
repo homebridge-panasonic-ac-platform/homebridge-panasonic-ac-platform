@@ -76,11 +76,8 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
   }
 
   async configurePlugin() {
-    this.log.info(`Plugin app version: ${APP_VERSION}.`);
-    if (this.platformConfig.overwriteVersion) {
-      this.log.info(`Overwrite Version: ${this.platformConfig.overwriteVersion}.`);
-    }
     await this.getAppStoreVersion();
+    await this.setAppVersion();
     await this.loginAndDiscoverDevices();
   }
 
@@ -89,33 +86,24 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
     const $ = await cheerio.fromURL('https://apps.apple.com/app/panasonic-comfort-cloud/id1348640525');
     const matches = $('p.whats-new__latest__version').first().text().match(/\d+(.)\d+(.)\d+/);
     if (Array.isArray(matches)) {
-      this.log.info(`App Store app version: ${matches[0]}.`);
-      this.platformConfig.latestAppVersion = matches[0];
+      this.platformConfig.appStoreAppVersion = matches[0];
     } else {
       this.log.error('Could not find App Store app version.');
-      await this.getPlayStoreVersion();
     }
   }
 
-  async getPlayStoreVersion() {
-    // Version data is not displayed in clear text on the page, but instead included in some cryptic JS function call.
-    // The function call is `AF_initDataCallback()`, but there are many of them.
-    // The function call additionally contains (several) references to the app store page for the app in other languages,
-    // so it also contains the package name which allows us to further narrow it down.
-    // Finally, the version number is of the format major.minor.patch, surrounded by quotation marks.
-    this.log.debug('Attempting to fetch latest Comfort Cloud version from the Play Store.');
-    const $ = await cheerio.fromURL('https://play.google.com/store/apps/details?id=com.panasonic.ACCsmart');
-
-    $('script').each((idx, script) => {
-      const textContent = $(script).text();
-      const isCallback = textContent.includes('AF_initDataCallback(') && textContent.includes('com.panasonic.ACCsmart');
-      if (isCallback) {
-        const matches = textContent.match(/['"](\d+\.\d+\.\d+)['"]/);
-        if (Array.isArray(matches) && (1 in matches)) {
-          this.log.info(`Play Store app version: ${matches[1]}.`);
+  async setAppVersion() {
+        this.platformConfig.finalAppVersion = this.platformConfig.overwriteVersion || this.platformConfig.appStoreAppVersion || APP_VERSION;
+        let logOutput = ''
+        if (this.platformConfig.overwriteVersion) {
+            logOutput += `Overwrite version (plugin config): ${this.platformConfig.overwriteVersion}. `;
         }
-      }
-    });
+        if (this.platformConfig.appStoreAppVersion) {
+            logOutput += `App Store version: ${this.platformConfig.appStoreAppVersion}. `;
+        }
+        logOutput += `Built-in app version: ${APP_VERSION}. `;
+        logOutput += `Version to use: ${this.platformConfig.finalAppVersion}.`
+        this.log.info(logOutput);
   }
 
   async loginAndDiscoverDevices() {
