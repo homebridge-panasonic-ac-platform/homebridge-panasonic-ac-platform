@@ -78,14 +78,14 @@ export default class ComfortCloudApi {
     function getQuerystringParameterFromHeaderEntryUrl(response, headerEntry, querystringParameter, baseUrl) {
       const headerEntryValue = response.headers[headerEntry];
       if (!headerEntryValue || typeof headerEntryValue !== 'string') {
-          return null;
+        return null;
       }
       try {
-          const parsedUrl = new URL(headerEntryValue.startsWith('/') ? baseUrl + headerEntryValue : headerEntryValue);
-          const params = new URLSearchParams(parsedUrl.search);
-          return params.get(querystringParameter) || null;
+        const parsedUrl = new URL(headerEntryValue.startsWith('/') ? baseUrl + headerEntryValue : headerEntryValue);
+        const params = new URLSearchParams(parsedUrl.search);
+        return params.get(querystringParameter) || null;
       } catch (e) {
-          return null;
+        return null;
       }
     }
     function base64URLEncode(str) {
@@ -145,20 +145,13 @@ export default class ComfortCloudApi {
         this.log.debug(`location: ${this.location}`);
         this.state = getQuerystringParameterFromHeaderEntryUrl(response, 'location', 'state', 'https://authglb.digital.panasonic.com');
         this.log.debug(`state: ${this.state}`);
+        this.log.debug('code: ' + getQuerystringParameterFromHeaderEntryUrl(response, 'location', 'code', 'https://authglb.digital.panasonic.com'));
       })
       .catch((error: AxiosError) => {
         this.log.error('Comfort Cloud - Authorize - Error');
         this.log.debug(JSON.stringify(error, null, 2));
         return Promise.reject(error);
       });
-
-    // Authorize - check code ----------------------------------------------------------------
-
-    if (this.location.match(/[?&]code=([^&]+)/)) {
-      this.log.debug('Code: ${match[1]}');
-    } else {
-      this.log.debug('No code detected - starting login process');
-    }
 
     // Authorize - follow redirect --------------------------------------------------
 
