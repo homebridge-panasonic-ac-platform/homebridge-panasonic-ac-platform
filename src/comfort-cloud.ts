@@ -136,17 +136,39 @@ export default class ComfortCloudApi {
         this.log.debug('Comfort Cloud - Authorize - Success');
         this.log.debug(response.data);
         this.location = response.headers.location;
-        this.csrf = (response.headers['set-cookie'] as string[])
-          .find(cookie => cookie.includes('_csrf'))
-          ?.match(new RegExp('^_csrf=(.+?);'))
-          ?.[1];
-        this.log.debug(`csrf: ${this.csrf}`);
         this.log.debug(`location: ${this.location}`);
         this.state = getQuerystringParameterFromHeaderEntryUrl(response, 'location', 'state', 'https://authglb.digital.panasonic.com');
         this.log.debug(`state: ${this.state}`);
       })
       .catch((error: AxiosError) => {
         this.log.error('Comfort Cloud - Authorize - Error');
+        this.log.debug(JSON.stringify(error, null, 2));
+        return Promise.reject(error);
+      });
+
+    // Authorize - follow redirect --------------------------------------------------
+
+    await client.request({
+      method: 'get',
+      url: 'https://authglb.digital.panasonic.com' + this.location,
+      maxRedirects: 0,
+      validateStatus: status => (status >= 200 && status < 300) || status === 200,
+    })
+      .then((response) => {
+        this.log.debug('Comfort Cloud - Authorize follow redirect - Success');
+        this.log.debug(response.data);
+        this.location = response.headers.location;
+        this.log.debug(`location: ${this.location}`);
+        this.csrf = (response.headers['set-cookie'] as string[])
+          .find(cookie => cookie.includes('_csrf'))
+          ?.match(new RegExp('^_csrf=(.+?);'))
+          ?.[1];
+        this.log.debug(`csrf: ${this.csrf}`);
+        this.state = getQuerystringParameterFromHeaderEntryUrl(response, 'location', 'state', 'https://authglb.digital.panasonic.com');
+        this.log.debug(`state: ${this.state}`);
+      })
+      .catch((error: AxiosError) => {
+        this.log.error('Comfort Cloud - Authorize follow redirect - Error');
         this.log.debug(JSON.stringify(error, null, 2));
         return Promise.reject(error);
       });
