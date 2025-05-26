@@ -157,15 +157,11 @@ export default class ComfortCloudApi {
       .then((response) => {
         this.log.debug('Comfort Cloud - Authorize follow redirect - Success');
         this.log.debug(response.data);
-        this.location = response.headers.location;
-        this.log.debug(`location: ${this.location}`);
         this.csrf = (response.headers['set-cookie'] as string[])
           .find(cookie => cookie.includes('_csrf'))
           ?.match(new RegExp('^_csrf=(.+?);'))
           ?.[1];
         this.log.debug(`csrf: ${this.csrf}`);
-        this.state = getQuerystringParameterFromHeaderEntryUrl(response, 'location', 'state', 'https://authglb.digital.panasonic.com');
-        this.log.debug(`state: ${this.state}`);
       })
       .catch((error: AxiosError) => {
         this.log.error('Comfort Cloud - Authorize follow redirect - Error');
@@ -178,7 +174,7 @@ export default class ComfortCloudApi {
     if (this.location.match(/[?&]code=([^&]+)/)) {
       this.log.debug('Code: ${match[1]}');
     } else {
-      this.log.debug('No code detected');
+      this.log.debug('No code detected - starting login process');
     }
 
     // Login ----------------------------------------------------------------
