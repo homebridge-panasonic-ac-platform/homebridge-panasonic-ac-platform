@@ -64,7 +64,7 @@ export default class ComfortCloudApi {
     // https://github.com/craibo/panasonic_cc/
     // https://github.com/little-quokka/python-panasonic-comfort-cloud/
 
-    // STEP 0 - prepare ---------------------------------------------------------------
+    // Prepare ---------------------------------------------------------------
 
     function generateRandomString(length) {
       const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -82,7 +82,6 @@ export default class ComfortCloudApi {
       return params.get(querystringParameter) || null;
     }
 
-    // taken from AuthO docs
     function base64URLEncode(str) {
       return str.toString('base64')
         .replace(/\+/g, '-')
@@ -110,7 +109,7 @@ export default class ComfortCloudApi {
     const jar = new CookieJar();
     const client = wrapper(axios.create({ jar }));
 
-    // STEP 1 - authorize ----------------------------------------------------------------
+    // Authorize ----------------------------------------------------------------
 
     await client.request({
       method: 'get',
@@ -134,43 +133,33 @@ export default class ComfortCloudApi {
       validateStatus: status => (status >= 200 && status < 300) || status === 302,
     })
       .then((response) => {
-        this.log.debug('Comfort Cloud Login - Step 1 - Success');
+        this.log.debug('Comfort Cloud - Authorize - Success');
         this.log.debug(response.data);
         this.location = response.headers.location;
-        this.log.debug(`location: ${this.location}`);
-        this.state = getQuerystringParameterFromHeaderEntryUrl(response, 'location', 'state', 'https://authglb.digital.panasonic.com');
-        this.log.debug(`state: ${this.state}`);
-      })
-      .catch((error: AxiosError) => {
-        this.log.error('Comfort Cloud Login - Step 1 - Error');
-        this.log.debug(JSON.stringify(error, null, 2));
-        return Promise.reject(error);
-      });
-
-    // STEP 2 - authorize - follow redirect --------------------------------------------------
-
-    await client.request({
-      method: 'get',
-      url: 'https://authglb.digital.panasonic.com' + this.location,
-      maxRedirects: 0,
-      validateStatus: status => (status >= 200 && status < 300) || status === 200,
-    })
-      .then((response) => {
-        this.log.debug('Comfort Cloud Login - Step 2 - Success');
-        //this.log.debug(response.data);
         this.csrf = (response.headers['set-cookie'] as string[])
           .find(cookie => cookie.includes('_csrf'))
           ?.match(new RegExp('^_csrf=(.+?);'))
           ?.[1];
         this.log.debug(`csrf: ${this.csrf}`);
+        this.log.debug(`location: ${this.location}`);
+        this.state = getQuerystringParameterFromHeaderEntryUrl(response, 'location', 'state', 'https://authglb.digital.panasonic.com');
+        this.log.debug(`state: ${this.state}`);
       })
       .catch((error: AxiosError) => {
-        this.log.error('Comfort Cloud Login - Step 2 - Error');
+        this.log.error('Comfort Cloud - Authorize - Error');
         this.log.debug(JSON.stringify(error, null, 2));
         return Promise.reject(error);
       });
 
-    // STEP 3 - login ----------------------------------------------------------------
+    // Check code ----------------------------------------------------------------
+
+    if (this.location.match(/[?&]code=([^&]+)/)) {
+      this.log.debug('Code: ${match[1]}');
+    } else {
+      this.log.debug('No code detected');
+    }
+
+    // Login ----------------------------------------------------------------
 
     await client.request({
       method: 'post',
@@ -198,7 +187,7 @@ export default class ComfortCloudApi {
       validateStatus: status => (status >= 200 && status < 300) || status === 200,
     })
       .then((response) => {
-        this.log.debug('Comfort Cloud Login - Step 3 - Success');
+        this.log.debug('Comfort Cloud - Login - Success');
         this.log.debug(response.data);
 
         // get wa, wresult, wctx from body
@@ -212,13 +201,13 @@ export default class ComfortCloudApi {
         }
       })
       .catch((error: AxiosError) => {
-        this.log.error('Comfort Cloud Login - Step 3 - Error');
+        this.log.error('Comfort Cloud - Login - Error');
         this.log.debug(JSON.stringify(error, null, 2));
         return Promise.reject(error);
       });
 
 
-    // STEP 4 - login callback ------------------------------------------------------------
+    // Login callback ------------------------------------------------------------
 
     await client.request({
       method: 'post',
@@ -233,18 +222,18 @@ export default class ComfortCloudApi {
       validateStatus: status => (status >= 200 && status < 300) || status === 302,
     })
       .then((response) => {
-        this.log.debug('Comfort Cloud Login - Step 4 - Success');
+        this.log.debug('Comfort Cloud - Login callback - Success');
         this.log.debug(response.data);
         this.location = response.headers.location;
         this.log.debug(`location: ${this.location}`);
       })
       .catch((error: AxiosError) => {
-        this.log.error('Comfort Cloud Login - Step 4 - Error');
+        this.log.error('Comfort Cloud - Login callback - Error');
         this.log.debug(JSON.stringify(error, null, 2));
         return Promise.reject(error);
       });
 
-    // STEP 5 - login follow redirect ----------------------------------------------------------
+    // Login follow redirect ----------------------------------------------------------
 
     await client.request({
       method: 'get',
@@ -253,19 +242,19 @@ export default class ComfortCloudApi {
       validateStatus: status => (status >= 200 && status < 300) || status === 302,
     })
       .then((response) => {
-        this.log.debug('Comfort Cloud Login - Step 5 - Success');
+        this.log.debug('Comfort Cloud - Login follow redirect - Success');
         this.log.debug(response.data);
         this.code = getQuerystringParameterFromHeaderEntryUrl(response, 'location', 'code', 'https://authglb.digital.panasonic.com');
         this.log.debug(`code: ${this.code}`);
       })
       .catch((error: AxiosError) => {
-        this.log.error('Comfort Cloud Login - Step 5 - Error');
+        this.log.error('Comfort Cloud - Login follow redirect - Error');
         this.log.debug(JSON.stringify(error, null, 2));
         return Promise.reject(error);
       });
 
 
-    // STEP 6 - get new token -------------------------------------------------------------------
+    // Get new token -------------------------------------------------------------------
 
     await client.request({
       method: 'post',
@@ -286,7 +275,7 @@ export default class ComfortCloudApi {
       validateStatus: status => (status >= 200 && status < 300) || status === 302,
     })
       .then((response) => {
-        this.log.debug('Comfort Cloud Login - Step 6 - Success');
+        this.log.debug('Comfort Cloud - Get new token - Success');
         this.log.debug(response.data);
         this.token = response.data.access_token;
         this.log.debug(`token: ${this.token}`);
@@ -294,13 +283,13 @@ export default class ComfortCloudApi {
         this.log.debug(`tokenRefresh: ${this.tokenRefresh}`);
       })
       .catch((error: AxiosError) => {
-        this.log.error('Comfort Cloud Login - Step 6 - Error');
+        this.log.error('Comfort Cloud - Get new token - Error');
         this.log.debug(JSON.stringify(error, null, 2));
         return Promise.reject(error);
       });
 
 
-    // STEP 7 - get client id --------------------------------------------------------------
+    // Client ID --------------------------------------------------------------
 
     await client.request({
       method: 'post',
@@ -315,19 +304,19 @@ export default class ComfortCloudApi {
       validateStatus: status => (status >= 200 && status < 300) || status === 200,
     })
       .then((response) => {
-        this.log.debug('Comfort Cloud Login - Step 7 - Success');
+        this.log.debug('Comfort Cloud - Client ID - Success');
         this.log.debug(response.data);
         this.clientId = response.data.clientId;
         this.log.debug(`clientId: ${this.clientId}`);
       })
       .catch((error: AxiosError) => {
-        this.log.error('Comfort Cloud Login - Step 7 - Error');
+        this.log.error('Comfort Cloud - Client ID - Error');
         this.log.debug(JSON.stringify(error, null, 2));
         return Promise.reject(error);
       });
 
 
-    // STEP 8 - set timer to refresh token --------------------------------------------
+    // Set timer to refresh token --------------------------------------------
 
     // Refresh token just a moment before the expiration of 24 hours
     setTimeout(this.refreshToken.bind(this), 86300000);
