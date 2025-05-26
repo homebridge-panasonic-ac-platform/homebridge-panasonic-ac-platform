@@ -146,6 +146,14 @@ export default class ComfortCloudApi {
         return Promise.reject(error);
       });
 
+    // Authorize - check code ----------------------------------------------------------------
+
+    if (this.location.match(/[?&]code=([^&]+)/)) {
+      this.log.debug('Code: ${match[1]}');
+    } else {
+      this.log.debug('No code detected - starting login process');
+    }
+
     // Authorize - follow redirect --------------------------------------------------
 
     await client.request({
@@ -167,14 +175,6 @@ export default class ComfortCloudApi {
         this.log.debug(JSON.stringify(error, null, 2));
         return Promise.reject(error);
       });
-
-    // Check code ----------------------------------------------------------------
-
-    if (this.location.match(/[?&]code=([^&]+)/)) {
-      this.log.debug('Code: ${match[1]}');
-    } else {
-      this.log.debug('No code detected - starting login process');
-    }
 
     // Login ----------------------------------------------------------------
 
