@@ -151,6 +151,14 @@ export default class ComfortCloudApi {
         return Promise.reject(error);
       });
 
+    // Check code ----------------------------------------------------------------
+
+    if (this.location.match(/[?&]code=([^&]+)/)) {
+      this.log.debug('Code: ${match[1]}');
+    } else {
+      this.log.debug('No code detected');
+    }
+
     // Login ----------------------------------------------------------------
 
     await client.request({
