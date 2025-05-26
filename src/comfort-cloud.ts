@@ -77,11 +77,17 @@ export default class ComfortCloudApi {
 
     function getQuerystringParameterFromHeaderEntryUrl(response, headerEntry, querystringParameter, baseUrl) {
       const headerEntryValue = response.headers[headerEntry];
-      const parsedUrl = new URL(headerEntryValue.startsWith('/') ? baseUrl + headerEntryValue : headerEntryValue);
-      const params = new URLSearchParams(parsedUrl.search);
-      return params.get(querystringParameter) || null;
+      if (!headerEntryValue || typeof headerEntryValue !== 'string') {
+          return null;
+      }
+      try {
+          const parsedUrl = new URL(headerEntryValue.startsWith('/') ? baseUrl + headerEntryValue : headerEntryValue);
+          const params = new URLSearchParams(parsedUrl.search);
+          return params.get(querystringParameter) || null;
+      } catch (e) {
+          return null;
+      }
     }
-
     function base64URLEncode(str) {
       return str.toString('base64')
         .replace(/\+/g, '-')
