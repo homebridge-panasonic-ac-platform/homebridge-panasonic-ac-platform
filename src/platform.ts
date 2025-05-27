@@ -120,7 +120,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
       return;
     }
 
-    this.log.debug('Attempting to log into Comfort Cloud.');
+    this.log.info('Starting the Comfort Cloud login process. This may take a few seconds.');
     this.comfortCloud.login()
       .then(() => {
         this.log.info('Successfully logged in to Comfort Cloud.');
