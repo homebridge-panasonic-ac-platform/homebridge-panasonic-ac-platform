@@ -17,7 +17,7 @@ All devices that are set up on your Comfort Cloud account will automaticaly appe
 ## Comfort Cloud account (Panasonic ID)
 
 - Register and manage your Panasonic ID (used to manage Comfort Cloud) via app (iOS / Android) or browser -  [Panasonic ID](https://csapl.pcpf.panasonic.com).
-- From January 2024, Panasonic requires 2FA (Two Factor Authentication), you can choose: TOTP code or SMS - the recommended choice is the TOTP code (it could be available after clicking on the small link 'try another verification method').
+- Panasonic requires 2FA (Two Factor Authentication) for Panasonic account (at this moment not required for this plugin). You can choose TOTP code or SMS. Recommended choice is the TOTP code (32 character length key). This option could be available after clicking on the small link 'try another verification method'). If you already have account you can reset two factor authentication or again configure login method to get TOTP code.
 - Instructions on how to create a [dual-account setup](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/blob/master/docs/dual-account-setup.md).
 
 ## Install plugin
@@ -313,7 +313,7 @@ https://www.panasonic.com/global/hvac/products/comfort-cloud/how-to-set-up-comfo
 
 ## Disclaimer
 - This is not the official Panasonic plugin. It uses the official Panasonic API used to support official applications for iOS and Android. Panasonic has not provided an official API to support external plugins, so this method may stop working at any time.
-- Homebridge connect via Internet with Comfort Cloud (Panasonic platform), this solution does not work locally.
+- Homebridge connects via Internet with Comfort Cloud (Panasonic platform), this solution does not work locally.
 - Despite the efforts made, the operation of the plugin is without any guarantees.
 - All actions are at your own risk.
 - All product and company names are trademarks™ or registered® trademarks of their respective holders. Use of them does not imply any affiliation with or endorsement by them.
