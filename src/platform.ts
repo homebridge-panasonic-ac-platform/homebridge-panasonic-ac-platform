@@ -93,7 +93,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
       } else {
         this.log.error('Could not find App Store app version:', versionText);
       }
-    } catch (error: Error) {
+    } catch (error: any) {
       this.log.error('Error fetching App Store version:', error.message);
     }
   }
