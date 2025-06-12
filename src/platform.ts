@@ -32,6 +32,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
   private readonly accessories: PlatformAccessory<PanasonicAccessoryContext>[] = [];
 
   private _loginRetryTimeout;
+  private _checkAppVersionTimeout;
   private noOfFailedLoginAttempts = 0;
 
   public readonly comfortCloud: ComfortCloudApi;
@@ -131,6 +132,13 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
         this.log.info('Successfully logged in to Comfort Cloud.');
         this.noOfFailedLoginAttempts = 0;
         this.discoverDevices();
+
+        // set timer to check app version in 24 hours
+        clearTimeout(this._checkAppVersionTimeout);
+        this._checkAppVersionTimeout = setTimeout(() => {
+          this.getAppStoreVersion();
+          this.setAppVersion();
+        }, 86400000);
       })
       .catch((error) => {
         this.noOfFailedLoginAttempts++;
@@ -145,19 +153,21 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
             + 'or change IP of Homebridge (restart router). ');
           this.log.error('Next login attempt in 8 hours.');
           clearTimeout(this._loginRetryTimeout);
-          this._loginRetryTimeout = setTimeout(
-            this.loginAndDiscoverDevices.bind(this),
-            28800 * 1000,
-          );
+          this._loginRetryTimeout = setTimeout(async () => {
+            await this.getAppStoreVersion();
+            await this.setAppVersion();
+            this.loginAndDiscoverDevices();
+          }, 28800000);
         } else if (error.message === 'Request failed with status code 401') {
           this.log.error('Incorect login / password or incorect app version.'
                          + 'Enter the correct values in the plugin settings and restart.');
           this.log.error('Next login attempt in 8 hours.');
           clearTimeout(this._loginRetryTimeout);
-          this._loginRetryTimeout = setTimeout(
-            this.loginAndDiscoverDevices.bind(this),
-            28800 * 1000,
-          );
+          this._loginRetryTimeout = setTimeout(async () => {
+            await this.getAppStoreVersion();
+            await this.setAppVersion();
+            this.loginAndDiscoverDevices();
+          }, 28800000);
         } else {
           this.log.error(
             'The Comfort Cloud server might be experiencing issues at the moment. '
@@ -172,10 +182,11 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
 
           this.log.error(`Next login attempt in ${nextRetryDelay / 60} minutes.`);
           clearTimeout(this._loginRetryTimeout);
-          this._loginRetryTimeout = setTimeout(
-            this.loginAndDiscoverDevices.bind(this),
-            nextRetryDelay * 1000,
-          );
+          this._loginRetryTimeout = setTimeout(async () => {
+            await this.getAppStoreVersion();
+            await this.setAppVersion();
+            this.loginAndDiscoverDevices();
+          }, nextRetryDelay * 1000);
         }
 
       });
