@@ -32,6 +32,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
   private readonly accessories: PlatformAccessory<PanasonicAccessoryContext>[] = [];
 
   private _loginRetryTimeout;
+  private _checkAppVersionTimeout;
   private noOfFailedLoginAttempts = 0;
 
   public readonly comfortCloud: ComfortCloudApi;
@@ -131,6 +132,13 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
         this.log.info('Successfully logged in to Comfort Cloud.');
         this.noOfFailedLoginAttempts = 0;
         this.discoverDevices();
+
+        // set timer to check app version in 24 hours
+        clearTimeout(this._checkAppVersionTimeout);
+        this._checkAppVersionTimeout = setTimeout(() => {
+          this.getAppStoreVersion();
+          this.setAppVersion();
+        }, 86400000);
       })
       .catch((error) => {
         this.noOfFailedLoginAttempts++;
@@ -146,6 +154,8 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
           this.log.error('Next login attempt in 8 hours.');
           clearTimeout(this._loginRetryTimeout);
           this._loginRetryTimeout = setTimeout(
+            await this.getAppStoreVersion();
+            await this.setAppVersion();
             this.loginAndDiscoverDevices.bind(this),
             28800 * 1000,
           );
@@ -155,6 +165,8 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
           this.log.error('Next login attempt in 8 hours.');
           clearTimeout(this._loginRetryTimeout);
           this._loginRetryTimeout = setTimeout(
+            await this.getAppStoreVersion();
+            await this.setAppVersion();
             this.loginAndDiscoverDevices.bind(this),
             28800 * 1000,
           );
@@ -173,6 +185,8 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
           this.log.error(`Next login attempt in ${nextRetryDelay / 60} minutes.`);
           clearTimeout(this._loginRetryTimeout);
           this._loginRetryTimeout = setTimeout(
+            await this.getAppStoreVersion();
+            await this.setAppVersion();
             this.loginAndDiscoverDevices.bind(this),
             nextRetryDelay * 1000,
           );
