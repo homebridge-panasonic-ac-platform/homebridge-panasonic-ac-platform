@@ -153,23 +153,21 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
             + 'or change IP of Homebridge (restart router). ');
           this.log.error('Next login attempt in 8 hours.');
           clearTimeout(this._loginRetryTimeout);
-          this._loginRetryTimeout = setTimeout(
+          this._loginRetryTimeout = setTimeout(async () => {
             await this.getAppStoreVersion();
             await this.setAppVersion();
-            this.loginAndDiscoverDevices.bind(this),
-            28800 * 1000,
-          );
+            this.loginAndDiscoverDevices();
+          }, 28800000);
         } else if (error.message === 'Request failed with status code 401') {
           this.log.error('Incorect login / password or incorect app version.'
                          + 'Enter the correct values in the plugin settings and restart.');
           this.log.error('Next login attempt in 8 hours.');
           clearTimeout(this._loginRetryTimeout);
-          this._loginRetryTimeout = setTimeout(
+          this._loginRetryTimeout = setTimeout(async () => {
             await this.getAppStoreVersion();
             await this.setAppVersion();
-            this.loginAndDiscoverDevices.bind(this),
-            28800 * 1000,
-          );
+            this.loginAndDiscoverDevices();
+          }, 28800000);
         } else {
           this.log.error(
             'The Comfort Cloud server might be experiencing issues at the moment. '
@@ -184,12 +182,11 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
 
           this.log.error(`Next login attempt in ${nextRetryDelay / 60} minutes.`);
           clearTimeout(this._loginRetryTimeout);
-          this._loginRetryTimeout = setTimeout(
+          this._loginRetryTimeout = setTimeout(async () => {
             await this.getAppStoreVersion();
             await this.setAppVersion();
-            this.loginAndDiscoverDevices.bind(this),
-            nextRetryDelay * 1000,
-          );
+            this.loginAndDiscoverDevices();
+          }, nextRetryDelay * 1000);
         }
 
       });
