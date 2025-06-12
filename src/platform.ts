@@ -142,8 +142,8 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
       })
       .catch((error) => {
         this.noOfFailedLoginAttempts++;
-
         this.log.error(`Error: ${error.message}`);
+        let nextRetryDelay = 28800;
 
         if (error.message === 'Request failed with status code 429') {
           this.log.error('Too many incorect login attempts '
@@ -152,22 +152,10 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
             + '(it may take up to 24 hours) '
             + 'or change IP of Homebridge (restart router). ');
           this.log.error('Next login attempt in 8 hours.');
-          clearTimeout(this._loginRetryTimeout);
-          this._loginRetryTimeout = setTimeout(async () => {
-            await this.getAppStoreVersion();
-            await this.setAppVersion();
-            this.loginAndDiscoverDevices();
-          }, 28800000);
         } else if (error.message === 'Request failed with status code 401') {
           this.log.error('Incorect login / password or incorect app version.'
                          + 'Enter the correct values in the plugin settings and restart.');
           this.log.error('Next login attempt in 8 hours.');
-          clearTimeout(this._loginRetryTimeout);
-          this._loginRetryTimeout = setTimeout(async () => {
-            await this.getAppStoreVersion();
-            await this.setAppVersion();
-            this.loginAndDiscoverDevices();
-          }, 28800000);
         } else {
           this.log.error(
             'The Comfort Cloud server might be experiencing issues at the moment. '
@@ -178,17 +166,16 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
             [2, 1800], // 30 min
             [3, 3600], // 60 min
           ]);
-          const nextRetryDelay = delayMap.get(this.noOfFailedLoginAttempts) || 28800;
-
-          this.log.error(`Next login attempt in ${nextRetryDelay / 60} minutes.`);
-          clearTimeout(this._loginRetryTimeout);
-          this._loginRetryTimeout = setTimeout(async () => {
-            await this.getAppStoreVersion();
-            await this.setAppVersion();
-            this.loginAndDiscoverDevices();
-          }, nextRetryDelay * 1000);
+          nextRetryDelay = delayMap.get(this.noOfFailedLoginAttempts) || 28800;
         }
 
+        this.log.error(`Next login attempt in ${nextRetryDelay / 60} minutes.`);
+        clearTimeout(this._loginRetryTimeout);
+        this._loginRetryTimeout = setTimeout(async () => {
+          await this.getAppStoreVersion();
+          await this.setAppVersion();
+          this.loginAndDiscoverDevices();
+        }, nextRetryDelay * 1000);
       });
   }
 
