@@ -166,7 +166,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
             [2, 1800], // 30 min
             [3, 3600], // 60 min
           ]);
-          nextRetryDelay = delayMap.get(this.noOfFailedLoginAttempts);
+          nextRetryDelay = delayMap.get(this.noOfFailedLoginAttempts) || 28800;
         }
 
         this.log.error(`Next login attempt in ${nextRetryDelay / 60} minutes.`);
