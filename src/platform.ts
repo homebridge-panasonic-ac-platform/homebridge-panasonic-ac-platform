@@ -89,13 +89,13 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
       const versionText = $('p.whats-new__latest__version').first().text();
       const matches = versionText.match(/\d+\.\d+\.\d+/);
       if (matches) {
-        this.log.debug('Fetch latest Comfort Cloud version - Success:', matches[0]);
+        this.log.debug('Fetch latest Comfort Cloud version - Success:' + matches[0]);
         this.platformConfig.appStoreAppVersion = matches[0];
       } else {
         this.log.error('Could not find App Store app version:', versionText);
       }
     } catch (error: any) {
-      this.log.error('Error fetching App Store version:', error.message);
+      this.log.error('Error fetching App Store version:' + error.message);
     }
   }
 
