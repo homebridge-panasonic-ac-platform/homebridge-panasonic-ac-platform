@@ -137,6 +137,11 @@ export default class IndoorUnitAccessory {
     manageService(this.deviceConfig?.exposeHeatMode, 'heat mode', this.platform.Service.Switch, this.setHeatMode);
     manageService(this.deviceConfig?.exposeDryMode, 'dry mode', this.platform.Service.Switch, this.setDryMode);
     manageService(this.deviceConfig?.exposeFanMode, 'fan mode', this.platform.Service.Switch, this.setFanMode);
+    manageService(this.deviceConfig?.exposeNanoeStandAloneMode, 'nanoe stand alone mode', this.platform.Service.Switch, this.setNanoeStandAloneMode);
+    manageService(this.deviceConfig?.exposeQuietMode, 'quiet mode', this.platform.Service.Switch, this.setQuietMode);
+    manageService(this.deviceConfig?.exposePowerfulMode, 'powerful mode', this.platform.Service.Switch, this.setPowerfulMode);
+    manageService(this.deviceConfig?.exposeSwingUpDown, 'swing up down mode', this.platform.Service.Switch, this.setSwingUpDown);
+    manageService(this.deviceConfig?.exposeSwingLeftRight, 'swing left right mode', this.platform.Service.Switch, this.setSwingLeftRight);
 
     // Fan Speed
     if (this.deviceConfig?.exposeFanSpeed) {
