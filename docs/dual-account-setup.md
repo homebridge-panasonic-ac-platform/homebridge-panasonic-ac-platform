@@ -2,26 +2,28 @@
 
 While it is not strictly necessary to use a separate Comfort Cloud account for this plugin, it might prevent you from being logged out from your app (on the phone) while using this Homebridge plugin at the same time.
 
-Token management is at the discretion of the manufacturer, and we cannot influence this behaviour.
+## New Method
+You can now share devices from one Comfort Cloud account to another (iOS app version 2.2.0 or above required).
 
-## Definitions
+## Old Method (deprecated)
+
 For the purpose of this guide, we define "primary account" as the one you use to manage your units from your phone, and "secondary account" as the one used for Homebridge.
 
 The primary account will initially register and own the device(s), and then grant your secondary account the permission to control them.
 
-## Setup
+#### Setup
 
 To connect your air conditioners to your primary Comfort Cloud account in first place, please follow your device's user manual. Getting Panasonic ACs connected can be a fiddly affair at times and might require some familiarisation with the IR remote and the various numbers and modes.
 
 Once your devices are registered and linked with your primary account, follow the steps below to share the unit(s) with your secondary (Homebridge) account.
 
-### 1. Creating a secondary account for Homebridge
+#### 1. Creating a secondary account for Homebridge
 - Sign out of your primary account in the Comfort Cloud app.
 - Create a secondary account with a new email.
 
 Tip: If you have two phones available, it is easier to operate them at the same time during the setup process (one for each account). In that case, you don't have to switch accounts and device sharing requests can simply be confirmed by opening the push notification that is delivered to the primary account when a request is made.
 
-### 2. Create device sharing request
+#### 2. Create device sharing request
 - Log into your secondary account.
 - Tap "+" to add a new device (in any group).
 - Select Air Conditioner (first item).
@@ -36,7 +38,7 @@ Tip: If you have two phones available, it is easier to operate them at the same 
 - During this process, you will set up a device password and a request note for the device owner (primary account).
 - At the end of the process, you will have created a sharing request.
 
-### 3. Confirm device sharing request
+#### 3. Confirm device sharing request
 - Log back into your primary account.
 - Tap on the device you have requested access for.
 - Click the hamburger menu and expand the "Owner" menu item, click "User list".
