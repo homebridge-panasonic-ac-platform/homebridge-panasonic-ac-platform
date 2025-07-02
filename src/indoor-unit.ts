@@ -467,8 +467,8 @@ export default class IndoorUnitAccessory {
         break;
       case 2: case 3: case 4: case 5: case 6:
         parameters.ecoMode = 0;
-        parameters.fanSpeed = 1;
-        this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Fan speed ${value -1}`);
+        parameters.fanSpeed = value - 1;
+        this.platform.log[(this.platform.platformConfig.logsLevel >= 1) ? 'info' : 'debug'](`${this.accessory.displayName}: Fan speed ${value - 1}`);
         break;
       case 7:
         parameters.ecoMode = 1;
