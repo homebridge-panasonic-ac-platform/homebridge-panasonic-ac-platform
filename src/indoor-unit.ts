@@ -102,11 +102,11 @@ export default class IndoorUnitAccessory {
     // Additional sensors and switches
 
     // Inside temp.
-    { 
+    {
       const key = 'exposeInsideTemp';
       const label = 'inside temp';
       const type = 'TemperatureSensor';
-      
+
       if (this.deviceConfig?.[key]) {
         this[key] = this.accessory.getService(this.accessory.displayName + ' ' + label)
           || this.accessory.addService(this.platform.Service[type], this.accessory.displayName + ' ' + label, key);
