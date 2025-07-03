@@ -102,27 +102,33 @@ export default class IndoorUnitAccessory {
     // Additional sensors and switches
 
     // Inside temp.
-    if (this.deviceConfig?.exposeInsideTemp) {
-      this.exposeInsideTemp = this.accessory.getService(this.accessory.displayName + ' (inside temp)')
-        || this.accessory.addService(this.platform.Service.TemperatureSensor, this.accessory.displayName + ' (inside temp)', 'exposeInsideTemp');
-      this.exposeInsideTemp.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (inside temp)');
-      this.platform.log.debug(`${this.accessory.displayName}: add inside temp sensor`);
-    } else {
-      const removeInsideTemp = this.accessory.getService(this.accessory.displayName + ' (inside temp)');
-      if (removeInsideTemp) {
-        this.accessory.removeService(removeInsideTemp);
-        this.platform.log.debug(`${this.accessory.displayName}: remove inside temp sensor`);
+    {
+      const key = 'exposeInsideTemp';
+      const label = 'inside temp';
+      const type = 'TemperatureSensor';
+
+      if (this.deviceConfig?.[key]) {
+        this[key] = this.accessory.getService(this.accessory.displayName + ' ' + label)
+          || this.accessory.addService(this.platform.Service[type], this.accessory.displayName + ' ' + label, key);
+        this[key].setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' ' + label);
+        this.platform.log.debug(`${this.accessory.displayName}: add ` + label);
+      } else {
+        const remove = this.accessory.getService(this.accessory.displayName + ' ' + label);
+        if (remove) {
+          this.accessory.removeService(remove);
+          this.platform.log.debug(`${this.accessory.displayName}: remove ` + label);
+        }
       }
     }
 
     // Outdoor temp.
     if (this.deviceConfig?.exposeOutdoorTemp) {
-      this.exposeOutdoorTemp = this.accessory.getService(this.accessory.displayName + ' (out temp)')
-        || this.accessory.addService(this.platform.Service.TemperatureSensor, this.accessory.displayName + ' (out temp)', 'exposeOutdoorTemp');
+      this.exposeOutdoorTemp = this.accessory.getService(this.accessory.displayName + ' (outdoor temp)')
+        || this.accessory.addService(this.platform.Service.TemperatureSensor, this.accessory.displayName + ' (outdoor temp)', 'exposeOutdoorTemp');
       this.exposeOutdoorTemp.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (out temp)');
       this.platform.log.debug(`${this.accessory.displayName}: add outdoor temp sensor`);
     } else {
-      const removeOutdoorTemp = this.accessory.getService(this.accessory.displayName + ' (out temp)');
+      const removeOutdoorTemp = this.accessory.getService(this.accessory.displayName + ' (outdoor temp)');
       if (removeOutdoorTemp) {
         this.accessory.removeService(removeOutdoorTemp);
         this.platform.log.debug(`${this.accessory.displayName}: remove outdoor temp sensor`);
