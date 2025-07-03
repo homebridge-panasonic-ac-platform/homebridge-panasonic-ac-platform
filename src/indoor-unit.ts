@@ -537,8 +537,8 @@ export default class IndoorUnitAccessory {
       this.exposeFanMode?.updateCharacteristic(this.platform.Characteristic.On, isOn && this.deviceStatus.operationMode === 4
                                                && this.deviceStatus.lastSettingMode === 1);
       this.exposeNanoeStandAloneMode?.updateCharacteristic(this.platform.Characteristic.On,
-                                                           isOn && this.deviceStatus.operationMode === 4
-                                                           && this.deviceStatus.lastSettingMode === 2);
+        isOn && this.deviceStatus.operationMode === 4
+        && this.deviceStatus.lastSettingMode === 2);
       this.exposeSwingUpDown?.updateCharacteristic(this.platform.Characteristic.On, [0, 2].includes(this.deviceStatus.fanAutoMode));
       this.exposeSwingLeftRight?.updateCharacteristic(this.platform.Characteristic.On, [0, 3].includes(this.deviceStatus.fanAutoMode));
 
