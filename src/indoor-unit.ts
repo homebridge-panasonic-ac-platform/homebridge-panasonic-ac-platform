@@ -128,7 +128,7 @@ export default class IndoorUnitAccessory {
 
     // Expose additional features
     manageService(this.deviceConfig?.exposePower, 'power', this.platform.Service.Switch, this.setPower);
-    manageService(this.deviceConfig?.exposeNanoe, 'nanoe', this.platform.Service.Switch, this.setNanoe);
+    //manageService(this.deviceConfig?.exposeNanoe, 'nanoe', this.platform.Service.Switch, this.setNanoe);
     manageService(this.deviceConfig?.exposeInsideCleaning, 'inside cleaning', this.platform.Service.Switch, this.setInsideCleaning);
     manageService(this.deviceConfig?.exposeEcoNavi, 'eco navi', this.platform.Service.Switch, this.setEcoNavi);
     manageService(this.deviceConfig?.exposeEcoFunction, 'eco function', this.platform.Service.Switch, this.setEcoFunction);
@@ -142,6 +142,23 @@ export default class IndoorUnitAccessory {
     manageService(this.deviceConfig?.exposePowerfulMode, 'powerful mode', this.platform.Service.Switch, this.setPowerfulMode);
     manageService(this.deviceConfig?.exposeSwingUpDown, 'swing up down mode', this.platform.Service.Switch, this.setSwingUpDown);
     manageService(this.deviceConfig?.exposeSwingLeftRight, 'swing left right mode', this.platform.Service.Switch, this.setSwingLeftRight);
+
+    // Nanoe
+    if (this.deviceConfig?.exposeNanoe) {
+      this.exposeNanoe = this.accessory.getService(this.accessory.displayName + ' (nanoe)')
+        || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (nanoe)', 'exposeNanoe');
+      this.exposeNanoe.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (nanoe)');
+      this.exposeNanoe
+        .getCharacteristic(this.platform.Characteristic.On)
+        .onSet(this.setNanoe.bind(this));
+      this.platform.log.debug(`${this.accessory.displayName}: add nanoe switch`);
+    } else {
+      const removeNanoe = this.accessory.getService(this.accessory.displayName + ' (nanoe)');
+      if (removeNanoe) {
+        this.accessory.removeService(removeNanoe);
+        this.platform.log.debug(`${this.accessory.displayName}: remove nanoe switch`);
+      }
+    }
 
     // Fan Speed
     if (this.deviceConfig?.exposeFanSpeed) {
