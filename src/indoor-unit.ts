@@ -144,7 +144,7 @@ export default class IndoorUnitAccessory {
     manageService(this.deviceConfig?.exposeSwingLeftRight, 'swing left right mode', this.platform.Service.Switch, this.setSwingLeftRight);
 
     // Nanoe
-    if (this.devConfig?.exposeNanoe) {
+    if (this.deviceConfig?.exposeNanoe) {
       this.exposeNanoe = this.accessory.getService(this.accessory.displayName + ' (nanoe)')
         || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (nanoe)', 'exposeNanoe');
       this.exposeNanoe.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (nanoe)');
@@ -159,7 +159,7 @@ export default class IndoorUnitAccessory {
         this.platform.log.debug(`${this.accessory.displayName}: remove nanoe switch`);
       }
     }
-    
+
     // Fan Speed
     if (this.deviceConfig?.exposeFanSpeed) {
       this.exposeFanSpeed = manageService(true, 'fan speed', this.platform.Service.Fan);
