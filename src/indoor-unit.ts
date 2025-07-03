@@ -108,9 +108,9 @@ export default class IndoorUnitAccessory {
       const type = 'TemperatureSensor';
       
       if (this.deviceConfig?.[key]) {
-        this.[key] = this.accessory.getService(this.accessory.displayName + ' ' + label)
+        this[key] = this.accessory.getService(this.accessory.displayName + ' ' + label)
           || this.accessory.addService(this.platform.Service.[type], this.accessory.displayName + ' ' + label, key);
-        this.[key].setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' ' + label);
+        this[key].setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' ' + label);
         this.platform.log.debug(`${this.accessory.displayName}: add ` + label);
       } else {
         const remove = this.accessory.getService(this.accessory.displayName + ' ' + label);
