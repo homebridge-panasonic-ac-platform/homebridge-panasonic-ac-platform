@@ -534,8 +534,11 @@ export default class IndoorUnitAccessory {
       this.exposeCoolMode?.updateCharacteristic(this.platform.Characteristic.On, isOn && this.deviceStatus.operationMode === 2);
       this.exposeHeatMode?.updateCharacteristic(this.platform.Characteristic.On, isOn && this.deviceStatus.operationMode === 3);
       this.exposeDryMode?.updateCharacteristic(this.platform.Characteristic.On, isOn && this.deviceStatus.operationMode === 1);
-      this.exposeFanMode?.updateCharacteristic(this.platform.Characteristic.On, isOn && this.deviceStatus.operationMode === 4 && this.deviceStatus.lastSettingMode === 1);
-      this.exposeNanoeStandAloneMode?.updateCharacteristic(this.platform.Characteristic.On, isOn && this.deviceStatus.operationMode === 4 && this.deviceStatus.lastSettingMode === 2);
+      this.exposeFanMode?.updateCharacteristic(this.platform.Characteristic.On, isOn && this.deviceStatus.operationMode === 4
+                                               && this.deviceStatus.lastSettingMode === 1);
+      this.exposeNanoeStandAloneMode?.updateCharacteristic(this.platform.Characteristic.On,
+                                                           isOn && this.deviceStatus.operationMode === 4
+                                                           && this.deviceStatus.lastSettingMode === 2);
       this.exposeSwingUpDown?.updateCharacteristic(this.platform.Characteristic.On, [0, 2].includes(this.deviceStatus.fanAutoMode));
       this.exposeSwingLeftRight?.updateCharacteristic(this.platform.Characteristic.On, [0, 3].includes(this.deviceStatus.fanAutoMode));
 
