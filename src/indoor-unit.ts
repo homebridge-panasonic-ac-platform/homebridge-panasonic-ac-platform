@@ -523,26 +523,25 @@ export default class IndoorUnitAccessory {
       }
 
       // Expose additional features
-      const updateChar = (expose, condition) => expose?.updateCharacteristic(this.platform.Characteristic.On, condition);
       const isOn = this.deviceStatus.operate === 1;
 
-      updateChar(this.exposePower, isOn);
-      updateChar(this.exposeNanoe, this.deviceStatus.nanoe === 2);
-      updateChar(this.exposeInsideCleaning, this.deviceStatus.insideCleaning === 2);
-      updateChar(this.exposeEcoNavi, this.deviceStatus.ecoNavi === 2);
-      updateChar(this.exposeEcoFunction, this.deviceStatus.ecoFunctionData === 2);
-      updateChar(this.exposeAutoMode, isOn && this.deviceStatus.operationMode === 0);
-      updateChar(this.exposeCoolMode, isOn && this.deviceStatus.operationMode === 2);
-      updateChar(this.exposeHeatMode, isOn && this.deviceStatus.operationMode === 3);
-      updateChar(this.exposeDryMode, isOn && this.deviceStatus.operationMode === 1);
-      updateChar(this.exposeFanMode, isOn && this.deviceStatus.operationMode === 4 && this.deviceStatus.lastSettingMode === 1);
-      updateChar(this.exposeNanoeStandAloneMode, isOn && this.deviceStatus.operationMode === 4 && this.deviceStatus.lastSettingMode === 2);
-      updateChar(this.exposeSwingUpDown, [0, 2].includes(this.deviceStatus.fanAutoMode));
-      updateChar(this.exposeSwingLeftRight, [0, 3].includes(this.deviceStatus.fanAutoMode));
+      this.exposePower?.updateCharacteristic(this.platform.Characteristic.On, isOn);
+      this.exposeNanoe?.updateCharacteristic(this.platform.Characteristic.On, this.deviceStatus.nanoe === 2);
+      this.exposeInsideCleaning?.updateCharacteristic(this.platform.Characteristic.On, this.deviceStatus.insideCleaning === 2);
+      this.exposeEcoNavi?.updateCharacteristic(this.platform.Characteristic.On, this.deviceStatus.ecoNavi === 2);
+      this.exposeEcoFunction?.updateCharacteristic(this.platform.Characteristic.On, this.deviceStatus.ecoFunctionData === 2);
+      this.exposeAutoMode?.updateCharacteristic(this.platform.Characteristic.On, isOn && this.deviceStatus.operationMode === 0);
+      this.exposeCoolMode?.updateCharacteristic(this.platform.Characteristic.On, isOn && this.deviceStatus.operationMode === 2);
+      this.exposeHeatMode?.updateCharacteristic(this.platform.Characteristic.On, isOn && this.deviceStatus.operationMode === 3);
+      this.exposeDryMode?.updateCharacteristic(this.platform.Characteristic.On, isOn && this.deviceStatus.operationMode === 1);
+      this.exposeFanMode?.updateCharacteristic(this.platform.Characteristic.On, isOn && this.deviceStatus.operationMode === 4 && this.deviceStatus.lastSettingMode === 1);
+      this.exposeNanoeStandAloneMode?.updateCharacteristic(this.platform.Characteristic.On, isOn && this.deviceStatus.operationMode === 4 && this.deviceStatus.lastSettingMode === 2);
+      this.exposeSwingUpDown?.updateCharacteristic(this.platform.Characteristic.On, [0, 2].includes(this.deviceStatus.fanAutoMode));
+      this.exposeSwingLeftRight?.updateCharacteristic(this.platform.Characteristic.On, [0, 3].includes(this.deviceStatus.fanAutoMode));
 
       if (isOn) {
-        updateChar(this.exposeQuietMode, this.deviceStatus.ecoMode === 2);
-        updateChar(this.exposePowerfulMode, this.deviceStatus.ecoMode === 1);
+        this.exposeQuietMode?.updateCharacteristic(this.platform.Characteristic.On, this.deviceStatus.ecoMode === 2);
+        this.exposePowerfulMode?.updateCharacteristic(this.platform.Characteristic.On, this.deviceStatus.ecoMode === 1);
       }
 
       // Expose fan speed
