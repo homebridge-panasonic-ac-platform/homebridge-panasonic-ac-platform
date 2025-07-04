@@ -9,7 +9,7 @@ import {
   Service,
 } from 'homebridge';
 import axios from 'axios';
-import * as cheerio from 'cheerio';
+//import * as cheerio from 'cheerio';
 import ComfortCloudApi from './comfort-cloud';
 import IndoorUnitAccessory from './indoor-unit';
 import PanasonicPlatformLogger from './logger';
@@ -86,11 +86,11 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
   async getAppStoreVersion() {
     this.log.debug('Attempting to fetch latest Comfort Cloud version from the App Store.');
     try {
-        const response = await axios.get('https://itunes.apple.com/lookup?id=1348640525');
-        const version = response.data.results[0].version;
-        this.log.info('App Store version:', version);
-    } catch (error) {
-        this.log.error('Error:', error.message);
+      const response = await axios.get('https://itunes.apple.com/lookup?id=1348640525');
+      const version = response.data.results[0].version;
+      this.log.info('App Store version:', version);
+    } catch (error: any) {
+      this.log.error('Error:', error.message);
     }
   }
 
