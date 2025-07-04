@@ -216,15 +216,15 @@ export default class IndoorUnitAccessory {
 
     // Cool mode
     if (this.deviceConfig?.exposeCoolMode) {
-      this.exposeCoolMode = this.accessory.getService(this.accessory.displayName + ' (cool mode)')
-        || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (cool mode)', 'exposeCoolMode');
-      this.exposeCoolMode.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (cool mode)');
+      this.exposeCoolMode = this.accessory.getService(this.accessory.displayName + ' cool mode')
+        || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' cool mode', 'exposeCoolMode');
+      this.exposeCoolMode.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' cool mode');
       this.exposeCoolMode
         .getCharacteristic(this.platform.Characteristic.On)
         .onSet(this.setCoolMode.bind(this));
       this.platform.log.debug(`${this.accessory.displayName}: add cool mode switch`);
     } else {
-      const removeCoolMode = this.accessory.getService(this.accessory.displayName + ' (cool mode)');
+      const removeCoolMode = this.accessory.getService(this.accessory.displayName + ' cool mode');
       if (removeCoolMode) {
         this.accessory.removeService(removeCoolMode);
         this.platform.log.debug(`${this.accessory.displayName}: remove cool mode switch`);
@@ -233,15 +233,15 @@ export default class IndoorUnitAccessory {
 
     // Heat mode
     if (this.deviceConfig?.exposeHeatMode) {
-      this.exposeHeatMode = this.accessory.getService(this.accessory.displayName + ' (heat mode)')
-        || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (heat mode)', 'exposeHeatMode');
-      this.exposeHeatMode.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (heat mode)');
+      this.exposeHeatMode = this.accessory.getService(this.accessory.displayName + ' heat mode')
+        || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' heat mode', 'exposeHeatMode');
+      this.exposeHeatMode.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' heat mode');
       this.exposeHeatMode
         .getCharacteristic(this.platform.Characteristic.On)
         .onSet(this.setHeatMode.bind(this));
       this.platform.log.debug(`${this.accessory.displayName}: add heat mode switch`);
     } else {
-      const removeHeatMode = this.accessory.getService(this.accessory.displayName + ' (heat mode)');
+      const removeHeatMode = this.accessory.getService(this.accessory.displayName + ' heat mode');
       if (removeHeatMode) {
         this.accessory.removeService(removeHeatMode);
         this.platform.log.debug(`${this.accessory.displayName}: remove heat mode switch`);
@@ -250,15 +250,15 @@ export default class IndoorUnitAccessory {
 
     // Dry mode
     if (this.deviceConfig?.exposeDryMode) {
-      this.exposeDryMode = this.accessory.getService(this.accessory.displayName + ' (dry mode)')
-        || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (dry mode)', 'exposeDryMode');
-      this.exposeDryMode.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (dry mode)');
+      this.exposeDryMode = this.accessory.getService(this.accessory.displayName + ' dry mode')
+        || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' dry mode', 'exposeDryMode');
+      this.exposeDryMode.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' dry mode');
       this.exposeDryMode
         .getCharacteristic(this.platform.Characteristic.On)
         .onSet(this.setDryMode.bind(this));
       this.platform.log.debug(`${this.accessory.displayName}: add dry mode switch`);
     } else {
-      const removeDryMode = this.accessory.getService(this.accessory.displayName + ' (dry mode)');
+      const removeDryMode = this.accessory.getService(this.accessory.displayName + ' dry mode');
       if (removeDryMode) {
         this.accessory.removeService(removeDryMode);
         this.platform.log.debug(`${this.accessory.displayName}: remove dry mode switch`);
@@ -267,15 +267,15 @@ export default class IndoorUnitAccessory {
 
     // Fan Mode
     if (this.deviceConfig?.exposeFanMode) {
-      this.exposeFanMode = this.accessory.getService(this.accessory.displayName + ' (fan mode)')
-        || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (fan mode)', 'exposeFanMode');
-      this.exposeFanMode.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (fan mode)');
+      this.exposeFanMode = this.accessory.getService(this.accessory.displayName + ' fan mode')
+        || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' fan mode', 'exposeFanMode');
+      this.exposeFanMode.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' fan mode');
       this.exposeFanMode
         .getCharacteristic(this.platform.Characteristic.On)
         .onSet(this.setFanMode.bind(this));
       this.platform.log.debug(`${this.accessory.displayName}: add fan mode switch`);
     } else {
-      const removeFanMode = this.accessory.getService(this.accessory.displayName + ' (fan mode)');
+      const removeFanMode = this.accessory.getService(this.accessory.displayName + ' fan mode');
       if (removeFanMode) {
         this.accessory.removeService(removeFanMode);
         this.platform.log.debug(`${this.accessory.displayName}: remove fan mode switch`);
@@ -284,15 +284,15 @@ export default class IndoorUnitAccessory {
 
     // Nanoe Stand Alone Mode
     if (this.deviceConfig?.exposeNanoeStandAloneMode) {
-      this.exposeNanoeStandAloneMode = this.accessory.getService(this.accessory.displayName + ' (nanoe stand alone mode)')
-        || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (nanoe stand alone mode)', 'exposeNanoeStandAloneMode');
-      this.exposeNanoeStandAloneMode.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (nanoe stand alone mode)');
+      this.exposeNanoeStandAloneMode = this.accessory.getService(this.accessory.displayName + ' nanoe stand alone mode')
+        || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' nanoe stand alone mode', 'exposeNanoeStandAloneMode');
+      this.exposeNanoeStandAloneMode.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' nanoe stand alone mode');
       this.exposeNanoeStandAloneMode
         .getCharacteristic(this.platform.Characteristic.On)
         .onSet(this.setNanoeStandAloneMode.bind(this));
       this.platform.log.debug(`${this.accessory.displayName}: add nanoe stand alone mode switch`);
     } else {
-      const removeNanoeStandAloneMode = this.accessory.getService(this.accessory.displayName + ' (nanoe stand alone mode)');
+      const removeNanoeStandAloneMode = this.accessory.getService(this.accessory.displayName + ' nanoe stand alone mode');
       if (removeNanoeStandAloneMode) {
         this.accessory.removeService(removeNanoeStandAloneMode);
         this.platform.log.debug(`${this.accessory.displayName}: remove nanoe stand alone mode switch`);
@@ -301,15 +301,15 @@ export default class IndoorUnitAccessory {
 
     // Quiet Mode
     if (this.deviceConfig?.exposeQuietMode) {
-      this.exposeQuietMode = this.accessory.getService(this.accessory.displayName + ' (quiet mode)')
-        || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (quiet mode)', 'exposeQuietMode');
-      this.exposeQuietMode.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (quiet mode)');
+      this.exposeQuietMode = this.accessory.getService(this.accessory.displayName + ' quiet mode')
+        || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' quiet mode', 'exposeQuietMode');
+      this.exposeQuietMode.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' quiet mode');
       this.exposeQuietMode
         .getCharacteristic(this.platform.Characteristic.On)
         .onSet(this.setQuietMode.bind(this));
       this.platform.log.debug(`${this.accessory.displayName}: add quiet mode switch`);
     } else {
-      const removeQuietMode = this.accessory.getService(this.accessory.displayName + ' (quiet mode)');
+      const removeQuietMode = this.accessory.getService(this.accessory.displayName + ' quiet mode');
       if (removeQuietMode) {
         this.accessory.removeService(removeQuietMode);
         this.platform.log.debug(`${this.accessory.displayName}: remove quiet mode switch`);
@@ -318,15 +318,15 @@ export default class IndoorUnitAccessory {
 
     // Powerful mode
     if (this.deviceConfig?.exposePowerfulMode) {
-      this.exposePowerfulMode = this.accessory.getService(this.accessory.displayName + ' (powerful mode)')
-        || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (powerful mode)', 'exposePowerfulMode');
-      this.exposePowerfulMode.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (powerful mode)');
+      this.exposePowerfulMode = this.accessory.getService(this.accessory.displayName + ' powerful mode')
+        || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' powerful mode', 'exposePowerfulMode');
+      this.exposePowerfulMode.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' powerful mode');
       this.exposePowerfulMode
         .getCharacteristic(this.platform.Characteristic.On)
         .onSet(this.setPowerfulMode.bind(this));
       this.platform.log.debug(`${this.accessory.displayName}: add powerful mode switch`);
     } else {
-      const removePowerfulMode = this.accessory.getService(this.accessory.displayName + ' (powerful mode)');
+      const removePowerfulMode = this.accessory.getService(this.accessory.displayName + ' powerful mode');
       if (removePowerfulMode) {
         this.accessory.removeService(removePowerfulMode);
         this.platform.log.debug(`${this.accessory.displayName}: remove powerful mode switch`);
@@ -335,15 +335,15 @@ export default class IndoorUnitAccessory {
 
     // Swing Up Down
     if (this.deviceConfig?.exposeSwingUpDown) {
-      this.exposeSwingUpDown = this.accessory.getService(this.accessory.displayName + ' (swing up down)')
-        || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (swing up down)', 'exposeSwingUpDown');
-      this.exposeSwingUpDown.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (swing up down)');
+      this.exposeSwingUpDown = this.accessory.getService(this.accessory.displayName + ' swing up down')
+        || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' swing up down', 'exposeSwingUpDown');
+      this.exposeSwingUpDown.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' swing up down');
       this.exposeSwingUpDown
         .getCharacteristic(this.platform.Characteristic.On)
         .onSet(this.setSwingUpDown.bind(this));
       this.platform.log.debug(`${this.accessory.displayName}: add swing up down switch`);
     } else {
-      const removeSwingUpDown = this.accessory.getService(this.accessory.displayName + ' (swing up down)');
+      const removeSwingUpDown = this.accessory.getService(this.accessory.displayName + ' swing up down');
       if (removeSwingUpDown) {
         this.accessory.removeService(removeSwingUpDown);
         this.platform.log.debug(`${this.accessory.displayName}: remove swing up down switch`);
@@ -352,15 +352,15 @@ export default class IndoorUnitAccessory {
 
     // Swing Left Right
     if (this.deviceConfig?.exposeSwingLeftRight) {
-      this.exposeSwingLeftRight = this.accessory.getService(this.accessory.displayName + ' (swing left right)')
-        || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (swing left right)', 'exposeSwingLeftRight');
-      this.exposeSwingLeftRight.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (swing left right)');
+      this.exposeSwingLeftRight = this.accessory.getService(this.accessory.displayName + ' swing left right')
+        || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' swing left right', 'exposeSwingLeftRight');
+      this.exposeSwingLeftRight.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' swing left right');
       this.exposeSwingLeftRight
         .getCharacteristic(this.platform.Characteristic.On)
         .onSet(this.setSwingLeftRight.bind(this));
       this.platform.log.debug(`${this.accessory.displayName}: add swing left right switch`);
     } else {
-      const removeSwingLeftRight = this.accessory.getService(this.accessory.displayName + ' (swing left right)');
+      const removeSwingLeftRight = this.accessory.getService(this.accessory.displayName + ' swing left right');
       if (removeSwingLeftRight) {
         this.accessory.removeService(removeSwingLeftRight);
         this.platform.log.debug(`${this.accessory.displayName}: remove swing left right switch`);
@@ -369,9 +369,9 @@ export default class IndoorUnitAccessory {
 
     // Fan speed
     if (this.deviceConfig?.exposeFanSpeed) {
-      this.exposeFanSpeed = this.accessory.getService(this.accessory.displayName + ' (fan speed)')
-        || this.accessory.addService(this.platform.Service.Fan, this.accessory.displayName + ' (fan speed)', 'exposeFanSpeed');
-      this.exposeFanSpeed.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (fan speed)');
+      this.exposeFanSpeed = this.accessory.getService(this.accessory.displayName + ' fan speed')
+        || this.accessory.addService(this.platform.Service.Fan, this.accessory.displayName + ' fan speed', 'exposeFanSpeed');
+      this.exposeFanSpeed.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' fan speed');
       this.exposeFanSpeed
         .getCharacteristic(this.platform.Characteristic.On)
         .onSet(this.setFanSpeed.bind(this));
@@ -380,7 +380,7 @@ export default class IndoorUnitAccessory {
         .onSet(this.setFanSpeed.bind(this));
       this.platform.log.debug(`${this.accessory.displayName}: add fan speed slider`);
     } else {
-      const removeFanSpeed = this.accessory.getService(this.accessory.displayName + ' (fan speed)');
+      const removeFanSpeed = this.accessory.getService(this.accessory.displayName + ' fan speed');
       if (removeFanSpeed) {
         this.accessory.removeService(removeFanSpeed);
         this.platform.log.debug(`${this.accessory.displayName}: remove fan speed slider`);
