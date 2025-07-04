@@ -8,7 +8,8 @@ import {
   PlatformConfig,
   Service,
 } from 'homebridge';
-import * as cheerio from 'cheerio';
+import axios from 'axios';
+//import * as cheerio from 'cheerio';
 import ComfortCloudApi from './comfort-cloud';
 import IndoorUnitAccessory from './indoor-unit';
 import PanasonicPlatformLogger from './logger';
@@ -85,21 +86,32 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
   async getAppStoreVersion() {
     this.log.debug('Attempting to fetch latest Comfort Cloud version from the App Store.');
     try {
-      const $ = await cheerio.fromURL('https://apps.apple.com/app/panasonic-comfort-cloud/id1348640525');
-      const versionText = $('p.whats-new__latest__version').first().text();
-      const matches = versionText.match(/\d+\.\d+\.\d+/);
-      if (matches) {
-        this.log.debug('Fetch latest Comfort Cloud version - Success: ' + matches[0]);
-        this.platformConfig.appStoreAppVersion = matches[0];
-      } else {
-        this.log.error('Could not find App Store app version in');
-        this.log.debug('Version shoud be in: ' + versionText);
-      }
+      const response = await axios.get('https://itunes.apple.com/lookup?id=1348640525');
+      const version = response.data.results[0].version;
+      this.log.info('App Store version:', version);
     } catch (error: any) {
-      this.log.error('Error fetching App Store version.');
-      this.log.debug('Error: ' + error.message);
+      this.log.error('Error:', error.message);
     }
   }
+
+  // async getAppStoreVersion() {
+  //   this.log.debug('Attempting to fetch latest Comfort Cloud version from the App Store.');
+  //   try {
+  //     const $ = await cheerio.fromURL('https://apps.apple.com/app/panasonic-comfort-cloud/id1348640525');
+  //     const versionText = $('p.whats-new__latest__version').first().text();
+  //     const matches = versionText.match(/\d+\.\d+\.\d+/);
+  //     if (matches) {
+  //       this.log.debug('Fetch latest Comfort Cloud version - Success: ' + matches[0]);
+  //       this.platformConfig.appStoreAppVersion = matches[0];
+  //     } else {
+  //       this.log.error('Could not find App Store app version in');
+  //       this.log.debug('Version shoud be in: ' + versionText);
+  //     }
+  //   } catch (error: any) {
+  //     this.log.error('Error fetching App Store version.');
+  //     this.log.debug('Error: ' + error.message);
+  //   }
+  // }
 
   async setAppVersion() {
     this.platformConfig.finalAppVersion = this.platformConfig.overwriteVersion || this.platformConfig.appStoreAppVersion || APP_VERSION;
