@@ -103,12 +103,12 @@ export default class IndoorUnitAccessory {
 
     // Inside temp.
     if (this.deviceConfig?.exposeInsideTemp) {
-      this.exposeInsideTemp = this.accessory.getService(this.accessory.displayName + ' (inside temp)')
-        || this.accessory.addService(this.platform.Service.TemperatureSensor, this.accessory.displayName + ' (inside temp)', 'exposeInsideTemp');
-      this.exposeInsideTemp.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (inside temp)');
+      this.exposeInsideTemp = this.accessory.getService(this.accessory.displayName + ' inside temp')
+        || this.accessory.addService(this.platform.Service.TemperatureSensor, this.accessory.displayName + ' inside temp', 'exposeInsideTemp');
+      this.exposeInsideTemp.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' inside temp');
       this.platform.log.debug(`${this.accessory.displayName}: add inside temp sensor`);
     } else {
-      const removeInsideTemp = this.accessory.getService(this.accessory.displayName + ' (inside temp)');
+      const removeInsideTemp = this.accessory.getService(this.accessory.displayName + ' inside temp');
       if (removeInsideTemp) {
         this.accessory.removeService(removeInsideTemp);
         this.platform.log.debug(`${this.accessory.displayName}: remove inside temp sensor`);
@@ -117,12 +117,12 @@ export default class IndoorUnitAccessory {
 
     // Outdoor temp.
     if (this.deviceConfig?.exposeOutdoorTemp) {
-      this.exposeOutdoorTemp = this.accessory.getService(this.accessory.displayName + ' (out temp)')
-        || this.accessory.addService(this.platform.Service.TemperatureSensor, this.accessory.displayName + ' (out temp)', 'exposeOutdoorTemp');
-      this.exposeOutdoorTemp.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (out temp)');
+      this.exposeOutdoorTemp = this.accessory.getService(this.accessory.displayName + ' out temp')
+        || this.accessory.addService(this.platform.Service.TemperatureSensor, this.accessory.displayName + ' out temp', 'exposeOutdoorTemp');
+      this.exposeOutdoorTemp.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' out temp');
       this.platform.log.debug(`${this.accessory.displayName}: add outdoor temp sensor`);
     } else {
-      const removeOutdoorTemp = this.accessory.getService(this.accessory.displayName + ' (out temp)');
+      const removeOutdoorTemp = this.accessory.getService(this.accessory.displayName + ' out temp');
       if (removeOutdoorTemp) {
         this.accessory.removeService(removeOutdoorTemp);
         this.platform.log.debug(`${this.accessory.displayName}: remove outdoor temp sensor`);
@@ -131,15 +131,15 @@ export default class IndoorUnitAccessory {
 
     // Power (on/off)
     if (this.deviceConfig?.exposePower) {
-      this.exposePower = this.accessory.getService(this.accessory.displayName + ' (power)')
-        || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (power)', 'exposePower');
-      this.exposePower.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (power)');
+      this.exposePower = this.accessory.getService(this.accessory.displayName + ' power')
+        || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' power', 'exposePower');
+      this.exposePower.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' power');
       this.exposePower
         .getCharacteristic(this.platform.Characteristic.On)
         .onSet(this.setPower.bind(this));
       this.platform.log.debug(`${this.accessory.displayName}: add power (on/off) switch`);
     } else {
-      const removePower = this.accessory.getService(this.accessory.displayName + ' (power)');
+      const removePower = this.accessory.getService(this.accessory.displayName + ' power');
       if (removePower) {
         this.accessory.removeService(removePower);
         this.platform.log.debug(`${this.accessory.displayName}: remove power (on/off) switch`);
@@ -148,15 +148,15 @@ export default class IndoorUnitAccessory {
 
     // Nanoe
     if (this.deviceConfig?.exposeNanoe) {
-      this.exposeNanoe = this.accessory.getService(this.accessory.displayName + ' (nanoe)')
-        || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (nanoe)', 'exposeNanoe');
-      this.exposeNanoe.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (nanoe)');
+      this.exposeNanoe = this.accessory.getService(this.accessory.displayName + ' nanoe')
+        || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' nanoe', 'exposeNanoe');
+      this.exposeNanoe.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' nanoe');
       this.exposeNanoe
         .getCharacteristic(this.platform.Characteristic.On)
         .onSet(this.setNanoe.bind(this));
       this.platform.log.debug(`${this.accessory.displayName}: add nanoe switch`);
     } else {
-      const removeNanoe = this.accessory.getService(this.accessory.displayName + ' (nanoe)');
+      const removeNanoe = this.accessory.getService(this.accessory.displayName + ' nanoe');
       if (removeNanoe) {
         this.accessory.removeService(removeNanoe);
         this.platform.log.debug(`${this.accessory.displayName}: remove nanoe switch`);
@@ -165,15 +165,15 @@ export default class IndoorUnitAccessory {
 
     // Inside cleaning
     if (this.deviceStatusFull?.insideCleaning && this.deviceConfig?.exposeInsideCleaning) {
-      this.exposeInsideCleaning = this.accessory.getService(this.accessory.displayName + ' (inside cleaning)')
-        || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (inside cleaning)', 'exposeInsideCleaning');
-      this.exposeInsideCleaning.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (inside cleaning)');
+      this.exposeInsideCleaning = this.accessory.getService(this.accessory.displayName + ' inside cleaning')
+        || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' inside cleaning', 'exposeInsideCleaning');
+      this.exposeInsideCleaning.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' inside cleaning');
       this.exposeInsideCleaning
         .getCharacteristic(this.platform.Characteristic.On)
         .onSet(this.setInsideCleaning.bind(this));
       this.platform.log.debug(`${this.accessory.displayName}: add inside cleaning switch`);
     } else {
-      const removeInsideCleaning = this.accessory.getService(this.accessory.displayName + ' (inside cleaning)');
+      const removeInsideCleaning = this.accessory.getService(this.accessory.displayName + ' inside cleaning');
       if (removeInsideCleaning) {
         this.accessory.removeService(removeInsideCleaning);
         this.platform.log.debug(`${this.accessory.displayName}: remove inside cleaning switch`);
@@ -182,15 +182,15 @@ export default class IndoorUnitAccessory {
 
     // Eco Navi
     if (this.deviceConfig?.exposeEcoNavi) {
-      this.exposeEcoNavi = this.accessory.getService(this.accessory.displayName + ' (eco navi)')
-        || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (eco navi)', 'exposeEcoNavi');
-      this.exposeEcoNavi.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (eco navi)');
+      this.exposeEcoNavi = this.accessory.getService(this.accessory.displayName + ' eco navi')
+        || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' eco navi', 'exposeEcoNavi');
+      this.exposeEcoNavi.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' eco navi');
       this.exposeEcoNavi
         .getCharacteristic(this.platform.Characteristic.On)
         .onSet(this.setEcoNavi.bind(this));
       this.platform.log.debug(`${this.accessory.displayName}: add eco navi switch`);
     } else {
-      const removeEcoNavi = this.accessory.getService(this.accessory.displayName + ' (eco navi)');
+      const removeEcoNavi = this.accessory.getService(this.accessory.displayName + ' eco navi');
       if (removeEcoNavi) {
         this.accessory.removeService(removeEcoNavi);
         this.platform.log.debug(`${this.accessory.displayName}: remove eco navi switch`);
@@ -199,15 +199,15 @@ export default class IndoorUnitAccessory {
 
     // Eco Function
     if (this.deviceConfig?.exposeEcoFunction) {
-      this.exposeEcoFunction = this.accessory.getService(this.accessory.displayName + ' (eco function)')
-        || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' (eco function)', 'exposeEcoFunction');
-      this.exposeEcoFunction.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' (eco function)');
+      this.exposeEcoFunction = this.accessory.getService(this.accessory.displayName + ' eco function')
+        || this.accessory.addService(this.platform.Service.Switch, this.accessory.displayName + ' eco function', 'exposeEcoFunction');
+      this.exposeEcoFunction.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.displayName + ' eco function');
       this.exposeEcoFunction
         .getCharacteristic(this.platform.Characteristic.On)
         .onSet(this.setEcoFunction.bind(this));
       this.platform.log.debug(`${this.accessory.displayName}: add eco function switch`);
     } else {
-      const removeEcoFunction = this.accessory.getService(this.accessory.displayName + ' (eco function)');
+      const removeEcoFunction = this.accessory.getService(this.accessory.displayName + ' eco function');
       if (removeEcoFunction) {
         this.accessory.removeService(removeEcoFunction);
         this.platform.log.debug(`${this.accessory.displayName}: remove eco function switch`);
