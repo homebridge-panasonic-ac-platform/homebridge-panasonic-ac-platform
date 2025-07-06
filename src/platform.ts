@@ -87,14 +87,17 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
     try {
       const response = await axios.get('https://itunes.apple.com/lookup?id=1348640525');
       const version = response.data.results[0].version;
-      this.platformConfig.appStoreAppVersion = version;
       this.log.debug('Fetch latest Comfort Cloud version - Success: ' + version);
+      if (this.platformConfig.appStoreAppVersion !== undefined && this.platformConfig.appStoreAppVersion !== version) {
+        this.log.info('New App Store version: ' + version);
+      }
+      this.platformConfig.appStoreAppVersion = version;
     } catch (error: any) {
       this.log.error('Error fetching App Store version: ' + error.message);
     }
 
     this.platformConfig.finalAppVersion = this.platformConfig.overwriteVersion || this.platformConfig.appStoreAppVersion || APP_VERSION;
-  
+
     let logOutput = '';
     if (this.platformConfig.overwriteVersion) {
       logOutput += `Overwrite version (plugin config): ${this.platformConfig.overwriteVersion}. `;
@@ -104,7 +107,7 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
     }
     logOutput += `Built-in app version: ${APP_VERSION}. `;
     logOutput += `Version to use: ${this.platformConfig.finalAppVersion}.`;
-  
+
     this.log.info(logOutput);
   }
 
