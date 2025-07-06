@@ -306,6 +306,8 @@ https://www.panasonic.com/global/hvac/products/comfort-cloud/how-to-set-up-comfo
 - Develop: [developers.md](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/blob/master/docs/developers.md).
 - Check Comfort Cloud app, how it works and how it comunicates with server: [app.md](https://github.com/homebridge-panasonic-ac-platform/homebridge-panasonic-ac-platform/blob/master/docs/app.md).
 
+Note: Comfort Cloud and HomeKit have their own requirements and limitations. For this reason, some things cannot be implemented. For example, Comfort Cloud stores some of the settings on the server and some on the device (e.g. fan speed and quiet / powerful mode are stored in the remote control / application and also in this plugin). For example in Homekit slider set to 0 always turn off device and we cannot change this.
+
 ## Acknowledgements
 - Thanks to [embee8](https://github.com/embee8) for creating this plugin.
 - Thanks to everyone helping in the development and obtaining new Comfort Cloud API.
