@@ -239,7 +239,7 @@ You can also combine several commands into one:
 - Restart Internet routers.
 - Restart Homebridge or plugin bridge.
 - Remove one or more plugin devices from Homebridge cache (Homebridge settings > remove one device from cache).
-- Set Logs Level to all (in plugin config) and enable debug mode (in Homebridge settings / child bridge settings) - this will include more detailed information in the log.
+- Set Logs Level to All (in plugin config) and enable Homebridge Debug or Accessory Debug (in Homebridge settings) - this will include more detailed information in the log.
 
 </details>
 
