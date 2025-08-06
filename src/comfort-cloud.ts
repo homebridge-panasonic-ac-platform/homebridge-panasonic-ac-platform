@@ -50,7 +50,7 @@ export default class ComfortCloudApi {
     if (this.config.key2fa && this.config.key2fa.length === 32) {
       await this.setup2fa();
     } else {
-      this.log.debug('No 2FA key or incorrect key (not necessary for know).');
+      this.log.debug('No 2FA key or incorrect key (not required at this moment).');
     }
 
     // NEW API - START ----------------------------------------------------------------------------------
