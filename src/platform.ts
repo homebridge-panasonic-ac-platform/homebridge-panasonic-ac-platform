@@ -82,12 +82,35 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
   }
 
   async checkAppVersion() {
+    // Requests are sent with X-APP-TYPE 1 (Android), so the Comfort Cloud API only accepts
+    // the current Android app version. The iOS version can be ahead of it (e.g. iOS 5.1.1
+    // vs Android 5.1.0), in which case the API rejects login with code 4106.
+    this.log.debug('Attempting to fetch latest Comfort Cloud version from the Play Store.');
+
+    try {
+      const response = await axios.get('https://play.google.com/store/apps/details?id=com.panasonic.ACCsmart&hl=en', {
+        headers: { 'User-Agent': 'Mozilla/5.0' },
+      });
+      const match = String(response.data).match(/\["(\d+\.\d+\.\d+)"\]/);
+      if (!match) {
+        throw new Error('Version not found in Play Store response');
+      }
+      const version = match[1];
+      this.log.debug('Fetch latest Comfort Cloud version from the Play Store - Success: ' + version);
+      if (this.platformConfig.playStoreAppVersion !== undefined && this.platformConfig.playStoreAppVersion !== version) {
+        this.log.info('New Play Store version: ' + version);
+      }
+      this.platformConfig.playStoreAppVersion = version;
+    } catch (error: any) {
+      this.log.error('Error fetching Play Store version: ' + error.message);
+    }
+
     this.log.debug('Attempting to fetch latest Comfort Cloud version from the App Store.');
 
     try {
       const response = await axios.get('https://itunes.apple.com/lookup?id=1348640525');
       const version = response.data.results[0].version;
-      this.log.debug('Fetch latest Comfort Cloud version - Success: ' + version);
+      this.log.debug('Fetch latest Comfort Cloud version from the App Store - Success: ' + version);
       if (this.platformConfig.appStoreAppVersion !== undefined && this.platformConfig.appStoreAppVersion !== version) {
         this.log.info('New App Store version: ' + version);
       }
@@ -96,11 +119,22 @@ export default class PanasonicPlatform implements DynamicPlatformPlugin {
       this.log.error('Error fetching App Store version: ' + error.message);
     }
 
-    this.platformConfig.finalAppVersion = this.platformConfig.overwriteVersion || this.platformConfig.appStoreAppVersion || APP_VERSION;
+    // Versions to try in order of preference. If the API rejects one as outdated (code 4106),
+    // ComfortCloudApi falls back to the next one.
+    this.platformConfig.appVersionCandidates = [...new Set([
+      this.platformConfig.overwriteVersion,
+      this.platformConfig.playStoreAppVersion,
+      this.platformConfig.appStoreAppVersion,
+      APP_VERSION,
+    ].filter(Boolean))];
+    this.platformConfig.finalAppVersion = this.platformConfig.appVersionCandidates[0];
 
     let logOutput = '';
     if (this.platformConfig.overwriteVersion) {
       logOutput += `Overwrite version (plugin config): ${this.platformConfig.overwriteVersion}. `;
+    }
+    if (this.platformConfig.playStoreAppVersion) {
+      logOutput += `Play Store version: ${this.platformConfig.playStoreAppVersion}. `;
     }
     if (this.platformConfig.appStoreAppVersion) {
       logOutput += `App Store version: ${this.platformConfig.appStoreAppVersion}. `;

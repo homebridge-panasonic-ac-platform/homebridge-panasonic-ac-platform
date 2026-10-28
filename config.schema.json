@@ -38,7 +38,7 @@
 			},
 			"overwriteVersion": {
 				"title": "Overwrite Version",
-				"description": "Must be equal to newest Panasonic Comfort Cloud app version from App Store or Play Store. E.G: 2.1.0. Leave empty to automaticaly detect version.",
+				"description": "Must be equal to newest Panasonic Comfort Cloud Android app version (Google Play Store). E.G: 5.1.0. Leave empty to automaticaly detect version.",
 				"type": "string",
 				"default": "",
 				"placeholder": "",

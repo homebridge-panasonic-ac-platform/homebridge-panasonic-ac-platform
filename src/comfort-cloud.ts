@@ -307,29 +307,49 @@ export default class ComfortCloudApi {
 
     // Client ID --------------------------------------------------------------
 
-    await client.request({
-      method: 'post',
-      url: 'https://accsmart.panasonic.com/auth/v2/login',
-      headers: {
-        ...this.getBaseRequestHeaders(),
-        'X-User-Authorization-V2': 'Bearer ' + this.token,
-      },
-      data: {
-        'language': 0,
-      },
-      validateStatus: status => (status >= 200 && status < 300) || status === 200,
-    })
-      .then((response) => {
+    // The API answers 401 with code 4106 ("New version app has been published") when
+    // X-APP-VERSION is not the version it expects. Try the remaining known versions.
+    const candidates: string[] = this.config.appVersionCandidates?.length
+      ? this.config.appVersionCandidates
+      : [this.config.finalAppVersion];
+    let candidateIndex = Math.max(candidates.indexOf(this.config.finalAppVersion), 0);
+
+    for (;;) {
+      try {
+        const response = await client.request({
+          method: 'post',
+          url: 'https://accsmart.panasonic.com/auth/v2/login',
+          headers: {
+            ...this.getBaseRequestHeaders(),
+            'X-User-Authorization-V2': 'Bearer ' + this.token,
+          },
+          data: {
+            'language': 0,
+          },
+        });
         this.log.debug('Comfort Cloud - Client ID - Success');
         this.log.debug(response.data);
         this.clientId = response.data.clientId;
         this.log.debug(`clientId: ${this.clientId}`);
-      })
-      .catch((error: AxiosError) => {
+        break;
+      } catch (error: any) {
+        const isOutdatedVersion = error?.response?.status === 401 && error?.response?.data?.code === 4106;
+        if (isOutdatedVersion && candidateIndex + 1 < candidates.length) {
+          candidateIndex++;
+          this.log.info(`Comfort Cloud rejected app version ${this.config.finalAppVersion} as outdated. `
+            + `Retrying with ${candidates[candidateIndex]}.`);
+          this.config.finalAppVersion = candidates[candidateIndex];
+          continue;
+        }
         this.log.error('Comfort Cloud - Client ID - Error');
+        if (isOutdatedVersion) {
+          this.log.error(`Comfort Cloud rejected app version ${this.config.finalAppVersion} as outdated. `
+            + 'Set "Overwrite Version" in the plugin settings to the current Android app version.');
+        }
         this.log.debug(JSON.stringify(error, null, 2));
         return Promise.reject(error);
-      });
+      }
+    }
 
 
     // Set timer to refresh token --------------------------------------------
